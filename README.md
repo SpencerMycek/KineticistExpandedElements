@@ -22,6 +22,9 @@ If you have any suggestions for elements to add to the game, please reach out to
 
 Thank you for reading!
 
+I also do not have the skills currently to add custom effects to the game, so any element added will borrow the effect from other kineticist elements.
+I shall try to match the theme/element of the ability as best as possible to make it visually appealing
+
 ## Content
 
 | Element | Feature | Description | Status |
