@@ -312,7 +312,7 @@ namespace KineticistElementsExpanded.ElementAether
             blast_feature = CreateTelekineticBlastFeature(blast_ability);
             var blast_progression = CreateTelekineticBlastProgression(blast_feature, tb_blade_feature);
 
-            AddToKineticBladeInfusion(tb_blade_feature);
+            AddToKineticBladeInfusion(tb_blade_feature, blast_feature);
             return blast_progression;
         }
 
@@ -732,29 +732,19 @@ namespace KineticistElementsExpanded.ElementAether
             tb_blade_feature.IsPrerequisiteFor = Helper.ToArray(fw_feature).ToRef().ToList();
         }
 
-        private static void AddToKineticBladeInfusion(params BlueprintFeature[] blade_features)
+        private static void AddToKineticBladeInfusion(BlueprintFeature blade_feature, BlueprintFeature blast_feature)
         {
             var kinetic_blade_infusion = ResourcesLibrary.TryGetBlueprint<BlueprintFeature>("9ff81732-dadd-b174-aa81-38ad1297c787"); // KineticBladeInfusion
-            foreach (var blade in blade_features)
-            {
-                kinetic_blade_infusion.AddComponents(Helper.CreateAddFeatureIfHasFact(blade.ToRef2()));
-            }
+            kinetic_blade_infusion.AddComponents(Helper.CreateAddFeatureIfHasFact(blast_feature.ToRef2(), blade_feature.ToRef2()));
+            
         }
 
         #endregion
 
         #region Composite Blast
 
-        // Force Blast
-        //  Simple Blast Damage, Force
-        //  -- Infusions
         //  Disintegrate*
         //  Force Hook*
-        //  Extended Range-
-        //  Spindle-
-        //  Wall-
-        //  Blade-
-
         private static BlueprintFeature CreateAetherCompositeBlasts(out BlueprintFeature force_blade_feature)
         {
             var variant_base = CreateForceBlastVariant_base();
@@ -765,7 +755,7 @@ namespace KineticistElementsExpanded.ElementAether
             var force_blast_ability = CreateForceBlastAbility(variant_base, variant_extended, variant_spindle, variant_wall, variant_blade);
             var force_blast_feature = CreateForceBlastFeature(force_blast_ability);
 
-            AddToKineticBladeInfusion(force_blade_feature);
+            AddToKineticBladeInfusion(force_blade_feature, force_blast_feature);
             return force_blast_feature;
         }      
 
@@ -786,7 +776,6 @@ namespace KineticistElementsExpanded.ElementAether
             return ability;
         }
 
-        // Add Feature to Composite Blast Buff
         private static BlueprintFeature CreateForceBlastFeature(BlueprintAbility blast_ability)
         {
             var feature = Helper.CreateBlueprintFeature("ForceBlastFeature", "Force Blast",
