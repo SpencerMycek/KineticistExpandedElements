@@ -1,18 +1,15 @@
 ﻿# Kineticist Elements Expanded
----
 
 Mod for Pathfinder Wrath of the Righteous
 
 
 ## Credits and Acknowledgement
----
 
 Thanks to [Truinto][1] author of [Dark Codex][2] for providing help, advice, and some methods so I could gain my own footing in C# and modding P:WoTR
 
 Thanks to the entire OwlCat community discord and the modding community there, for answering my plethora of strange questions and pushing me in the right directions
 
 ## Description
----
 
 This mod adds expanded element choices for the Kineticist class. Currently this mod adds only the "Aether" element from the Tabletop version of Pathfinder.
 More elements may be coming in the future.
@@ -26,7 +23,6 @@ If you have any suggestions for elements to add to the game, please reach out to
 Thank you for reading!
 
 ## Content
----
 
 | Element | Feature | Description | Status |
 | :------ | :------ | :---------: | ------ |
@@ -47,15 +43,12 @@ Thank you for reading!
 | Aether | Custom Wall Effects | Currently, the wall infusions for Telekinetic and Force blast borrow the effect from Air and Steam | WIP |
 
 ## Compatibility
----
 
 This mod should be compatible with most other mods, as it only adds options to character choices.
 Some mods might not integrate perfectly, but they should work together properly
 
 If you notice any issues, please contact me or open up an issue on this repository
 
-## Links
----
 
 [1]: https://github.com/Truinto
 [2]: https://github.com/Truinto/DarkCodex
