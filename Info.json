@@ -1,0 +1,10 @@
+﻿{
+	"Id": "KineticistElementsExpanded",
+	"DisplayName": "Kineticist Elements Expanded",
+	"Author": "SpenceZilla",
+	"Version": "0.0.1",
+	"ManagerVersion": "0.21.3",
+	"Requirements": [],
+	"AssemblyName": "KineticistElementsExpanded.dll",
+	"EntryMethod": "KineticistElementsExpanded.Main.Load"
+}
