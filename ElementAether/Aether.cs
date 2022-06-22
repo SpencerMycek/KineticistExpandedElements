@@ -1,5 +1,4 @@
-﻿using BlueprintCore.Blueprints.Configurators.Classes;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
 using KineticistElementsExpanded.Components;
 using KineticistElementsExpanded.Components.Properties;
 using Kingmaker.Blueprints;
@@ -10,16 +9,12 @@ using Kingmaker.Blueprints.Classes.Spells;
 using Kingmaker.Blueprints.Facts;
 using Kingmaker.Blueprints.Items.Ecnchantments;
 using Kingmaker.Blueprints.Items.Weapons;
-using Kingmaker.Designers.EventConditionActionSystem.Actions;
-using Kingmaker.Designers.EventConditionActionSystem.Conditions;
 using Kingmaker.Designers.EventConditionActionSystem.Evaluators;
-using Kingmaker.Designers.Mechanics.Buffs;
 using Kingmaker.Designers.Mechanics.Facts;
 using Kingmaker.ElementsSystem;
 using Kingmaker.EntitySystem.Stats;
 using Kingmaker.Enums;
 using Kingmaker.Enums.Damage;
-using Kingmaker.Localization;
 using Kingmaker.ResourceLinks;
 using Kingmaker.RuleSystem;
 using Kingmaker.RuleSystem.Rules;
@@ -37,12 +32,8 @@ using Kingmaker.UnitLogic.Mechanics;
 using Kingmaker.UnitLogic.Mechanics.Actions;
 using Kingmaker.UnitLogic.Mechanics.Components;
 using Kingmaker.Utility;
-using Kingmaker.Visual.Animation.Kingmaker.Actions;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static Kingmaker.UnitLogic.FactLogic.AddMechanicsFeature;
 using static Kingmaker.UnitLogic.Mechanics.Properties.BlueprintUnitProperty;
 using static Kingmaker.Visual.Animation.Kingmaker.Actions.UnitAnimationActionCastSpell;
@@ -54,7 +45,7 @@ namespace KineticistElementsExpanded.ElementAether
         // TODO
         // Wall Infusions need their own Area type for correct damage
         // Infusions for Force Hook/Disintegrate
-        // Pushing and Bowling for Force
+        // Skilled Kineticist
         public static void Configure()
         {
             var blast_progression = CreateFullTelekineticBlast(out var blast_feature, out var tb_blade_feature);
@@ -466,7 +457,7 @@ namespace KineticistElementsExpanded.ElementAether
                         ValueRank = AbilityRankType.DamageBonus,
                         ValueShared = AbilitySharedValue.Damage
                     }, DurationRate.Rounds),
-                m_AreaEffect = area_effect.ToRef(),
+                m_AreaEffect = CreateTelekineticWallEffect().ToRef(),
                 OnUnit = false
             };
 
@@ -857,7 +848,7 @@ namespace KineticistElementsExpanded.ElementAether
                 Step3_rank_bonus(half_bonus: false),
                 Step4_dc(),
                 Step5_burn(null, infusion: 0, blast: 2),
-                Step7_projectile(Resource.Projectile.Kinetic_SteamLine00, true, AbilityProjectileType.Simple, 0, 5),
+                Step7_projectile(Resource.Projectile.Disintegrate00, true, AbilityProjectileType.Simple, 0, 5),
                 Step8_spell_description(SpellDescriptor.Force),
                 Step_sfx(AbilitySpawnFxTime.OnPrecastStart, Resource.Sfx.PreStart_Earth),
                 Step_sfx(AbilitySpawnFxTime.OnStart, Resource.Sfx.Start_Earth)
@@ -890,7 +881,7 @@ namespace KineticistElementsExpanded.ElementAether
                 Step4_dc(),
                 Step5_burn(null, infusion: 1, blast: 2),
                 Step6_feat(parent),
-                Step7_projectile(Resource.Projectile.Kinetic_SteamLine00, true, AbilityProjectileType.Simple, 0, 5),
+                Step7_projectile(Resource.Projectile.Disintegrate00, true, AbilityProjectileType.Simple, 0, 5),
                 Step8_spell_description(SpellDescriptor.Force),
                 Step_sfx(AbilitySpawnFxTime.OnPrecastStart, Resource.Sfx.PreStart_Earth),
                 Step_sfx(AbilitySpawnFxTime.OnStart, Resource.Sfx.Start_Earth)
@@ -929,8 +920,8 @@ namespace KineticistElementsExpanded.ElementAether
                 Step_sfx(AbilitySpawnFxTime.OnStart, Resource.Sfx.Start_Earth),
                 new AbilityDeliverChain
                 {
-                    m_ProjectileFirst = Resource.Projectile.Kinetic_SteamLine00.ToRef<BlueprintProjectileReference>(),
-                    m_Projectile = Resource.Projectile.Kinetic_SteamLine00.ToRef<BlueprintProjectileReference>(),
+                    m_ProjectileFirst = Resource.Projectile.Disintegrate00.ToRef<BlueprintProjectileReference>(),
+                    m_Projectile = Resource.Projectile.Disintegrate00.ToRef<BlueprintProjectileReference>(),
                     TargetsCount = new ContextValue
                     {
                         ValueType = ContextValueType.Simple,
@@ -972,7 +963,7 @@ namespace KineticistElementsExpanded.ElementAether
                         ValueRank = AbilityRankType.DamageBonus,
                         ValueShared = AbilitySharedValue.Damage
                     }, DurationRate.Rounds),
-                m_AreaEffect = area_effect.ToRef(),
+                m_AreaEffect = CreateForceWallEffect().ToRef(),
                 OnUnit = false
             };
 
@@ -1176,6 +1167,18 @@ namespace KineticistElementsExpanded.ElementAether
         //  Provide a buff/toggle with the same scaling as blast dice as bonus damage
         #region Aetheric Boost
         #endregion
+
+        #endregion
+
+        #region Infusions
+
+        public static BlueprintFeature CreateDisintegratingInfusion()
+        {
+
+
+            var result = new BlueprintFeature();
+            return result;
+        }
 
         #endregion
 
@@ -1858,7 +1861,145 @@ namespace KineticistElementsExpanded.ElementAether
             //var kineticist_class_ref = Helper.ToRef<BlueprintCharacterClassReference>("42a455d9-ec1a-d924-d889-272429eb8391"); // Kineticist Base Class
             var icon = Helper.StealIcon("b3c6cb76-d5b1-1cf4-c831-4d7b1c7b9b8b"); // Choking Bomb feature
         }
-        
+
+        #endregion
+
+        #region Area Effects
+
+        public static BlueprintAbilityAreaEffect CreateTelekineticWallEffect()
+        {
+            var kineticist_class = ResourcesLibrary.TryGetBlueprint<BlueprintCharacterClass>("42a455d9ec1ad924d889272429eb8391"); // KineticistMainClass
+            var kineticist_main_stat_property = "f897845bbbc008d4f9c1c4a03e22357a".ToRef<BlueprintUnitPropertyReference>(); // KineticistMainStatProperty
+            var kinetic_blast_feature = ResourcesLibrary.TryGetBlueprint<BlueprintFeature>("93efbde2764b5504e98e6824cab3d27c"); // KineticBlastFeature
+            var wall_infusion = ResourcesLibrary.TryGetBlueprint<BlueprintFeature>("c684335918896ce4ab13e96cec929796"); // WallInfusion
+            var unique = new UniqueAreaEffect { m_Feature = wall_infusion.ToRef2() };
+            var prefab = new PrefabLink { AssetId = "4ffc8d2162a215e44a1a728752b762eb" }; // AirBlastWallEffect PrefabLink
+
+            ContextDiceValue dice = Helper.CreateContextDiceValue(DiceType.D6, AbilityRankType.DamageDice, AbilityRankType.DamageBonus);
+
+            var context_dealDamage = Helper.CreateContextActionDealDamage(PhysicalDamageForm.Bludgeoning | PhysicalDamageForm.Piercing | PhysicalDamageForm.Slashing,
+                dice, false, false, false, true, false, AbilitySharedValue.Damage);
+            ActionList action_list = new() { Actions = new GameAction[1] { context_dealDamage } };
+
+            var area_effect = Helper.CreateBlueprintAbilityAreaEffect("WallTelekineticBlastArea", null, true, true,
+                AreaEffectShape.Wall, new Feet { m_Value = 60 },
+                prefab, unitEnter: action_list);
+            area_effect.m_Tags = AreaEffectTags.DestroyableInCutscene;
+            area_effect.IgnoreSleepingUnits = false;
+            area_effect.AffectDead = false;
+            area_effect.AggroEnemies = true;
+            area_effect.AffectEnemies = true;
+            area_effect.SpellResistance = false;
+
+            var context1 = Helper.CreateContextRankConfig(ContextRankBaseValueType.CustomProperty, stat: StatType.Constitution, 
+                type: AbilityRankType.DamageBonus, customProperty: kineticist_main_stat_property, min: 0, max: 20);
+            var context2 = Helper.CreateContextRankConfig(ContextRankBaseValueType.FeatureRank, stat: StatType.Constitution,
+                type: AbilityRankType.DamageDice, customProperty: kineticist_main_stat_property, min: 0, max: 20,
+                feature: kinetic_blast_feature.ToRef());
+
+            var calc_shared = new ContextCalculateSharedValue
+            {
+                ValueType = AbilitySharedValue.Damage,
+                Modifier = 1.0,
+                Value = new ContextDiceValue
+                {
+                    DiceType = DiceType.One,
+                    DiceCountValue = new ContextValue
+                    {
+                        ValueType = ContextValueType.Rank,
+                        Value = 0,
+                        ValueRank = AbilityRankType.DamageDice,
+                        ValueShared = AbilitySharedValue.Damage
+                    },
+                    BonusValue = new ContextValue
+                    {
+                        ValueType = ContextValueType.Rank,
+                        Value = 0,
+                        ValueRank = AbilityRankType.DamageBonus,
+                        ValueShared = AbilitySharedValue.Damage
+                    }
+                }
+            };
+
+            var calc_ability_params = new ContextCalculateAbilityParamsBasedOnClass
+            {
+                UseKineticistMainStat = true,
+                StatType = StatType.Charisma,
+                m_CharacterClass = kineticist_class.ToRef()
+            };
+
+            area_effect.AddComponents(unique, context1, context2, calc_shared, calc_ability_params);
+
+            return area_effect;
+        }
+
+        public static BlueprintAbilityAreaEffect CreateForceWallEffect()
+        {
+            var kineticist_class = ResourcesLibrary.TryGetBlueprint<BlueprintCharacterClass>("42a455d9ec1ad924d889272429eb8391"); // KineticistMainClass
+            var kineticist_main_stat_property = "f897845bbbc008d4f9c1c4a03e22357a".ToRef<BlueprintUnitPropertyReference>(); // KineticistMainStatProperty
+            var kinetic_blast_feature = ResourcesLibrary.TryGetBlueprint<BlueprintFeature>("93efbde2764b5504e98e6824cab3d27c"); // KineticBlastFeature
+            var wall_infusion = ResourcesLibrary.TryGetBlueprint<BlueprintFeature>("c684335918896ce4ab13e96cec929796"); // WallInfusion
+            var unique = new UniqueAreaEffect { m_Feature = wall_infusion.ToRef2() };
+            var prefab = new PrefabLink { AssetId = "6a64cc20d5820dc4cb3907b36ce6ac13" }; // SteamBlastWallEffect PrefabLink
+
+            ContextDiceValue dice = Helper.CreateContextDiceValue(DiceType.D6, AbilityRankType.DamageDice, AbilityRankType.DamageBonus);
+
+            var context_dealDamage = Helper.CreateContextActionDealDamageForce(DamageEnergyType.Fire,
+                dice, false, false, false, true, false, AbilitySharedValue.Damage);
+            ActionList action_list = new() { Actions = new GameAction[1] { context_dealDamage } };
+
+            var area_effect = Helper.CreateBlueprintAbilityAreaEffect("WallForceBlastArea", null, true, true,
+                AreaEffectShape.Wall, new Feet { m_Value = 60 },
+                prefab, unitEnter: action_list);
+            area_effect.m_Tags = AreaEffectTags.DestroyableInCutscene;
+            area_effect.IgnoreSleepingUnits = false;
+            area_effect.AffectDead = false;
+            area_effect.AggroEnemies = true;
+            area_effect.AffectEnemies = true;
+            area_effect.SpellResistance = true;
+
+            var context1 = Helper.CreateContextRankConfig(ContextRankBaseValueType.CustomProperty, stat: StatType.Constitution,
+                type: AbilityRankType.DamageBonus, customProperty: kineticist_main_stat_property, min: 0, max: 20);
+            var context2 = Helper.CreateContextRankConfig(ContextRankBaseValueType.FeatureRank, stat: StatType.Constitution,
+                type: AbilityRankType.DamageDice, customProperty: kineticist_main_stat_property, min: 0, max: 20,
+                feature: kinetic_blast_feature.ToRef());
+
+            var calc_shared = new ContextCalculateSharedValue
+            {
+                ValueType = AbilitySharedValue.Damage,
+                Modifier = 1.0,
+                Value = new ContextDiceValue
+                {
+                    DiceType = DiceType.One,
+                    DiceCountValue = new ContextValue
+                    {
+                        ValueType = ContextValueType.Rank,
+                        Value = 0,
+                        ValueRank = AbilityRankType.DamageDice,
+                        ValueShared = AbilitySharedValue.Damage
+                    },
+                    BonusValue = new ContextValue
+                    {
+                        ValueType = ContextValueType.Rank,
+                        Value = 0,
+                        ValueRank = AbilityRankType.DamageBonus,
+                        ValueShared = AbilitySharedValue.Damage
+                    }
+                }
+            };
+
+            var calc_ability_params = new ContextCalculateAbilityParamsBasedOnClass
+            {
+                UseKineticistMainStat = true,
+                StatType = StatType.Charisma,
+                m_CharacterClass = kineticist_class.ToRef()
+            };
+
+            area_effect.AddComponents(unique, context1, context2, calc_shared, calc_ability_params);
+
+            return area_effect;
+        }
+
         #endregion
 
         #region Helper

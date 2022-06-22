@@ -1776,7 +1776,7 @@ public static class Helper
 
         public static ContextActionDealDamage CreateContextActionDealDamageForce(DamageEnergyType energy, ContextDiceValue damage, bool isAoE = false, bool halfIfSaved = false, bool IgnoreCritical = false, bool half = false, bool alreadyHalved = false, AbilitySharedValue sharedValue = 0, bool readShare = false, bool writeShare = false)
         {
-            // energy damage
+            // Force damage
             var c = new ContextActionDealDamage();
             c.DamageType = new DamageTypeDescription()
             {
