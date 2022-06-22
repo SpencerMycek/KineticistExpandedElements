@@ -54,6 +54,7 @@ namespace KineticistElementsExpanded.ElementAether
         // TODO
         // Wall Infusions need their own Area type for correct damage
         // Infusions for Force Hook/Disintegrate
+        // Pushing and Bowling for Force
         public static void Configure()
         {
             var blast_progression = CreateFullTelekineticBlast(out var blast_feature, out var tb_blade_feature);
@@ -68,7 +69,7 @@ namespace KineticistElementsExpanded.ElementAether
             CreateAetherWildTalents(
                 first_progression_aether, kinetic_knight_progression_aether, second_progression_aether, third_progression_aether, blast_feature,
                 force_ward_feature);
-        }
+        }  
 
         private static BlueprintFeatureBase CreateAetherClassSkills()
         {
@@ -309,10 +310,11 @@ namespace KineticistElementsExpanded.ElementAether
             var variant_wall = CreateTelekineticBlastVariant_wall();
             var variant_blade = CreateTelekineticBlastVariant_blade(out tb_blade_feature);
             var blast_ability = CreateTelekineticBlastAbility(variant_base, variant_extended, variant_spindle, variant_wall, variant_blade);
-            blast_feature = CreateTelekineticBlastFeature(blast_ability);
+            blast_feature = CreateTelekineticBlastFeature(blast_ability, tb_blade_feature);
             var blast_progression = CreateTelekineticBlastProgression(blast_feature, tb_blade_feature);
 
             AddToKineticBladeInfusion(tb_blade_feature, blast_feature);
+            AddToSubstanceInfusions(blast_feature, blast_ability);
             return blast_progression;
         }
 
@@ -500,7 +502,8 @@ namespace KineticistElementsExpanded.ElementAether
         {
             var kinetic_blade_enable_buff = ResourcesLibrary.TryGetBlueprint<BlueprintBuff>("426a9c07-9ee7-ac34-aa8e-0054f2218074"); // KineticBladeEnableBuff
             var kinetic_blade_hide_feature = ResourcesLibrary.TryGetBlueprint<BlueprintFeature>("4d39ccef-7b5b-2e94-58e8-599eae3c3be0"); // KineticBladeHideFeature
-            var icon = Helper.StealIcon("89cc522f-2e14-44b4-0ba1-757320c58530"); // AirBlastKineticBladeDamage
+            var icon = Helper.StealIcon("89acea31-3b9a-9cb4-d86b-bbca01b90346"); // KineticBladeAirBlastAbility
+            var damage_icon = Helper.StealIcon("89cc522f-2e14-44b4-0ba1-757320c58530"); // AirBlastKineticBladeDamage
 
             var weapon = CreateTelekineticBlastBlade_weapon();
 
@@ -534,6 +537,7 @@ namespace KineticistElementsExpanded.ElementAether
                 AbilityType.Special, UnitCommand.CommandType.Free, AbilityRange.Personal);
             blade_burn_ability.TargetSelf(CastAnimationStyle.Omni);
             blade_burn_ability.Hidden = true;
+            blade_burn_ability.DisableLog = true;
             blade_burn_ability.AvailableMetamagic = Metamagic.Extend | Metamagic.Heighten;
             blade_burn_ability.SetComponents
                 (
@@ -547,7 +551,7 @@ namespace KineticistElementsExpanded.ElementAether
             #region TelekineticBlastKineticBladeDamage
 
             var blade_damage_ability = Helper.CreateBlueprintAbility("TelekineticBlastKineticBladeDamage", "Telekinetic Blast",
-                TelekineticBlastDescription, null, icon, AbilityType.Special, UnitCommand.CommandType.Standard, AbilityRange.Close);
+                TelekineticBlastDescription, null, damage_icon, AbilityType.Special, UnitCommand.CommandType.Standard, AbilityRange.Close);
             blade_damage_ability.TargetEnemy(CastAnimationStyle.Omni);
             blade_damage_ability.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten | Metamagic.Reach;
             blade_damage_ability.Hidden = true;
@@ -693,14 +697,17 @@ namespace KineticistElementsExpanded.ElementAether
             return ability;
         }
 
-        private static BlueprintFeature CreateTelekineticBlastFeature(BlueprintAbility blast_ability)
+        private static BlueprintFeature CreateTelekineticBlastFeature(BlueprintAbility blast_ability, BlueprintFeature blade_feature)
         {
+            var blade_infusion = ResourcesLibrary.TryGetBlueprint<BlueprintFeature>("9ff81732-dadd-b174-aa81-38ad1297c787"); // KineticBladeInfusion
+
             var feature = Helper.CreateBlueprintFeature("TelekineticBlastFeature",
                 "Telekinetic Blast", TelekineticBlastDescription,
                 null, null, FeatureGroup.KineticBlast)
                 .SetComponents
                 (
-                Helper.CreateAddFeatureIfHasFact(blast_ability.ToRef2())
+                Helper.CreateAddFacts(blast_ability.ToRef2()),
+                Helper.CreateAddFeatureIfHasFact(blade_infusion.ToRef2(), blade_feature.ToRef2())
                 );
             feature.HideInUI = true;
             return feature;
@@ -739,6 +746,29 @@ namespace KineticistElementsExpanded.ElementAether
             
         }
 
+        private static void AddToSubstanceInfusions(BlueprintFeature blast_feature, BlueprintAbility blast_ability)
+        {
+            var bowlingInfusion_feature = ResourcesLibrary.TryGetBlueprint<BlueprintFeature>("b3bd080e-ed83-a994-0abd-97e4aa2a7341"); // BowlingInfusionFeature
+            var bowlingInfusion_buff = ResourcesLibrary.TryGetBlueprint<BlueprintBuff>("918b2524-af5c-3f64-7b5d-aa4f4e985411"); // BowlingInfusionBuff
+            var pushingInfusion_feature = ResourcesLibrary.TryGetBlueprint<BlueprintFeature>("fbb97f35-a41b-71c4-cbc3-6c5f3995b892"); // PushingInfusionFeature
+            var pushingInfusion_buff = ResourcesLibrary.TryGetBlueprint<BlueprintBuff>("f795bede-8bae-faf4-d9d7-f404ede960ba"); // PushingInfusionBuff
+
+            var prereq = bowlingInfusion_feature.GetComponent<PrerequisiteFeaturesFromList>();
+            Helper.AppendAndReplace(ref prereq.m_Features, blast_feature.ToRef());
+            prereq = pushingInfusion_feature.GetComponent<PrerequisiteFeaturesFromList>();
+            Helper.AppendAndReplace(ref prereq.m_Features, blast_feature.ToRef());
+
+            var applicable = bowlingInfusion_buff.GetComponent<AddKineticistBurnModifier>();
+            Helper.AppendAndReplace(ref applicable.m_AppliableTo, blast_ability.ToRef());
+            applicable = pushingInfusion_buff.GetComponent<AddKineticistBurnModifier>();
+            Helper.AppendAndReplace(ref applicable.m_AppliableTo, blast_ability.ToRef());
+
+            var trigger = bowlingInfusion_buff.GetComponent<AddKineticistInfusionDamageTrigger>();
+            Helper.AppendAndReplace(ref trigger.m_AbilityList, blast_ability.ToRef());
+            trigger = pushingInfusion_buff.GetComponent<AddKineticistInfusionDamageTrigger>();
+            Helper.AppendAndReplace(ref trigger.m_AbilityList, blast_ability.ToRef());
+        }
+
         #endregion
 
         #region Composite Blast
@@ -753,9 +783,10 @@ namespace KineticistElementsExpanded.ElementAether
             var variant_wall = CreateForceBlastVariant_wall();
             var variant_blade = CreateForceBlastVariant_blade(out force_blade_feature);
             var force_blast_ability = CreateForceBlastAbility(variant_base, variant_extended, variant_spindle, variant_wall, variant_blade);
-            var force_blast_feature = CreateForceBlastFeature(force_blast_ability);
+            var force_blast_feature = CreateForceBlastFeature(force_blast_ability, force_blade_feature);
 
             AddToKineticBladeInfusion(force_blade_feature, force_blast_feature);
+            AddToSubstanceInfusions(force_blast_feature, force_blast_ability);
             return force_blast_feature;
         }      
 
@@ -776,17 +807,18 @@ namespace KineticistElementsExpanded.ElementAether
             return ability;
         }
 
-        private static BlueprintFeature CreateForceBlastFeature(BlueprintAbility blast_ability)
+        private static BlueprintFeature CreateForceBlastFeature(BlueprintAbility blast_ability, BlueprintFeature blade_feature)
         {
+            var blade_infusion = ResourcesLibrary.TryGetBlueprint<BlueprintFeature>("9ff81732-dadd-b174-aa81-38ad1297c787"); // KineticBladeInfusion
+
             var feature = Helper.CreateBlueprintFeature("ForceBlastFeature", "Force Blast",
                 ForceBlastDescription, null, null, FeatureGroup.None);
             feature.HideInCharacterSheetAndLevelUp = true;
             feature.HideInUI = true;
             feature.SetComponents
                 (
-                // Todo
-                // Add Force Blade if KineticBladeInfusion
-                Helper.CreateAddFacts(blast_ability.ToRef2())
+                Helper.CreateAddFacts(blast_ability.ToRef2()),
+                Helper.CreateAddFeatureIfHasFact(blade_infusion.ToRef2(), blade_feature.ToRef2())
                 );
 
             return feature;
@@ -794,13 +826,18 @@ namespace KineticistElementsExpanded.ElementAether
 
         #region composite variants
 
+        public static AbilityEffectRunAction CreateForceBlastRunAction()
+        {
+            ContextDiceValue dice = Helper.CreateContextDiceValue(DiceType.D6, AbilityRankType.DamageDice, AbilityRankType.DamageBonus);
+            var action_damage = Helper.CreateContextActionDealDamageForce(DamageEnergyType.Fire, dice, sharedValue: AbilitySharedValue.DurationSecond);
+            var runaction = Helper.CreateAbilityEffectRunAction(SavingThrowType.Unknown, action_damage);
+
+            return runaction;
+        }
+
         public static BlueprintAbility CreateForceBlastVariant_base()
         {
             var icon = Helper.StealIcon("3baf0164-9a92-ae64-0927-b0f633db7c11"); // SteamBlastBase
-
-            ContextDiceValue dice = Helper.CreateContextDiceValue(DiceType.D6, AbilityRankType.DamageDice, AbilityRankType.DamageBonus);
-            var action_damage = Helper.CreateContextActionDealDamage(DamageEnergyType.Fire, dice, sharedValue: AbilitySharedValue.DurationSecond);
-            var runaction = Helper.CreateAbilityEffectRunAction(SavingThrowType.Unknown, action_damage);
 
             var blast = Helper.CreateBlueprintAbility(
                 "ForceBlastAbility",
@@ -815,7 +852,7 @@ namespace KineticistElementsExpanded.ElementAether
                 savingThrow: null)
                 .SetComponents
                 (
-                runaction, // Force Damage (Force with fire, same as battering blast)
+                CreateForceBlastRunAction(), // Force Damage (Force with fire, same as battering blast)
                 Step2_rank_dice(twice: false),
                 Step3_rank_bonus(half_bonus: false),
                 Step4_dc(),
@@ -834,10 +871,6 @@ namespace KineticistElementsExpanded.ElementAether
             var parent = ResourcesLibrary.TryGetBlueprint<BlueprintFeature>("cb2d9e63-55dd-3394-0b2b-ef49e544b0bf"); // ExtendedRangeInfusion
             var icon = Helper.StealIcon("cb2d9e63-55dd-3394-0b2b-ef49e544b0bf"); // ExtendedRangeSteamBlastAbility
 
-            ContextDiceValue dice = Helper.CreateContextDiceValue(DiceType.D6, AbilityRankType.DamageDice, AbilityRankType.DamageBonus);
-            var action_damage = Helper.CreateContextActionDealDamage(DamageEnergyType.Fire, dice, sharedValue: AbilitySharedValue.DurationSecond);
-            var runaction = Helper.CreateAbilityEffectRunAction(SavingThrowType.Unknown, action_damage);
-
             var blast = Helper.CreateBlueprintAbility(
                 "ExtendedRangeForceBlastAbility",
                 "Force Blast",
@@ -851,7 +884,7 @@ namespace KineticistElementsExpanded.ElementAether
                 savingThrow: null)
                 .SetComponents
                 (
-                runaction, // Force Damage (Force with fire, same as battering blast)
+                CreateForceBlastRunAction(), // Force Damage (Force with fire, same as battering blast)
                 Step2_rank_dice(twice: false),
                 Step3_rank_bonus(half_bonus: false),
                 Step4_dc(),
@@ -872,10 +905,6 @@ namespace KineticistElementsExpanded.ElementAether
             var parent = ResourcesLibrary.TryGetBlueprint<BlueprintFeature>("c4f4a62a-325f-7c14-dbca-ce3ce34782b5"); // SpindleInfusion
             var icon = Helper.StealIcon("c4f4a62a-325f-7c14-dbca-ce3ce34782b5"); // SpindleInfusion
 
-            ContextDiceValue dice = Helper.CreateContextDiceValue(DiceType.D6, AbilityRankType.DamageDice, AbilityRankType.DamageBonus);
-            var action_damage = Helper.CreateContextActionDealDamage(DamageEnergyType.Fire, dice, sharedValue: AbilitySharedValue.DurationSecond);
-            var runaction = Helper.CreateAbilityEffectRunAction(SavingThrowType.Unknown, action_damage);
-
             var blast = Helper.CreateBlueprintAbility(
                 "ExtendedRangeForceBlastAbility",
                 "Force Blast",
@@ -889,7 +918,7 @@ namespace KineticistElementsExpanded.ElementAether
                 savingThrow: null)
                 .SetComponents
                 (
-                runaction, // Force Damage (Force with fire, same as battering blast)
+                CreateForceBlastRunAction(), // Force Damage (Force with fire, same as battering blast)
                 Step2_rank_dice(twice: false),
                 Step3_rank_bonus(half_bonus: false),
                 Step4_dc(),
@@ -925,10 +954,6 @@ namespace KineticistElementsExpanded.ElementAether
             var parent = ResourcesLibrary.TryGetBlueprint<BlueprintFeature>("c6843359-1889-6ce4-ab13-e96cec929796"); // WallInfusion
             var icon = Helper.StealIcon("c6843359-1889-6ce4-ab13-e96cec929796"); // WallInfusion
             var area_effect = ResourcesLibrary.TryGetBlueprint<BlueprintAbilityAreaEffect>("6a64cc20-d582-0dc4-cb39-07b36ce6ac13"); // WallSteamBlastArea
-
-            ContextDiceValue dice = Helper.CreateContextDiceValue(DiceType.D6, AbilityRankType.DamageDice, AbilityRankType.DamageBonus);
-            var action_damage = Helper.CreateContextActionDealDamage(DamageEnergyType.Fire, dice, sharedValue: AbilitySharedValue.DurationSecond);
-            var runaction = Helper.CreateAbilityEffectRunAction(SavingThrowType.Unknown, action_damage);
 
             var action = new ContextActionSpawnAreaEffect
             {
@@ -987,7 +1012,8 @@ namespace KineticistElementsExpanded.ElementAether
         {
             var kinetic_blade_enable_buff = ResourcesLibrary.TryGetBlueprint<BlueprintBuff>("426a9c07-9ee7-ac34-aa8e-0054f2218074"); // KineticBladeEnableBuff
             var kinetic_blade_hide_feature = ResourcesLibrary.TryGetBlueprint<BlueprintFeature>("4d39ccef-7b5b-2e94-58e8-599eae3c3be0"); // KineticBladeHideFeature
-            var icon = Helper.StealIcon("89cc522f-2e14-44b4-0ba1-757320c58530"); // BlueFlameBlastKineticBladeDamage
+            var icon = Helper.StealIcon("66028030-b968-75b4-c970-66525ff75a27"); // KineticBladeSteamBlastAbility
+            var damage_icon = Helper.StealIcon("77dc27ae-2f48-ffe4-a8ab-17154145f1d8"); // SteamBlastBladeDamage
 
             var weapon = CreateForceBlastBlade_weapon();
 
@@ -1001,7 +1027,7 @@ namespace KineticistElementsExpanded.ElementAether
                 );
             #endregion
 
-            #region KineticBladeTelekineticBlastAbility
+            #region KineticBladeForceBlastAbility
 
             var blade_active_ability = Helper.CreateBlueprintActivatableAbility("KineticBladeForceBlastAbility", "Force Blast — Kinetic Blade",
                 KineticBladeDescription, out var unused, null, icon,
@@ -1015,7 +1041,7 @@ namespace KineticistElementsExpanded.ElementAether
 
             #endregion
 
-            #region KineticBladeTelekineticBlastBurnAbility
+            #region KineticBladeForceBlastBurnAbility
 
             var blade_burn_ability = Helper.CreateBlueprintAbility("KineticBladeForceBlastBurnAbility", null, null, null, icon,
                 AbilityType.Special, UnitCommand.CommandType.Free, AbilityRange.Personal);
@@ -1031,14 +1057,15 @@ namespace KineticistElementsExpanded.ElementAether
 
             #endregion
 
-            #region TelekineticBlastKineticBladeDamage
+            #region ForceBlastKineticBladeDamage
 
             ContextDiceValue dice = Helper.CreateContextDiceValue(DiceType.D6, AbilityRankType.DamageDice, AbilityRankType.DamageBonus);
             var action_damage = Helper.CreateContextActionDealDamage(DamageEnergyType.Fire, dice, sharedValue: AbilitySharedValue.DurationSecond);
+            action_damage.DamageType.Type = Kingmaker.RuleSystem.Rules.Damage.DamageType.Force;
             var runaction = Helper.CreateAbilityEffectRunAction(SavingThrowType.Unknown, action_damage);
 
             var blade_damage_ability = Helper.CreateBlueprintAbility("ForcecBlastKineticBladeDamage", "Force Blast",
-                ForceBlastDescription, null, icon, AbilityType.Special, UnitCommand.CommandType.Standard, AbilityRange.Close);
+                ForceBlastDescription, null, damage_icon, AbilityType.Special, UnitCommand.CommandType.Standard, AbilityRange.Close);
             blade_damage_ability.TargetEnemy(CastAnimationStyle.Omni);
             blade_damage_ability.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten | Metamagic.Reach;
             blade_damage_ability.Hidden = true;
