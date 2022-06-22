@@ -9,6 +9,7 @@ using Kingmaker.Blueprints.Classes.Spells;
 using Kingmaker.Blueprints.Facts;
 using Kingmaker.Blueprints.Items.Ecnchantments;
 using Kingmaker.Blueprints.Items.Weapons;
+using Kingmaker.Designers.EventConditionActionSystem.Actions;
 using Kingmaker.Designers.EventConditionActionSystem.Evaluators;
 using Kingmaker.Designers.Mechanics.Facts;
 using Kingmaker.ElementsSystem;
@@ -43,9 +44,7 @@ namespace KineticistElementsExpanded.ElementAether
     class Aether : Statics
     {
         // TODO
-        // Wall Infusions need their own Area type for correct damage
         // Infusions for Force Hook/Disintegrate
-        // Skilled Kineticist
         public static void Configure()
         {
             var blast_progression = CreateFullTelekineticBlast(out var blast_feature, out var tb_blade_feature);
@@ -60,7 +59,7 @@ namespace KineticistElementsExpanded.ElementAether
             CreateAetherWildTalents(
                 first_progression_aether, kinetic_knight_progression_aether, second_progression_aether, third_progression_aether, blast_feature,
                 force_ward_feature);
-        }  
+        }
 
         private static BlueprintFeatureBase CreateAetherClassSkills()
         {
@@ -1192,6 +1191,7 @@ namespace KineticistElementsExpanded.ElementAether
         //  Blind Fight, Improved Blind Flight, Greater Blind Flight Disarm? Greater? combat maneuvers?
         private static void CreateAetherWildTalents(BlueprintProgression first_prog, BlueprintProgression kinetic_prog, BlueprintProgression second_prog, BlueprintProgression third_prog, BlueprintFeature tb_feature, BlueprintFeature fw_feature)
         {
+            AddToSkilledKineticist(first_prog);
             AddToKineticHealer(first_prog, second_prog, third_prog, kinetic_prog);
             AddToExpandedDefense(fw_feature);
             CreateTelekineticInvisibility(first_prog, second_prog, third_prog, kinetic_prog);
@@ -1202,6 +1202,31 @@ namespace KineticistElementsExpanded.ElementAether
             CreateSpellDeflection(first_prog, second_prog, third_prog, kinetic_prog);
         }
 
+        private static void AddToSkilledKineticist(BlueprintProgression first_prog)
+        {
+            var kineticist_class = ResourcesLibrary.TryGetBlueprint<BlueprintCharacterClass>("42a455d9ec1ad924d889272429eb8391"); // KineticistMainClass
+            var skilled_kineticist_buff = ResourcesLibrary.TryGetBlueprint<BlueprintBuff>("56b70109d78b0444cb3ad04be3b1ee9e"); // SkilledKineticistBuff
+
+            var buff = Helper.CreateBlueprintBuff("SkilledKineticistAetherBuff", "Skilled Kineticist", null, null, null, null);
+            buff.Flags(true, true);
+            buff.Stacking = StackingType.Replace;
+            buff.SetComponents
+                (
+                Helper.CreateContextRankConfig(ContextRankBaseValueType.ClassLevel,
+                    ContextRankProgression.Div2, max: 20, classes: new BlueprintCharacterClassReference[1] { kineticist_class.ToRef() }),
+                Helper.CreateAddContextStatBonus(new ContextValue { ValueType = ContextValueType.Rank, Value = 0, ValueRank = AbilityRankType.Default, ValueShared = AbilitySharedValue.Damage },
+                StatType.SkillThievery),
+                Helper.CreateAddContextStatBonus(new ContextValue { ValueType = ContextValueType.Rank, Value = 0, ValueRank = AbilityRankType.Default, ValueShared = AbilitySharedValue.Damage },
+                StatType.SkillKnowledgeWorld)
+                );
+
+            var condition = Helper.CreateContextConditionHasFact(first_prog.ToRef2());
+            var conditional = Helper.CreateConditional(condition,
+                ifTrue: buff.CreateContextActionApplyBuff(0, DurationRate.Rounds, false, false, false, true, true));
+
+            var factContextAction = skilled_kineticist_buff.GetComponent<AddFactContextActions>();
+            Helper.AppendAndReplace(ref factContextAction.Activated.Actions, conditional);
+        }
         private static void AddToKineticHealer(BlueprintProgression first_prog, BlueprintProgression second_prog, BlueprintProgression third_prog, BlueprintProgression kinetic_prog)
         {
             var feat = ResourcesLibrary.TryGetBlueprint<BlueprintFeature>("3ef66697-3adf-a8f4-0af6-c0679bd98ba5"); // Kinetic Healer Feature
@@ -1940,7 +1965,7 @@ namespace KineticistElementsExpanded.ElementAether
             var kinetic_blast_feature = ResourcesLibrary.TryGetBlueprint<BlueprintFeature>("93efbde2764b5504e98e6824cab3d27c"); // KineticBlastFeature
             var wall_infusion = ResourcesLibrary.TryGetBlueprint<BlueprintFeature>("c684335918896ce4ab13e96cec929796"); // WallInfusion
             var unique = new UniqueAreaEffect { m_Feature = wall_infusion.ToRef2() };
-            var prefab = new PrefabLink { AssetId = "6a64cc20d5820dc4cb3907b36ce6ac13" }; // SteamBlastWallEffect PrefabLink
+            var prefab = new PrefabLink { AssetId = "4ffc8d2162a215e44a1a728752b762eb" }; // AirBlastWallEffect PrefabLink
 
             ContextDiceValue dice = Helper.CreateContextDiceValue(DiceType.D6, AbilityRankType.DamageDice, AbilityRankType.DamageBonus);
 
