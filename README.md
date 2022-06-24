@@ -31,8 +31,9 @@ I shall try to match the theme/element of the ability as best as possible to mak
 | :------ | :------ | :---------: | ------ |
 | Aether | Element Choice | The main aether element, adds selections for base kineticist (and archetypes) and kinetic knight | Done |
 | Aether | Basic Blast and Composite | Telekinetic and Force Blast - Including all vanilla infusions and Kinetic Blade | Done |
-| Aether | Foe Throw/Many Throw | Infusion for Telekinetic Blast - Allows the kineticst to lift enemies and throw them at other enemies | Not Done |
-| Aether | Disintegrating Infusion | Infusion for Force Blast - Functions similarly to the disintegration spell | Not Done |
+| Aether | Foe Throw | Infusion for Telekinetic Blast - Allows the kineticst to lift an enemy and throw them at another enemy | Not Done |
+| Aether | Many Throw | Infusion for the Telekinetic Blast - Allows the kineticist to lift a multitude of objects and throw them at an equal number of targets | Not Done |
+| Aether | Disintegrating Infusion | Infusion for Force Blast - Functions similarly to the disintegration spell | Done |
 | Aether | Force Hook Infusion | Infusion for Force Blast - Allows the kineticist to drag themself to the target of their kinetic blast | Not Done |
 | Aether | Aetheric Boost Composite | A composite blast that can be used on any other basic or composite blast | Not Done |
 | Aether | Force Ward | Aether Elemental Defense - Adds a regenerating temporary hp buffer to the kineticist | Done |
@@ -43,7 +44,6 @@ I shall try to match the theme/element of the ability as best as possible to mak
 | Aether | Self Telekinesis | Wild Talent chain that allows to kineticist to lift themselves over the battlefield (flight) | Done |
 | Aether | Spell Deflection | Wild Talent that allows the kineticist to form a barrier around themselves that provide resistance to spells (Spell Resistance) | Done |
 | Aether | Suffocation | Wild Talent that allows the kineticist to choke a target from a distance | Not Done |
-| Aether | Custom Wall Effects | Currently, the wall infusions for Telekinetic and Force blast borrow the effect from Air and Steam | WIP |
 
 ## Compatibility
 
@@ -51,6 +51,21 @@ This mod should be compatible with most other mods, as it only adds options to c
 Some mods might not integrate perfectly, but they should work together properly
 
 If you notice any issues, please contact me or open up an issue on this repository
+
+## Recent Changes
+
+- Changed Force Blast projectiles to use the Disintegrate Spell projectile (It looks cool)
+
+- Fix: Force blast now targets touch AC
+- Fix: Telekinetic and Force blasts now benefit from metakinesis
+- Fix: Spindle Infusions now correctly target reflex saves
+- Fix: Telekinetic blast now properly scales damage (1d6+1 per 2 Levels)
+
+## Known Issues
+
+### Disintigration Infusion
+This is a very strange infusion, both doubling damage, and halving it. Unfortunately, in it's current state, it does not benefit from metakinesis, elemental overflow, or form infusions.
+It does work correctly, when used with Extended Range and basic Force blast.
 
 
 [1]: https://github.com/Truinto
