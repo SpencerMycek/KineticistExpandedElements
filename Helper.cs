@@ -1585,6 +1585,16 @@ public static class Helper
             return result;
         }
 
+        public static AddContextStatBonus CreateAddContextStatBonus(ContextValue value, StatType stat, ModifierDescriptor descriptor = ModifierDescriptor.UntypedStackable, int multiplier = 1)
+        {
+            var result = new AddContextStatBonus();
+            result.Value = value;
+            result.Stat = stat;
+            result.Descriptor = descriptor;
+            result.Multiplier = multiplier;
+            return result;
+        }
+
         public static ActivateTrigger CreateActivateTrigger(ConditionsChecker conditions, ActionList actions, bool once = false, bool onAreaLoad = false)
         {
             var result = new ActivateTrigger();

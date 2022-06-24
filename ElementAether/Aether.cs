@@ -9,6 +9,7 @@ using Kingmaker.Blueprints.Classes.Spells;
 using Kingmaker.Blueprints.Facts;
 using Kingmaker.Blueprints.Items.Ecnchantments;
 using Kingmaker.Blueprints.Items.Weapons;
+using Kingmaker.Designers.EventConditionActionSystem.Actions;
 using Kingmaker.Designers.EventConditionActionSystem.Evaluators;
 using Kingmaker.Designers.Mechanics.Facts;
 using Kingmaker.ElementsSystem;
@@ -31,6 +32,7 @@ using Kingmaker.UnitLogic.FactLogic;
 using Kingmaker.UnitLogic.Mechanics;
 using Kingmaker.UnitLogic.Mechanics.Actions;
 using Kingmaker.UnitLogic.Mechanics.Components;
+using Kingmaker.UnitLogic.Mechanics.Conditions;
 using Kingmaker.Utility;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,9 +45,8 @@ namespace KineticistElementsExpanded.ElementAether
     class Aether : Statics
     {
         // TODO
-        // Wall Infusions need their own Area type for correct damage
-        // Infusions for Force Hook/Disintegrate
-        // Skilled Kineticist
+        // Infusions for Force Hook
+
         public static void Configure()
         {
             var blast_progression = CreateFullTelekineticBlast(out var blast_feature, out var tb_blade_feature);
@@ -60,7 +61,7 @@ namespace KineticistElementsExpanded.ElementAether
             CreateAetherWildTalents(
                 first_progression_aether, kinetic_knight_progression_aether, second_progression_aether, third_progression_aether, blast_feature,
                 force_ward_feature);
-        }  
+        }
 
         private static BlueprintFeatureBase CreateAetherClassSkills()
         {
@@ -72,6 +73,42 @@ namespace KineticistElementsExpanded.ElementAether
                 );
 
             return feature;
+        }
+
+        private static void AddBlastsToMetakinesis(BlueprintAbility blast)
+        {
+            BlueprintBuff[] Metakinesis_buff_list = new BlueprintBuff[] {
+                ResourcesLibrary.TryGetBlueprint<BlueprintBuff>("f5f3aa17dd579ff49879923fb7bc2adb"), // MetakinesisEmpowerBuff
+                ResourcesLibrary.TryGetBlueprint<BlueprintBuff>("f690edc756b748e43bba232e0eabd004"), // MetakinesisQuickenBuff
+                ResourcesLibrary.TryGetBlueprint<BlueprintBuff>("870d7e67e97a68f439155bdf465ea191"), // MetakinesisMaximizedBuff
+                ResourcesLibrary.TryGetBlueprint<BlueprintBuff>("870d7e67e97a68f439155bdf465ea191"), // MetakinesisEmpowerCheaperBuff
+                ResourcesLibrary.TryGetBlueprint<BlueprintBuff>("c4b74e4448b81d04f9df89ed14c38a95"), // MetakinesisQuickenCheaperBuff
+                ResourcesLibrary.TryGetBlueprint<BlueprintBuff>("b8f43f0040155c74abd1bc794dbec320") // MetakinesisMaximizedCheaperBuff
+            };
+            foreach (var metakinesis_buff in Metakinesis_buff_list)
+            {
+                AddKineticistBurnModifier component = metakinesis_buff.GetComponent<AddKineticistBurnModifier>();
+                Helper.AppendAndReplace(ref component.m_AppliableTo, blast.ToRef());
+                AutoMetamagic auto = metakinesis_buff.GetComponent<AutoMetamagic>();
+                auto.Abilities.Add(blast.ToRef());
+            }
+        }
+
+        private static void AddBlastsToBurn(BlueprintAbility blast)
+        {
+            BlueprintFeature[] BurnFeatureList =
+            {
+                ResourcesLibrary.TryGetBlueprint<BlueprintFeature>("57e3577a0eb53294e9d7cc649d5239a3"), // BurnFeature
+                ResourcesLibrary.TryGetBlueprint<BlueprintFeature>("2fa48527ba627254ba9bf4556330a4d4"), // PsychokineticistBurnFeature
+                ResourcesLibrary.TryGetBlueprint<BlueprintFeature>("a3051f965d971ed44b9c6c63bf240b79"), // OverwhelmingSoulBurnFeature
+                ResourcesLibrary.TryGetBlueprint<BlueprintFeature>("42c5a9a8661db2f47aedf87fb8b27aaf")  // DarkElementalistBurnFeature
+            };
+
+            foreach (var burnFeature in BurnFeatureList)
+            {
+                var addKineticistPart = burnFeature.GetComponent<AddKineticistPart>();
+                Helper.AppendAndReplace(ref addKineticistPart.m_Blasts, blast.ToRef());
+            }
         }
 
         #region Elemental Focus Selection
@@ -306,6 +343,8 @@ namespace KineticistElementsExpanded.ElementAether
 
             AddToKineticBladeInfusion(tb_blade_feature, blast_feature);
             AddToSubstanceInfusions(blast_feature, blast_ability);
+            AddBlastsToMetakinesis(blast_ability);
+            AddBlastsToBurn(blast_ability);
             return blast_progression;
         }
 
@@ -334,13 +373,20 @@ namespace KineticistElementsExpanded.ElementAether
                 p: PhysicalDamageForm.Bludgeoning | PhysicalDamageForm.Piercing | PhysicalDamageForm.Slashing,
                 isAOE: false, half: false),
                 Step2_rank_dice(twice: false),
+                Helper.CreateContextCalculateSharedValue(Modifier: 1.0, Value: Helper.CreateContextDiceValue(DiceType.One, AbilityRankType.DamageDice, AbilityRankType.DamageBonus)),
                 Step3_rank_bonus(half_bonus: false),
                 Step4_dc(),
                 Step5_burn(actions, infusion: 0, blast: 0),
+                Step8_spell_description(SpellDescriptor.Hex),
                 Step7_projectile(Resource.Projectile.WindProjectile00, true, AbilityProjectileType.Simple, 0, 5),
                 Step_sfx(AbilitySpawnFxTime.OnPrecastStart, Resource.Sfx.PreStart_Earth),
                 Step_sfx(AbilitySpawnFxTime.OnStart, Resource.Sfx.Start_Earth)
                 ).TargetEnemy(CastAnimationStyle.Kineticist);
+            blast.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten;
+
+            // Bandaids
+            ((ContextActionDealDamage)actions.Actions[0]).UseWeaponDamageModifiers = true;
+            ((ContextActionDealDamage)actions.Actions[0]).Value.BonusValue.ValueType = ContextValueType.Shared;
 
             return blast;
         }
@@ -369,6 +415,7 @@ namespace KineticistElementsExpanded.ElementAether
                 p: PhysicalDamageForm.Bludgeoning | PhysicalDamageForm.Piercing | PhysicalDamageForm.Slashing,
                 isAOE: false, half: false),
                 Step2_rank_dice(twice: false),
+                Helper.CreateContextCalculateSharedValue(Modifier: 1.0, Value: Helper.CreateContextDiceValue(DiceType.One, AbilityRankType.DamageDice, AbilityRankType.DamageBonus)),
                 Step3_rank_bonus(half_bonus: false),
                 Step4_dc(),
                 Step5_burn(actions, infusion: 1, blast: 0),
@@ -377,6 +424,9 @@ namespace KineticistElementsExpanded.ElementAether
                 Step_sfx(AbilitySpawnFxTime.OnPrecastStart, Resource.Sfx.PreStart_Earth),
                 Step_sfx(AbilitySpawnFxTime.OnStart, Resource.Sfx.Start_Earth)
                 ).TargetEnemy(CastAnimationStyle.Kineticist);
+            blast.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten;
+
+            ((ContextActionDealDamage)actions.Actions[0]).Value.BonusValue.ValueType = ContextValueType.Shared;
 
             return blast;
         }
@@ -403,11 +453,12 @@ namespace KineticistElementsExpanded.ElementAether
                 (
                 Step1_run_damage(out var actions,
                 p: PhysicalDamageForm.Bludgeoning | PhysicalDamageForm.Piercing | PhysicalDamageForm.Slashing,
-                isAOE: false, half: false),
+                isAOE: false, half: false, save: SavingThrowType.Reflex),
                 Step2_rank_dice(twice: false),
+                Helper.CreateContextCalculateSharedValue(Modifier: 1.0, Value: Helper.CreateContextDiceValue(DiceType.One, AbilityRankType.DamageDice, AbilityRankType.DamageBonus)),
                 Step3_rank_bonus(half_bonus: false),
                 Step4_dc(),
-                Step5_burn(actions, infusion: 2, blast: 0),
+                Step5_burn(null, infusion: 2, blast: 0),
                 Helper.CreateAbilityShowIfCasterHasFact(requirement),
                 Step_sfx(AbilitySpawnFxTime.OnPrecastStart, Resource.Sfx.PreStart_Earth),
                 Step_sfx(AbilitySpawnFxTime.OnStart, Resource.Sfx.Start_Earth),
@@ -428,6 +479,12 @@ namespace KineticistElementsExpanded.ElementAether
                     m_Condition = new ConditionsChecker { Conditions = null, Operation = Operation.And}
                 }
                 ).TargetEnemy(CastAnimationStyle.Kineticist);
+            blast.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten;
+
+            ContextDiceValue dice = Helper.CreateContextDiceValue(DiceType.D6, Helper.CreateContextValue(AbilityRankType.DamageDice), Helper.CreateContextValue(AbilitySharedValue.Damage));
+            var action_damage = Helper.CreateContextActionDealDamage(PhysicalDamageForm.Bludgeoning | PhysicalDamageForm.Piercing | PhysicalDamageForm.Slashing, dice, sharedValue: AbilitySharedValue.DurationSecond);
+            var context_conditional_saved = Helper.CreateContextActionConditionalSaved(null, action_damage);
+            actions.Actions = new GameAction[] { context_conditional_saved };
 
             return blast;
         }
@@ -482,6 +539,7 @@ namespace KineticistElementsExpanded.ElementAether
                 Step_sfx(AbilitySpawnFxTime.OnStart, Resource.Sfx.Start_Earth)
                 ).TargetEnemy(CastAnimationStyle.Kineticist);
             blast.CanTargetPoint = true;
+            blast.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten;
 
             return blast;
         }
@@ -536,6 +594,7 @@ namespace KineticistElementsExpanded.ElementAether
                 Helper.CreateAbilityEffectRunAction(SavingThrowType.Unknown, kinetic_blade_enable_buff.CreateContextActionApplyBuff(asChild: true)),
                 new AbilityKineticBlade { }
                 );
+            AddBlastsToMetakinesis(blade_burn_ability);
 
             #endregion
 
@@ -559,6 +618,7 @@ namespace KineticistElementsExpanded.ElementAether
                 Step_sfx(AbilitySpawnFxTime.OnPrecastStart, Resource.Sfx.PreStart_Earth),
                 Step_sfx(AbilitySpawnFxTime.OnStart, Resource.Sfx.Start_Earth)
                 );
+            blade_damage_ability.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten;
 
             #endregion
 
@@ -679,6 +739,13 @@ namespace KineticistElementsExpanded.ElementAether
                 "Telekinetic Blast", TelekineticBlastDescription,
                 null, icon, AbilityType.Special, UnitCommand.CommandType.Standard,
                 AbilityRange.Close, duration: null, savingThrow: null);
+            ability.SetComponents
+                (
+                Helper.CreateAbilityShowIfCasterHasFact("1f3a15a3ae8a5524ab8b97f469bf4e3d".ToRef<BlueprintUnitFactReference>()), // ElementalFocusSelection
+                Step5_burn(null, 0, 0, 0),
+                Helper.CreateSpellDescriptorComponent(SpellDescriptor.Force)
+                );
+            ability.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten;
 
             foreach (var v in variants)
             {
@@ -764,7 +831,6 @@ namespace KineticistElementsExpanded.ElementAether
 
         #region Composite Blast
 
-        //  Disintegrate*
         //  Force Hook*
         private static BlueprintFeature CreateAetherCompositeBlasts(out BlueprintFeature force_blade_feature)
         {
@@ -778,6 +844,9 @@ namespace KineticistElementsExpanded.ElementAether
 
             AddToKineticBladeInfusion(force_blade_feature, force_blast_feature);
             AddToSubstanceInfusions(force_blast_feature, force_blast_ability);
+            AddInfusions(force_blast_feature, force_blast_ability);
+            AddBlastsToMetakinesis(force_blast_ability);
+            AddBlastsToBurn(force_blast_ability);
             return force_blast_feature;
         }      
 
@@ -789,6 +858,13 @@ namespace KineticistElementsExpanded.ElementAether
                 "Force Blast", ForceBlastDescription,
                 null, icon, AbilityType.Special, UnitCommand.CommandType.Standard,
                 AbilityRange.Close, duration: null, savingThrow: null);
+            ability.SetComponents
+                (
+                Helper.CreateAbilityShowIfCasterHasFact("1f3a15a3ae8a5524ab8b97f469bf4e3d".ToRef<BlueprintUnitFactReference>()), // ElementalFocusSelection
+                Step5_burn(null, 0, 2, 0),
+                Helper.CreateSpellDescriptorComponent(SpellDescriptor.Force)
+                );
+            ability.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten;
 
             foreach (var v in variants)
             {
@@ -845,14 +921,15 @@ namespace KineticistElementsExpanded.ElementAether
                 (
                 CreateForceBlastRunAction(), // Force Damage (Force with fire, same as battering blast)
                 Step2_rank_dice(twice: false),
-                Step3_rank_bonus(half_bonus: false),
+                Step3_rank_bonus(half_bonus: true),
                 Step4_dc(),
                 Step5_burn(null, infusion: 0, blast: 2),
-                Step7_projectile(Resource.Projectile.Disintegrate00, true, AbilityProjectileType.Simple, 0, 5),
+                Step7_projectile(Resource.Projectile.Disintegrate00, false, AbilityProjectileType.Simple, 0, 5),
                 Step8_spell_description(SpellDescriptor.Force),
                 Step_sfx(AbilitySpawnFxTime.OnPrecastStart, Resource.Sfx.PreStart_Earth),
                 Step_sfx(AbilitySpawnFxTime.OnStart, Resource.Sfx.Start_Earth)
                 ).TargetEnemy(CastAnimationStyle.Kineticist);
+            blast.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten;
 
             return blast;
         }
@@ -877,11 +954,11 @@ namespace KineticistElementsExpanded.ElementAether
                 (
                 CreateForceBlastRunAction(), // Force Damage (Force with fire, same as battering blast)
                 Step2_rank_dice(twice: false),
-                Step3_rank_bonus(half_bonus: false),
+                Step3_rank_bonus(half_bonus: true),
                 Step4_dc(),
                 Step5_burn(null, infusion: 1, blast: 2),
                 Step6_feat(parent),
-                Step7_projectile(Resource.Projectile.Disintegrate00, true, AbilityProjectileType.Simple, 0, 5),
+                Step7_projectile(Resource.Projectile.Disintegrate00, false, AbilityProjectileType.Simple, 0, 5),
                 Step8_spell_description(SpellDescriptor.Force),
                 Step_sfx(AbilitySpawnFxTime.OnPrecastStart, Resource.Sfx.PreStart_Earth),
                 Step_sfx(AbilitySpawnFxTime.OnStart, Resource.Sfx.Start_Earth)
@@ -896,8 +973,13 @@ namespace KineticistElementsExpanded.ElementAether
             var parent = ResourcesLibrary.TryGetBlueprint<BlueprintFeature>("c4f4a62a-325f-7c14-dbca-ce3ce34782b5"); // SpindleInfusion
             var icon = Helper.StealIcon("c4f4a62a-325f-7c14-dbca-ce3ce34782b5"); // SpindleInfusion
 
+            var force_runAction = CreateForceBlastRunAction();
+            var context_dealDamage = force_runAction.Actions.Actions[0];
+            var context_conditional_saved = Helper.CreateContextActionConditionalSaved(null, context_dealDamage);
+            force_runAction.Actions.Actions = new GameAction[] { context_conditional_saved };
+
             var blast = Helper.CreateBlueprintAbility(
-                "ExtendedRangeForceBlastAbility",
+                "SplindleForceBlastAbility",
                 "Force Blast",
                 parent.Description,
                 null,
@@ -909,9 +991,9 @@ namespace KineticistElementsExpanded.ElementAether
                 savingThrow: null)
                 .SetComponents
                 (
-                CreateForceBlastRunAction(), // Force Damage (Force with fire, same as battering blast)
+                force_runAction,
                 Step2_rank_dice(twice: false),
-                Step3_rank_bonus(half_bonus: false),
+                Step3_rank_bonus(half_bonus: true),
                 Step4_dc(),
                 Step5_burn(null, infusion: 2, blast: 2),
                 Step6_feat(parent),
@@ -968,7 +1050,7 @@ namespace KineticistElementsExpanded.ElementAether
             };
 
             var blast = Helper.CreateBlueprintAbility(
-                "ExtendedRangeForceBlastAbility",
+                "WallForceBlastAbility",
                 "Force Blast",
                 parent.Description,
                 null,
@@ -1045,6 +1127,7 @@ namespace KineticistElementsExpanded.ElementAether
                 Helper.CreateAbilityEffectRunAction(SavingThrowType.Unknown, kinetic_blade_enable_buff.CreateContextActionApplyBuff(asChild: true)),
                 new AbilityKineticBlade { }
                 );
+            AddBlastsToMetakinesis(blade_burn_ability);
 
             #endregion
 
@@ -1074,6 +1157,7 @@ namespace KineticistElementsExpanded.ElementAether
                 Step_sfx(AbilitySpawnFxTime.OnPrecastStart, Resource.Sfx.PreStart_Earth),
                 Step_sfx(AbilitySpawnFxTime.OnStart, Resource.Sfx.Start_Earth)
                 );
+            blade_damage_ability.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten;
 
             #endregion
 
@@ -1172,12 +1256,199 @@ namespace KineticistElementsExpanded.ElementAether
 
         #region Infusions
 
-        public static BlueprintFeature CreateDisintegratingInfusion()
+        public static void AddInfusions(BlueprintFeature blast_feature, BlueprintAbility blast_base)
         {
+            var infusion_selection = ResourcesLibrary.TryGetBlueprint<BlueprintFeatureSelection>("58d6f8e9eea63f6418b107ce64f315ea"); // InfusionSelection
+
+            var disintegrating_infusion = CreateDisintegratingInfusion(blast_feature, blast_base);
+
+            Helper.AppendAndReplace(ref infusion_selection.m_AllFeatures, disintegrating_infusion.ToRef());
+        }
+
+        public static BlueprintFeature CreateDisintegratingInfusion(BlueprintFeature blast_feature, BlueprintAbility blast_base)
+        {
+            var kineticist_class = Helper.ToRef<BlueprintCharacterClassReference>("42a455d9-ec1a-d924-d889-272429eb8391"); // Kineticist Base Class
+            var kinetic_blast_feature = ResourcesLibrary.TryGetBlueprint<BlueprintFeature>("93efbde2764b5504e98e6824cab3d27c"); // KineticBlastFeature
+            var kineticist_main_stat_property = "f897845bbbc008d4f9c1c4a03e22357a".ToRef<BlueprintUnitPropertyReference>(); // KineticistMainStatProperty
+            var disintegrate_buff = ResourcesLibrary.TryGetBlueprint<BlueprintBuff>("f7a6a7d2cfeb36643915aece45349827"); // DisintegrateBuff
+            var icon = Helper.StealIcon("4aa7942c3e62a164387a73184bca3fc1"); // Disintegrate Icon
+
+            #region ability
+
+            var ability = Helper.CreateBlueprintActivatableAbility("DisintegratingInfusionAbility", "Disintegrating Infusion",
+                DisintegratingInfusionDescription, out var buff, null, icon, activationType: Kingmaker.UnitLogic.ActivatableAbilities.AbilityActivationType.WithUnitCommand,
+                deactivateImmediately: true, group: Kingmaker.UnitLogic.ActivatableAbilities.ActivatableAbilityGroup.SubstanceInfusion, onByDefault: true);
+            ability.m_ActivateOnUnitAction = Kingmaker.UnitLogic.ActivatableAbilities.AbilityActivateOnUnitActionType.Attack;
+
+            #endregion
+
+            #region Custom Damage
+
+            ContextRankConfig config_dice = Helper.CreateContextRankConfig(baseValueType: ContextRankBaseValueType.FeatureRank, type: AbilityRankType.DamageDice, progression: ContextRankProgression.AsIs, feature: kinetic_blast_feature.ToRef());
+            ContextRankConfig config_bonus = Helper.CreateContextRankConfig(baseValueType: ContextRankBaseValueType.CustomProperty, type: AbilityRankType.DamageBonus, progression: ContextRankProgression.Div2, stat: StatType.Constitution, customProperty: kineticist_main_stat_property);
+
+            #region Double
+
+            ContextDiceValue dice_double = Helper.CreateContextDiceValue(DiceType.D6, diceCount: Helper.CreateContextValue(AbilitySharedValue.Damage), bonus: Helper.CreateContextValue(AbilitySharedValue.DamageBonus));
+
+            ContextCalculateSharedValue double_calc_dice = new ContextCalculateSharedValue
+            {
+                ValueType = AbilitySharedValue.Damage,
+                Value = new ContextDiceValue
+                {
+                    DiceType = DiceType.One,
+                    DiceCountValue = new ContextValue { ValueType = ContextValueType.Rank, ValueRank = AbilityRankType.DamageDice },
+                    BonusValue = new ContextValue { ValueType = ContextValueType.Simple, Value = 0}
+                },
+                Modifier = 2.0
+            };
+            ContextCalculateSharedValue double_calc_bonus = new ContextCalculateSharedValue
+            {
+                ValueType = AbilitySharedValue.DamageBonus,
+                Value = new ContextDiceValue
+                {
+                    DiceType = DiceType.One,
+                    DiceCountValue = new ContextValue { ValueType = ContextValueType.Rank, ValueRank = AbilityRankType.DamageBonus },
+                    BonusValue = new ContextValue { ValueType = ContextValueType.Simple, Value = 0 }
+                },
+                Modifier = 2.0
+
+            };
+            var damage_double = Helper.CreateContextActionDealDamageForce(DamageEnergyType.Fire, dice_double);
+
+            #endregion
+
+            #region Half
+
+            ContextDiceValue dice_half = Helper.CreateContextDiceValue(DiceType.D6, Helper.CreateContextValue(AbilitySharedValue.Duration), Helper.CreateContextValue(AbilitySharedValue.DurationSecond));
+            ContextCalculateSharedValue half_calc_dice = new ContextCalculateSharedValue
+            {
+                ValueType = AbilitySharedValue.Duration,
+                Value = new ContextDiceValue
+                {
+                    DiceType = DiceType.One,
+                    DiceCountValue = new ContextValue { ValueType = ContextValueType.Rank, ValueRank = AbilityRankType.DamageDice },
+                    BonusValue = new ContextValue { ValueType = ContextValueType.Simple, Value = 0 }
+                },
+                Modifier = 0.5
+            };
+            ContextCalculateSharedValue half_calc_bonus = new ContextCalculateSharedValue
+            {
+                ValueType = AbilitySharedValue.DurationSecond,
+                Value = new ContextDiceValue
+                {
+                    DiceType = DiceType.One,
+                    DiceCountValue = new ContextValue { ValueType = ContextValueType.Rank, ValueRank = AbilityRankType.DamageBonus },
+                    BonusValue = new ContextValue { ValueType = ContextValueType.Simple, Value = 0 }
+                },
+                Modifier = 0.5
+            };
+            var damage_half = Helper.CreateContextActionDealDamageForce(DamageEnergyType.Fire, dice_half);
+
+            #endregion
+
+            #endregion
+
+            #region Disintegration
+
+            var apply_buff = disintegrate_buff.CreateContextActionApplyBuff(permanent: true);
+
+            var check_health_less_zero = new ContextConditionCompareTargetHP
+            {
+                Not = false,
+                m_CompareType = ContextConditionCompareTargetHP.CompareType.Less,
+                Value = new ContextValue
+                {
+                    ValueType = ContextValueType.Simple,
+                    Value = 0
+                }
+            };
+
+            var disintegrate_conditional = Helper.CreateConditional(check_health_less_zero, apply_buff);
 
 
-            var result = new BlueprintFeature();
-            return result;
+            #endregion
+
+            #region Saving Throw Actions;
+
+            var success_action = new GameAction[] { damage_half, disintegrate_conditional };
+            var fail_action = new GameAction[] { damage_double, disintegrate_conditional };
+
+            var context_conditionalSaved = Helper.CreateContextActionConditionalSaved(success_action, fail_action);
+            var disintegrate_savingThrow = new ContextActionSavingThrow
+            {
+                Type = SavingThrowType.Fortitude,
+                FromBuff = false,
+                HasCustomDC = false,
+                Actions = new ActionList { Actions = new GameAction[1] { context_conditionalSaved } }
+            };
+
+            #endregion
+
+            #region Buff Components
+
+            var nullifyDamage = new AddForceBlastNullifyDamage(blast_base.ToRef())
+            {
+                Actions = new ActionList {  Actions = new GameAction[] { disintegrate_savingThrow } }
+            };
+            var burn_modifier = new AddKineticistBurnModifier
+            {
+                BurnType = KineticistBurnType.Infusion,
+                Value = 4,
+                RemoveBuffOnAcceptBurn = false,
+                UseContextValue = false,
+                BurnValue = new ContextValue
+                {
+                    ValueType = ContextValueType.Simple,
+                    Value = 0,
+                    ValueRank = AbilityRankType.Default,
+                    ValueShared = AbilitySharedValue.Damage
+                },
+                m_AppliableTo = new BlueprintAbilityReference[1] {blast_base.ToRef()}
+            };
+            var calc_abilityParams = new ContextCalculateAbilityParamsBasedOnClass
+            {
+                UseKineticistMainStat = true,
+                StatType = StatType.Charisma,
+                m_CharacterClass = kineticist_class
+            };
+            var recalc_stat_change = new RecalculateOnStatChange
+            {
+                UseKineticistMainStat = true,
+                Stat = StatType.Unknown
+            };
+
+            #endregion
+
+            #region Buff and Feature
+
+            buff.Flags(stayOnDeath: true);
+            buff.SetComponents
+                (
+                nullifyDamage,
+                config_dice,
+                config_bonus,
+                double_calc_dice,
+                double_calc_bonus,
+                half_calc_dice,
+                half_calc_bonus,
+                calc_abilityParams,
+                burn_modifier,
+                recalc_stat_change
+                );
+
+            var feature = Helper.CreateBlueprintFeature("DisintegratingInfusionFeature", "Disintegrating Infusion",
+                DisintegratingInfusionDescription, null, icon, FeatureGroup.KineticBlastInfusion);
+            feature.SetComponents
+                (
+                Helper.CreateAddFacts(ability.ToRef2()),
+                Helper.CreatePrerequisiteFeaturesFromList(false, blast_feature.ToRef()),
+                Helper.CreatePrerequisiteClassLevel(kineticist_class, 12, false)
+                ); ;
+
+            #endregion
+
+            return feature;
         }
 
         #endregion
@@ -1192,6 +1463,7 @@ namespace KineticistElementsExpanded.ElementAether
         //  Blind Fight, Improved Blind Flight, Greater Blind Flight Disarm? Greater? combat maneuvers?
         private static void CreateAetherWildTalents(BlueprintProgression first_prog, BlueprintProgression kinetic_prog, BlueprintProgression second_prog, BlueprintProgression third_prog, BlueprintFeature tb_feature, BlueprintFeature fw_feature)
         {
+            AddToSkilledKineticist(first_prog);
             AddToKineticHealer(first_prog, second_prog, third_prog, kinetic_prog);
             AddToExpandedDefense(fw_feature);
             CreateTelekineticInvisibility(first_prog, second_prog, third_prog, kinetic_prog);
@@ -1202,6 +1474,31 @@ namespace KineticistElementsExpanded.ElementAether
             CreateSpellDeflection(first_prog, second_prog, third_prog, kinetic_prog);
         }
 
+        private static void AddToSkilledKineticist(BlueprintProgression first_prog)
+        {
+            var kineticist_class = ResourcesLibrary.TryGetBlueprint<BlueprintCharacterClass>("42a455d9ec1ad924d889272429eb8391"); // KineticistMainClass
+            var skilled_kineticist_buff = ResourcesLibrary.TryGetBlueprint<BlueprintBuff>("56b70109d78b0444cb3ad04be3b1ee9e"); // SkilledKineticistBuff
+
+            var buff = Helper.CreateBlueprintBuff("SkilledKineticistAetherBuff", "Skilled Kineticist", null, null, null, null);
+            buff.Flags(true, true);
+            buff.Stacking = StackingType.Replace;
+            buff.SetComponents
+                (
+                Helper.CreateContextRankConfig(ContextRankBaseValueType.ClassLevel,
+                    ContextRankProgression.Div2, max: 20, classes: new BlueprintCharacterClassReference[1] { kineticist_class.ToRef() }),
+                Helper.CreateAddContextStatBonus(new ContextValue { ValueType = ContextValueType.Rank, Value = 0, ValueRank = AbilityRankType.Default, ValueShared = AbilitySharedValue.Damage },
+                StatType.SkillThievery),
+                Helper.CreateAddContextStatBonus(new ContextValue { ValueType = ContextValueType.Rank, Value = 0, ValueRank = AbilityRankType.Default, ValueShared = AbilitySharedValue.Damage },
+                StatType.SkillKnowledgeWorld)
+                );
+
+            var condition = Helper.CreateContextConditionHasFact(first_prog.ToRef2());
+            var conditional = Helper.CreateConditional(condition,
+                ifTrue: buff.CreateContextActionApplyBuff(0, DurationRate.Rounds, false, false, false, true, true));
+
+            var factContextAction = skilled_kineticist_buff.GetComponent<AddFactContextActions>();
+            Helper.AppendAndReplace(ref factContextAction.Activated.Actions, conditional);
+        }
         private static void AddToKineticHealer(BlueprintProgression first_prog, BlueprintProgression second_prog, BlueprintProgression third_prog, BlueprintProgression kinetic_prog)
         {
             var feat = ResourcesLibrary.TryGetBlueprint<BlueprintFeature>("3ef66697-3adf-a8f4-0af6-c0679bd98ba5"); // Kinetic Healer Feature
@@ -1940,7 +2237,7 @@ namespace KineticistElementsExpanded.ElementAether
             var kinetic_blast_feature = ResourcesLibrary.TryGetBlueprint<BlueprintFeature>("93efbde2764b5504e98e6824cab3d27c"); // KineticBlastFeature
             var wall_infusion = ResourcesLibrary.TryGetBlueprint<BlueprintFeature>("c684335918896ce4ab13e96cec929796"); // WallInfusion
             var unique = new UniqueAreaEffect { m_Feature = wall_infusion.ToRef2() };
-            var prefab = new PrefabLink { AssetId = "6a64cc20d5820dc4cb3907b36ce6ac13" }; // SteamBlastWallEffect PrefabLink
+            var prefab = new PrefabLink { AssetId = "4ffc8d2162a215e44a1a728752b762eb" }; // AirBlastWallEffect PrefabLink
 
             ContextDiceValue dice = Helper.CreateContextDiceValue(DiceType.D6, AbilityRankType.DamageDice, AbilityRankType.DamageBonus);
 
