@@ -52,6 +52,7 @@ namespace KineticistElementsExpanded.ElementAether
         // Consider Double Damage Force
 
         // Many Throw Added
+        // Force Hook Added
         public static void Configure()
         {
             var blast_progression = CreateFullTelekineticBlast(out var blast_feature, out var tb_blade_feature);
@@ -889,7 +890,8 @@ namespace KineticistElementsExpanded.ElementAether
             var variant_spindle = CreateForceBlastVariant_spindle();
             var variant_wall = CreateForceBlastVariant_wall();
             var variant_blade = CreateForceBlastVariant_blade(out force_blade_feature);
-            var force_blast_ability = CreateForceBlastAbility(variant_base, variant_extended, variant_spindle, variant_wall, variant_blade);
+            var variant_hook = CreateForceBlastVariant_hook();
+            var force_blast_ability = CreateForceBlastAbility(variant_base, variant_hook, variant_extended, variant_spindle, variant_wall, variant_blade);
             var force_blast_feature = CreateForceBlastFeature(force_blast_ability, force_blade_feature);
 
             AddToKineticBladeInfusion(force_blade_feature, force_blast_feature);
@@ -1124,6 +1126,39 @@ namespace KineticistElementsExpanded.ElementAether
                 Step_sfx(AbilitySpawnFxTime.OnStart, Resource.Sfx.Start_Earth)
                 ).TargetEnemy(CastAnimationStyle.Kineticist);
             blast.CanTargetPoint = true;
+            blast.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten;
+
+            return blast;
+        }
+
+        public static BlueprintAbility CreateForceBlastVariant_hook()
+        {
+            var forceHookInfusion = CreateForceHookInfusion();
+            var flashstep = ResourcesLibrary.TryGetBlueprint<BlueprintAbility>("e10424c1afe70cb4384090f4dab8d437"); //StormwalkerFlashStepAbility
+
+            var blast = Helper.CreateBlueprintAbility("ForceHookForceBlastAbility",forceHookInfusion.m_DisplayName,
+                forceHookInfusion.Description,null,null,AbilityType.SpellLike,UnitCommand.CommandType.Standard,
+                AbilityRange.Close,duration: null,savingThrow: null)
+                .SetComponents
+                (
+                CreateForceBlastRunAction(), // Force Damage (Force with fire, same as battering blast)
+                Step2_rank_dice(twice: false),
+                Step3_rank_bonus(half_bonus: true),
+                Step4_dc(),
+                Step5_burn(null, infusion: 2, blast: 2),
+                Step6_feat(forceHookInfusion),
+                Step8_spell_description(SpellDescriptor.Force),
+                Step_sfx(AbilitySpawnFxTime.OnPrecastStart, Resource.Sfx.PreStart_Earth),
+                Step_sfx(AbilitySpawnFxTime.OnStart, Resource.Sfx.Start_Earth),
+                new AbilityCustomTeleportation
+                {
+                    m_Projectile = Resource.Projectile.Disintegrate00.ToRef<BlueprintProjectileReference>(),
+                    DisappearFx = new PrefabLink { AssetId = "5caa897344a18ea4e9f7e3368eb2f19b" },
+                    DisappearDuration = 0.1f,
+                    AppearFx = new PrefabLink { AssetId = "4fa8c88064e270a4594f534c2a65198d" },
+                    AppearDuration = 0.1f
+                    }
+                ).TargetEnemy(CastAnimationStyle.Kineticist);
             blast.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten;
 
             return blast;
@@ -1515,6 +1550,24 @@ namespace KineticistElementsExpanded.ElementAether
                 Helper.CreatePrerequisiteClassLevel(kineticist_class, 16),
                 Helper.CreatePrerequisiteFeature(elemental_focus_selection.ToRef()),
                 Helper.CreatePrerequisiteFeaturesFromList(false, extended_range.ToRef())
+                );
+
+            Helper.AppendAndReplace(ref infusion_selection.m_AllFeatures, feature.ToRef());
+            return feature;
+        }
+
+        public static BlueprintFeature CreateForceHookInfusion()
+        {
+            var infusion_selection = ResourcesLibrary.TryGetBlueprint<BlueprintFeatureSelection>("58d6f8e9eea63f6418b107ce64f315ea"); // InfusionSelection
+            var kineticist_class = Helper.ToRef<BlueprintCharacterClassReference>("42a455d9ec1ad924d889272429eb8391"); // Kineticist Base Class
+            var elemental_focus_selection = ResourcesLibrary.TryGetBlueprint<BlueprintFeatureSelection>("1f3a15a3ae8a5524ab8b97f469bf4e3d"); // ElementalFocusSelection
+
+            var feature = Helper.CreateBlueprintFeature("ForceHookInfusion", "Force Hook",
+                ForceHookInfusionDescription, null, null, FeatureGroup.KineticBlastInfusion);
+            feature.SetComponents
+                (
+                Helper.CreatePrerequisiteClassLevel(kineticist_class, 6),
+                Helper.CreatePrerequisiteFeature(elemental_focus_selection.ToRef())
                 );
 
             Helper.AppendAndReplace(ref infusion_selection.m_AllFeatures, feature.ToRef());
