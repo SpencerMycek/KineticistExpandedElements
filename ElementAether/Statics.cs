@@ -102,5 +102,14 @@ Associated Blasts: telekinesis
 You grab a large number of objects and throw them all at once.
 
 You can use your telekinetic blast to make attack rolls against a number of targets equal to your kineticist level within 120 feet, but no two targets can be more than 30 feet apart.";
+
+        protected static readonly string ForceHookInfusionDescription =
+@"Element: aether
+Type: form infusion
+Level: 3
+Burn: 2
+Associated Blasts: force
+{g|Encyclopedia:Saving_Throw}Saving Throw{/g}: None
+Your force blast hooks onto its target and drags you adjacent to it.";
     }
 }

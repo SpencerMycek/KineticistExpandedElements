@@ -34,7 +34,7 @@ I shall try to match the theme/element of the ability as best as possible to mak
 | Aether | Foe Throw | Infusion for Telekinetic Blast - Allows the kineticst to lift an enemy and throw them at another enemy | Not Done |
 | Aether | Many Throw | Infusion for the Telekinetic Blast - Allows the kineticist to lift a multitude of objects and throw them at an equal number of targets | Done |
 | Aether | Disintegrating Infusion | Infusion for Force Blast - Functions similarly to the disintegration spell | Done |
-| Aether | Force Hook Infusion | Infusion for Force Blast - Allows the kineticist to drag themself to the target of their kinetic blast | Not Done |
+| Aether | Force Hook Infusion | Infusion for Force Blast - Allows the kineticist to drag themself to the target of their kinetic blast | Done |
 | Aether | Aetheric Boost Composite | A composite blast that can be used on any other basic or composite blast | Not Done |
 | Aether | Force Ward | Aether Elemental Defense - Adds a regenerating temporary hp buffer to the kineticist | Done |
 | Aether | Expanded Defense and Existing Wild Talents | Wild talents in the vanilla game can now have Aether as a prerequisite | Done |
