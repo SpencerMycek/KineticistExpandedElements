@@ -86,9 +86,21 @@ You can use this form infusion once as part of an {g|Encyclopedia:Attack}attack{
 @"Element: aether
 Type: substance infusion
 Level: 6
-Burn: 4,
+Burn: 4
 Associated Blasts: force
 {g|Encyclopedia:Saving_Throw}Saving Throw{/g}: Fortitude
 You can use force to rip your targets apart. Against creatures, your kinetic blast deals double its normal amount of damage, but targets receive a saving throw to reduce the damage to half the blast’s normal amount of damage (for a total of 1/4 of the blast’s increased damage). Any creature reduced to 0 or fewer hit points by the blast is disintegrated, as the spell disintegrate. ";
+
+        protected static readonly string ManyThrowInfusionDescription =
+@"Element: aether
+Type: form infusion
+Level: 6
+Burn: 4
+Prerequisite(s): extended range
+Associated Blasts: telekinesis
+{g|Encyclopedia:Saving_Throw}Saving Throw{/g}: None
+You grab a large number of objects and throw them all at once.
+
+You can use your telekinetic blast to make attack rolls against a number of targets equal to your kineticist level within 120 feet, but no two targets can be more than 30 feet apart.";
     }
 }

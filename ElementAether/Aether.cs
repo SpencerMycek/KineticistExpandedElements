@@ -47,6 +47,11 @@ namespace KineticistElementsExpanded.ElementAether
         // TODO
         // Infusions for Force Hook
 
+        // Foe Throw
+
+        // Consider Double Damage Force
+
+        // Many Throw Added
         public static void Configure()
         {
             var blast_progression = CreateFullTelekineticBlast(out var blast_feature, out var tb_blade_feature);
@@ -337,7 +342,8 @@ namespace KineticistElementsExpanded.ElementAether
             var variant_spindle = CreateTelekineticBlastVariant_spindle();
             var variant_wall = CreateTelekineticBlastVariant_wall();
             var variant_blade = CreateTelekineticBlastVariant_blade(out tb_blade_feature);
-            var blast_ability = CreateTelekineticBlastAbility(variant_base, variant_extended, variant_spindle, variant_wall, variant_blade);
+            var variant_many = CreateTelekineticBlastVariant_many();
+            var blast_ability = CreateTelekineticBlastAbility(variant_base, variant_many, variant_extended, variant_spindle, variant_wall, variant_blade);
             blast_feature = CreateTelekineticBlastFeature(blast_ability, tb_blade_feature);
             var blast_progression = CreateTelekineticBlastProgression(blast_feature, tb_blade_feature);
 
@@ -348,10 +354,69 @@ namespace KineticistElementsExpanded.ElementAether
             return blast_progression;
         }
 
+        private static BlueprintAbility CreateTelekineticBlastAbility(params BlueprintAbility[] variants)
+        {
+            var icon = Helper.StealIcon("0ab1552e-2ebd-acf4-4bb7-b20f5393366d");
+
+            var ability = Helper.CreateBlueprintAbility("TelekineticBlastBase",
+                "Telekinetic Blast", TelekineticBlastDescription,
+                null, icon, AbilityType.Special, UnitCommand.CommandType.Standard,
+                AbilityRange.Close, duration: null, savingThrow: null);
+            ability.SetComponents
+                (
+                Helper.CreateAbilityShowIfCasterHasFact("1f3a15a3ae8a5524ab8b97f469bf4e3d".ToRef<BlueprintUnitFactReference>()), // ElementalFocusSelection
+                Step5_burn(null, 0, 0, 0),
+                Helper.CreateSpellDescriptorComponent(SpellDescriptor.Force)
+                );
+            ability.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten;
+
+            foreach (var v in variants)
+            {
+                Helper.AddToAbilityVariants(ability, v);
+            }
+
+            return ability;
+        }
+
+        private static BlueprintFeature CreateTelekineticBlastFeature(BlueprintAbility blast_ability, BlueprintFeature blade_feature)
+        {
+            var blade_infusion = ResourcesLibrary.TryGetBlueprint<BlueprintFeature>("9ff81732-dadd-b174-aa81-38ad1297c787"); // KineticBladeInfusion
+
+            var feature = Helper.CreateBlueprintFeature("TelekineticBlastFeature",
+                "Telekinetic Blast", TelekineticBlastDescription,
+                null, null, FeatureGroup.KineticBlast)
+                .SetComponents
+                (
+                Helper.CreateAddFacts(blast_ability.ToRef2()),
+                Helper.CreateAddFeatureIfHasFact(blade_infusion.ToRef2(), blade_feature.ToRef2())
+                );
+            feature.HideInUI = true;
+            return feature;
+        }
+
+        private static BlueprintFeatureBase CreateTelekineticBlastProgression(BlueprintFeature blast_feature, BlueprintFeature blade_feature)
+        {
+            var kinetic_blade_infusion = ResourcesLibrary.TryGetBlueprint<BlueprintFeature>("9ff81732-dadd-b174-aa81-38ad1297c787"); // KineticBladeInfusion
+            var composite_blast_buff = ResourcesLibrary.TryGetBlueprint<BlueprintUnitFact>("cb30a291-c75d-ef84-0904-30fbf2b5c05e");
+
+            var progression = Helper.CreateBlueprintProgression("TelekineticBlastProgression", "Telekinetic Blast",
+                TelekineticBlastDescription, null, null, 0)
+                .SetComponents
+                (
+                Helper.CreateAddFacts(composite_blast_buff.ToRef()),
+                Helper.CreateAddFeatureIfHasFact(kinetic_blade_infusion.ToRef2(), blade_feature.ToRef2()),
+                Helper.CreateAddFeatureIfHasFact(blast_feature.ToRef2())
+                );
+
+            var entry = Helper.CreateLevelEntry(1, blast_feature);
+            Helper.AddEntries(progression, entry);
+
+            return progression;
+        }
+
         #region Blast Variants
         // Todo
         // Foe Throw*
-        // Many Throw*
         private static BlueprintAbility CreateTelekineticBlastVariant_base()
         {
             var icon = Helper.StealIcon("0ab1552e-2ebd-acf4-4bb7-b20f5393366d");
@@ -378,7 +443,7 @@ namespace KineticistElementsExpanded.ElementAether
                 Step4_dc(),
                 Step5_burn(actions, infusion: 0, blast: 0),
                 Step8_spell_description(SpellDescriptor.Hex),
-                Step7_projectile(Resource.Projectile.WindProjectile00, true, AbilityProjectileType.Simple, 0, 5),
+                Step7_projectile(Resource.Projectile.BatteringBlast00, true, AbilityProjectileType.Simple, 0, 5),
                 Step_sfx(AbilitySpawnFxTime.OnPrecastStart, Resource.Sfx.PreStart_Earth),
                 Step_sfx(AbilitySpawnFxTime.OnStart, Resource.Sfx.Start_Earth)
                 ).TargetEnemy(CastAnimationStyle.Kineticist);
@@ -420,7 +485,7 @@ namespace KineticistElementsExpanded.ElementAether
                 Step4_dc(),
                 Step5_burn(actions, infusion: 1, blast: 0),
                 Helper.CreateAbilityShowIfCasterHasFact(requirement),
-                Step7_projectile(Resource.Projectile.WindProjectile00, true, AbilityProjectileType.Simple, 0, 5),
+                Step7_projectile(Resource.Projectile.BatteringBlast00, true, AbilityProjectileType.Simple, 0, 5),
                 Step_sfx(AbilitySpawnFxTime.OnPrecastStart, Resource.Sfx.PreStart_Earth),
                 Step_sfx(AbilitySpawnFxTime.OnStart, Resource.Sfx.Start_Earth)
                 ).TargetEnemy(CastAnimationStyle.Kineticist);
@@ -464,8 +529,8 @@ namespace KineticistElementsExpanded.ElementAether
                 Step_sfx(AbilitySpawnFxTime.OnStart, Resource.Sfx.Start_Earth),
                 new AbilityDeliverChain 
                 { 
-                    m_ProjectileFirst = Resource.Projectile.WindProjectile00.ToRef<BlueprintProjectileReference>(), 
-                    m_Projectile = Resource.Projectile.WindProjectile00.ToRef<BlueprintProjectileReference>(),
+                    m_ProjectileFirst = Resource.Projectile.BatteringBlast00_Up.ToRef<BlueprintProjectileReference>(), 
+                    m_Projectile = Resource.Projectile.BatteringBlast00.ToRef<BlueprintProjectileReference>(),
                     TargetsCount = new ContextValue
                     {
                         ValueType = ContextValueType.Simple,
@@ -540,6 +605,47 @@ namespace KineticistElementsExpanded.ElementAether
                 ).TargetEnemy(CastAnimationStyle.Kineticist);
             blast.CanTargetPoint = true;
             blast.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten;
+
+            return blast;
+        }
+
+        private static BlueprintAbility CreateTelekineticBlastVariant_many()
+        {
+            var manyThrowInfusion = CreateManyThrowInfusion();
+            var kineticist_class = Helper.ToRef<BlueprintCharacterClassReference>("42a455d9ec1ad924d889272429eb8391"); // Kineticist Base Class
+
+
+            var blast = Helper.CreateBlueprintAbility("ManyThrowTelekineticBlast", manyThrowInfusion.m_DisplayName,
+                manyThrowInfusion.m_Description, null, null, AbilityType.SpellLike, UnitCommand.CommandType.Standard,
+                AbilityRange.Long);
+            blast.SetComponents
+                (
+                Step1_run_damage(out var actions,
+                p: PhysicalDamageForm.Bludgeoning | PhysicalDamageForm.Piercing | PhysicalDamageForm.Slashing,
+                isAOE: false, half: false),
+                Step2_rank_dice(twice: false, half: false),
+                Step3_rank_bonus(half_bonus: false),
+                Step5_burn(actions, infusion: 4, blast: 0, talent: 0),
+                Step6_feat(manyThrowInfusion),
+                Step8_spell_description(SpellDescriptor.Hex),
+                Step_sfx(AbilitySpawnFxTime.OnPrecastStart, Resource.Sfx.PreStart_Earth),
+                Step_sfx(AbilitySpawnFxTime.OnStart, Resource.Sfx.Start_Earth),
+                new AbilityDeliverMultiAttack
+                {
+                    Condition = null,
+                    Weapon = "65951e1195848844b8ab8f46d942f6e8".ToRef<BlueprintItemWeaponReference>(),
+                    Projectile = Resource.Projectile.BatteringBlast00.ToRef<BlueprintProjectileReference>(),
+                    TargetType = TargetType.Enemy,
+                    DelayBetweenChain = 0f,
+                    radius = new Feet { m_Value = 30 }.Meters,
+                    TargetsCount = Helper.CreateContextValue(AbilityRankType.ProjectilesCount)
+                },
+                Helper.CreateContextRankConfig(ContextRankBaseValueType.ClassLevel, ContextRankProgression.AsIs, type: AbilityRankType.ProjectilesCount,
+                    classes: new BlueprintCharacterClassReference[] { kineticist_class })
+                ).TargetEnemy(CastAnimationStyle.Kineticist);
+            blast.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten;
+
+            ((ContextActionDealDamage)actions.Actions[0]).Value.BonusValue.ValueType = ContextValueType.Shared;
 
             return blast;
         }
@@ -731,66 +837,8 @@ namespace KineticistElementsExpanded.ElementAether
 
         #endregion
 
-        private static BlueprintAbility CreateTelekineticBlastAbility(params BlueprintAbility[] variants)
-        {
-            var icon = Helper.StealIcon("0ab1552e-2ebd-acf4-4bb7-b20f5393366d");
+        #region Blast Helpers
 
-            var ability = Helper.CreateBlueprintAbility("TelekineticBlastBase",
-                "Telekinetic Blast", TelekineticBlastDescription,
-                null, icon, AbilityType.Special, UnitCommand.CommandType.Standard,
-                AbilityRange.Close, duration: null, savingThrow: null);
-            ability.SetComponents
-                (
-                Helper.CreateAbilityShowIfCasterHasFact("1f3a15a3ae8a5524ab8b97f469bf4e3d".ToRef<BlueprintUnitFactReference>()), // ElementalFocusSelection
-                Step5_burn(null, 0, 0, 0),
-                Helper.CreateSpellDescriptorComponent(SpellDescriptor.Force)
-                );
-            ability.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten;
-
-            foreach (var v in variants)
-            {
-                Helper.AddToAbilityVariants(ability, v);
-            }
-
-            return ability;
-        }
-
-        private static BlueprintFeature CreateTelekineticBlastFeature(BlueprintAbility blast_ability, BlueprintFeature blade_feature)
-        {
-            var blade_infusion = ResourcesLibrary.TryGetBlueprint<BlueprintFeature>("9ff81732-dadd-b174-aa81-38ad1297c787"); // KineticBladeInfusion
-
-            var feature = Helper.CreateBlueprintFeature("TelekineticBlastFeature",
-                "Telekinetic Blast", TelekineticBlastDescription,
-                null, null, FeatureGroup.KineticBlast)
-                .SetComponents
-                (
-                Helper.CreateAddFacts(blast_ability.ToRef2()),
-                Helper.CreateAddFeatureIfHasFact(blade_infusion.ToRef2(), blade_feature.ToRef2())
-                );
-            feature.HideInUI = true;
-            return feature;
-        }
-
-        private static BlueprintFeatureBase CreateTelekineticBlastProgression(BlueprintFeature blast_feature, BlueprintFeature blade_feature)
-        {
-            var kinetic_blade_infusion = ResourcesLibrary.TryGetBlueprint<BlueprintFeature>("9ff81732-dadd-b174-aa81-38ad1297c787"); // KineticBladeInfusion
-            var composite_blast_buff = ResourcesLibrary.TryGetBlueprint<BlueprintUnitFact>("cb30a291-c75d-ef84-0904-30fbf2b5c05e");
-
-            var progression = Helper.CreateBlueprintProgression("TelekineticBlastProgression", "Telekinetic Blast",
-                TelekineticBlastDescription, null, null, 0)
-                .SetComponents
-                (
-                Helper.CreateAddFacts(composite_blast_buff.ToRef()),
-                Helper.CreateAddFeatureIfHasFact(kinetic_blade_infusion.ToRef2(), blade_feature.ToRef2()),
-                Helper.CreateAddFeatureIfHasFact(blast_feature.ToRef2())
-                );
-
-            var entry = Helper.CreateLevelEntry(1, blast_feature);
-            Helper.AddEntries(progression, entry);
-
-            return progression;
-        }
-       
         private static void AddElementalDefenseIsPrereqFor(BlueprintFeature blast_feature, BlueprintFeature tb_blade_feature, BlueprintFeature fw_feature)
         {
             blast_feature.IsPrerequisiteFor = Helper.ToArray(fw_feature).ToRef().ToList();
@@ -826,6 +874,8 @@ namespace KineticistElementsExpanded.ElementAether
             trigger = pushingInfusion_buff.GetComponent<AddKineticistInfusionDamageTrigger>();
             Helper.AppendAndReplace(ref trigger.m_AbilityList, blast_ability.ToRef());
         }
+
+        #endregion
 
         #endregion
 
@@ -941,7 +991,7 @@ namespace KineticistElementsExpanded.ElementAether
 
             var blast = Helper.CreateBlueprintAbility(
                 "ExtendedRangeForceBlastAbility",
-                "Force Blast",
+                parent.m_DisplayName,
                 parent.Description,
                 null,
                 icon,
@@ -980,7 +1030,7 @@ namespace KineticistElementsExpanded.ElementAether
 
             var blast = Helper.CreateBlueprintAbility(
                 "SplindleForceBlastAbility",
-                "Force Blast",
+                parent.m_DisplayName,
                 parent.Description,
                 null,
                 icon,
@@ -1051,7 +1101,7 @@ namespace KineticistElementsExpanded.ElementAether
 
             var blast = Helper.CreateBlueprintAbility(
                 "WallForceBlastAbility",
-                "Force Blast",
+                parent.m_DisplayName,
                 parent.Description,
                 null,
                 icon,
@@ -1448,6 +1498,26 @@ namespace KineticistElementsExpanded.ElementAether
 
             #endregion
 
+            return feature;
+        }
+
+        public static BlueprintFeature CreateManyThrowInfusion()
+        {
+            var infusion_selection = ResourcesLibrary.TryGetBlueprint<BlueprintFeatureSelection>("58d6f8e9eea63f6418b107ce64f315ea"); // InfusionSelection
+            var kineticist_class = Helper.ToRef<BlueprintCharacterClassReference>("42a455d9ec1ad924d889272429eb8391"); // Kineticist Base Class
+            var elemental_focus_selection = ResourcesLibrary.TryGetBlueprint<BlueprintFeatureSelection>("1f3a15a3ae8a5524ab8b97f469bf4e3d"); // ElementalFocusSelection
+            var extended_range = ResourcesLibrary.TryGetBlueprint<BlueprintFeature>("cb2d9e6355dd33940b2bef49e544b0bf"); // ExtendedRangeInfusion
+
+            var feature = Helper.CreateBlueprintFeature("ManyThrowInfusion", "Many Throw", 
+                ManyThrowInfusionDescription, null, null, FeatureGroup.KineticBlastInfusion);
+            feature.SetComponents
+                (
+                Helper.CreatePrerequisiteClassLevel(kineticist_class, 16),
+                Helper.CreatePrerequisiteFeature(elemental_focus_selection.ToRef()),
+                Helper.CreatePrerequisiteFeaturesFromList(false, extended_range.ToRef())
+                );
+
+            Helper.AppendAndReplace(ref infusion_selection.m_AllFeatures, feature.ToRef());
             return feature;
         }
 
