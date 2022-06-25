@@ -31,10 +31,10 @@ I shall try to match the theme/element of the ability as best as possible to mak
 | :------ | :------ | :---------: | ------ |
 | Aether | Element Choice | The main aether element, adds selections for base kineticist (and archetypes) and kinetic knight | Done |
 | Aether | Basic Blast and Composite | Telekinetic and Force Blast - Including all vanilla infusions and Kinetic Blade | Done |
-| Aether | Foe Throw | Infusion for Telekinetic Blast - Allows the kineticst to lift an enemy and throw them at another enemy | Not Done |
-| Aether | Many Throw | Infusion for the Telekinetic Blast - Allows the kineticist to lift a multitude of objects and throw them at an equal number of targets | Not Done |
+| Aether | Foe Throw | Infusion for Telekinetic Blast - Allows the kineticst to lift an enemy and throw them at another enemy | Done |
+| Aether | Many Throw | Infusion for the Telekinetic Blast - Allows the kineticist to lift a multitude of objects and throw them at an equal number of targets | Done |
 | Aether | Disintegrating Infusion | Infusion for Force Blast - Functions similarly to the disintegration spell | Done |
-| Aether | Force Hook Infusion | Infusion for Force Blast - Allows the kineticist to drag themself to the target of their kinetic blast | Not Done |
+| Aether | Force Hook Infusion | Infusion for Force Blast - Allows the kineticist to drag themself to the target of their kinetic blast | Done |
 | Aether | Aetheric Boost Composite | A composite blast that can be used on any other basic or composite blast | Not Done |
 | Aether | Force Ward | Aether Elemental Defense - Adds a regenerating temporary hp buffer to the kineticist | Done |
 | Aether | Expanded Defense and Existing Wild Talents | Wild talents in the vanilla game can now have Aether as a prerequisite | Done |
@@ -54,12 +54,11 @@ If you notice any issues, please contact me or open up an issue on this reposito
 
 ## Recent Changes
 
-- Changed Force Blast projectiles to use the Disintegrate Spell projectile (It looks cool)
-
-- Fix: Force blast now targets touch AC
-- Fix: Telekinetic and Force blasts now benefit from metakinesis
-- Fix: Spindle Infusions now correctly target reflex saves
-- Fix: Telekinetic blast now properly scales damage (1d6+1 per 2 Levels)
+- Many Throw Infusion Added
+- Force Hook Infusion Added
+- Foe Throw Infusion Added
+- Change: Telekinetic Blasts now use Battering Blast projectiles (Looks more "Force-y")
+- Change: The display name of the extended Spell Deflection variant was changed to better distinguish itself
 
 ## Known Issues
 

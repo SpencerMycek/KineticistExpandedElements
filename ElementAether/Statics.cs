@@ -86,9 +86,53 @@ You can use this form infusion once as part of an {g|Encyclopedia:Attack}attack{
 @"Element: aether
 Type: substance infusion
 Level: 6
-Burn: 4,
+Burn: 4
 Associated Blasts: force
 {g|Encyclopedia:Saving_Throw}Saving Throw{/g}: Fortitude
 You can use force to rip your targets apart. Against creatures, your kinetic blast deals double its normal amount of damage, but targets receive a saving throw to reduce the damage to half the blast’s normal amount of damage (for a total of 1/4 of the blast’s increased damage). Any creature reduced to 0 or fewer hit points by the blast is disintegrated, as the spell disintegrate. ";
+
+        protected static readonly string ManyThrowInfusionDescription =
+@"Element: aether
+Type: form infusion
+Level: 6
+Burn: 4
+Prerequisite(s): extended range
+Associated Blasts: telekinesis
+{g|Encyclopedia:Saving_Throw}Saving Throw{/g}: None
+You grab a large number of objects and throw them all at once.
+
+You can use your telekinetic blast to make attack rolls against a number of targets equal to your kineticist level within 120 feet, but no two targets can be more than 30 feet apart.";
+
+        protected static readonly string ForceHookInfusionDescription =
+@"Element: aether
+Type: form infusion
+Level: 3
+Burn: 2
+Associated Blasts: force
+{g|Encyclopedia:Saving_Throw}Saving Throw{/g}: None
+Your force blast hooks onto its target and drags you adjacent to it.";
+
+        protected static readonly string FoeThrowInfusionDescription =
+@"Element: aether
+Type: form infusion
+Level: 3
+Burn: 2
+Associated Blasts: telekinetic
+{g|Encyclopedia:Saving_Throw}Saving Throw{/g}: Fortitude negates; see text
+Your telekinetic blast can throw a Large or smaller creature instead of an unattended object; you can increase the burn cost by 1 to affect a creature of a larger size. If the creature you attempt to throw succeeds at a Fortitude save, it negates the blast entirely.
+
+Otherwise, if your blast hits, both the thrown creature and the target take the full amount of damage from your telekinetic blast, and the thrown creature falls prone in the last unoccupied space along its path. If your blast misses, the thrown creature can choose to occupy any space within 30 feet of the target, it doesn’t fall prone, and it takes half the normal amount of damage from your blast. The movement doesn’t provoke attacks of opportunity.";
+
+        protected static readonly string FoeThrowInfusionTargetAbilityDescription = 
+@"Choose a target to LIFT them. Preparing them to be thrown.
+
+Note: Lifting has no effect on the target, and lifting one creature put's down any other lifted creature.";
+
+        protected static readonly string FoeThrowInfusionThrowAbilityDescription = 
+@"Throw the lifted creature at the target enemy.";
+        protected static readonly string FoeThrowTargetBuffDescription = 
+@"This creature is lifted, and is about to be thrown.";
+
     }
+
 }
