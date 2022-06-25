@@ -111,5 +111,28 @@ Burn: 2
 Associated Blasts: force
 {g|Encyclopedia:Saving_Throw}Saving Throw{/g}: None
 Your force blast hooks onto its target and drags you adjacent to it.";
+
+        protected static readonly string FoeThrowInfusionDescription =
+@"Element: aether
+Type: form infusion
+Level: 3
+Burn: 2
+Associated Blasts: telekinetic
+{g|Encyclopedia:Saving_Throw}Saving Throw{/g}: Fortitude negates; see text
+Your telekinetic blast can throw a Large or smaller creature instead of an unattended object; you can increase the burn cost by 1 to affect a creature of a larger size. If the creature you attempt to throw succeeds at a Fortitude save, it negates the blast entirely.
+
+Otherwise, if your blast hits, both the thrown creature and the target take the full amount of damage from your telekinetic blast, and the thrown creature falls prone in the last unoccupied space along its path. If your blast misses, the thrown creature can choose to occupy any space within 30 feet of the target, it doesn’t fall prone, and it takes half the normal amount of damage from your blast. The movement doesn’t provoke attacks of opportunity.";
+
+        protected static readonly string FoeThrowInfusionTargetAbilityDescription = 
+@"Choose a target to LIFT them. Preparing them to be thrown.
+
+Note: Lifting has no effect on the target, and lifting one creature put's down any other lifted creature.";
+
+        protected static readonly string FoeThrowInfusionThrowAbilityDescription = 
+@"Throw the lifted creature at the target enemy.";
+        protected static readonly string FoeThrowTargetBuffDescription = 
+@"This creature is lifted, and is about to be thrown.";
+
     }
+
 }
