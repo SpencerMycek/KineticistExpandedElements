@@ -314,7 +314,7 @@ namespace KineticistElementsExpanded.Components
 
         private DamageTypeDescription DamageTypeDesc = new DamageTypeDescription
         {
-            Type = DamageType.Force,
+            Type = DamageType.Physical,
             Common = new DamageTypeDescription.CommomData(),
             Physical = new DamageTypeDescription.PhysicalData() { Form = (PhysicalDamageForm)7 }
         };

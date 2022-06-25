@@ -36,7 +36,7 @@ Burn: 2
 Prerequisites: primary element (aether), expanded element (aether)
 Blast Type: energy
 {g|Encyclopedia:Damage}Damage{/g}: force
-You throw a burst of force at a foe. Force blast deals damage as a simple energy blast instead of a composite energy blast.";
+You throw a burst of force at a foe";
 
 
         protected static readonly string ForceWardDescription =
