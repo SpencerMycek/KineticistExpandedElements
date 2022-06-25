@@ -60,6 +60,11 @@ If you notice any issues, please contact me or open up an issue on this reposito
 - Change: Telekinetic Blasts now use Battering Blast projectiles (Looks more "Force-y")
 - Change: The display name of the extended Spell Deflection variant was changed to better distinguish itself
 
+- Fix Wild Talents can now be picked with DarkCodex's ExtraWildTalents feat, if that mod is installed
+- Force Blast now does Composite Energy Damage, instead of simple
+- Many Foe and Foe Throw now deal the correct amount of damage
+- Telekinetic Finesse now adds 1/2 kineticist level to Trickery
+
 ## Known Issues
 
 ### Disintigration Infusion

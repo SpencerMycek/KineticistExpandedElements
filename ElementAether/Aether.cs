@@ -34,6 +34,7 @@ using Kingmaker.UnitLogic.Mechanics.Actions;
 using Kingmaker.UnitLogic.Mechanics.Components;
 using Kingmaker.UnitLogic.Mechanics.Conditions;
 using Kingmaker.Utility;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using static Kingmaker.UnitLogic.FactLogic.AddMechanicsFeature;
@@ -44,9 +45,7 @@ namespace KineticistElementsExpanded.ElementAether
 {
     class Aether : Statics
     {
-        // Consider Double Damage Force
         // Custom Unique Component for Disintegrate, since you can now do stuf like AbilityCustomFoeThrowUnique.cs
-
         public static void Configure()
         {
             var blast_progression = CreateFullTelekineticBlast(out var blast_feature, out var tb_blade_feature);
@@ -347,8 +346,18 @@ namespace KineticistElementsExpanded.ElementAether
             AddToSubstanceInfusions(blast_feature, blast_ability);
             AddBlastsToMetakinesis(blast_ability);
             AddBlastsToBurn(blast_ability);
+            AddBlastsToBurn(variant_throw);
             SetInfusionPrereqs(foeThrowInfusion, blast_feature.ToRef());
             SetInfusionPrereqs(manyThrowInfusion, blast_feature.ToRef());
+            try
+            {
+                var extra_wild = ResourcesLibrary.TryGetBlueprint<BlueprintFeatureSelection>("bd287f6d1c5247da9b81761cab64021c"); // DarkCodex's ExtraWildTalentFeat
+                Helper.AppendAndReplace(ref extra_wild.m_AllFeatures, new List<BlueprintFeatureReference> { foeThrowInfusion.ToRef(), manyThrowInfusion.ToRef() });
+            }
+            catch (Exception ex)
+            {
+                Helper.Print($"Dark Codex not installed: {ex.Message}");
+            }
             return blast_progression;
         }
 
@@ -621,6 +630,7 @@ namespace KineticistElementsExpanded.ElementAether
                 p: PhysicalDamageForm.Bludgeoning | PhysicalDamageForm.Piercing | PhysicalDamageForm.Slashing,
                 isAOE: false, half: false),
                 Step2_rank_dice(twice: false, half: false),
+                Helper.CreateContextCalculateSharedValue(Modifier: 1.0, Value: Helper.CreateContextDiceValue(DiceType.One, AbilityRankType.DamageDice, AbilityRankType.DamageBonus)),
                 Step3_rank_bonus(half_bonus: false),
                 Step5_burn(actions, infusion: 4, blast: 0, talent: 0),
                 Step6_feat(manyThrowInfusion),
@@ -923,6 +933,15 @@ namespace KineticistElementsExpanded.ElementAether
             AddBlastsToMetakinesis(force_blast_ability);
             AddBlastsToBurn(force_blast_ability);
             SetInfusionPrereqs(forceHookInfusion, force_blast_feature.ToRef());
+            try
+            {
+                var extra_wild = ResourcesLibrary.TryGetBlueprint<BlueprintFeatureSelection>("bd287f6d1c5247da9b81761cab64021c"); // DarkCodex's ExtraWildTalentFeat
+                Helper.AppendAndReplace(ref extra_wild.m_AllFeatures, new List<BlueprintFeatureReference> { forceHookInfusion.ToRef() });
+            }
+            catch (Exception ex)
+            {
+                Helper.Print($"Dark Codex not installed: {ex.Message}");
+            }
             return force_blast_feature;
         }      
 
@@ -996,7 +1015,7 @@ namespace KineticistElementsExpanded.ElementAether
                 .SetComponents
                 (
                 CreateForceBlastRunAction(), // Force Damage (Force with fire, same as battering blast)
-                Step2_rank_dice(twice: false),
+                Step2_rank_dice(twice: true),
                 Step3_rank_bonus(half_bonus: true),
                 Step4_dc(),
                 Step5_burn(null, infusion: 0, blast: 2),
@@ -1029,7 +1048,7 @@ namespace KineticistElementsExpanded.ElementAether
                 .SetComponents
                 (
                 CreateForceBlastRunAction(), // Force Damage (Force with fire, same as battering blast)
-                Step2_rank_dice(twice: false),
+                Step2_rank_dice(twice: true),
                 Step3_rank_bonus(half_bonus: true),
                 Step4_dc(),
                 Step5_burn(null, infusion: 1, blast: 2),
@@ -1068,7 +1087,7 @@ namespace KineticistElementsExpanded.ElementAether
                 .SetComponents
                 (
                 force_runAction,
-                Step2_rank_dice(twice: false),
+                Step2_rank_dice(twice: true),
                 Step3_rank_bonus(half_bonus: true),
                 Step4_dc(),
                 Step5_burn(null, infusion: 2, blast: 2),
@@ -1165,7 +1184,7 @@ namespace KineticistElementsExpanded.ElementAether
                 .SetComponents
                 (
                 CreateForceBlastRunAction(), // Force Damage (Force with fire, same as battering blast)
-                Step2_rank_dice(twice: false),
+                Step2_rank_dice(twice: true),
                 Step3_rank_bonus(half_bonus: true),
                 Step4_dc(),
                 Step5_burn(null, infusion: 2, blast: 2),
@@ -1376,6 +1395,15 @@ namespace KineticistElementsExpanded.ElementAether
             var disintegrating_infusion = CreateDisintegratingInfusion(blast_feature, blast_base);
 
             Helper.AppendAndReplace(ref infusion_selection.m_AllFeatures, disintegrating_infusion.ToRef());
+            try
+            {
+                var extra_wild = ResourcesLibrary.TryGetBlueprint<BlueprintFeatureSelection>("bd287f6d1c5247da9b81761cab64021c"); // DarkCodex's ExtraWildTalentFeat
+                Helper.AppendAndReplace(ref extra_wild.m_AllFeatures, new List<BlueprintFeatureReference> { disintegrating_infusion.ToRef() });
+            }
+            catch (Exception ex)
+            {
+                Helper.Print($"Dark Codex not installed: {ex.Message}");
+            }
         }
 
         public static BlueprintFeature CreateDisintegratingInfusion(BlueprintFeature blast_feature, BlueprintAbility blast_base)
@@ -1666,9 +1694,10 @@ namespace KineticistElementsExpanded.ElementAether
                     AppearFx = new PrefabLink { AssetId = "4fa8c88064e270a4594f534c2a65198d" },
                     AppearDuration = 0f,
                     m_Buff = foeThrowBuff,
-                    Value = Helper.CreateContextDiceValue(DiceType.D6, AbilityRankType.DamageDice, AbilityRankType.DamageBonus)
+                    Value = Helper.CreateContextDiceValue(DiceType.D6, Helper.CreateContextValue(AbilityRankType.DamageDice), Helper.CreateContextValue(AbilitySharedValue.Damage))
                 },
                 Step2_rank_dice(twice: false, half: false),
+                Helper.CreateContextCalculateSharedValue(Modifier: 1.0, Value: Helper.CreateContextDiceValue(DiceType.One, AbilityRankType.DamageDice, AbilityRankType.DamageBonus)),
                 Step3_rank_bonus(half_bonus: false),
                 Step4_dc(),
                 Step5_burn(null, infusion: 2, blast: 0),
@@ -1699,12 +1728,21 @@ namespace KineticistElementsExpanded.ElementAether
             AddToSkilledKineticist(first_prog);
             AddToKineticHealer(first_prog, second_prog, third_prog, kinetic_prog);
             AddToExpandedDefense(fw_feature);
-            CreateTelekineticInvisibility(first_prog, second_prog, third_prog, kinetic_prog);
+            var invis = CreateTelekineticInvisibility(first_prog, second_prog, third_prog, kinetic_prog);
             var tf_feat = CreateTelekineticFinesse(first_prog, second_prog, third_prog, kinetic_prog);
-            CreateTelekineticManeuvers(first_prog, second_prog, third_prog, kinetic_prog, tf_feat);
-            CreateTouchsiteReactive(first_prog, second_prog, third_prog, kinetic_prog);
-            CreateSelfTelekinesis(first_prog, second_prog, third_prog, kinetic_prog);
-            CreateSpellDeflection(first_prog, second_prog, third_prog, kinetic_prog);
+            var maneuvers = CreateTelekineticManeuvers(first_prog, second_prog, third_prog, kinetic_prog, tf_feat);
+            var touchsite = CreateTouchsiteReactive(first_prog, second_prog, third_prog, kinetic_prog);
+            CreateSelfTelekinesis(first_prog, second_prog, third_prog, kinetic_prog, out var st_lesser_feat, out var st_greater_feat);
+            var spell_deflection = CreateSpellDeflection(first_prog, second_prog, third_prog, kinetic_prog);
+
+            try
+            {
+                var extra_wild = ResourcesLibrary.TryGetBlueprint<BlueprintFeatureSelection>("bd287f6d1c5247da9b81761cab64021c"); // DarkCodex's ExtraWildTalentFeat
+                Helper.AppendAndReplace(ref extra_wild.m_AllFeatures, new List<BlueprintFeatureReference> { invis.ToRef(), tf_feat.ToRef(), maneuvers.ToRef(), touchsite.ToRef(), st_greater_feat.ToRef(), st_lesser_feat.ToRef(), spell_deflection.ToRef() });
+            } catch (Exception ex)
+            {
+                Helper.Print($"Dark Codex not installed: {ex.Message}");
+            }
         }
 
         private static void AddToSkilledKineticist(BlueprintProgression first_prog)
@@ -1743,7 +1781,7 @@ namespace KineticistElementsExpanded.ElementAether
             var selection = ResourcesLibrary.TryGetBlueprint<BlueprintFeatureSelection>("d741f298-dfae-8fc4-0b46-15aaf83b6548"); // Kineticist Expanded Defense Selection
             Helper.AppendAndReplace(ref selection.m_AllFeatures, fw_feature.ToRef());
         }
-        private static void CreateTelekineticInvisibility(BlueprintProgression first_prog, BlueprintProgression second_prog, BlueprintProgression third_prog, BlueprintProgression kinetic_prog)
+        private static BlueprintFeature CreateTelekineticInvisibility(BlueprintProgression first_prog, BlueprintProgression second_prog, BlueprintProgression third_prog, BlueprintProgression kinetic_prog)
         {
             var wild_talent_selection = ResourcesLibrary.TryGetBlueprint<BlueprintFeatureSelection>("5c883ae0-cd6d-7d54-48b7-a420f51f8459"); // Kineticist Wild Talent Selection
             var kineticist_class = Helper.ToRef<BlueprintCharacterClassReference>("42a455d9-ec1a-d924-d889-272429eb8391"); // Kineticist Base Class
@@ -1774,6 +1812,7 @@ namespace KineticistElementsExpanded.ElementAether
                 );
 
             Helper.AppendAndReplace(ref wild_talent_selection.m_AllFeatures, ti_feat.ToRef());
+            return ti_feat;
         }
         private static BlueprintFeature CreateTelekineticFinesse(BlueprintProgression first_prog, BlueprintProgression second_prog, BlueprintProgression third_prog, BlueprintProgression kinetic_prog)
         {
@@ -1791,7 +1830,9 @@ namespace KineticistElementsExpanded.ElementAether
             tf_buff.Stacking = StackingType.Replace;
             tf_buff.SetComponents
                 (
-                mech_feature
+                mech_feature,
+                Helper.CreateAddContextStatBonus(Helper.CreateContextValue(AbilityRankType.StatBonus),StatType.SkillThievery),
+                Helper.CreateContextRankConfig(ContextRankBaseValueType.ClassLevel, ContextRankProgression.Div2, AbilityRankType.StatBonus, classes: new BlueprintCharacterClassReference[] {kineticist_class})
                 );
 
             var tf_feat = Helper.CreateBlueprintFeature("TelekineticFinesseFeature", "Telekinetic Finesse",
@@ -1809,7 +1850,7 @@ namespace KineticistElementsExpanded.ElementAether
         }
         
         #region Telekinetic Maneuvers
-        private static void CreateTelekineticManeuvers(BlueprintProgression first_prog, BlueprintProgression second_prog, BlueprintProgression third_prog, BlueprintProgression kinetic_prog,  BlueprintFeature tf_feat)
+        private static BlueprintFeature CreateTelekineticManeuvers(BlueprintProgression first_prog, BlueprintProgression second_prog, BlueprintProgression third_prog, BlueprintProgression kinetic_prog,  BlueprintFeature tf_feat)
         {
             var variant_trip = CreateVariant_TM_Trip();
             var variant_disarm = CreateVariant_TM_Disarm();
@@ -1818,7 +1859,8 @@ namespace KineticistElementsExpanded.ElementAether
             var variant_dt_entangle = CreateVariant_TM_DirtyTrick_Entangle(tf_feat);
             var variant_dt_sickened = CreateVariant_TM_DirtyTrick_Sickened(tf_feat);
             var variant_pull = CreateVariant_TM_Pull(); ;
-            CreateTeleKineticManeuversFeature(first_prog, second_prog, third_prog, kinetic_prog, variant_trip, variant_disarm, variant_bullRush, variant_dt_blind, variant_dt_entangle, variant_dt_sickened, variant_pull);
+            var feature = CreateTeleKineticManeuversFeature(first_prog, second_prog, third_prog, kinetic_prog, variant_trip, variant_disarm, variant_bullRush, variant_dt_blind, variant_dt_entangle, variant_dt_sickened, variant_pull);
+            return feature;
         }
 
         #region tm_variants
@@ -2092,7 +2134,7 @@ namespace KineticistElementsExpanded.ElementAether
         }
         #endregion
 
-        private static void CreateTeleKineticManeuversFeature(BlueprintProgression first_prog, BlueprintProgression second_prog, BlueprintProgression third_prog, BlueprintProgression kinetic_prog, params BlueprintAbility[] variants)
+        private static BlueprintFeature CreateTeleKineticManeuversFeature(BlueprintProgression first_prog, BlueprintProgression second_prog, BlueprintProgression third_prog, BlueprintProgression kinetic_prog, params BlueprintAbility[] variants)
         {
             var wild_talent_selection = ResourcesLibrary.TryGetBlueprint<BlueprintFeatureSelection>("5c883ae0-cd6d-7d54-48b7-a420f51f8459"); // Kineticist Wild Talent Selection
             var kineticist_class = Helper.ToRef<BlueprintCharacterClassReference>("42a455d9-ec1a-d924-d889-272429eb8391"); // Kineticist Base Class
@@ -2116,11 +2158,12 @@ namespace KineticistElementsExpanded.ElementAether
                 );
 
             Helper.AppendAndReplace(ref wild_talent_selection.m_AllFeatures, feature.ToRef());
+            return feature;
         }
         
         #endregion
 
-        private static void CreateTouchsiteReactive(BlueprintProgression first_prog, BlueprintProgression second_prog, BlueprintProgression third_prog, BlueprintProgression kinetic_prog)
+        private static BlueprintFeature CreateTouchsiteReactive(BlueprintProgression first_prog, BlueprintProgression second_prog, BlueprintProgression third_prog, BlueprintProgression kinetic_prog)
         {
             var wild_talent_selection = ResourcesLibrary.TryGetBlueprint<BlueprintFeatureSelection>("5c883ae0-cd6d-7d54-48b7-a420f51f8459"); // Kineticist Wild Talent Selection
             var kineticist_class = Helper.ToRef<BlueprintCharacterClassReference>("42a455d9-ec1a-d924-d889-272429eb8391"); // Kineticist Base Class
@@ -2146,13 +2189,14 @@ namespace KineticistElementsExpanded.ElementAether
                 );
 
             Helper.AppendAndReplace(ref wild_talent_selection.m_AllFeatures, feature.ToRef());
+            return feature;
         }
         
         #region Self Telekinesis
-        private static void CreateSelfTelekinesis(BlueprintProgression first_prog, BlueprintProgression second_prog, BlueprintProgression third_prog, BlueprintProgression kinetic_prog)
+        private static void CreateSelfTelekinesis(BlueprintProgression first_prog, BlueprintProgression second_prog, BlueprintProgression third_prog, BlueprintProgression kinetic_prog, out BlueprintFeature lesser_feat, out BlueprintFeature greater_feat)
         {
-            var st_lesser_feat = CreateSelfTelekinesisLesser(first_prog, second_prog, third_prog, kinetic_prog);
-            CreateSelfTelekinesisGreater(first_prog, second_prog, third_prog, kinetic_prog, st_lesser_feat);
+            lesser_feat = CreateSelfTelekinesisLesser(first_prog, second_prog, third_prog, kinetic_prog);
+            greater_feat = CreateSelfTelekinesisGreater(first_prog, second_prog, third_prog, kinetic_prog, lesser_feat);
         }
 
         private static BlueprintFeature CreateSelfTelekinesisLesser(BlueprintProgression first_prog, BlueprintProgression second_prog, BlueprintProgression third_prog, BlueprintProgression kinetic_prog)
@@ -2214,7 +2258,7 @@ namespace KineticistElementsExpanded.ElementAether
             return feature;
         }
 
-        private static void CreateSelfTelekinesisGreater(BlueprintProgression first_prog, BlueprintProgression second_prog, BlueprintProgression third_prog, BlueprintProgression kinetic_prog, BlueprintFeature st_lesser_feat)
+        private static BlueprintFeature CreateSelfTelekinesisGreater(BlueprintProgression first_prog, BlueprintProgression second_prog, BlueprintProgression third_prog, BlueprintProgression kinetic_prog, BlueprintFeature st_lesser_feat)
         {
             var wild_talent_selection = ResourcesLibrary.TryGetBlueprint<BlueprintFeatureSelection>("5c883ae0-cd6d-7d54-48b7-a420f51f8459"); // Kineticist Wild Talent Selection
             var kineticist_class = Helper.ToRef<BlueprintCharacterClassReference>("42a455d9-ec1a-d924-d889-272429eb8391"); // Kineticist Base Class
@@ -2270,11 +2314,13 @@ namespace KineticistElementsExpanded.ElementAether
             Helper.AppendAndReplace(ref wild_talent_selection.m_AllFeatures, feature.ToRef());
 
             st_lesser_feat.AddComponents(Helper.CreatePrerequisiteNoFeature(feature.ToRef()));
+
+            return feature;
         }
         
         #endregion
 
-        private static void CreateSpellDeflection(BlueprintProgression first_prog, BlueprintProgression second_prog, BlueprintProgression third_prog, BlueprintProgression kinetic_prog)
+        private static BlueprintFeature CreateSpellDeflection(BlueprintProgression first_prog, BlueprintProgression second_prog, BlueprintProgression third_prog, BlueprintProgression kinetic_prog)
         {
             var wild_talent_selection = ResourcesLibrary.TryGetBlueprint<BlueprintFeatureSelection>("5c883ae0-cd6d-7d54-48b7-a420f51f8459"); // Kineticist Wild Talent Selection
             var kineticist_class = Helper.ToRef<BlueprintCharacterClassReference>("42a455d9-ec1a-d924-d889-272429eb8391"); // Kineticist Base Class
@@ -2383,6 +2429,7 @@ namespace KineticistElementsExpanded.ElementAether
                 );
 
             Helper.AppendAndReplace(ref wild_talent_selection.m_AllFeatures, feature.ToRef());
+            return feature;
         }
         private static void CreateSuffocationWildTalent(BlueprintProgression first_prog, BlueprintProgression second_prog, BlueprintProgression third_prog, BlueprintProgression kinetic_prog)
         {
@@ -2405,7 +2452,7 @@ namespace KineticistElementsExpanded.ElementAether
             var unique = new UniqueAreaEffect { m_Feature = wall_infusion.ToRef2() };
             var prefab = new PrefabLink { AssetId = "4ffc8d2162a215e44a1a728752b762eb" }; // AirBlastWallEffect PrefabLink
 
-            ContextDiceValue dice = Helper.CreateContextDiceValue(DiceType.D6, AbilityRankType.DamageDice, AbilityRankType.DamageBonus);
+            ContextDiceValue dice = Helper.CreateContextDiceValue(DiceType.D6, Helper.CreateContextValue(AbilityRankType.DamageDice), Helper.CreateContextValue(AbilitySharedValue.Damage));
 
             var context_dealDamage = Helper.CreateContextActionDealDamage(PhysicalDamageForm.Bludgeoning | PhysicalDamageForm.Piercing | PhysicalDamageForm.Slashing,
                 dice, false, false, false, true, false, AbilitySharedValue.Damage);
@@ -2472,7 +2519,7 @@ namespace KineticistElementsExpanded.ElementAether
             var unique = new UniqueAreaEffect { m_Feature = wall_infusion.ToRef2() };
             var prefab = new PrefabLink { AssetId = "4ffc8d2162a215e44a1a728752b762eb" }; // AirBlastWallEffect PrefabLink
 
-            ContextDiceValue dice = Helper.CreateContextDiceValue(DiceType.D6, AbilityRankType.DamageDice, AbilityRankType.DamageBonus);
+            ContextDiceValue dice = Helper.CreateContextDiceValue(DiceType.D6, Helper.CreateContextValue(AbilityRankType.DamageDice), Helper.CreateContextValue(AbilityRankType.DamageBonus));
 
             var context_dealDamage = Helper.CreateContextActionDealDamageForce(DamageEnergyType.Fire,
                 dice, false, false, false, true, false, AbilitySharedValue.Damage);
@@ -2491,8 +2538,7 @@ namespace KineticistElementsExpanded.ElementAether
             var context1 = Helper.CreateContextRankConfig(ContextRankBaseValueType.CustomProperty, stat: StatType.Constitution,
                 type: AbilityRankType.DamageBonus, customProperty: kineticist_main_stat_property, min: 0, max: 20);
             var context2 = Helper.CreateContextRankConfig(ContextRankBaseValueType.FeatureRank, stat: StatType.Constitution,
-                type: AbilityRankType.DamageDice, customProperty: kineticist_main_stat_property, min: 0, max: 20,
-                feature: kinetic_blast_feature.ToRef());
+                type: AbilityRankType.DamageDice, min: 0, max: 20,feature: kinetic_blast_feature.ToRef());
 
             var calc_shared = new ContextCalculateSharedValue
             {
