@@ -133,6 +133,15 @@ Note: Lifting has no effect on the target, and lifting one creature put's down a
         protected static readonly string FoeThrowTargetBuffDescription = 
 @"This creature is lifted, and is about to be thrown.";
 
+        protected static readonly string aether_wild_talent_name = "Kineticist Bonus Feat — Aether";
+        protected static readonly string aether_wild_talent_description = "A character that selects this talent gains a bonus {g|Encyclopedia:Feat}feat{/g}. These feats must be taken from the following list: Spell Penetration, Greater Spell Penetration, Precise Shot, Trip, Greater Trip";
+
+        protected static readonly string AethericBoostLesserDescription = 
+@"Telekineticists slowly learn how to infuse simple blasts with Aether.
+At level 7, Kineticists with the Aether element as their primary element, add 1 force damage per die rolled to any of their simple blasts.";
+        protected static readonly string AethericBoostGreaterDescription = 
+ @"Telekineticist who have mastered Aether can infuse all blasts with Aether.
+At level 15, Kineticists with the Aether element as their primary element, add 1 force damage per die rolled to all simple and composite blasts.";
     }
 
 }
