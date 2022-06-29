@@ -46,14 +46,18 @@ namespace KineticistElementsExpanded.ElementAether
     class Aether : Statics
     {
         // Custom Unique Component for Disintegrate, since you can now do stuf like AbilityCustomFoeThrowUnique.cs
+        // Disintegrating Infusion now does correct damage and uses maximize and empower
+        // Works with single target infusions and blade, does not work with spindle or wall
+
         public static void Configure()
         {
-            var blast_progression = CreateFullTelekineticBlast(out var blast_feature, out var tb_blade_feature);
-            var force_blast_feature = CreateAetherCompositeBlasts(out var force_blade_feature);
+            var blast_progression = CreateFullTelekineticBlast(out var blast_feature, out var tb_blade_feature, out var tb_blast_ability);
+            var force_blast_feature = CreateAetherCompositeBlasts(out var force_blade_feature, out var force_blast_ability, out var lesserAethericBoost, out var greaterAethericBoost, out var lesserAethericBuff, out var greaterAethericBuff);
+            limitAethericBoosts(lesserAethericBuff, greaterAethericBuff, new BlueprintAbilityReference[] { tb_blast_ability.ToRef() }, new BlueprintAbilityReference[] { force_blast_ability.ToRef() });
             var aether_class_skills = CreateAetherClassSkills();
             var force_ward_feature = CreateForceWard(blast_feature);
             AddElementalDefenseIsPrereqFor(blast_feature, tb_blade_feature, force_ward_feature);
-            var first_progression_aether = CreateAetherElementalFocus(blast_progression, aether_class_skills, force_ward_feature);
+            var first_progression_aether = CreateAetherElementalFocus(blast_progression, aether_class_skills, force_ward_feature, lesserAethericBoost, greaterAethericBoost);
             var kinetic_knight_progression_aether = CreateKineticKnightAetherFocus(blast_progression, aether_class_skills, force_ward_feature);
             var second_progression_aether = CreateSecondElementAether(blast_progression, kinetic_knight_progression_aether, blast_feature, force_blast_feature);
             var third_progression_aether = CreateThirdElementAether(blast_progression, kinetic_knight_progression_aether, blast_feature, force_blast_feature, second_progression_aether);
@@ -80,7 +84,7 @@ namespace KineticistElementsExpanded.ElementAether
                 ResourcesLibrary.TryGetBlueprint<BlueprintBuff>("f5f3aa17dd579ff49879923fb7bc2adb"), // MetakinesisEmpowerBuff
                 ResourcesLibrary.TryGetBlueprint<BlueprintBuff>("f690edc756b748e43bba232e0eabd004"), // MetakinesisQuickenBuff
                 ResourcesLibrary.TryGetBlueprint<BlueprintBuff>("870d7e67e97a68f439155bdf465ea191"), // MetakinesisMaximizedBuff
-                ResourcesLibrary.TryGetBlueprint<BlueprintBuff>("870d7e67e97a68f439155bdf465ea191"), // MetakinesisEmpowerCheaperBuff
+                ResourcesLibrary.TryGetBlueprint<BlueprintBuff>("f8d0f7099e73c95499830ec0a93e2eeb"), // MetakinesisEmpowerCheaperBuff
                 ResourcesLibrary.TryGetBlueprint<BlueprintBuff>("c4b74e4448b81d04f9df89ed14c38a95"), // MetakinesisQuickenCheaperBuff
                 ResourcesLibrary.TryGetBlueprint<BlueprintBuff>("b8f43f0040155c74abd1bc794dbec320") // MetakinesisMaximizedCheaperBuff
             };
@@ -112,7 +116,7 @@ namespace KineticistElementsExpanded.ElementAether
 
         #region Elemental Focus Selection
 
-        private static BlueprintProgression CreateAetherElementalFocus(BlueprintFeatureBase blast_progression, BlueprintFeatureBase aether_class_skills, BlueprintFeatureBase force_ward_feature)
+        private static BlueprintProgression CreateAetherElementalFocus(BlueprintFeatureBase blast_progression, BlueprintFeatureBase aether_class_skills, BlueprintFeatureBase force_ward_feature, BlueprintFeatureBase lesserAethericBoost, BlueprintFeatureBase greaterAethericBoost)
         {
             var element_selection = ResourcesLibrary.TryGetBlueprint<BlueprintFeatureSelection>("1f3a15a3-ae8a-5524-ab8b-97f469bf4e3d"); // First Kineticist Element Selection
             var kineticist_class = Helper.ToRef<BlueprintCharacterClassReference>("42a455d9-ec1a-d924-d889-272429eb8391"); // Kineticist Base Class
@@ -125,6 +129,9 @@ namespace KineticistElementsExpanded.ElementAether
 
             var entry1 = Helper.CreateLevelEntry(1, blast_progression, aether_class_skills);
             var entry2 = Helper.CreateLevelEntry(2, force_ward_feature);
+            //var entry3 = Helper.CreateLevelEntry(7, lesserAethericBoost);
+            //var entry4 = Helper.CreateLevelEntry(15, greaterAethericBoost);
+            //Helper.AddEntries(progression, entry1, entry2, entry3, entry4);
             Helper.AddEntries(progression, entry1, entry2);
 
             Helper.AppendAndReplace(ref element_selection.m_AllFeatures, progression.ToRef());
@@ -329,7 +336,7 @@ namespace KineticistElementsExpanded.ElementAether
         #endregion
 
         #region TeleKinetic Blast
-        private static BlueprintFeatureBase CreateFullTelekineticBlast(out BlueprintFeature blast_feature, out BlueprintFeature tb_blade_feature)
+        private static BlueprintFeatureBase CreateFullTelekineticBlast(out BlueprintFeature blast_feature, out BlueprintFeature tb_blade_feature, out BlueprintAbility blast_ability)
         {
             var variant_base = CreateTelekineticBlastVariant_base();
             var variant_extended = CreateTelekineticBlastVariant_extended();
@@ -338,7 +345,7 @@ namespace KineticistElementsExpanded.ElementAether
             var variant_blade = CreateTelekineticBlastVariant_blade(out tb_blade_feature);
             var variant_throw = CreateTelekineticBlastVariant_throw(out var foeThrowInfusion);
             var variant_many = CreateTelekineticBlastVariant_many(out var manyThrowInfusion);
-            var blast_ability = CreateTelekineticBlastAbility(variant_base, variant_many, variant_extended, variant_spindle, variant_wall, variant_blade);
+            blast_ability = CreateTelekineticBlastAbility(variant_base, variant_many, variant_extended, variant_spindle, variant_wall, variant_blade);
             blast_feature = CreateTelekineticBlastFeature(blast_ability, tb_blade_feature);
             var blast_progression = CreateTelekineticBlastProgression(blast_feature, tb_blade_feature);
 
@@ -916,20 +923,20 @@ namespace KineticistElementsExpanded.ElementAether
 
         #region Composite Blast
 
-        private static BlueprintFeature CreateAetherCompositeBlasts(out BlueprintFeature force_blade_feature)
+        private static BlueprintFeature CreateAetherCompositeBlasts(out BlueprintFeature force_blade_feature, out BlueprintAbility force_blast_ability, out BlueprintFeature lesserAethericBoost, out BlueprintFeature greaterAethericBoost, out BlueprintBuff lesserAethericBuff, out BlueprintBuff greaterAethericBuff)
         {
             var variant_base = CreateForceBlastVariant_base();
             var variant_extended = CreateForceBlastVariant_extended();
             var variant_spindle = CreateForceBlastVariant_spindle();
             var variant_wall = CreateForceBlastVariant_wall();
-            var variant_blade = CreateForceBlastVariant_blade(out force_blade_feature);
+            var variant_blade = CreateForceBlastVariant_blade(out force_blade_feature, out var force_blade_burn);
             var variant_hook = CreateForceBlastVariant_hook(out var forceHookInfusion);
-            var force_blast_ability = CreateForceBlastAbility(variant_base, variant_hook, variant_extended, variant_spindle, variant_wall, variant_blade);
+            force_blast_ability = CreateForceBlastAbility(variant_base, variant_hook, variant_extended, variant_spindle, variant_wall, variant_blade);
             var force_blast_feature = CreateForceBlastFeature(force_blast_ability, force_blade_feature);
 
             AddToKineticBladeInfusion(force_blade_feature, force_blast_feature);
             AddToSubstanceInfusions(force_blast_feature, force_blast_ability);
-            AddInfusions(force_blast_feature, force_blast_ability);
+            AddInfusions(force_blast_feature, force_blast_ability, force_blade_burn);
             AddBlastsToMetakinesis(force_blast_ability);
             AddBlastsToBurn(force_blast_ability);
             SetInfusionPrereqs(forceHookInfusion, force_blast_feature.ToRef());
@@ -942,6 +949,9 @@ namespace KineticistElementsExpanded.ElementAether
             {
                 Helper.Print($"Dark Codex not installed: {ex.Message}");
             }
+
+            CreateAethericBoost(out lesserAethericBoost, out greaterAethericBoost, out lesserAethericBuff, out greaterAethericBuff);
+
             return force_blast_feature;
         }      
 
@@ -1208,7 +1218,7 @@ namespace KineticistElementsExpanded.ElementAether
 
         #region Force Blade
 
-        private static BlueprintAbility CreateForceBlastVariant_blade(out BlueprintFeature force_blade_feat)
+        private static BlueprintAbility CreateForceBlastVariant_blade(out BlueprintFeature force_blade_feat, out BlueprintAbility blade_burn_ability)
         {
             var kinetic_blade_enable_buff = ResourcesLibrary.TryGetBlueprint<BlueprintBuff>("426a9c07-9ee7-ac34-aa8e-0054f2218074"); // KineticBladeEnableBuff
             var kinetic_blade_hide_feature = ResourcesLibrary.TryGetBlueprint<BlueprintFeature>("4d39ccef-7b5b-2e94-58e8-599eae3c3be0"); // KineticBladeHideFeature
@@ -1243,7 +1253,7 @@ namespace KineticistElementsExpanded.ElementAether
 
             #region KineticBladeForceBlastBurnAbility
 
-            var blade_burn_ability = Helper.CreateBlueprintAbility("KineticBladeForceBlastBurnAbility", null, null, null, icon,
+            blade_burn_ability = Helper.CreateBlueprintAbility("KineticBladeForceBlastBurnAbility", null, null, null, icon,
                 AbilityType.Special, UnitCommand.CommandType.Free, AbilityRange.Personal);
             blade_burn_ability.TargetSelf(CastAnimationStyle.Omni);
             blade_burn_ability.Hidden = true;
@@ -1377,6 +1387,136 @@ namespace KineticistElementsExpanded.ElementAether
         // Aetheric Boost (Buff, maybe?)
         //  Provide a buff/toggle with the same scaling as blast dice as bonus damage
         #region Aetheric Boost
+
+        private static void CreateAethericBoost(out BlueprintFeature lesserAethericBoost, out BlueprintFeature greaterAethericBoost, out BlueprintBuff lesserAethericBuff, out BlueprintBuff greaterAethericBuff)
+        {
+            CreateLesserAethericBoost(out lesserAethericBoost, out lesserAethericBuff);
+            CreateGreaterAethericBoost(out greaterAethericBoost, out greaterAethericBuff);
+        }
+
+        private static void CreateLesserAethericBoost(out BlueprintFeature lesserAethericBoost, out BlueprintBuff lesserAethericBuff)
+        {
+            var kinetic_blast_feature = ResourcesLibrary.TryGetBlueprint<BlueprintFeature>("93efbde2764b5504e98e6824cab3d27c"); // KineticBlastFeature
+
+            var dice = Helper.CreateContextDiceValue(DiceType.Zero, null, Helper.CreateContextValue(AbilityRankType.DamageBonus));
+            var dealDamage = Helper.CreateContextActionDealDamageForce(DamageEnergyType.Fire, dice);
+
+            var trigger = new AddKineticistInfusionDamageTrigger
+            {
+                Actions = new ActionList { Actions = new GameAction[] { dealDamage } },
+                m_WeaponType = null,
+                CheckSpellParent = true,
+                TriggerOnDirectDamage = true
+            };
+
+            var contextRank = Helper.CreateContextRankConfig(ContextRankBaseValueType.FeatureRank, type: AbilityRankType.DamageBonus, max: 20, feature: kinetic_blast_feature.ToRef());
+
+            var recalc = new RecalculateOnStatChange
+            {
+                UseKineticistMainStat = true,
+                Stat = StatType.Unknown
+            };
+
+            lesserAethericBuff = Helper.CreateBlueprintBuff("AethericBoostLesserBuff", "Aetheric Boost",
+                AethericBoostLesserDescription, null, null, null);
+            lesserAethericBuff.Stacking = StackingType.Replace;
+            lesserAethericBuff.Flags(false, true);
+            lesserAethericBuff.SetComponents
+                (
+                trigger, 
+                contextRank,
+                recalc
+                );
+
+            lesserAethericBoost = Helper.CreateBlueprintFeature("AethericBoostLesser", "Aetheric Boost",
+                AethericBoostLesserDescription, null, null, FeatureGroup.None);
+            lesserAethericBoost.SetComponents
+                (
+                Helper.CreateAddFactContextActions
+                    (
+                        new GameAction[] { lesserAethericBuff.CreateContextActionApplyBuff(asChild: true, permanent: true) }
+                    )
+                );
+        }
+
+        private static void CreateGreaterAethericBoost(out BlueprintFeature greaterAethericBoost, out BlueprintBuff GreaterAethericBuff)
+        {
+            var kinetic_blast_feature = ResourcesLibrary.TryGetBlueprint<BlueprintFeature>("93efbde2764b5504e98e6824cab3d27c"); // KineticBlastFeature
+
+            var dice = Helper.CreateContextDiceValue(DiceType.Zero, null, Helper.CreateContextValue(AbilityRankType.DamageBonus));
+            var dealDamage = Helper.CreateContextActionDealDamageForce(DamageEnergyType.Fire, dice);
+
+            var trigger = new AddKineticistInfusionDamageTrigger
+            {
+                Actions = new ActionList { Actions = new GameAction[] { dealDamage } },
+                m_WeaponType = null,
+                CheckSpellParent = true,
+                TriggerOnDirectDamage = true,
+            };
+
+            var contextRank = Helper.CreateContextRankConfig(ContextRankBaseValueType.FeatureRank, progression: ContextRankProgression.MultiplyByModifier, type: AbilityRankType.DamageBonus, stepLevel: 2, feature: kinetic_blast_feature.ToRef());
+
+            var recalc = new RecalculateOnStatChange
+            {
+                UseKineticistMainStat = true,
+                Stat = StatType.Unknown
+            };
+
+            GreaterAethericBuff = Helper.CreateBlueprintBuff("AethericBoostGreaterBuff", "Aetheric Boost",
+                AethericBoostGreaterDescription, null, null, null);
+            GreaterAethericBuff.Stacking = StackingType.Replace;
+            GreaterAethericBuff.Flags(false, true);
+            GreaterAethericBuff.SetComponents
+                (
+                trigger,
+                contextRank,
+                recalc
+                );
+
+            greaterAethericBoost = Helper.CreateBlueprintFeature("AethericBoostGreater", "Aetheric Boost",
+                AethericBoostGreaterDescription, null, null, FeatureGroup.None);
+            greaterAethericBoost.SetComponents
+                (
+                Helper.CreateAddFactContextActions
+                    (
+                        new GameAction[] { GreaterAethericBuff.CreateContextActionApplyBuff(asChild: true, permanent: true) }
+                    )
+                );
+        }
+
+
+        private static void limitAethericBoosts(BlueprintBuff lab, BlueprintBuff gab, BlueprintAbilityReference[] custom_simple, BlueprintAbilityReference[] custom_composite)
+        {
+            try
+            {
+                var simple_fire = Helper.ToRef<BlueprintAbilityReference>("83d5873f306ac954cad95b6aeeeb2d8c"); // FireBlastBase
+                var simple_earth = Helper.ToRef<BlueprintAbilityReference>("e53f34fb268a7964caf1566afb82dadd"); // EarthBlastBase
+                var simple_air = Helper.ToRef<BlueprintAbilityReference>("0ab1552e2ebdacf44bb7b20f5393366d"); // AirBlastBase
+                var simple_elec = Helper.ToRef<BlueprintAbilityReference>("45eb571be891c4c4581b6fcddda72bcd"); // ElectricBlastBase
+                var simple_water = Helper.ToRef<BlueprintAbilityReference>("d663a8d40be1e57478f34d6477a67270"); // WaterBlastBase
+                var simple_cold = Helper.ToRef<BlueprintAbilityReference>("7980e876b0749fc47ac49b9552e259c1"); // ColdBlastBase
+
+                var composite_sand = Helper.ToRef<BlueprintAbilityReference>("b93e1f0540a4fa3478a6b47ae3816f32"); // SandstormBlastBase
+                var composite_plasma = Helper.ToRef<BlueprintAbilityReference>("9afdc3eeca49c594aa7bf00e8e9803ac"); // PlasmaBlastBase
+                var composite_blizzard = Helper.ToRef<BlueprintAbilityReference>("16617b8c20688e4438a803effeeee8a6"); // BlizzardBlastBase
+                var composite_chargeWater = Helper.ToRef<BlueprintAbilityReference>("4e2e066dd4dc8de4d8281ed5b3f4acb6"); // ChargedWaterBlastBase
+                var composite_magma = Helper.ToRef<BlueprintAbilityReference>("8c25f52fce5113a4491229fd1265fc3c"); // MagmaBlastBase
+                var composite_mud = Helper.ToRef<BlueprintAbilityReference>("e2610c88664e07343b4f3fb6336f210c"); // MudBlastBase
+                var composite_steam = Helper.ToRef<BlueprintAbilityReference>("3baf01649a92ae640927b0f633db7c11"); // SteamBlastBase
+
+                custom_simple = custom_simple.Append(simple_air, simple_cold, simple_earth, simple_elec, simple_fire, simple_water);
+                custom_composite = custom_composite.Append(composite_blizzard, composite_chargeWater, composite_magma, composite_mud, composite_plasma, composite_sand, composite_steam);
+
+                var lab_trigger = lab.GetComponent<AddKineticistInfusionDamageTrigger>();
+                Helper.AppendAndReplace(ref lab_trigger.m_AbilityList, custom_simple);
+                var gab_trigger = gab.GetComponent<AddKineticistInfusionDamageTrigger>();
+                Helper.AppendAndReplace(ref gab_trigger.m_AbilityList, custom_composite);
+            } catch (Exception ex)
+            {
+                Helper.Print($"Exception: {ex.Message}");
+            }
+        }
+
         #endregion
 
         #endregion
@@ -1388,11 +1528,11 @@ namespace KineticistElementsExpanded.ElementAether
             infusion.AddComponents(Helper.CreatePrerequisiteFeaturesFromList(true, blasts));
         }
 
-        public static void AddInfusions(BlueprintFeature blast_feature, BlueprintAbility blast_base)
+        public static void AddInfusions(BlueprintFeature blast_feature, BlueprintAbility blast_base, BlueprintAbility blade_ability)
         {
             var infusion_selection = ResourcesLibrary.TryGetBlueprint<BlueprintFeatureSelection>("58d6f8e9eea63f6418b107ce64f315ea"); // InfusionSelection
 
-            var disintegrating_infusion = CreateDisintegratingInfusion(blast_feature, blast_base);
+            var disintegrating_infusion = CreateDisintegratingInfusion(blast_feature, blast_base, blade_ability);
 
             Helper.AppendAndReplace(ref infusion_selection.m_AllFeatures, disintegrating_infusion.ToRef());
             try
@@ -1406,7 +1546,7 @@ namespace KineticistElementsExpanded.ElementAether
             }
         }
 
-        public static BlueprintFeature CreateDisintegratingInfusion(BlueprintFeature blast_feature, BlueprintAbility blast_base)
+        public static BlueprintFeature CreateDisintegratingInfusion(BlueprintFeature blast_feature, BlueprintAbility blast_base, BlueprintAbility blade_burn)
         {
             var kineticist_class = Helper.ToRef<BlueprintCharacterClassReference>("42a455d9-ec1a-d924-d889-272429eb8391"); // Kineticist Base Class
             var kinetic_blast_feature = ResourcesLibrary.TryGetBlueprint<BlueprintFeature>("93efbde2764b5504e98e6824cab3d27c"); // KineticBlastFeature
@@ -1425,68 +1565,11 @@ namespace KineticistElementsExpanded.ElementAether
 
             #region Custom Damage
 
-            ContextRankConfig config_dice = Helper.CreateContextRankConfig(baseValueType: ContextRankBaseValueType.FeatureRank, type: AbilityRankType.DamageDice, progression: ContextRankProgression.AsIs, feature: kinetic_blast_feature.ToRef());
+            ContextRankConfig config_dice = Helper.CreateContextRankConfig(baseValueType: ContextRankBaseValueType.FeatureRank, type: AbilityRankType.DamageDice, progression: ContextRankProgression.MultiplyByModifier, stepLevel: 4, feature: kinetic_blast_feature.ToRef());
             ContextRankConfig config_bonus = Helper.CreateContextRankConfig(baseValueType: ContextRankBaseValueType.CustomProperty, type: AbilityRankType.DamageBonus, progression: ContextRankProgression.Div2, stat: StatType.Constitution, customProperty: kineticist_main_stat_property);
 
-            #region Double
 
-            ContextDiceValue dice_double = Helper.CreateContextDiceValue(DiceType.D6, diceCount: Helper.CreateContextValue(AbilitySharedValue.Damage), bonus: Helper.CreateContextValue(AbilitySharedValue.DamageBonus));
-
-            ContextCalculateSharedValue double_calc_dice = new ContextCalculateSharedValue
-            {
-                ValueType = AbilitySharedValue.Damage,
-                Value = new ContextDiceValue
-                {
-                    DiceType = DiceType.One,
-                    DiceCountValue = new ContextValue { ValueType = ContextValueType.Rank, ValueRank = AbilityRankType.DamageDice },
-                    BonusValue = new ContextValue { ValueType = ContextValueType.Simple, Value = 0}
-                },
-                Modifier = 2.0
-            };
-            ContextCalculateSharedValue double_calc_bonus = new ContextCalculateSharedValue
-            {
-                ValueType = AbilitySharedValue.DamageBonus,
-                Value = new ContextDiceValue
-                {
-                    DiceType = DiceType.One,
-                    DiceCountValue = new ContextValue { ValueType = ContextValueType.Rank, ValueRank = AbilityRankType.DamageBonus },
-                    BonusValue = new ContextValue { ValueType = ContextValueType.Simple, Value = 0 }
-                },
-                Modifier = 2.0
-
-            };
-            var damage_double = Helper.CreateContextActionDealDamageForce(DamageEnergyType.Fire, dice_double);
-
-            #endregion
-
-            #region Half
-
-            ContextDiceValue dice_half = Helper.CreateContextDiceValue(DiceType.D6, Helper.CreateContextValue(AbilitySharedValue.Duration), Helper.CreateContextValue(AbilitySharedValue.DurationSecond));
-            ContextCalculateSharedValue half_calc_dice = new ContextCalculateSharedValue
-            {
-                ValueType = AbilitySharedValue.Duration,
-                Value = new ContextDiceValue
-                {
-                    DiceType = DiceType.One,
-                    DiceCountValue = new ContextValue { ValueType = ContextValueType.Rank, ValueRank = AbilityRankType.DamageDice },
-                    BonusValue = new ContextValue { ValueType = ContextValueType.Simple, Value = 0 }
-                },
-                Modifier = 0.5
-            };
-            ContextCalculateSharedValue half_calc_bonus = new ContextCalculateSharedValue
-            {
-                ValueType = AbilitySharedValue.DurationSecond,
-                Value = new ContextDiceValue
-                {
-                    DiceType = DiceType.One,
-                    DiceCountValue = new ContextValue { ValueType = ContextValueType.Rank, ValueRank = AbilityRankType.DamageBonus },
-                    BonusValue = new ContextValue { ValueType = ContextValueType.Simple, Value = 0 }
-                },
-                Modifier = 0.5
-            };
-            var damage_half = Helper.CreateContextActionDealDamageForce(DamageEnergyType.Fire, dice_half);
-
-            #endregion
+            ContextDiceValue value = Helper.CreateContextDiceValue(DiceType.D6, diceCount: Helper.CreateContextValue(AbilityRankType.DamageDice), bonus: Helper.CreateContextValue(AbilityRankType.DamageBonus));
 
             #endregion
 
@@ -1510,28 +1593,14 @@ namespace KineticistElementsExpanded.ElementAether
 
             #endregion
 
-            #region Saving Throw Actions;
-
-            var success_action = new GameAction[] { damage_half, disintegrate_conditional };
-            var fail_action = new GameAction[] { damage_double, disintegrate_conditional };
-
-            var context_conditionalSaved = Helper.CreateContextActionConditionalSaved(success_action, fail_action);
-            var disintegrate_savingThrow = new ContextActionSavingThrow
-            {
-                Type = SavingThrowType.Fortitude,
-                FromBuff = false,
-                HasCustomDC = false,
-                Actions = new ActionList { Actions = new GameAction[1] { context_conditionalSaved } }
-            };
-
-            #endregion
-
             #region Buff Components
 
-            var nullifyDamage = new AddForceBlastNullifyDamage(blast_base.ToRef())
+            var disintegrateNullifyDamage = new AbilityUniqueDisintegrateInfusion(blast_base.ToRef())
             {
-                Actions = new ActionList {  Actions = new GameAction[] { disintegrate_savingThrow } }
+                Actions = new ActionList {  Actions = new GameAction[] { disintegrate_conditional } },
+                Value = value
             };
+
             var burn_modifier = new AddKineticistBurnModifier
             {
                 BurnType = KineticistBurnType.Infusion,
@@ -1545,7 +1614,7 @@ namespace KineticistElementsExpanded.ElementAether
                     ValueRank = AbilityRankType.Default,
                     ValueShared = AbilitySharedValue.Damage
                 },
-                m_AppliableTo = new BlueprintAbilityReference[1] {blast_base.ToRef()}
+                m_AppliableTo = new BlueprintAbilityReference[2] {blast_base.ToRef(), blade_burn.ToRef()}
             };
             var calc_abilityParams = new ContextCalculateAbilityParamsBasedOnClass
             {
@@ -1566,13 +1635,9 @@ namespace KineticistElementsExpanded.ElementAether
             buff.Flags(stayOnDeath: true);
             buff.SetComponents
                 (
-                nullifyDamage,
+                disintegrateNullifyDamage,
                 config_dice,
                 config_bonus,
-                double_calc_dice,
-                double_calc_bonus,
-                half_calc_dice,
-                half_calc_bonus,
                 calc_abilityParams,
                 burn_modifier,
                 recalc_stat_change
@@ -1585,7 +1650,7 @@ namespace KineticistElementsExpanded.ElementAether
                 Helper.CreateAddFacts(ability.ToRef2()),
                 Helper.CreatePrerequisiteFeaturesFromList(true, blast_feature.ToRef()),
                 Helper.CreatePrerequisiteClassLevel(kineticist_class, 12, false)
-                ); ;
+                );
 
             #endregion
 
@@ -1734,11 +1799,12 @@ namespace KineticistElementsExpanded.ElementAether
             var touchsite = CreateTouchsiteReactive(first_prog, second_prog, third_prog, kinetic_prog);
             CreateSelfTelekinesis(first_prog, second_prog, third_prog, kinetic_prog, out var st_lesser_feat, out var st_greater_feat);
             var spell_deflection = CreateSpellDeflection(first_prog, second_prog, third_prog, kinetic_prog);
+            CreateWildTalentBonusFeatAether(first_prog, second_prog, third_prog, kinetic_prog, out var wild0, out var wild1, out var wild2, out var wild3);
 
             try
             {
                 var extra_wild = ResourcesLibrary.TryGetBlueprint<BlueprintFeatureSelection>("bd287f6d1c5247da9b81761cab64021c"); // DarkCodex's ExtraWildTalentFeat
-                Helper.AppendAndReplace(ref extra_wild.m_AllFeatures, new List<BlueprintFeatureReference> { invis.ToRef(), tf_feat.ToRef(), maneuvers.ToRef(), touchsite.ToRef(), st_greater_feat.ToRef(), st_lesser_feat.ToRef(), spell_deflection.ToRef() });
+                Helper.AppendAndReplace(ref extra_wild.m_AllFeatures, new List<BlueprintFeatureReference> { invis.ToRef(), tf_feat.ToRef(), maneuvers.ToRef(), touchsite.ToRef(), st_greater_feat.ToRef(), st_lesser_feat.ToRef(), spell_deflection.ToRef(), wild0.ToRef(), wild1.ToRef(), wild2.ToRef(), wild3.ToRef() });
             } catch (Exception ex)
             {
                 Helper.Print($"Dark Codex not installed: {ex.Message}");
@@ -2437,6 +2503,76 @@ namespace KineticistElementsExpanded.ElementAether
             var kineticist_class = Helper.ToRef<BlueprintCharacterClassReference>("42a455d9-ec1a-d924-d889-272429eb8391"); // Kineticist Base Class
             //var kineticist_class_ref = Helper.ToRef<BlueprintCharacterClassReference>("42a455d9-ec1a-d924-d889-272429eb8391"); // Kineticist Base Class
             var icon = Helper.StealIcon("b3c6cb76-d5b1-1cf4-c831-4d7b1c7b9b8b"); // Choking Bomb feature
+        }
+
+        private static void CreateWildTalentBonusFeatAether(BlueprintProgression first_prog, BlueprintProgression second_prog, BlueprintProgression third_prog, BlueprintProgression kinetic_prog, out BlueprintFeatureSelection wild_0, out BlueprintFeatureSelection wild_1, out BlueprintFeatureSelection wild_2, out BlueprintFeatureSelection wild_3)
+        {
+            var wild_talent_selection = ResourcesLibrary.TryGetBlueprint<BlueprintFeatureSelection>("5c883ae0-cd6d-7d54-48b7-a420f51f8459"); // Kineticist Wild Talent Selection
+
+            var spell_pen = Helper.ToRef<BlueprintFeatureReference>("ee7dc126939e4d9438357fbd5980d459"); // SpellPenetration
+            var spell_pen_greater = Helper.ToRef<BlueprintFeatureReference>("1978c3f91cfbbc24b9c9b0d017f4beec"); // GreaterSpellPenetration
+            var precise_shot = Helper.ToRef<BlueprintFeatureReference>("8f3d1e6b4be006f4d896081f2f889665"); // PreciseShot
+            var trip = Helper.ToRef<BlueprintFeatureReference>("0f15c6f70d8fb2b49aa6cc24239cc5fa"); // ImprovedTrip
+            var trip_greater = Helper.ToRef<BlueprintFeatureReference>("4cc71ae82bdd85b40b3cfe6697bb7949"); // SpellPenetration
+
+            wild_0 = Helper.CreateBlueprintFeatureSelection("WildTalentBonusFeatAether", aether_wild_talent_name,
+                aether_wild_talent_description, null, null, FeatureGroup.KineticWildTalent, SelectionMode.Default);
+            wild_0.SetComponents
+                (
+                Helper.CreatePrerequisiteFeature(first_prog.ToRef(), true),
+                Helper.CreatePrerequisiteFeature(second_prog.ToRef(), true),
+                Helper.CreatePrerequisiteFeature(third_prog.ToRef(), true),
+                Helper.CreatePrerequisiteNoFeature(trip, false),
+                Helper.CreatePrerequisiteNoFeature(spell_pen, false),
+                Helper.CreatePrerequisiteFeature(kinetic_prog.ToRef(), true)
+                );
+            Helper.AppendAndReplace(ref wild_0.m_AllFeatures, spell_pen, precise_shot, trip);
+
+            wild_1 = Helper.CreateBlueprintFeatureSelection("WildTalentBonusFeatAether1", aether_wild_talent_name,
+                aether_wild_talent_description, null, null, FeatureGroup.KineticWildTalent, SelectionMode.Default);
+            wild_1.SetComponents
+                (
+                Helper.CreatePrerequisiteFeature(first_prog.ToRef(), true),
+                Helper.CreatePrerequisiteFeature(second_prog.ToRef(), true),
+                Helper.CreatePrerequisiteFeature(third_prog.ToRef(), true),
+                Helper.CreatePrerequisiteNoFeature(trip, false),
+                Helper.CreatePrerequisiteFeature(spell_pen, false),
+                Helper.CreatePrerequisiteFeature(kinetic_prog.ToRef(), true)
+                );
+            Helper.AppendAndReplace(ref wild_1.m_AllFeatures, spell_pen_greater, precise_shot, trip);
+
+            wild_2 = Helper.CreateBlueprintFeatureSelection("WildTalentBonusFeatAether2", aether_wild_talent_name,
+                aether_wild_talent_description, null, null, FeatureGroup.KineticWildTalent, SelectionMode.Default);
+            wild_2.SetComponents
+                (
+                Helper.CreatePrerequisiteFeature(first_prog.ToRef(), true),
+                Helper.CreatePrerequisiteFeature(second_prog.ToRef(), true),
+                Helper.CreatePrerequisiteFeature(third_prog.ToRef(), true),
+                Helper.CreatePrerequisiteFeature(trip, false),
+                Helper.CreatePrerequisiteNoFeature(spell_pen, false),
+                Helper.CreatePrerequisiteFeature(kinetic_prog.ToRef(), true)
+                );
+            Helper.AppendAndReplace(ref wild_2.m_AllFeatures, spell_pen, precise_shot, trip_greater);
+
+            wild_3 = Helper.CreateBlueprintFeatureSelection("WildTalentBonusFeatAether3", aether_wild_talent_name,
+                aether_wild_talent_description, null, null, FeatureGroup.KineticWildTalent, SelectionMode.Default);
+            wild_3.SetComponents
+                (
+                Helper.CreatePrerequisiteFeature(first_prog.ToRef(), true),
+                Helper.CreatePrerequisiteFeature(second_prog.ToRef(), true),
+                Helper.CreatePrerequisiteFeature(third_prog.ToRef(), true),
+                Helper.CreatePrerequisiteFeature(trip, false),
+                Helper.CreatePrerequisiteFeature(spell_pen, false),
+                new PrerequisiteSelectionPossible
+                {
+                    m_ThisFeature = wild_3.ToRef3()
+                },
+                Helper.CreatePrerequisiteFeature(kinetic_prog.ToRef(), true)
+                );
+            Helper.AppendAndReplace(ref wild_3.m_AllFeatures, spell_pen_greater, precise_shot, trip_greater);
+
+
+            Helper.AppendAndReplace(ref wild_talent_selection.m_AllFeatures, wild_0.ToRef(), wild_1.ToRef(), wild_2.ToRef(), wild_3.ToRef());
         }
 
         #endregion

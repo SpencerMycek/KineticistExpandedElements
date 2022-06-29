@@ -2638,6 +2638,14 @@ public static class Helper
             return tref;
         }
 
+        public static BlueprintFeatureSelectionReference ToRef3(this BlueprintFeatureSelection feature)
+        {
+            if (feature == null) return null;
+            var result = new BlueprintFeatureSelectionReference();
+            result.deserializedGuid = feature.AssetGuid;
+            return result;
+        }
+
 
         public static BlueprintUnitFactReference ToRef2(this BlueprintAbility feature)
         {
