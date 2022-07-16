@@ -335,7 +335,7 @@ namespace KineticistElementsExpanded.ElementAether
 
         #endregion
 
-        #region TeleKinetic Blast
+        #region Telekinetic Blast
         private static BlueprintFeatureBase CreateFullTelekineticBlast(out BlueprintFeature blast_feature, out BlueprintFeature tb_blade_feature, out BlueprintAbility blast_ability)
         {
             var variant_base = CreateTelekineticBlastVariant_base();
@@ -891,7 +891,6 @@ namespace KineticistElementsExpanded.ElementAether
         {
             var kinetic_blade_infusion = ResourcesLibrary.TryGetBlueprint<BlueprintFeature>("9ff81732-dadd-b174-aa81-38ad1297c787"); // KineticBladeInfusion
             kinetic_blade_infusion.AddComponents(Helper.CreateAddFeatureIfHasFact(blast_feature.ToRef2(), blade_feature.ToRef2()));
-            
         }
 
         private static void AddToSubstanceInfusions(BlueprintFeature blast_feature, BlueprintAbility blast_ability)
@@ -1782,12 +1781,6 @@ namespace KineticistElementsExpanded.ElementAether
 
         #region Wild Talents
 
-        // TODO
-        // Suffocate* // Dont think I want it, just a save or die
-        // Wild Talent Bonus Feats 0,1,2,3
-        //  Touchsight (Uncanny Dodge)
-        //  Bonus Feats:
-        //  Blind Fight, Improved Blind Flight, Greater Blind Flight Disarm? Greater? combat maneuvers?
         private static void CreateAetherWildTalents(BlueprintProgression first_prog, BlueprintProgression kinetic_prog, BlueprintProgression second_prog, BlueprintProgression third_prog, BlueprintFeature tb_feature, BlueprintFeature fw_feature)
         {
             AddToSkilledKineticist(first_prog);
@@ -1855,7 +1848,7 @@ namespace KineticistElementsExpanded.ElementAether
             var invis_buff = ResourcesLibrary.TryGetBlueprint<BlueprintBuff>("525f980c-b29b-c224-0b93-e953974cb325"); // Invisibility Effect Buff
 
             var ti_ability = Helper.CreateBlueprintAbility("TelekineticInvisibiltyAbility", "Telekinetic Invisibility",
-                TelekineticInvisibilityDescription, null, invis_buff_icon, AbilityType.Supernatural, UnitCommand.CommandType.Standard,
+                TelekineticInvisibilityDescription, null, invis_buff_icon, AbilityType.Special, UnitCommand.CommandType.Standard,
                 AbilityRange.Personal);
             ti_ability.TargetSelf();
             ti_ability.SetComponents
@@ -2526,6 +2519,7 @@ namespace KineticistElementsExpanded.ElementAether
                 Helper.CreatePrerequisiteNoFeature(spell_pen, false),
                 Helper.CreatePrerequisiteFeature(kinetic_prog.ToRef(), true)
                 );
+            wild_0.IgnorePrerequisites = true;
             Helper.AppendAndReplace(ref wild_0.m_AllFeatures, spell_pen, precise_shot, trip);
 
             wild_1 = Helper.CreateBlueprintFeatureSelection("WildTalentBonusFeatAether1", aether_wild_talent_name,
@@ -2539,6 +2533,7 @@ namespace KineticistElementsExpanded.ElementAether
                 Helper.CreatePrerequisiteFeature(spell_pen, false),
                 Helper.CreatePrerequisiteFeature(kinetic_prog.ToRef(), true)
                 );
+            wild_1.IgnorePrerequisites = true;
             Helper.AppendAndReplace(ref wild_1.m_AllFeatures, spell_pen_greater, precise_shot, trip);
 
             wild_2 = Helper.CreateBlueprintFeatureSelection("WildTalentBonusFeatAether2", aether_wild_talent_name,
@@ -2552,6 +2547,7 @@ namespace KineticistElementsExpanded.ElementAether
                 Helper.CreatePrerequisiteNoFeature(spell_pen, false),
                 Helper.CreatePrerequisiteFeature(kinetic_prog.ToRef(), true)
                 );
+            wild_2.IgnorePrerequisites = true;
             Helper.AppendAndReplace(ref wild_2.m_AllFeatures, spell_pen, precise_shot, trip_greater);
 
             wild_3 = Helper.CreateBlueprintFeatureSelection("WildTalentBonusFeatAether3", aether_wild_talent_name,
@@ -2569,6 +2565,7 @@ namespace KineticistElementsExpanded.ElementAether
                 },
                 Helper.CreatePrerequisiteFeature(kinetic_prog.ToRef(), true)
                 );
+            wild_3.IgnorePrerequisites = true;
             Helper.AppendAndReplace(ref wild_3.m_AllFeatures, spell_pen_greater, precise_shot, trip_greater);
 
 
@@ -2658,7 +2655,7 @@ namespace KineticistElementsExpanded.ElementAether
             ContextDiceValue dice = Helper.CreateContextDiceValue(DiceType.D6, Helper.CreateContextValue(AbilityRankType.DamageDice), Helper.CreateContextValue(AbilityRankType.DamageBonus));
 
             var context_dealDamage = Helper.CreateContextActionDealDamageForce(DamageEnergyType.Fire,
-                dice, false, false, false, true, false, AbilitySharedValue.Damage);
+                dice, false, false, false, false, false, AbilitySharedValue.Damage);
             ActionList action_list = new() { Actions = new GameAction[1] { context_dealDamage } };
 
             var area_effect = Helper.CreateBlueprintAbilityAreaEffect("WallForceBlastArea", null, true, true,
@@ -2674,7 +2671,7 @@ namespace KineticistElementsExpanded.ElementAether
             var context1 = Helper.CreateContextRankConfig(ContextRankBaseValueType.CustomProperty, stat: StatType.Constitution,
                 type: AbilityRankType.DamageBonus, customProperty: kineticist_main_stat_property, min: 0, max: 20);
             var context2 = Helper.CreateContextRankConfig(ContextRankBaseValueType.FeatureRank, stat: StatType.Constitution,
-                type: AbilityRankType.DamageDice, min: 0, max: 20,feature: kinetic_blast_feature.ToRef());
+                type: AbilityRankType.DamageDice, min: 0, max: 20, feature: kinetic_blast_feature.ToRef());
 
             var calc_shared = new ContextCalculateSharedValue
             {

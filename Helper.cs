@@ -1153,7 +1153,7 @@ public static class Helper
             return parent;
         }
 
-        public static BlueprintBuff Flags(this BlueprintBuff buff, bool? hidden = null, bool? stayOnDeath = null, bool? isFromSpell = null, bool? harmful = null)
+        public static BlueprintBuff Flags(this BlueprintBuff buff, bool? hidden = null, bool? stayOnDeath = null, bool? isFromSpell = null, bool? harmful = null, bool? removeOnRest = null)
         {
             if (hidden != null)
             {
@@ -1185,6 +1185,14 @@ public static class Helper
                     buff.m_Flags |= BlueprintBuff.Flags.Harmful;
                 else
                     buff.m_Flags &= ~BlueprintBuff.Flags.Harmful;
+            }
+
+            if (removeOnRest != null)
+            {
+                if (removeOnRest.Value)
+                    buff.m_Flags |= BlueprintBuff.Flags.RemoveOnRest;
+                else
+                    buff.m_Flags &= ~BlueprintBuff.Flags.RemoveOnRest;
             }
 
             return buff;
@@ -2646,6 +2654,14 @@ public static class Helper
             return result;
         }
 
+        public static BlueprintProgressionReference ToRef3(this BlueprintProgression feature)
+        {
+            if (feature == null) return null;
+            var result = new BlueprintProgressionReference();
+            result.deserializedGuid = feature.AssetGuid;
+            return result;
+        }
+
 
         public static BlueprintUnitFactReference ToRef2(this BlueprintAbility feature)
         {
@@ -2705,7 +2721,6 @@ public static class Helper
             }
             return result;
         }
-
 
         public static AnyBlueprintReference ToRef(this BlueprintScriptableObject feature)
         {

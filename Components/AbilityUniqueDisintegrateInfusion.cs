@@ -47,11 +47,6 @@ namespace KineticistElementsExpanded.Components
             }
         }
 
-        bool RemoveAllDamage(List<BaseDamage> list)
-        {
-            return true;
-        }
-
         private void RunAction(UnitEntityData target, MechanicsContext context)
         {
             TimeSpan gameTime = Game.Instance.TimeController.GameTime;
@@ -111,23 +106,15 @@ namespace KineticistElementsExpanded.Components
                     }
                 }
 
-                // Replace damage with 'doubled' or 'halved'
-                Predicate<BaseDamage> RemoveAll = delegate (BaseDamage damage) { return true; };
-                ruleDealDamage.Remove(RemoveAll);
-
-                ContextAttackData contextAttackData = ContextData<ContextAttackData>.Current;
-                RuleAttackRoll ruleAttackRoll = contextAttackData.AttackRoll;
-                BaseDamage damage = baseDamage(context, ruleAttackRoll, evt.Target);
-
-                ruleDealDamage.Add(damage);
-
-                // Quarter for passed save
                 RuleSavingThrow fort_save = fortSaveRule(context, evt.Target);
                 context.TriggerRule(fort_save);
                 if(fort_save.IsPassed)
                 {
-                    ruleDealDamage.Half = true;
                     ruleDealDamage.HalfBecauseSavingThrow = true;
+                } else
+                {
+                    BaseDamage damage = ruleDealDamage.DamageBundle.First;
+                    damage.ReplaceDice(new DiceFormula(damage.Dice.Rolls * 2, damage.Dice.Dice));
                 }
             } catch (Exception ex)
             {
