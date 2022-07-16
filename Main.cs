@@ -4,8 +4,11 @@ using HarmonyLib;
 using Kingmaker.Blueprints.JsonSystem;
 using BlueprintCore.Utils;
 using KineticistElementsExpanded.ElementAether;
+using KineticistElementsExpanded.ElementVoid;
+using Void = KineticistElementsExpanded.ElementVoid.Void;
 using Kingmaker;
 using System.Linq;
+
 
 namespace KineticistElementsExpanded
 {
@@ -90,6 +93,7 @@ namespace KineticistElementsExpanded
             Helper.Print("Loading Kineticist Elements Expanded");
 
             LoadSafe(Aether.Configure);
+            LoadSafe(Void.Configure);
 
             Helper.Print("Finished loading Kineticist Elements Expanded");
 

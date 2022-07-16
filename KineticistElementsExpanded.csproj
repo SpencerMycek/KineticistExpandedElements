@@ -96,7 +96,7 @@
     <ItemGroup>
       <Assembly Include="$(OutputPath)\KineticistElementsExpanded.dll" />
 	  <ModConfig Include="$(OutputPath)\Info.json" />
-      <debug_symbols Include="$(OutputPath)\KineticistElementsExpanded.pdb"/>
+      <debug_symbols Include="$(OutputPath)\KineticistElementsExpanded.pdb" />
     </ItemGroup>
 
     <Copy SourceFiles="@(Assembly)" DestinationFolder="$(WrathPath)\Mods\Kineticist Element - Aether" />

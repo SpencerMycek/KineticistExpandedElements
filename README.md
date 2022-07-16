@@ -25,6 +25,13 @@ Thank you for reading!
 I also do not have the skills currently to add custom effects to the game, so any element added will borrow the effect from other kineticist elements.
 I shall try to match the theme/element of the ability as best as possible to make it visually appealing
 
+## Help Requested
+
+There are a lot of spell effects in game, and I've added a lot of spells, spell-likes, and special abilities that I cannot add all of the required FX or icons myself
+
+If you come across any icons or FX (projectiles/AoE/etc) that you think might fit one of these abilities, please let me know and I'll get them added soon
+Thank you!!
+
 ## Content
 
 | Element | Feature | Description | Status |
@@ -44,6 +51,23 @@ I shall try to match the theme/element of the ability as best as possible to mak
 | Aether | Self Telekinesis | Wild Talent chain that allows to kineticist to lift themselves over the battlefield (flight) | Done |
 | Aether | Spell Deflection | Wild Talent that allows the kineticist to form a barrier around themselves that provide resistance to spells (Spell Resistance) | Done |
 | Aether | Suffocation | Wild Talent that allows the kineticist to choke a target from a distance | Not Done |
+| Void | Element Choice | The main void element, adds selections for base kineticist (and archetypes) and kinetic knight | Done |
+| Void | Basic Selections | Negative and Gravity Blast - Including all vanilla infusions and Kinetic Blade | Done |
+| Void | Void Blast | Composite Blast gained by mixing Negative and Gravity | Done |
+| Void | Negative Admixture | Composite Blast (Special) - Mix with any simple energy blast to make the damage half negative | Done |
+| Void | Gravitic Boost | Composite Blast (Special) - Mix with any simple physical blast to increase the damage die to d8 | Done |
+| Void | Greater Admixture and Boost | Composite Blasts (Special) - Same a the above special composites, but they work with composite blasts (energy or physical) | Not Done |
+| Void | Dampening Infusion | Functions as Dazzling Infusion | Done |
+| Void | Enervating Infusion | Inflicts one negative level on the target on a failed save | Done |
+| Void | Pulling Infusion | Uses the "Pulling" combat maneuver against the target | Done |
+| Void | Unnerving Infusion | Applies shaken to the target enemy | Done |
+| Void | Vampiric Infusion | On hit, allows the user to use "Kinetic Healer" without a burn cost | Done |
+| Void | Weighing Infusion | Functions as Entangling Infusion | Done |
+| Void | Singularity Infusion | Creates a reoccuring and growing AOE, centered around the target point | Done |
+| Void | Corpse Puppet | Wild Talent that allows the user to raise a few skeletons | Done |
+| Void | Curse Breaker | Wild Talent that allows the user to break curses and enchantments on a target | Done |
+| Void | Undead Grip | Wild Talent that allows the user to hold undead creatures still, like hold person | Done |
+| Void | Gravity Control | Wild Talent that allows the user to alter gravity on themselves (flight) | Done |
 
 ## Compatibility
 
