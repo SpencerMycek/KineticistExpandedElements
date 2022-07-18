@@ -66,6 +66,13 @@ Burn: 0
 Prerequisite: emptiness
 You use your gravitic abilities to move yourself, as per greater flame jet.";
 
+        protected static readonly string VoidHealerDescription = @"Element: Void
+Type: utility
+Level: 1
+Burn: 1
+This functions as kinetic healer, except it heals undead (and others healed by negative energy).";
+
+
         protected static readonly string UndeadGripDescription = @"Element: Void
 Type: utility
 Level: 3
@@ -107,7 +114,7 @@ Your kinetic blast drains life force. Foes that take damage from your infused bl
 Type: substance infusion
 Level: 1
 Burn: 1
-Associated Blasts: negative, void
+Associated Blasts: gravity, void
 {g|Encyclopedia:Saving_Throw}Saving Throw{/g}: none
 Your kinetic blast pulls foes toward you. Attempt a drag combat maneuver check against each target damaged by your infused blast (the blast always drags the foe closer to you), using your Constitution modifier instead of your Strength modifier to determine your CMB.";
 

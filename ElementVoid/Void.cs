@@ -80,6 +80,9 @@ namespace KineticistElementsExpanded.ElementVoid
 
         private static BlueprintFeature SingularityInfusion = null;
 
+        private static BlueprintAbility VoidHealerAbility = null;
+        private static BlueprintFeature VoidHealer = null;
+
         public static void Configure()
         {
 
@@ -292,8 +295,7 @@ namespace KineticistElementsExpanded.ElementVoid
 
         public static BlueprintFeature CreateEmptiness()
         {
-            UnityEngine.Sprite icon = null;
-
+            UnityEngine.Sprite icon = Helper.CreateSprite("emptiness.png");
 
             #region Resource
 
@@ -418,7 +420,9 @@ namespace KineticistElementsExpanded.ElementVoid
                 Helper.CreateAddFacts(emptiness_buff.ToRef2(), emptiness_ability.ToRef2()),
                 // Prereqs Gravity/Negative Feature, Respective Blade features
                 Helper.CreatePrerequisiteFeature(Gravity.BlastFeature, any: true),
-                Helper.CreatePrerequisiteFeature(Negative.BlastFeature, any:true),
+                Helper.CreatePrerequisiteFeature(Gravity.BladeFeature, any: true),
+                Helper.CreatePrerequisiteFeature(Negative.BlastFeature, any: true),
+                Helper.CreatePrerequisiteFeature(Negative.BladeFeature, any: true),
                 Helper.CreateAddAbilityResources(false, 0, true, false, emptiness_resource.ToRef())
                 );
 
@@ -428,8 +432,6 @@ namespace KineticistElementsExpanded.ElementVoid
         #endregion
 
         #region Gravity Blast
-        // TODO,
-        //      Form Infusions
 
         public static void CreateGravityBlast()
         {
@@ -455,7 +457,7 @@ namespace KineticistElementsExpanded.ElementVoid
 
         private static BlueprintAbility CreateGravityBlastVariant_base()
         {
-            UnityEngine.Sprite icon = Helper.StealIcon("a1ff59a5c5774874ad11cdf73b7f7cec"); // Trickster3LowGravity
+            UnityEngine.Sprite icon = Helper.CreateSprite("gravityBlast.png");
 
             var ability = Helper.CreateBlueprintAbility("GravityBlastAbility", "Gravity Blast",
                 GravityBlastDescription, null, icon, AbilityType.Special,
@@ -808,7 +810,7 @@ namespace KineticistElementsExpanded.ElementVoid
 
         public static void CreateGravityBlastAbility(params BlueprintAbility[] variants)
         {
-            UnityEngine.Sprite icon = null;
+            UnityEngine.Sprite icon = Helper.CreateSprite("gravityBlast.png");
 
             var ability = Helper.CreateBlueprintAbility("GravityBlastBase", "Gravity Blast", 
                 GravityBlastDescription, null, icon, AbilityType.Special, 
@@ -864,8 +866,7 @@ namespace KineticistElementsExpanded.ElementVoid
         #endregion
 
         #region Negative Blast
-        // TODO
-        // Form Infusions
+
         public static void CreateNegativeBlast()
         {
             // Variants
@@ -890,7 +891,7 @@ namespace KineticistElementsExpanded.ElementVoid
 
         private static BlueprintAbility CreateNegativeBlastVariant_base()
         {
-            UnityEngine.Sprite icon = Helper.StealIcon("a1ff59a5c5774874ad11cdf73b7f7cec"); // Trickster3LowGravity
+            UnityEngine.Sprite icon = Helper.CreateSprite("negativeBlast.png");
 
             var ability = Helper.CreateBlueprintAbility("NegativeBlastAbility", "Negative Blast",
                 NegativeBlastDescription, null, icon, AbilityType.Special,
@@ -1232,7 +1233,7 @@ namespace KineticistElementsExpanded.ElementVoid
 
         public static void CreateNegativeBlastAbility(params BlueprintAbility[] variants)
         {
-            UnityEngine.Sprite icon = null;
+            UnityEngine.Sprite icon = Helper.CreateSprite("negativeBlast.png");
 
             var ability = Helper.CreateBlueprintAbility("NegativeBlastBase", "Negative Blast",
                 NegativeBlastDescription, null, icon, AbilityType.Special,
@@ -1289,10 +1290,6 @@ namespace KineticistElementsExpanded.ElementVoid
         #endregion
 
         #region Composite Blasts
-        // TODO
-        //  Gravitic Boost - Simple but d8s
-        //  Negative Admixture - Any simple, half negative
-        //  Void Blast - Half Bludgeoning, Half Negative
 
         private static void CreateVoidComposites()
         {
@@ -1332,7 +1329,7 @@ namespace KineticistElementsExpanded.ElementVoid
 
         private static BlueprintAbility CreateVoidBlastVariant_base()
         {
-            UnityEngine.Sprite icon = Helper.StealIcon("a1ff59a5c5774874ad11cdf73b7f7cec"); // Trickster3LowGravity
+            UnityEngine.Sprite icon = Helper.CreateSprite("voidBlast.png");
 
             var ability = Helper.CreateBlueprintAbility("VoidBlastAbility", "Void Blast",
                 VoidBlastDescription, null, icon, AbilityType.Special,
@@ -1686,7 +1683,7 @@ namespace KineticistElementsExpanded.ElementVoid
 
         public static void CreateVoidBlastAbility(params BlueprintAbility[] variants)
         {
-            UnityEngine.Sprite icon = null;
+            UnityEngine.Sprite icon = Helper.CreateSprite("voidBlast.png");
 
             var ability = Helper.CreateBlueprintAbility("VoidBlastBase", "Void Blast",
                 VoidBlastDescription, null, icon, AbilityType.Special,
@@ -2191,14 +2188,36 @@ namespace KineticistElementsExpanded.ElementVoid
         private static void CreateVampiricInfusion()
         {
             UnityEngine.Sprite icon = Helper.StealIcon("30c81aff8e5293d418759d10f193f347"); // VampiricInfusionAbility
-            var vampiric_effect_buff = ResourcesLibrary.TryGetBlueprint<BlueprintBuff>("c27e70fddac337745943f8151cec0709"); // VampiricInfusionBuffEffect
+
+            var effect_buff = Helper.CreateBlueprintBuff("VoidVampiricInfusionEffectBuff", "Vampiric Infusion — Void Healer",
+                "Your next Void Healer ability burn cost is reduced to zero.", null, icon, null);
+            effect_buff.Flags(removeOnRest: true);
+            effect_buff.SetComponents
+                (
+                new AddKineticistBurnModifier
+                {
+                    Value = -1,
+                    BurnType = KineticistBurnType.WildTalent,
+                    m_AppliableTo = new BlueprintAbilityReference[1] { VoidHealerAbility.ToRef() },
+                    RemoveBuffOnAcceptBurn = true
+                },
+                new AddAbilityUseTrigger
+                {
+                    Action = Helper.CreateActionList(new ContextActionRemoveSelf {}),
+                    AfterCast = true,
+                    ForOneSpell = true,
+                    m_Ability = VoidHealerAbility.ToRef(),
+                    Type = AbilityType.Spell,
+                    Range = AbilityRange.Touch
+                }
+                );
 
             var onCaster = new ContextActionOnContextCaster
             {
-                Actions = Helper.CreateActionList(vampiric_effect_buff.CreateContextActionApplyBuff(asChild: true, permanent: true))
+                Actions = Helper.CreateActionList(effect_buff.CreateContextActionApplyBuff(asChild: true, permanent: true))
             };
 
-            var ability = Helper.CreateBlueprintActivatableAbility("VampiricInfusionAbility", "Vampiric Infusion",
+            var ability = Helper.CreateBlueprintActivatableAbility("VoidVampiricInfusionAbility", "Vampiric Infusion",
                 VampiricInfusionDescription, out var buff, null, icon, UnitCommand.CommandType.Free, Kingmaker.UnitLogic.ActivatableAbilities.AbilityActivationType.WithUnitCommand,
                 Kingmaker.UnitLogic.ActivatableAbilities.ActivatableAbilityGroup.SubstanceInfusion, true, true);
             ability.m_ActivateWithUnitCommand = UnitCommand.CommandType.Free;
@@ -2233,12 +2252,12 @@ namespace KineticistElementsExpanded.ElementVoid
                 }
                 );
 
-            var feature = Helper.CreateBlueprintFeature("VampiricInfusionFeature", "Vampiric Infusion",
+            var feature = Helper.CreateBlueprintFeature("VoidVampiricInfusionFeature", "Vampiric Infusion",
                 VampiricInfusionDescription, null, icon, FeatureGroup.KineticBlastInfusion);
             feature.SetComponents
                 (
                 Helper.CreatePrerequisiteClassLevel(Tree.Class, 10),
-                Helper.CreatePrerequisiteFeature(AnyRef.Get(Kineticist.ref_kinetic_healer).To<BlueprintFeatureReference>()),
+                Helper.CreatePrerequisiteFeature(VoidHealer.ToRef()),
                 Helper.CreateAddFacts(ability.ToRef2())
                 );
 
@@ -2346,7 +2365,6 @@ namespace KineticistElementsExpanded.ElementVoid
         private static void CreateVoidWildTalents(BlueprintFeature emptiness)
         {
             AddToSkilledKineticist();
-            AddToKineticHealer();
             AddToExpandedDefense(emptiness);
 
             (var wild_0, var wild_1, var wild_2, var wild_3) = CreateWildTalentBonusFeatVoid();
@@ -2356,9 +2374,10 @@ namespace KineticistElementsExpanded.ElementVoid
             var gravity_control = CreateGravityControl();
             var gravity_control_greater = CreateGravityControlGreater(gravity_control);
             var undead_grip = CreateUndeadGrip();
+            var void_healer = CreateVoidHealer();
 
-            Kineticist.TryDarkCodexAddExtraWildTalent(corpse_puppet.ToRef(), curse_breaker.ToRef(), gravity_control.ToRef(), gravity_control_greater.ToRef(), undead_grip.ToRef(), wild_0.ToRef(), wild_1.ToRef(), wild_2.ToRef(), wild_3.ToRef());
-            Kineticist.AddToWildTalents(corpse_puppet.ToRef(), curse_breaker.ToRef(), gravity_control.ToRef(), gravity_control_greater.ToRef(), undead_grip.ToRef());
+            Kineticist.TryDarkCodexAddExtraWildTalent(corpse_puppet.ToRef(), curse_breaker.ToRef(), gravity_control.ToRef(), gravity_control_greater.ToRef(), undead_grip.ToRef(), wild_0.ToRef(), wild_1.ToRef(), wild_2.ToRef(), wild_3.ToRef(), void_healer.ToRef());
+            Kineticist.AddToWildTalents(corpse_puppet.ToRef(), curse_breaker.ToRef(), gravity_control.ToRef(), gravity_control_greater.ToRef(), undead_grip.ToRef(), void_healer.ToRef());
         }
 
         private static void AddToSkilledKineticist()
@@ -2380,15 +2399,6 @@ namespace KineticistElementsExpanded.ElementVoid
 
             var factContextAction = Kineticist.ref_skilled_kineticist.Get().GetComponent<AddFactContextActions>();
             Helper.AppendAndReplace(ref factContextAction.Activated.Actions, conditional);
-        }
-        private static void AddToKineticHealer()
-        {
-            var feat_preq = Kineticist.ref_kinetic_healer.Get().GetComponent<PrerequisiteFeaturesFromList>();
-            Helper.AppendAndReplace(ref feat_preq.m_Features,
-                AnyRef.Get(VoidFocus.First).To<BlueprintFeatureReference>(),
-                AnyRef.Get(VoidFocus.Second).To<BlueprintFeatureReference>(),
-                AnyRef.Get(VoidFocus.Third).To<BlueprintFeatureReference>(),
-                AnyRef.Get(VoidFocus.Knight).To<BlueprintFeatureReference>());
         }
         private static void AddToExpandedDefense(BlueprintFeature emptiness)
         {
@@ -2674,6 +2684,66 @@ namespace KineticistElementsExpanded.ElementVoid
             return feature;
         }
 
+        private static BlueprintFeature CreateVoidHealer()
+        {
+            UnityEngine.Sprite icon = Helper.CreateSprite("voidHealer.png");
+            var negativeAffinity = Helper.ToRef<BlueprintUnitFactReference>("d5ee498e19722854198439629c1841a5"); // NegativeEnergyAffinity
+
+            var heal = new ContextActionHealTarget
+            {
+                Value = new ContextDiceValue
+                {
+                    DiceType = DiceType.Zero,
+                    DiceCountValue = new ContextValue { Value = 0, ValueType = ContextValueType.Simple },
+                    BonusValue = new ContextValue { ValueType = ContextValueType.Shared, ValueShared = AbilitySharedValue.Duration }
+                }
+            };
+
+            var fx = new ContextActionSpawnFx
+            {
+                PrefabLink = new PrefabLink { AssetId = "e9399b6d57369ab4a9c3d88798d92f33" }
+            };
+
+            var calc_shared_duration = Kineticist.Blast.CalculateSharedValue(type: AbilitySharedValue.Duration, dice: DiceType.D6);
+            calc_shared_duration.Value.BonusValue.ValueType = ContextValueType.Shared;
+            calc_shared_duration.Value.BonusValue.ValueShared = AbilitySharedValue.Damage;
+
+            var ability = Helper.CreateBlueprintAbility("VoidHealerAbility", "Void Healer",
+                VoidHealerDescription, null, icon, AbilityType.SpellLike, UnitCommand.CommandType.Standard,
+                AbilityRange.Touch, null, null).TargetAlly(CastAnimationStyle.Kineticist);
+            ability.SpellResistance = true;
+            ability.SetComponents
+                (
+                Helper.CreateAbilityEffectRunAction(SavingThrowType.Unknown, heal, fx),
+                Kineticist.Blast.RankConfigDice(twice: false, half: false),
+                Kineticist.Blast.RankConfigBonus(half_bonus: false),
+                Kineticist.Blast.CalculateSharedValue(),
+                calc_shared_duration,
+                Kineticist.Blast.BurnCost(null, infusion: 0, blast: 0, talent: 1),
+                Helper.CreateAbilityTargetHasFact(false, negativeAffinity),
+                new SpellComponent { School = SpellSchool.Universalist }
+                );
+
+            var feature = Helper.CreateBlueprintFeature("VoidHealerFeature", "Void Healer",
+                VoidHealerDescription, null, icon, FeatureGroup.KineticWildTalent);
+            feature.IsClassFeature = true;
+            feature.SetComponents
+                (
+                Helper.CreatePrerequisiteFeaturesFromList(true,
+                    AnyRef.Get(VoidFocus.First).To<BlueprintFeatureReference>(),
+                    AnyRef.Get(VoidFocus.Second).To<BlueprintFeatureReference>(),
+                    AnyRef.Get(VoidFocus.Third).To<BlueprintFeatureReference>(),
+                    AnyRef.Get(VoidFocus.Knight).To<BlueprintFeatureReference>()),
+                Helper.CreateAddFacts(ability.ToRef2()),
+                Helper.CreatePrerequisiteNoFeature(feature.ToRef())
+                );
+
+            VoidHealerAbility = ability;
+            VoidHealer = feature;
+
+            return feature;
+        }
+
         #region Gravity Control
 
         private static BlueprintFeature CreateGravityControl()
@@ -2730,8 +2800,6 @@ namespace KineticistElementsExpanded.ElementVoid
                 Helper.CreatePrerequisiteClassLevel(Tree.Class, 6),
                 Helper.CreateAddFacts(ability.ToRef2())
                 );
-
-            Helper.AppendAndReplace(ref Kineticist.wild_talent_selection.m_AllFeatures, feature.ToRef());
 
             return feature;
         }
@@ -2790,8 +2858,6 @@ namespace KineticistElementsExpanded.ElementVoid
                 remove_lesser,
                 Helper.CreateAddFacts(ability.ToRef2())
                 );
-
-            Helper.AppendAndReplace(ref Kineticist.wild_talent_selection.m_AllFeatures, feature.ToRef());
 
             gravity_control.AddComponents(Helper.CreatePrerequisiteNoFeature(feature.ToRef()));
 
