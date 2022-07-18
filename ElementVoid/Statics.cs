@@ -28,7 +28,7 @@ You manipulate gravity to distort and buffet your foe’s body.";
 Type: simple blast
 Level: —
 Burn: 0
-Blast Type: physical
+Blast Type: energy
 {g|Encyclopedia:Damage}Damage{/g}: negative energy
 You blast your foe with negative energy.";
 
