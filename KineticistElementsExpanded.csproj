@@ -9,6 +9,7 @@
 
 	<AssemblyName>KineticistElementsExpanded</AssemblyName>
 	<WrathPath>C:\Program Files (x86)\Steam\steamapps\common\Pathfinder Second Adventure\</WrathPath>
+	<ModRepo>C:\Users\Spenc\source\repos\Kineticist Element - Aether\</ModRepo>
   </PropertyGroup>
 
   <ItemGroup>
@@ -59,6 +60,9 @@
 	  <Reference Include="0Harmony">
 		  <HintPath>$(WrathPath)\Wrath_Data\Managed\UnityModManager\0Harmony.dll</HintPath>
 	  </Reference>
+	  <Reference Include="UnityEngine.ImageConversionModule">
+		  <HintPath>$(WrathPath)\Wrath_Data\Managed\UnityEngine.ImageConversionModule.dll</HintPath>
+	  </Reference>
 	  <Reference Include="UnityModManager">
 		  <HintPath>$(WrathPath)\Wrath_Data\Managed\UnityModManager\UnityModManager.dll</HintPath>
 	  </Reference>
@@ -75,6 +79,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Icons\" />
     <Folder Include="Properties\" />
   </ItemGroup>
 
@@ -97,11 +102,13 @@
       <Assembly Include="$(OutputPath)\KineticistElementsExpanded.dll" />
 	  <ModConfig Include="$(OutputPath)\Info.json" />
       <debug_symbols Include="$(OutputPath)\KineticistElementsExpanded.pdb" />
+      <media Include="$(ModRepo)\Icons\*" />
     </ItemGroup>
 
     <Copy SourceFiles="@(Assembly)" DestinationFolder="$(WrathPath)\Mods\Kineticist Element - Aether" />
     <Copy SourceFiles="@(ModConfig)" DestinationFolder="$(WrathPath)\Mods\Kineticist Element - Aether" />
 	<Copy SourceFiles="@(debug_symbols)" DestinationFolder="$(WrathPath)\Mods\Kineticist Element - Aether" />
+	<Copy SourceFiles="@(media)" DestinationFolder="$(WrathPath)\Mods\Kineticist Element - Aether\Icons" />
   </Target>
 
 
