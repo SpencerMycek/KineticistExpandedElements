@@ -9,6 +9,8 @@ Thanks to [Truinto][1] author of [Dark Codex][2] for providing help, advice, and
 
 Thanks to the entire OwlCat community discord and the modding community there, for answering my plethora of strange questions and pushing me in the right directions
 
+Thank you to [Adsam112][3] for some custom icon images for the Void Element, and thank you to [RevanStarForge][4] for some color variations of those images.
+
 ## Description
 
 This mod adds expanded element choices for the Kineticist class. Currently this mod adds only the "Aether" element from the Tabletop version of Pathfinder.
@@ -78,16 +80,12 @@ If you notice any issues, please contact me or open up an issue on this reposito
 
 ## Recent Changes
 
-- Many Throw Infusion Added
-- Force Hook Infusion Added
-- Foe Throw Infusion Added
-- Change: Telekinetic Blasts now use Battering Blast projectiles (Looks more "Force-y")
-- Change: The display name of the extended Spell Deflection variant was changed to better distinguish itself
+- Void Element Added
+- Various fixes to option choices and description typos
+- New Icons for Void Abilities
+- Gravity Control (and Greater) no longer have duplicate options
 
-- Fix Wild Talents can now be picked with DarkCodex's ExtraWildTalents feat, if that mod is installed
-- Force Blast now does Composite Energy Damage, instead of simple
-- Many Foe and Foe Throw now deal the correct amount of damage
-- Telekinetic Finesse now adds 1/2 kineticist level to Trickery
+- Taking your second elemental focus should give you force blast if your first element was Aether (the abilities didn't appear before, I think)')
 
 ## Known Issues
 
@@ -98,3 +96,5 @@ It does work correctly, when used with Extended Range and basic Force blast.
 
 [1]: https://github.com/Truinto
 [2]: https://github.com/Truinto/DarkCodex
+[3]: https://github.com/Adsam112
+[4]: https://github.com/RevanStarforge

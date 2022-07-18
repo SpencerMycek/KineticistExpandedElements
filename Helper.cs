@@ -119,6 +119,7 @@ public static class Helper
             }
             throw new NotImplementedException();
         }
+
         /*
                 public static string Clipboard
                 {
@@ -3024,8 +3025,8 @@ public static class Helper
             try
             {
                 var bytes = File.ReadAllBytes(Path.Combine(Main.ModPath, "Icons", filename));
-                var texture = new Texture2D(width, height);
-                //texture.LoadImage(bytes);
+                var texture = new Texture2D(width, height, TextureFormat.RGBA32, false);
+                _ = texture.LoadImage(bytes);
                 return Sprite.Create(texture, new Rect(0, 0, width, height), new Vector2(0, 0));
             }
             catch (Exception e)

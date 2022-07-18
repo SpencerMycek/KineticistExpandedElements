@@ -45,9 +45,6 @@ namespace KineticistElementsExpanded.ElementAether
 {
     class Aether : Statics
     {
-        // Custom Unique Component for Disintegrate, since you can now do stuf like AbilityCustomFoeThrowUnique.cs
-        // Disintegrating Infusion now does correct damage and uses maximize and empower
-        // Works with single target infusions and blade, does not work with spindle or wall
 
         public static void Configure()
         {
@@ -174,7 +171,13 @@ namespace KineticistElementsExpanded.ElementAether
                 Helper.CreateAddFeatureIfHasFact(blast_feature.ToRef2())
                 );
 
-            var entry1 = Helper.CreateLevelEntry(1, blast_progression);
+            progression.m_Classes = new BlueprintProgression.ClassWithLevel
+            {
+                AdditionalLevel = 0,
+                m_Class = Helper.ToRef<BlueprintCharacterClassReference>("42a455d9ec1ad924d889272429eb8391")
+            }.ObjToArray();
+
+            var entry1 = Helper.CreateLevelEntry(7, blast_progression);
             Helper.AddEntries(progression, entry1);
 
             Helper.AppendAndReplace(ref element_selection.m_AllFeatures, progression.ToRef());
@@ -200,7 +203,13 @@ namespace KineticistElementsExpanded.ElementAether
                 Helper.CreateAddFeatureIfHasFact(blast_feature.ToRef2())
                 );
 
-            var entry1 = Helper.CreateLevelEntry(1, blast_progression);
+            progression.m_Classes = new BlueprintProgression.ClassWithLevel
+            {
+                AdditionalLevel = 0,
+                m_Class = Helper.ToRef<BlueprintCharacterClassReference>("42a455d9ec1ad924d889272429eb8391")
+            }.ObjToArray();
+
+            var entry1 = Helper.CreateLevelEntry(15, blast_progression);
             Helper.AddEntries(progression, entry1);
 
             Helper.AppendAndReplace(ref element_selection.m_AllFeatures, progression.ToRef());
