@@ -29,5 +29,20 @@ Blast Type: physical
 {g|Encyclopedia:Damage}Damage{/g}: {g|Encyclopedia:Damage_Type}bludgeoning{/g}, piercing, and slashing
 You lash out with boughs, vines, or a deluge of stinging blooms.";
 
+        protected static readonly string VerdantBlastDescription = @"Element: Wood
+Type: composite blast
+Level: —
+Burn: 2
+Prerequisite(s): primary element(wood), expanded element(wood)
+Blast Type: physical
+{g|Encyclopedia:Damage}Damage{/g}: {g|Encyclopedia:Damage_Type}bludgeoning{/g}, piercing, slashing, and positive
+You blast your foes with fanciful wild plant growth overflowing with positive energy from the First World. Verdant Blast’s damage counts as positive energy only when it would be beneficial to you.";
+
+        protected static readonly string FleshofWoodDescription = @"Element: Wood
+Type: defense (Su)
+Level: —
+Burn: 0
+Your skin toughens like timber, turning aside some blows. You gain a +1 enhancement bonus to your existing natural armor bonus. By accepting 1 point of burn, you can increase this enhancement bonus by 1. For every 3 levels beyond 2nd, you can accept 1 additional point of burn to further increase this enhancement bonus by 1 (to a maximum of +7 at 17th level).";
+
     }
 }
