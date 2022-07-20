@@ -1795,8 +1795,6 @@ namespace KineticistElementsExpanded.ElementAether
 
         #endregion
 
-        #endregion
-
         #region Wild Talents
 
         private static void CreateAetherWildTalents(BlueprintProgression first_prog, BlueprintProgression kinetic_prog, BlueprintProgression second_prog, BlueprintProgression third_prog, BlueprintFeature tb_feature, BlueprintFeature fw_feature)
