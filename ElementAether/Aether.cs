@@ -222,7 +222,7 @@ namespace KineticistElementsExpanded.ElementAether
 
         private static BlueprintFeature CreateForceWard(BlueprintFeature tb_feature)
         {
-            var icon = Helper.StealIcon("25fc1cc0-7ea3-4f94-eb6f-bbce473767b4");
+            var icon = Helper.CreateSprite("forceWard.png");
             var kineticist_class = Helper.ToRef<BlueprintCharacterClassReference>("42a455d9-ec1a-d924-d889-272429eb8391");
 
             #region Effect Feature
@@ -379,7 +379,7 @@ namespace KineticistElementsExpanded.ElementAether
 
         private static BlueprintAbility CreateTelekineticBlastAbility(params BlueprintAbility[] variants)
         {
-            var icon = Helper.StealIcon("0ab1552e-2ebd-acf4-4bb7-b20f5393366d");
+            var icon = Helper.CreateSprite("telekineticBlast.png");
 
             var ability = Helper.CreateBlueprintAbility("TelekineticBlastBase",
                 "Telekinetic Blast", TelekineticBlastDescription,
@@ -441,7 +441,7 @@ namespace KineticistElementsExpanded.ElementAether
 
         private static BlueprintAbility CreateTelekineticBlastVariant_base()
         {
-            var icon = Helper.StealIcon("0ab1552e-2ebd-acf4-4bb7-b20f5393366d");
+            var icon = Helper.CreateSprite("telekineticBlast.png");
 
             var blast = Helper.CreateBlueprintAbility(
                 "TelekineticBlastAbility",
@@ -965,7 +965,7 @@ namespace KineticistElementsExpanded.ElementAether
 
         private static BlueprintAbility CreateForceBlastAbility(params BlueprintAbility[] variants)
         {
-            var icon = Helper.StealIcon("3baf0164-9a92-ae64-0927-b0f633db7c11"); // SteamBlastBase
+            var icon = Helper.CreateSprite("forceBlast.png");
 
             var ability = Helper.CreateBlueprintAbility("ForceBlastBase",
                 "Force Blast", ForceBlastDescription,
@@ -2235,7 +2235,7 @@ namespace KineticistElementsExpanded.ElementAether
         {
             var wild_talent_selection = ResourcesLibrary.TryGetBlueprint<BlueprintFeatureSelection>("5c883ae0-cd6d-7d54-48b7-a420f51f8459"); // Kineticist Wild Talent Selection
             var kineticist_class = Helper.ToRef<BlueprintCharacterClassReference>("42a455d9-ec1a-d924-d889-272429eb8391"); // Kineticist Base Class
-            var icon = Helper.StealIcon("3c08d842-e802-c3e4-eb19-d15496145709"); // Uncanny Dodge
+            var icon = Helper.CreateSprite("touchsite.png");
 
             var ignore_flatFoot = new FlatFootedIgnore
             {

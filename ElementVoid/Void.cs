@@ -1803,7 +1803,7 @@ namespace KineticistElementsExpanded.ElementVoid
 
         public static void CreateNegativeAdmixture()
         {
-            UnityEngine.Sprite icon = Helper.StealIcon("0e449a987c784b6f8b13319936667053"); // RitualGreaterChannelNegativeEnergyAbility
+            UnityEngine.Sprite icon = Helper.CreateSprite("negativeAdmixture.png");
 
             var ability = Helper.CreateBlueprintActivatableAbility("NegativeAdmixtureAbility", "Negative Admixture",
                 NegativeAdmixtureDescription, out var buff, null, icon, UnitCommand.CommandType.Free, Kingmaker.UnitLogic.ActivatableAbilities.AbilityActivationType.WithUnitCommand,
