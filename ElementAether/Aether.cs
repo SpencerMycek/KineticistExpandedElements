@@ -657,15 +657,22 @@ namespace KineticistElementsExpanded.ElementAether
                 {
                     Condition = null,
                     Weapon = "65951e1195848844b8ab8f46d942f6e8".ToRef<BlueprintItemWeaponReference>(),
-                    Projectile = Resource.Projectile.BatteringBlast00.ToRef<BlueprintProjectileReference>(),
+                    Projectiles = new BlueprintProjectileReference[]
+                        { 
+                            Resource.Projectile.MagicMissile00.ToRef<BlueprintProjectileReference>(),
+                            Resource.Projectile.MagicMissile01.ToRef<BlueprintProjectileReference>(),
+                            Resource.Projectile.MagicMissile02.ToRef<BlueprintProjectileReference>(),
+                            Resource.Projectile.MagicMissile03.ToRef<BlueprintProjectileReference>(),
+                            Resource.Projectile.MagicMissile04.ToRef<BlueprintProjectileReference>(),
+                        },
                     TargetType = TargetType.Enemy,
                     DelayBetweenChain = 0f,
-                    radius = new Feet { m_Value = 30 }.Meters,
+                    radius = new Feet { m_Value = 30 },
                     TargetsCount = Helper.CreateContextValue(AbilityRankType.ProjectilesCount)
                 },
                 Helper.CreateContextRankConfig(ContextRankBaseValueType.ClassLevel, ContextRankProgression.AsIs, type: AbilityRankType.ProjectilesCount,
                     classes: new BlueprintCharacterClassReference[] { kineticist_class })
-                ).TargetEnemy(CastAnimationStyle.Kineticist);
+                ).TargetPoint(CastAnimationStyle.Kineticist);
             blast.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten;
 
             ((ContextActionDealDamage)actions.Actions[0]).Value.BonusValue.ValueType = ContextValueType.Shared;
