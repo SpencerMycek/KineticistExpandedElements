@@ -371,11 +371,5 @@ namespace KineticistElementsExpanded.KineticLib
             public Element Element1;
             [CanBeNull] public Element Element2; // other than earth and fire
         }
-
-        public class Infusion
-        {
-            public BlueprintFeatureReference InfusionFeature;
-            [CanBeNull] public BlueprintBuffReference InfusionBuff; // Substance only (typically)
-        }
     }
 }

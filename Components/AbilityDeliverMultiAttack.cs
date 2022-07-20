@@ -2,6 +2,7 @@
 using Kingmaker.Blueprints;
 using Kingmaker.Controllers;
 using Kingmaker.Controllers.Projectiles;
+using Kingmaker.Designers;
 using Kingmaker.ElementsSystem;
 using Kingmaker.EntitySystem;
 using Kingmaker.EntitySystem.Entities;
@@ -25,89 +26,135 @@ using UnityEngine;
 
 namespace KineticistElementsExpanded.Components
 {
-    public class AbilityDeliverMultiAttack : AbilityDeliverEffect
+    public class AbilityDeliverMultiAttack : AbilityDeliverEffect, IAbilityAoERadiusProvider
     {
         public bool TargetDead;
         public float DelayBetweenChain;
-        public float radius;
+        public Feet radius;
         public ContextValue TargetsCount;
         public TargetType TargetType;
         public ConditionsChecker Condition;
         public BlueprintItemWeaponReference Weapon;
-        public BlueprintProjectileReference Projectile;
+        public BlueprintProjectileReference[] Projectiles;
         public bool NeedAttackRoll => Weapon != null;
+        private static System.Random rnd = new System.Random();
+
+        public Feet AoERadius 
+        {
+            get
+            {
+                return this.radius;
+            }
+        
+        }
+
+        public TargetType Targets
+        {
+            get
+            {
+                return this.TargetType;
+            }
+
+        }
+
+        public BlueprintProjectile Projectile
+        {
+            get
+            {
+                return Projectiles[rnd.Next(1, Projectiles.Length)].Get();
+            }
+        }
 
         public override IEnumerator<AbilityDeliveryTarget> Deliver(AbilityExecutionContext context, TargetWrapper target)
         {
             var launcher = context.MaybeCaster;
-            var currentTarget = target.Unit;
-            var usedTargets = new HashSet<UnitEntityData>();
+            var Targets = new HashSet<UnitEntityData>();
             int targetsCount = this.TargetsCount.Calculate(context);
 
-            if (launcher == null || currentTarget == null)
+            if (launcher == null)
                 yield break;
 
             int targetIndex = 0;
+
             while (targetIndex < targetsCount)
             {
-                var delivery = DeliverInternal(context, launcher, currentTarget);
-                while (delivery.MoveNext()) // cast projectile and wait until resolved
-                    yield return delivery.Current; // returning a target will immediately trigger AbilityExecutionProcess.ApplyEffect(context, delivery.Current, applyEffect, null);
-
-                if (delivery.Current == null) // if process was canceled or missed stop all // Just cancelled
-                    yield break;
-
+                var temp = SelectNextTarget(context, target, Targets, this.AoERadius.Meters);
+                if (temp == null) break;
+                Targets.Add(temp);
                 targetIndex++;
-
-                if (targetIndex < targetsCount) // get next target, unless last projectile
-                {
-                    if (this.DelayBetweenChain > 0f) // wait delay, if any
-                    {
-                        var startTime = Game.Instance.TimeController.GameTime;
-                        while (Game.Instance.TimeController.GameTime - startTime < this.DelayBetweenChain.Seconds())
-                            yield return null;
-                    }
-
-                    usedTargets.Add(currentTarget);
-                    currentTarget = SelectNextTarget(context, currentTarget, usedTargets, this.radius);
-                    if (currentTarget == null) // stop if no target found
-                        yield break;
-                }
             }
+
+            var processes = new IEnumerator<AbilityDeliveryTarget>[targetsCount];
+            foreach (var currentTarget in Targets)
+            {
+                processes = processes.Append(DeliverInternal(context, launcher, currentTarget));
+            }
+
+            for (;;)
+            {
+                if (!processes.HasItem((IEnumerator<AbilityDeliveryTarget> i) => i != null))
+                {
+                    break;
+                }
+                int num;
+                for (int j = 0; j < processes.Length; j = num)
+                {
+                    IEnumerator<AbilityDeliveryTarget> p = processes[j];
+                    if (p != null)
+                    {
+                        bool flag;
+                        while ((flag = p.MoveNext()) && p.Current != null)
+                        {
+                            yield return p.Current;
+                        }
+                        if (!flag)
+                        {
+                            processes[j] = null;
+                            //yield return p.Current;
+                        }
+                        p = null;
+                    }
+                    num = j + 1;
+                }
+                yield return null;
+            }
+            
+            yield break;
         }
 
         private IEnumerator<AbilityDeliveryTarget> DeliverInternal(AbilityExecutionContext context, UnitEntityData launcher, UnitEntityData target)
         {
-            Projectile proj = Game.Instance.ProjectileController.Launch(launcher, target, this.Projectile.Get());
-            proj.IsFirstProjectile = true;
-            RuleAttackRoll attackRoll = null;
+                Projectile proj = Game.Instance.ProjectileController.Launch(launcher, target, this.Projectile);
+                proj.IsFirstProjectile = true;
+                RuleAttackRoll attackRoll = null;
 
-            if (this.NeedAttackRoll) // decide whenever the attack hit or not
-            {
-                var weapon = this.Weapon.Get().CreateEntity<ItemEntityWeapon>();
-                attackRoll = new RuleAttackRoll(context.MaybeCaster, target, weapon, 0) { SuspendCombatLog = true };
-                context.TriggerRule(attackRoll);
-                if (context.ForceAlwaysHit)
-                    attackRoll.SetFake(AttackResult.Hit);
+                if (this.NeedAttackRoll) // decide whenever the attack hit or not
+                {
+                    var weapon = this.Weapon.Get().CreateEntity<ItemEntityWeapon>();
+                    attackRoll = new RuleAttackRoll(context.MaybeCaster, target, weapon, 0) { SuspendCombatLog = true };
+                    context.TriggerRule(attackRoll);
+                    if (context.ForceAlwaysHit)
+                        attackRoll.SetFake(AttackResult.Hit);
 
-                proj.AttackRoll = attackRoll;
-                proj.MissTarget = context.MissTarget;
-            }
+                    proj.AttackRoll = attackRoll;
+                    proj.MissTarget = context.MissTarget;
+                }
 
-            while (!proj.IsHit) // wait until projectile hit
-            {
-                if (proj.Cleared) // stop if projectile controller cleared projectiles
-                    yield break;
-                yield return null;
-            }
+                while (!proj.IsHit) // wait until projectile hit
+                {
+                    if (proj.Cleared) // stop if projectile controller cleared projectiles
+                        yield break;
+                    yield return null;
+                }
 
-            attackRoll?.ConsumeMirrorImageIfNecessary();
+                attackRoll?.ConsumeMirrorImageIfNecessary();
 
             yield return new AbilityDeliveryTarget(proj.Target)
             {
                 AttackRoll = proj.AttackRoll,
                 Projectile = proj
             };
+            yield break;
         }
 
         private UnitEntityData SelectNextTarget(AbilityExecutionContext context, TargetWrapper center, HashSet<UnitEntityData> usedTargets, float radius)
@@ -155,6 +202,11 @@ namespace KineticistElementsExpanded.Components
             }
 
             return true;
+        }
+
+        public bool WouldTargetUnit(AbilityData ability, Vector3 targetPos, UnitEntityData unit)
+        {
+            return unit.IsUnitInRange(targetPos, this.AoERadius.Meters, true);
         }
     }
 }

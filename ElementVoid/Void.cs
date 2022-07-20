@@ -42,6 +42,9 @@ namespace KineticistElementsExpanded.ElementVoid
 
         // Spell book for blasts, to "brew" them like metamagic with infusions
 
+        // Fixed Disintegrating Infusion for all form infusions
+        // Aether Bonus feats correctly ignore prereqs
+
         public static KineticistTree Tree = new();
 
         public static KineticistTree.Element Gravity = new();
@@ -126,7 +129,7 @@ namespace KineticistElementsExpanded.ElementVoid
 
         private static BlueprintFeatureBase CreateVoidClassSkills()
         {
-            var feature = Helper.CreateBlueprintFeature("WoodClassSkills", "Wood Class Skills",
+            var feature = Helper.CreateBlueprintFeature("AetherClassSkills", "Aether Class Skills",
                 VoidClassSkillsDescription, null, null, 0)
                 .SetComponents(
                 Helper.CreateAddClassSkill(StatType.SkillKnowledgeWorld)
@@ -1800,7 +1803,7 @@ namespace KineticistElementsExpanded.ElementVoid
 
         public static void CreateNegativeAdmixture()
         {
-            UnityEngine.Sprite icon = Helper.StealIcon("0e449a987c784b6f8b13319936667053"); // RitualGreaterChannelNegativeEnergyAbility
+            UnityEngine.Sprite icon = Helper.CreateSprite("negativeAdmixture.png");
 
             var ability = Helper.CreateBlueprintActivatableAbility("NegativeAdmixtureAbility", "Negative Admixture",
                 NegativeAdmixtureDescription, out var buff, null, icon, UnitCommand.CommandType.Free, Kingmaker.UnitLogic.ActivatableAbilities.AbilityActivationType.WithUnitCommand,
