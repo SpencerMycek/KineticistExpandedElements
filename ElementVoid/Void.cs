@@ -117,6 +117,8 @@ namespace KineticistElementsExpanded.ElementVoid
             Kineticist.AddElementalDefenseIsPrereqFor(Negative.BlastFeature, VoidBlast.BladeFeature, emptiness_feature);
             Kineticist.AddToKineticBladeInfusion(VoidBlast.BladeFeature, VoidBlast.BlastFeature);
 
+            //Kineticist.AddBladesToKineticWhirlwind(Gravity, Negative, VoidBlast);
+
             CreateVoidElementalFocus(void_class_skills, emptiness_feature);
             CreateKineticKnightVoidFocus(void_class_skills, emptiness_feature);
             CreateSecondElementVoid();
@@ -719,6 +721,7 @@ namespace KineticistElementsExpanded.ElementVoid
 
             Gravity.BladeFeature = blade_feat.ToRef();
             Gravity.BladeDamageAbility = blade_damage_ability.ToRef();
+            Gravity.BladeBuff = buff.ToRef();
             return blade_damage_ability;
         }
 
@@ -1142,6 +1145,7 @@ namespace KineticistElementsExpanded.ElementVoid
 
             Negative.BladeFeature = blade_feat.ToRef();
             Negative.BladeDamageAbility = blade_damage_ability.ToRef();
+            Negative.BladeBuff = buff.ToRef();
             return blade_damage_ability;
         }
 
@@ -1225,7 +1229,7 @@ namespace KineticistElementsExpanded.ElementVoid
                 second_rank_conf,
                 second_context_calc
                 );
-            enchant.WeaponFxPrefab = new PrefabLink { AssetId = "30f3331e77343eb4f8f0bc51a0fcf454" };
+            enchant.WeaponFxPrefab = new PrefabLink { AssetId = "907d3c215c9522d4e8a3b763f1b32935" }; // RadianceBadEnchantment
 
             return enchant;
         }
@@ -1592,6 +1596,7 @@ namespace KineticistElementsExpanded.ElementVoid
 
             VoidBlast.BladeFeature = blade_feat.ToRef();
             VoidBlast.BladeDamageAbility = blade_damage_ability.ToRef();
+            VoidBlast.BladeBuff = buff.ToRef();
             return blade_damage_ability;
         }
 
@@ -1755,7 +1760,7 @@ namespace KineticistElementsExpanded.ElementVoid
 
             var ability = Helper.CreateBlueprintActivatableAbility("GraviticBoostAbility", "Gravitic Boost",
                 GraviticBoostDescription, out var buff, null, icon, UnitCommand.CommandType.Free, Kingmaker.UnitLogic.ActivatableAbilities.AbilityActivationType.WithUnitCommand,
-                Kingmaker.UnitLogic.ActivatableAbilities.ActivatableAbilityGroup.SubstanceInfusion, true, true);
+                Kingmaker.UnitLogic.ActivatableAbilities.ActivatableAbilityGroup.None, true, true);
             ability.m_ActivateWithUnitCommand = UnitCommand.CommandType.Free;
 
             buff.Flags(stayOnDeath: true);
@@ -1807,7 +1812,7 @@ namespace KineticistElementsExpanded.ElementVoid
 
             var ability = Helper.CreateBlueprintActivatableAbility("NegativeAdmixtureAbility", "Negative Admixture",
                 NegativeAdmixtureDescription, out var buff, null, icon, UnitCommand.CommandType.Free, Kingmaker.UnitLogic.ActivatableAbilities.AbilityActivationType.WithUnitCommand,
-                Kingmaker.UnitLogic.ActivatableAbilities.ActivatableAbilityGroup.SubstanceInfusion, true, true);
+                Kingmaker.UnitLogic.ActivatableAbilities.ActivatableAbilityGroup.None, true, true);
             ability.m_ActivateWithUnitCommand = UnitCommand.CommandType.Free;
 
             buff.Flags(stayOnDeath: true);

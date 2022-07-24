@@ -1818,6 +1818,32 @@ public static class Helper
             return c;
         }
 
+        public static ContextActionDealDamage CreateContextActionDealDamageDirect(ContextDiceValue damage, ContextDurationValue duration, bool isAoE = false, bool halfIfSaved = false, bool IgnoreCritical = false, bool half = false, bool alreadyHalved = false, AbilitySharedValue sharedValue = 0, bool readShare = false, bool writeShare = false)
+        {
+            // Force damage
+            var c = new ContextActionDealDamage();
+            c.DamageType = new DamageTypeDescription()
+            {
+                Type = DamageType.Direct,
+                Energy = DamageEnergyType.Acid,
+                Common = new DamageTypeDescription.CommomData(),
+                Physical = new DamageTypeDescription.PhysicalData()
+            };
+            c.Duration = duration;
+            c.Value = damage;
+            c.IsAoE = isAoE;
+            c.HalfIfSaved = halfIfSaved;
+            c.IgnoreCritical = IgnoreCritical;
+            c.Half = half;
+            c.AlreadyHalved = alreadyHalved;
+            c.ReadPreRolledFromSharedValue = readShare;
+            c.PreRolledSharedValue = readShare ? sharedValue : 0;
+            c.WriteResultToSharedValue = writeShare;
+            c.ResultSharedValue = writeShare ? sharedValue : 0;
+            return c;
+        }
+
+
         public static AbilityCasterHasFacts CreateAbilityCasterHasFacts(bool NeedsAll = false, params BlueprintUnitFactReference[] Facts)
         {
             var result = new AbilityCasterHasFacts();
@@ -2175,7 +2201,7 @@ public static class Helper
             //return result;
         }
 
-        public static BlueprintBuff CreateBlueprintBuff(string name, string displayName, string description, string guid = null, Sprite icon = null, PrefabLink fxOnStart = null)
+        public static BlueprintBuff CreateBlueprintBuff(string name, string displayName, string description, string guid = null, Sprite icon = null, PrefabLink fxOnStart = null, PrefabLink fxOnRemove = null)
         {
             if (guid == null)
                 guid = GuidManager.i.Get(name);
@@ -2188,8 +2214,41 @@ public static class Helper
             result.m_Description = description.CreateString();
             result.m_Icon = icon;
             result.FxOnStart = fxOnStart ?? new PrefabLink();
-            result.FxOnRemove = new PrefabLink();
+            result.FxOnRemove = fxOnRemove ?? new PrefabLink();
             result.IsClassFeature = true;
+
+            AddAsset(result, guid);
+            return result;
+        }
+
+        public static BlueprintUnit CreateBlueprintUnit(string name, string displayName, string description, string guid = null, Sprite icon = null)
+        {
+            if (guid == null)
+                guid = GuidManager.i.Get(name);
+            else
+                GuidManager.i.Reg(guid);
+
+            var result = new BlueprintUnit();
+            result.name = name;
+            result.m_DisplayName = displayName.CreateString();
+            result.m_Description = description.CreateString();
+            result.m_Icon = icon;
+
+            AddAsset(result, guid);
+            return result;
+        }
+
+        public static BlueprintSummonPool CreateBlueprintSummonPool(string name, string guid = null, int limit = 0, bool removeDeadUnits = true)
+        {
+            if (guid == null)
+                guid = GuidManager.i.Get(name);
+            else
+                GuidManager.i.Reg(guid);
+
+            var result = new BlueprintSummonPool();
+            result.name = name;
+            result.Limit = limit;
+            result.DoNotRemoveDeadUnits = !removeDeadUnits;
 
             AddAsset(result, guid);
             return result;
@@ -2702,7 +2761,13 @@ public static class Helper
             result.deserializedGuid = feature.AssetGuid;
             return result;
         }
-
+        public static BlueprintUnitReference ToRef2(this BlueprintUnit feature)
+        {
+            if (feature == null) return null;
+            var result = new BlueprintUnitReference();
+            result.deserializedGuid = feature.AssetGuid;
+            return result;
+        }
 
         public static AnyBlueprintReference ToRef3(this BlueprintAbility feature)
         {

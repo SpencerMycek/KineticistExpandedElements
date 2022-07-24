@@ -635,6 +635,7 @@ namespace KineticistElementsExpanded.ElementAether
         {
             manyThrowInfusion = CreateManyThrowInfusion();
             var kineticist_class = Helper.ToRef<BlueprintCharacterClassReference>("42a455d9ec1ad924d889272429eb8391"); // Kineticist Base Class
+            var icon = Helper.CreateSprite("manyThrow.png");
 
 
             var blast = Helper.CreateBlueprintAbility("ManyThrowTelekineticBlast", manyThrowInfusion.m_DisplayName,
@@ -682,7 +683,7 @@ namespace KineticistElementsExpanded.ElementAether
 
         private static BlueprintAbility CreateTelekineticBlastVariant_throw(out BlueprintFeature foeThrowInfusion)
         {
-            var icon = Helper.StealIcon("b3c6cb76-d5b1-1cf4-c831-4d7b1c7b9b8b"); // Choking Bomb feature
+            var icon = Helper.CreateSprite("foeThrow.png");
 
             foeThrowInfusion = CreateFoeThrowInfusion();
             var foeThrowBuff = CreateFoeThrowTargetBuff();
@@ -1678,9 +1679,10 @@ namespace KineticistElementsExpanded.ElementAether
             var kineticist_class = Helper.ToRef<BlueprintCharacterClassReference>("42a455d9ec1ad924d889272429eb8391"); // Kineticist Base Class
             var elemental_focus_selection = ResourcesLibrary.TryGetBlueprint<BlueprintFeatureSelection>("1f3a15a3ae8a5524ab8b97f469bf4e3d"); // ElementalFocusSelection
             var extended_range = ResourcesLibrary.TryGetBlueprint<BlueprintFeature>("cb2d9e6355dd33940b2bef49e544b0bf"); // ExtendedRangeInfusion
+            var icon = Helper.CreateSprite("manyThrow.png");
 
             var feature = Helper.CreateBlueprintFeature("ManyThrowInfusion", "Many Throw", 
-                ManyThrowInfusionDescription, null, null, FeatureGroup.KineticBlastInfusion);
+                ManyThrowInfusionDescription, null, icon, FeatureGroup.KineticBlastInfusion);
             feature.SetComponents
                 (
                 Helper.CreatePrerequisiteClassLevel(kineticist_class, 16),
@@ -1717,9 +1719,10 @@ namespace KineticistElementsExpanded.ElementAether
             var infusion_selection = ResourcesLibrary.TryGetBlueprint<BlueprintFeatureSelection>("58d6f8e9eea63f6418b107ce64f315ea"); // InfusionSelection
             var kineticist_class = Helper.ToRef<BlueprintCharacterClassReference>("42a455d9ec1ad924d889272429eb8391"); // Kineticist Base Class
             var elemental_focus_selection = ResourcesLibrary.TryGetBlueprint<BlueprintFeatureSelection>("1f3a15a3ae8a5524ab8b97f469bf4e3d"); // ElementalFocusSelection
+            var icon = Helper.CreateSprite("foeThrow.png");
 
             var feature = Helper.CreateBlueprintFeature("FoeThrowInfusion", "Foe Throw",
-                FoeThrowInfusionDescription, null, null, FeatureGroup.KineticBlastInfusion);
+                FoeThrowInfusionDescription, null, icon, FeatureGroup.KineticBlastInfusion);
             feature.SetComponents
                 (
                 Helper.CreatePrerequisiteClassLevel(kineticist_class, 6),
@@ -1732,7 +1735,7 @@ namespace KineticistElementsExpanded.ElementAether
 
         public static BlueprintBuff CreateFoeThrowTargetBuff()
         {
-            var icon = Helper.StealIcon("b3c6cb76-d5b1-1cf4-c831-4d7b1c7b9b8b"); // Choking Bomb feature
+            var icon = Helper.CreateSprite("foeThrow.png");
 
             var buff = Helper.CreateBlueprintBuff("FoeThrowInfusionTargetBuff", "Lifted",
                 FoeThrowTargetBuffDescription, null, icon, null);
@@ -1743,7 +1746,7 @@ namespace KineticistElementsExpanded.ElementAether
 
         public static BlueprintAbility CreateFoeThrowTargetAbility(BlueprintBuff foeThrowBuff, BlueprintFeature requirement)
         {
-            var icon = Helper.StealIcon("b3c6cb76-d5b1-1cf4-c831-4d7b1c7b9b8b"); // Choking Bomb feature
+            var icon = Helper.CreateSprite("foeThrow.png");
 
             var ability = Helper.CreateBlueprintAbility("FoeThrowInfusionTargetAbility", "Lift Target",
                 FoeThrowInfusionTargetAbilityDescription, null, icon, AbilityType.SpellLike, UnitCommand.CommandType.Free,
@@ -1759,7 +1762,7 @@ namespace KineticistElementsExpanded.ElementAether
 
         public static BlueprintAbility CreateFoeThrowThrowAbility(BlueprintBuff foeThrowBuff, BlueprintFeature requirement)
         {
-            var icon = Helper.StealIcon("b3c6cb76-d5b1-1cf4-c831-4d7b1c7b9b8b"); // Choking Bomb feature
+            var icon = Helper.CreateSprite("foeThrow.png");
 
             var ability = Helper.CreateBlueprintAbility("FoeThrowInfusionThrowAbility", "Throw Target",
                 FoeThrowInfusionThrowAbilityDescription, null, icon, AbilityType.SpellLike, UnitCommand.CommandType.Standard,
@@ -2214,8 +2217,10 @@ namespace KineticistElementsExpanded.ElementAether
             var wild_talent_selection = ResourcesLibrary.TryGetBlueprint<BlueprintFeatureSelection>("5c883ae0-cd6d-7d54-48b7-a420f51f8459"); // Kineticist Wild Talent Selection
             var kineticist_class = Helper.ToRef<BlueprintCharacterClassReference>("42a455d9-ec1a-d924-d889-272429eb8391"); // Kineticist Base Class
 
+            var icon = Helper.CreateSprite("telekineticManeuvers.png");
+
             var ability = Helper.CreateBlueprintAbility("TelekineticManeuversAbility", "Telekinetic Maneuvers", 
-                TelekineticManeuversDescription, null, null, AbilityType.SpellLike, UnitCommand.CommandType.Standard,
+                TelekineticManeuversDescription, null, icon, AbilityType.SpellLike, UnitCommand.CommandType.Standard,
                 AbilityRange.Long, null, null);
 
             foreach (var v in variants)
@@ -2224,7 +2229,7 @@ namespace KineticistElementsExpanded.ElementAether
             }
 
             var feature = Helper.CreateBlueprintFeature("TelekineticManeuversFeature", "Telekinetic Maneuvers",
-                TelekineticManeuversDescription, null, null, FeatureGroup.KineticWildTalent);
+                TelekineticManeuversDescription, null, icon, FeatureGroup.KineticWildTalent);
             feature.SetComponents
                 (
                 Helper.CreatePrerequisiteFeaturesFromList(true, first_prog.ToRef(), second_prog.ToRef(), third_prog.ToRef(), kinetic_prog.ToRef()),

@@ -168,4 +168,5 @@
       <Private>false</Private>
     </Reference>
   </ItemGroup>
+  <ProjectExtensions><VisualStudio><UserProperties info_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
 </Project>
