@@ -356,6 +356,7 @@ namespace KineticistElementsExpanded.KineticLib
             public BlueprintAbilityReference BaseAbility;
             [CanBeNull] public BlueprintFeatureReference BladeFeature;
             [CanBeNull] public BlueprintAbilityReference BladeDamageAbility;
+            [CanBeNull] public BlueprintBuffReference BladeBuff;
 
             [CanBeNull] public Element Parent1; // only on composites
             [CanBeNull] public Element Parent2; // only on composites other than metal and blueFlame
@@ -370,6 +371,12 @@ namespace KineticistElementsExpanded.KineticLib
 
             public Element Element1;
             [CanBeNull] public Element Element2; // other than earth and fire
+        }
+
+        public class Infusion
+        {
+            public BlueprintFeatureReference InfusionFeature;
+            public BlueprintBuffReference InfusionBuff;
         }
     }
 }

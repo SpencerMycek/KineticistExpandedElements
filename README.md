@@ -9,7 +9,8 @@ Thanks to [Truinto][1] author of [Dark Codex][2] for providing help, advice, and
 
 Thanks to the entire OwlCat community discord and the modding community there, for answering my plethora of strange questions and pushing me in the right directions
 
-Thank you to [Adsam112][3] for some custom icon images for the Void Element, and thank you to [RevanStarForge][4] for some color variations of those images.
+Thank you to [Adsam112][3] for some custom icon images for the Void Element
+Thank you to [RevanStarForge][4] for some color variations of those images. And for creating a whole bunch of new images for Void, Wood, and Aether!
 
 ## Description
 
@@ -70,6 +71,23 @@ Thank you!!
 | Void | Curse Breaker | Wild Talent that allows the user to break curses and enchantments on a target | Done |
 | Void | Undead Grip | Wild Talent that allows the user to hold undead creatures still, like hold person | Done |
 | Void | Gravity Control | Wild Talent that allows the user to alter gravity on themselves (flight) | Done |
+| Wood | Element Choice | The main wood element, adds selections for base kineticist (and archetypes) and kinetic knight | Done |
+| Wood | Basic Selection | Negative and Gravity Blast - Including most vanilla infusions and kinetic blade | Done |
+| Wood | Deadly Earth | Vanilla Infusion for the Wood element | Not Done |
+| Wood | Impale | Dark Codex Infusion for Wood and Composites | Note Done |
+| Wood | Composites | Verdant, Autumn, Spring, Summer, Winter | Done |
+| Wood | Positive Admixture | Composite Blast (Special) - Modifies any energy simple blast to be half positive energy | Done |
+| Wood | Flesh of Wood | Elemental Defense - Provides the kineticist
+| Wood | Spore Infusion | Infusion - Inflicts the foe with a poison and a disease, dealing poison damage and Dex damage over time | Done |
+| Wood | Toxic Infusion | Infusion - InflictsInflicts the foe with the sickened condition | Done |
+| Wood | Toxic Infusion, Greater | Infusion - InflictsInflicts the foe with a poison that does Con damage over time | Done |
+| Wood | Forest Siege | Wild Talent - InflictsAllows the user to command plant-life nearby to throw rocks as if they were giant catapults | Done |
+| Wood | Herbal Antivenom | Wild Talent - Provides the Kineticist with a bonus to saves vs poison, and a bonus to Lore: Religion | Done |
+| Wood | Thorn Flesh | Wild Talent - Works similarly to Wood's Jagged Flesh | Done |
+| Wood | Wild Growth | Wild Talent - Allows the kineticst to choke an area with plant growth; Works like the entangle spell | Done |
+| Wood | Wood Healer | Wild Talent - Works like Kinetic Healer, but requires positive blast | Done |
+| Wood | Woodland Step | Wild Talent - Provides the kineticist immunity to difficult terrain, like a Druid's woodland stride | Done |
+| Wood | Wood Soldiers | Wild Talent - Allows the kineticist to raise Wood Golems; golems gain buffs based on what composite blasts you have | Done |
 
 ## Compatibility
 
@@ -80,18 +98,17 @@ If you notice any issues, please contact me or open up an issue on this reposito
 
 ## Recent Changes
 
-- Void Element Added
-- Various fixes to option choices and description typos
-- New Icons for Void Abilities
-- Gravity Control (and Greater) no longer have duplicate options
+- Wood Element Added
 
-- Taking your second elemental focus should give you force blast if your first element was Aether (the abilities didn't appear before, I think)')
+- Fix a mixup between void and aether class skills
 
 ## Known Issues
 
 ### Disintigration Infusion
-This is a very strange infusion, both doubling damage, and halving it. Unfortunately, in it's current state, it does not benefit from metakinesis, elemental overflow, or form infusions.
-It does work correctly, when used with Extended Range and basic Force blast.
+This is a very strange infusion, both doubling damage, and halving it. For whatever reason, it does not work with the Spindle infusion, still working on that
+
+### Admixtures
+These work pretty well in all cases, I have only seen a single issue: When using either of the energy admixtures, and you crit, the damage modified by the admixture will not deal double damage, but the original damage type will.
 
 
 [1]: https://github.com/Truinto
