@@ -1,6 +1,7 @@
 ﻿using JetBrains.Annotations;
 using KineticistElementsExpanded.Components;
 using KineticistElementsExpanded.Components.Properties;
+using KineticistElementsExpanded.KineticLib;
 using Kingmaker.Blueprints;
 using Kingmaker.Blueprints.Classes;
 using Kingmaker.Blueprints.Classes.Prerequisites;
@@ -24,6 +25,7 @@ using Kingmaker.UnitLogic.Abilities;
 using Kingmaker.UnitLogic.Abilities.Blueprints;
 using Kingmaker.UnitLogic.Abilities.Components;
 using Kingmaker.UnitLogic.Abilities.Components.Base;
+using Kingmaker.UnitLogic.Abilities.Components.CasterCheckers;
 using Kingmaker.UnitLogic.Buffs.Blueprints;
 using Kingmaker.UnitLogic.Class.Kineticist;
 using Kingmaker.UnitLogic.Class.Kineticist.ActivatableAbility;
@@ -46,6 +48,9 @@ namespace KineticistElementsExpanded.ElementAether
     class Aether : Statics
     {
 
+        private static BlueprintBuff ForceBladeBuff = null;
+        private static BlueprintBuff TeleBladeBuff = null;
+
         public static void Configure()
         {
             var blast_progression = CreateFullTelekineticBlast(out var blast_feature, out var tb_blade_feature, out var tb_blast_ability);
@@ -61,6 +66,9 @@ namespace KineticistElementsExpanded.ElementAether
             CreateAetherWildTalents(
                 first_progression_aether, kinetic_knight_progression_aether, second_progression_aether, third_progression_aether, blast_feature,
                 force_ward_feature);
+
+            var whirl = Kineticist.blade_whirlwind.GetComponent<AbilityCasterHasFacts>();
+            Helper.AppendAndReplace(ref whirl.m_Facts, ForceBladeBuff.ToRef2(), TeleBladeBuff.ToRef2());
         }
 
         private static BlueprintFeatureBase CreateAetherClassSkills()
@@ -802,6 +810,8 @@ namespace KineticistElementsExpanded.ElementAether
                 Helper.CreateAddFeatureIfHasFact(blade_burn_ability.ToRef2())
                 );
 
+            TeleBladeBuff = buff;
+
             return blade_damage_ability;
         }
 
@@ -1327,6 +1337,8 @@ namespace KineticistElementsExpanded.ElementAether
                 Helper.CreateAddFeatureIfHasFact(blade_active_ability.ToRef()),
                 Helper.CreateAddFeatureIfHasFact(blade_burn_ability.ToRef2())
                 );
+
+            ForceBladeBuff = buff;
 
             return blade_damage_ability;
         }

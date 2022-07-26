@@ -46,7 +46,9 @@ namespace KineticistElementsExpanded.ElementWood
     {
         // Idea to bring Ghoran race as a dryad or something
 
-        // Fixed a mixup between Aether and Void Class skills
+        // Fixed a mixup between Aether and Void Bonus Feats
+        // Fixed an issue where you were not granted a Blast from picking Void or Wood as a Second (or Third) Elemental Focus, when you didnt pick Wood or Void respectively as your first
+        // Added Void, Wood, and Aether to Blade Whirlwind
         
         public static KineticistTree Tree = new();
 
@@ -91,6 +93,8 @@ namespace KineticistElementsExpanded.ElementWood
             Kineticist.AddCompositeToBuff(Tree, Winter, WoodBlast, Tree.Cold);
 
             Kineticist.AddAdmixtureToBuff(Tree, PositiveAdmixture, Positive, true, true, false);
+            Kineticist.AddBladesToKineticWhirlwind(WoodBlast, Positive, Verdant, Autumn, Spring, Summer, Winter);
+
 
             CreateWoodElementalFocus(wood_class_skills, flesh_of_wood_feature);
             CreateKineticKnightWoodFocus(wood_class_skills, flesh_of_wood_feature);
@@ -814,7 +818,8 @@ namespace KineticistElementsExpanded.ElementWood
                 Helper.CreateAddFacts(Kineticist.ref_compositeBlastBuff),
                 Helper.CreateAddFeatureIfHasFact(
                     AnyRef.Get(Kineticist.ref_infusion_kineticBlade).To<BlueprintUnitFactReference>(),
-                    AnyRef.Get(Positive.BladeFeature).To<BlueprintUnitFactReference>())
+                    AnyRef.Get(Positive.BladeFeature).To<BlueprintUnitFactReference>()),
+                Helper.CreateAddFeatureIfHasFact(AnyRef.Get(Positive.BlastFeature).To<BlueprintUnitFactReference>())
                 );
 
             var entry = Helper.CreateLevelEntry(1, AnyRef.Get(Positive.BlastFeature).To<BlueprintFeatureReference>());
@@ -1224,7 +1229,8 @@ namespace KineticistElementsExpanded.ElementWood
                 Helper.CreateAddFacts(Kineticist.ref_compositeBlastBuff),
                 Helper.CreateAddFeatureIfHasFact(
                     AnyRef.Get(Kineticist.ref_infusion_kineticBlade).To<BlueprintUnitFactReference>(),
-                    AnyRef.Get(WoodBlast.BladeFeature).To<BlueprintUnitFactReference>())
+                    AnyRef.Get(WoodBlast.BladeFeature).To<BlueprintUnitFactReference>()),
+                Helper.CreateAddFeatureIfHasFact(AnyRef.Get(WoodBlast.BlastFeature).To<BlueprintUnitFactReference>())
                 );
 
             var entry = Helper.CreateLevelEntry(1, AnyRef.Get(WoodBlast.BlastFeature).To<BlueprintFeatureReference>());
@@ -3960,7 +3966,7 @@ namespace KineticistElementsExpanded.ElementWood
             var trip = Helper.ToRef<BlueprintFeatureReference>("0f15c6f70d8fb2b49aa6cc24239cc5fa"); // ImprovedTrip
             var trip_greater = Helper.ToRef<BlueprintFeatureReference>("4cc71ae82bdd85b40b3cfe6697bb7949"); // SpellPenetration
 
-            var wild_0 = Helper.CreateBlueprintFeatureSelection("WildTalentBonusFeatVoid", wood_wild_talent_name,
+            var wild_0 = Helper.CreateBlueprintFeatureSelection("WildTalentBonusFeatWood", wood_wild_talent_name,
                 wood_wild_talent_description, null, null, FeatureGroup.KineticWildTalent, SelectionMode.Default);
             wild_0.SetComponents
                 (
@@ -3974,7 +3980,7 @@ namespace KineticistElementsExpanded.ElementWood
             wild_0.IgnorePrerequisites = true;
             Helper.AppendAndReplace(ref wild_0.m_AllFeatures, spell_pen, precise_shot, trip);
 
-            var wild_1 = Helper.CreateBlueprintFeatureSelection("WildTalentBonusFeatVoid1", wood_wild_talent_name,
+            var wild_1 = Helper.CreateBlueprintFeatureSelection("WildTalentBonusFeatWood1", wood_wild_talent_name,
                 wood_wild_talent_description, null, null, FeatureGroup.KineticWildTalent, SelectionMode.Default);
             wild_1.SetComponents
                 (
@@ -3988,7 +3994,7 @@ namespace KineticistElementsExpanded.ElementWood
             wild_1.IgnorePrerequisites = true;
             Helper.AppendAndReplace(ref wild_1.m_AllFeatures, spell_pen_greater, precise_shot, trip);
 
-            var wild_2 = Helper.CreateBlueprintFeatureSelection("WildTalentBonusFeatVoid2", wood_wild_talent_name,
+            var wild_2 = Helper.CreateBlueprintFeatureSelection("WildTalentBonusFeatWood2", wood_wild_talent_name,
                 wood_wild_talent_description, null, null, FeatureGroup.KineticWildTalent, SelectionMode.Default);
             wild_2.SetComponents
                 (
@@ -4002,7 +4008,7 @@ namespace KineticistElementsExpanded.ElementWood
             wild_2.IgnorePrerequisites = true;
             Helper.AppendAndReplace(ref wild_2.m_AllFeatures, spell_pen, precise_shot, trip_greater);
 
-            var wild_3 = Helper.CreateBlueprintFeatureSelection("WildTalentBonusFeatVoid3", wood_wild_talent_name,
+            var wild_3 = Helper.CreateBlueprintFeatureSelection("WildTalentBonusFeatWood3", wood_wild_talent_name,
                 wood_wild_talent_description, null, null, FeatureGroup.KineticWildTalent, SelectionMode.Default);
             wild_3.SetComponents
                 (
