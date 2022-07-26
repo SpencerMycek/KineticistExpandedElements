@@ -117,7 +117,7 @@ namespace KineticistElementsExpanded.ElementVoid
             Kineticist.AddElementalDefenseIsPrereqFor(Negative.BlastFeature, VoidBlast.BladeFeature, emptiness_feature);
             Kineticist.AddToKineticBladeInfusion(VoidBlast.BladeFeature, VoidBlast.BlastFeature);
 
-            //Kineticist.AddBladesToKineticWhirlwind(Gravity, Negative, VoidBlast);
+            Kineticist.AddBladesToKineticWhirlwind(Gravity, Negative, VoidBlast);
 
             CreateVoidElementalFocus(void_class_skills, emptiness_feature);
             CreateKineticKnightVoidFocus(void_class_skills, emptiness_feature);
@@ -860,7 +860,8 @@ namespace KineticistElementsExpanded.ElementVoid
                 Helper.CreateAddFacts(Kineticist.ref_compositeBlastBuff),
                 Helper.CreateAddFeatureIfHasFact(
                     AnyRef.Get(Kineticist.ref_infusion_kineticBlade).To<BlueprintUnitFactReference>(), 
-                    AnyRef.Get(Gravity.BladeFeature).To<BlueprintUnitFactReference>())
+                    AnyRef.Get(Gravity.BladeFeature).To<BlueprintUnitFactReference>()),
+                Helper.CreateAddFeatureIfHasFact(AnyRef.Get(Gravity.BlastFeature).To<BlueprintUnitFactReference>())
                 );
 
             var entry = Helper.CreateLevelEntry(1, AnyRef.Get(Gravity.BlastFeature).To<BlueprintFeatureReference>());
@@ -1284,7 +1285,8 @@ namespace KineticistElementsExpanded.ElementVoid
                 Helper.CreateAddFacts(Kineticist.ref_compositeBlastBuff),
                 Helper.CreateAddFeatureIfHasFact(
                     AnyRef.Get(Kineticist.ref_infusion_kineticBlade).To<BlueprintUnitFactReference>(),
-                    AnyRef.Get(Negative.BladeFeature).To<BlueprintUnitFactReference>())
+                    AnyRef.Get(Negative.BladeFeature).To<BlueprintUnitFactReference>()),
+                Helper.CreateAddFeatureIfHasFact(AnyRef.Get(Negative.BlastFeature).To<BlueprintUnitFactReference>())
                 );
 
             var entry = Helper.CreateLevelEntry(1, AnyRef.Get(Negative.BlastFeature).To<BlueprintFeatureReference>());
