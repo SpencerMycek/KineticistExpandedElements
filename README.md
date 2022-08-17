@@ -98,9 +98,11 @@ If you notice any issues, please contact me or open up an issue on this reposito
 
 ## Recent Changes
 
-- Wood Element Added
-
-- Fix a mixup between void and aether class skills
+- Fix Negative Energy Kinetic Blade Text
+- Fix Void Healer prereq for Vampiric Infusion
+- Change icon reference for Positive Admixture to an icon that actually exists
+- Fix Summer/Winter blades correctly targeting normal AC
+- Actually compiled in release mode this time!
 
 ## Known Issues
 
