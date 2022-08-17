@@ -31,6 +31,7 @@ using Kingmaker.UnitLogic.Mechanics;
 using Kingmaker.UnitLogic.Mechanics.Actions;
 using Kingmaker.UnitLogic.Mechanics.Components;
 using Kingmaker.Utility;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using static Kingmaker.Visual.Animation.Kingmaker.Actions.UnitAnimationActionCastSpell;
@@ -1108,8 +1109,8 @@ namespace KineticistElementsExpanded.ElementVoid
 
             #region BlastKineticBladeDamage
 
-            var blade_damage_ability = Helper.CreateBlueprintAbility("NegativeBlastKineticBladeDamage", "Telekinetic Blast",
-                GravityBlastDescription, null, damage_icon, AbilityType.Special, UnitCommand.CommandType.Standard, AbilityRange.Close);
+            var blade_damage_ability = Helper.CreateBlueprintAbility("NegativeBlastKineticBladeDamage", "Negative Blast",
+                NegativeBlastDescription, null, damage_icon, AbilityType.Special, UnitCommand.CommandType.Standard, AbilityRange.Close);
             blade_damage_ability.TargetEnemy(CastAnimationStyle.Omni);
             blade_damage_ability.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten | Metamagic.Reach;
             blade_damage_ability.Hidden = true;
@@ -1222,7 +1223,7 @@ namespace KineticistElementsExpanded.ElementVoid
             };
 
             var enchant = Helper.CreateBlueprintWeaponEnchantment("NegativeKineticBladeEnchantment", "Negative Blast — Kinetic Blade",
-                null, "Gravity Blast", null, null, 0);
+                null, "Negative Blast", null, null, 0);
             enchant.SetComponents
                 (
                 first_context_calc,
@@ -2262,12 +2263,14 @@ namespace KineticistElementsExpanded.ElementVoid
                 }
                 );
 
+            GuidManager.i.guid_list.TryGetValue("VoidHealerFeature", out var healer);
+
             var feature = Helper.CreateBlueprintFeature("VoidVampiricInfusionFeature", "Vampiric Infusion",
                 VampiricInfusionDescription, null, icon, FeatureGroup.KineticBlastInfusion);
             feature.SetComponents
                 (
                 Helper.CreatePrerequisiteClassLevel(Tree.Class, 10),
-                Helper.CreatePrerequisiteFeature(VoidHealer.ToRef()),
+                Helper.CreatePrerequisiteFeature(healer.ToRef<BlueprintFeatureReference>()),
                 Helper.CreateAddFacts(ability.ToRef2())
                 );
 

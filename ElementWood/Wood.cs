@@ -2219,7 +2219,7 @@ namespace KineticistElementsExpanded.ElementWood
 
             #region BlastAbility
 
-            var blade_active_ability = Helper.CreateBlueprintActivatableAbility("KineticBladeSpringBlastAbility", "Verdant Blast — Kinetic Blade",
+            var blade_active_ability = Helper.CreateBlueprintActivatableAbility("KineticBladeSpringBlastAbility", "Spring Blast — Kinetic Blade",
                 KineticBladeDescription, out var unused, null, icon,
                 group: Kingmaker.UnitLogic.ActivatableAbilities.ActivatableAbilityGroup.FormInfusion, deactivateWhenDead: true);
             blade_active_ability.m_Buff = buff.ToRef();
@@ -2652,7 +2652,7 @@ namespace KineticistElementsExpanded.ElementWood
                 Kineticist.Blast.RankConfigBonus(false),
                 Kineticist.Blast.DCForceDex(),
                 Kineticist.Blast.BurnCost(actions, infusion: 1),
-                Kineticist.Blast.Projectile(Resource.Projectile.FireCommonProjectile00, false, AbilityProjectileType.Simple, 0, 5),
+                Kineticist.Blast.Projectile(Resource.Projectile.FireCommonProjectile00, true, AbilityProjectileType.Simple, 0, 5),
                 Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnPrecastStart, Resource.Sfx.PreStart_Earth),
                 Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnStart, Resource.Sfx.Start_Earth)
                 );
@@ -2684,7 +2684,7 @@ namespace KineticistElementsExpanded.ElementWood
         {
             //var icon = Helper.StealIcon("43ff6714-3efb-86d4-f894-b10577329050"); // Air Kinetic Blade Weapon
 
-            var weapon = Helper.CreateBlueprintItemWeapon("SummerKineticBladeWeapon", null, null, Kineticist.ref_kinetic_blast_energy_blade_type,
+            var weapon = Helper.CreateBlueprintItemWeapon("SummerKineticBladeWeapon", null, null, Kineticist.ref_kinetic_blast_physical_blade_type,
                 damageOverride: new DiceFormula { m_Rolls = 0, m_Dice = DiceType.Zero },
                 form: null,
                 secondWeapon: null, false, null, 10);
@@ -3199,7 +3199,7 @@ namespace KineticistElementsExpanded.ElementWood
 
         public static void CreatePositiveAdmixture()
         {
-            UnityEngine.Sprite icon = Helper.CreateSprite("PositiveAdmixture.png");
+            UnityEngine.Sprite icon = Helper.CreateSprite("positiveBlast.png");
 
             var ability = Helper.CreateBlueprintActivatableAbility("PositiveAdmixtureAbility", "Positive Admixture",
                 PositiveAdmixtureDescription, out var buff, null, icon, UnitCommand.CommandType.Free, Kingmaker.UnitLogic.ActivatableAbilities.AbilityActivationType.WithUnitCommand,

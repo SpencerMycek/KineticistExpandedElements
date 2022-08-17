@@ -146,11 +146,10 @@ namespace KineticistElementsExpanded.ElementAether
         private static BlueprintProgression CreateKineticKnightAetherFocus(BlueprintFeatureBase blast_progression, BlueprintFeatureBase aether_class_skills, BlueprintFeatureBase force_ward_feature)
         {
             var element_selection = ResourcesLibrary.TryGetBlueprint<BlueprintFeatureSelection>("b1f296f0-bd16-bc24-2ae3-5d0638df82eb"); // First Kineticist Element Selection - Kinetic Knight
-            
+
             var progression = Helper.CreateBlueprintProgression("KineticKnightElementalFocusAether", "Aether",
                 ElementalFocusAetherDescription, null, null,
-                FeatureGroup.KineticElementalFocus)
-                .SetComponents(new AddEquipmentEntity { EquipmentEntity = new EquipmentEntityLink { AssetId = "aecc5905323948449b4cd3bfe36e5daf" } });
+                FeatureGroup.KineticElementalFocus);
 
             var entry1 = Helper.CreateLevelEntry(1, blast_progression, aether_class_skills);
             var entry2 = Helper.CreateLevelEntry(4, force_ward_feature);
@@ -228,7 +227,7 @@ namespace KineticistElementsExpanded.ElementAether
 
         #region Force Ward
 
-        private static BlueprintFeature CreateForceWard(BlueprintFeature tb_feature)
+        private static BlueprintFeature Temp(BlueprintFeature tb_feature)
         {
             var icon = Helper.CreateSprite("forceWard.png");
             var kineticist_class = Helper.ToRef<BlueprintCharacterClassReference>("42a455d9-ec1a-d924-d889-272429eb8391");
@@ -239,9 +238,10 @@ namespace KineticistElementsExpanded.ElementAether
             fw_effect_feature.Ranks = 20;
             fw_effect_feature.ReapplyOnLevelUp = true;
 
-            var feature_value_getter = new FeatureRankPlus1Getter()
+            var feature_value_getter = new FeatureRankPlusBonusGetter()
             {
-                Feature = fw_effect_feature.ToRef()
+                Feature = fw_effect_feature.ToRef(),
+                bonus = 3
             };
             var classlvl_value_getter = new ClassLevelGetter()
             {
@@ -348,6 +348,147 @@ namespace KineticistElementsExpanded.ElementAether
             #endregion
 
             return fw_feature;
+        }
+
+        private static BlueprintFeature CreateForceWard(BlueprintFeature tb_feature)
+        {
+            var icon = Helper.CreateSprite("forceWard.png");
+            var kineticist_class = Helper.ToRef<BlueprintCharacterClassReference>("42a455d9-ec1a-d924-d889-272429eb8391");
+
+            #region Effect Feature
+
+            var effect_feature = Helper.CreateBlueprintFeature("ForceWardEffectFeature", null,
+                null, null, icon, FeatureGroup.None);
+            effect_feature.Ranks = 20;
+            effect_feature.HideInUI = true;
+            effect_feature.HideInCharacterSheetAndLevelUp = true;
+            effect_feature.IsClassFeature = true;
+            effect_feature.SetComponents
+                (
+                Helper.CreateAddFacts()
+                );
+
+            #endregion
+            #region Effect Buff
+
+            var effect_buff = Helper.CreateBlueprintBuff("ForceWardEffectBuff", null,
+                null, null, icon);
+            effect_buff.Flags(hidden: true, stayOnDeath: true, removeOnRest: true);
+            effect_buff.Stacking = StackingType.Stack;
+            effect_buff.IsClassFeature = true;
+            effect_buff.SetComponents
+                (
+                Helper.CreateAddFacts(effect_feature.ToRef2())
+                );
+
+            #endregion
+            #region Buff
+
+            var feature_value_getter = new FeatureRankPlusBonusGetter()
+            {
+                Feature = effect_feature.ToRef(),
+                bonus = 4
+            };
+            var classlvl_value_getter = new ClassLevelGetter()
+            {
+                ClassRef = kineticist_class
+            };
+            var temp_hp_progression = Helper.CreateBlueprintUnitProperty("ForceWardHPProperty")
+                .SetComponents
+                (
+                feature_value_getter,
+                classlvl_value_getter
+                );
+            temp_hp_progression.OperationOnComponents = MathOperation.Multiply;
+            temp_hp_progression.BaseValue = 1;
+
+            var calculateShared = new ContextCalculateSharedValue
+            {
+                ValueType = AbilitySharedValue.Damage,
+                Modifier = 0.5,
+                Value = new ContextDiceValue
+                {
+                    DiceType = DiceType.One,
+                    DiceCountValue = new ContextValue
+                    {
+                        ValueType = ContextValueType.CasterCustomProperty,
+                        m_CustomProperty = temp_hp_progression.ToRef()
+                    },
+                    BonusValue = new ContextValue
+                    {
+                        ValueType = ContextValueType.Simple,
+                        Value = 0
+                    }
+                }
+            };
+            var temp_hp = new TemporaryHitPointsUnique
+            {
+                Value = new ContextValue
+                {
+                    Value = 1,
+                    ValueType = ContextValueType.Shared,
+                    ValueShared = AbilitySharedValue.Damage
+                },
+                RemoveWhenHitPointsEnd = false,
+                Descriptor = ModifierDescriptor.UntypedStackable
+            };
+            var regen = new RegenTempHpPerMinute(kineticist_class, effect_feature);
+
+
+
+            var buff = Helper.CreateBlueprintBuff("ForceWardBuff", null,
+                null, null, icon);
+            buff.Flags(hidden: true, stayOnDeath: true);
+            buff.Stacking = StackingType.Replace;
+            buff.IsClassFeature = true;
+            buff.SetComponents
+                (
+                temp_hp,
+                regen,
+                calculateShared,
+                Helper.CreateRecalculateOnFactsChange(effect_feature.ToRef2())
+                );
+
+            // TEMP TODO REMOVE
+            var fw_buff_combat_refresh = Helper.CreateBlueprintBuff("ForceWardBuffCombatRefresh", "FW Buff Refresh",
+            null, null, icon, null);
+            fw_buff_combat_refresh.Flags(true, true, null, null)
+                .SetComponents
+                (
+                Helper.CreateAddFacts(effect_feature.ToRef2())
+                );
+            fw_buff_combat_refresh.Stacking = StackingType.Prolong;
+            var fw_resource = Helper.CreateBlueprintAbilityResource("ForceWardResource", "Force Ward",
+                ForceWardDescription, null, false, 20, 0, 3, 0, 0, 0, 0, false, 0, false, 0, StatType.Constitution,
+                true, 0, kineticist_class, null);
+            // TEMP TODO REMOVE
+
+            #endregion
+            #region Ability
+
+            var ability = Helper.CreateBlueprintAbility("ForceWardAbility", "Force Ward",
+                ForceWardDescription, null, icon, AbilityType.Special, UnitCommand.CommandType.Free,
+                AbilityRange.Personal).TargetSelf(CastAnimationStyle.Omni);
+            ability.AvailableMetamagic = Metamagic.Heighten;
+            ability.SetComponents
+                (
+                Helper.CreateAbilityEffectRunAction(actions: effect_buff.CreateContextActionApplyBuff(permanent: true)),
+                Helper.CreateAbilityAcceptBurnOnCast(1)
+                );
+
+            #endregion
+
+            var feature = Helper.CreateBlueprintFeature("ForceWardFeature", "Force Ward",
+                ForceWardDescription, null, icon, FeatureGroup.None);
+            feature.IsClassFeature = true;
+            feature.SetComponents
+                (
+                Helper.CreateAddFacts(buff.ToRef2(), ability.ToRef2()),
+                Helper.CreatePrerequisiteFeaturesFromList(true, tb_feature.ToRef())
+                );
+
+            return feature;
+
         }
 
         #endregion

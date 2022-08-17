@@ -9,15 +9,16 @@ using System.Threading.Tasks;
 
 namespace KineticistElementsExpanded.Components.Properties
 {
-    public class FeatureRankPlus1Getter : PropertyValueGetter
+    public class FeatureRankPlusBonusGetter : PropertyValueGetter
     {
         public override int GetBaseValue(UnitEntityData unit)
         {
             var unitFeatureRank = unit?.Progression.Features.GetRank(Feature);
             int value = unitFeatureRank ?? 0;
-            return value + 1;
+            return value + bonus;
         }
 
+        public int bonus;
         public BlueprintFeatureReference Feature;
     }
 
