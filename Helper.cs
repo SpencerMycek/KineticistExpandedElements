@@ -68,6 +68,7 @@ using static Kingmaker.Visual.Animation.Kingmaker.Actions.UnitAnimationActionCas
 using Kingmaker.UnitLogic.Class.Kineticist;
 using Kingmaker.Designers.EventConditionActionSystem.Events;
 using Kingmaker.Designers.EventConditionActionSystem.Conditions;
+using static Kingmaker.Blueprints.BlueprintUnitTemplate;
 
 
 /*
@@ -130,7 +131,7 @@ public static class Helper
         #endregion
 
         #region Patching/Harmony
-
+        
         /// <summary>Needs ManualPatch attribute.</summary>
         public static void Patch(Type patch, bool _)
         {
@@ -222,7 +223,7 @@ public static class Helper
             code.opcode = repl.opcode;
             code.operand = repl.operand;
         }
-
+        
         #endregion
 
         #region Arrays
@@ -2238,6 +2239,23 @@ public static class Helper
             return result;
         }
 
+        public static BlueprintUnitTemplate CreateBlueprintUnitTemplate(string name, string guid, BlueprintUnitFactReference[] removeFacts = null, BlueprintUnitFactReference[] addFacts = null, StatAdjustment[] adjustments = null)
+        {
+            if (guid == null)
+                guid = GuidManager.i.Get(name);
+            else
+                GuidManager.i.Reg(guid);
+
+            var result = new BlueprintUnitTemplate();
+            result.name = name;
+            result.m_RemoveFacts = removeFacts ?? Array.Empty<BlueprintUnitFactReference>();
+            result.m_AddFacts = addFacts ?? Array.Empty<BlueprintUnitFactReference>();
+            result.StatAdjustments = adjustments ?? Array.Empty<StatAdjustment>();
+
+            AddAsset(result, guid);
+            return result;
+        }
+
         public static BlueprintSummonPool CreateBlueprintSummonPool(string name, string guid = null, int limit = 0, bool removeDeadUnits = true)
         {
             if (guid == null)
@@ -3105,7 +3123,7 @@ public static class Helper
         {
             try
             {
-                var bytes = File.ReadAllBytes(Path.Combine(Main.ModPath, "Icons", filename));
+                var bytes = File.ReadAllBytes(Path.Combine(Main.ModPath, "Media/Icons", filename));
                 var texture = new Texture2D(width, height);
                 //texture.LoadImage(bytes);
                 return texture;

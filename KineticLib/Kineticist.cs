@@ -138,6 +138,11 @@ namespace KineticistElementsExpanded.KineticLib
             Helper.AppendAndReplace(ref wild_talent_selection.m_AllFeatures, feat_ref);
         }
 
+
+        public static void AddElementsToInfusion(KineticistTree.Infusion infusion, params KineticistTree.Element[] elements)
+        {
+            AddElementsToInfusion(infusion.InfusionFeature, infusion.InfusionBuff, elements);
+        }
         // Adds elements to a provided infusions feature and buff
         public static void AddElementsToInfusion(BlueprintFeature inf_feature, BlueprintBuff inf_buff, params KineticistTree.Element[] elements)
         {

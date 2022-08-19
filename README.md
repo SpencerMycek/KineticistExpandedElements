@@ -98,11 +98,20 @@ If you notice any issues, please contact me or open up an issue on this reposito
 
 ## Recent Changes
 
+### v2.5.2
+
 - Fix Negative Energy Kinetic Blade Text
 - Fix Void Healer prereq for Vampiric Infusion
 - Change icon reference for Positive Admixture to an icon that actually exists
 - Fix Summer/Winter blades correctly targeting normal AC
 - Actually compiled in release mode this time!
+
+### v2.5.3
+
+- Fix a mistake where Aether kineticists were being given the class skills of a Chaokineticist (Void)
+- Fix an issue where everyone was getting Aether Class skills, except it was actually void class skills
+- Buffed Wood Soldiers (They're supposed to have the "Advanced Template")
+- Noticed an issue with Skilled Kineticist and Kinetic Knights
 
 ## Known Issues
 
@@ -111,6 +120,10 @@ This is a very strange infusion, both doubling damage, and halving it. For whate
 
 ### Admixtures
 These work pretty well in all cases, I have only seen a single issue: When using either of the energy admixtures, and you crit, the damage modified by the admixture will not deal double damage, but the original damage type will.
+
+### Wood Soldiers
+It is possible, if you use the ability after one or two dies, to have up to 7 wood soldiers, still trying to figure out how to limit the amount of summons
+Using the ability at 4 or more Soldiers causes you to take burn, but does not summon soldiers (Max 4, but the ability shouldnt go off)
 
 
 [1]: https://github.com/Truinto

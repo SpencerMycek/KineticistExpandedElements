@@ -79,7 +79,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Icons\" />
+    <Folder Include="Media\Icons\" />
+    <Folder Include="Media\Localization\" />
     <Folder Include="Properties\" />
   </ItemGroup>
 
