@@ -37,7 +37,7 @@ namespace KineticistElementsExpanded.Components
             }
             catch (Exception e)
             {
-                Helper.PrintException(e);
+                Main.PrintException(e);
             }
         }
     }

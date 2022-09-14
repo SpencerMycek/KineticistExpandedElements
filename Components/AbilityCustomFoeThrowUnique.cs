@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using CodexLib;
 using Kingmaker;
 using Kingmaker.Blueprints;
 using Kingmaker.Blueprints.Root;
@@ -71,7 +72,7 @@ namespace KineticistElementsExpanded.Components
                     yield return null;
             }
 
-            var weapon = "65951e1195848844b8ab8f46d942f6e8".ToRef<BlueprintItemWeaponReference>().Get().CreateEntity<ItemEntityWeapon>();
+            var weapon = AnyRef.ToRef<BlueprintItemWeaponReference>("65951e1195848844b8ab8f46d942f6e8").Get().CreateEntity<ItemEntityWeapon>();
             RuleAttackRoll attackRoll = new RuleAttackRoll(caster, target.Unit, weapon, 0) { SuspendCombatLog = false };
             context.TriggerRule(attackRoll);
             if (context.ForceAlwaysHit) attackRoll.SetFake(AttackResult.Hit);
@@ -87,7 +88,6 @@ namespace KineticistElementsExpanded.Components
                     {
                         ResultOverride = 20
                     },
-                    DisableBattleLog = true
                 };
                 context.TriggerRule(trip);
             } else

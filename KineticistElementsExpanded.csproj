@@ -31,7 +31,7 @@
 
   <ItemGroup>
 	  <Reference Include="Assembly-CSharp">
-	    <HintPath>lib\Assembly-CSharp.dll</HintPath>
+	    <HintPath>$(SolutionDir)lib\Assembly-CSharp.dll</HintPath>
 	  </Reference>
 	  <Reference Include="Assembly-CSharp-firstpass.dll">
 		  <HintPath>$(WrathPath)\Wrath_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
@@ -39,11 +39,18 @@
 	  <Reference Include="Newtonsoft.Json">
 	    <HintPath>lib\Newtonsoft.Json.dll</HintPath>
 	  </Reference>
+	  <Reference Include="CodexLib">
+	  <HintPath>lib\CodexLib.dll</HintPath>
+	  <Private>false</Private>
+	  </Reference>
 	  <Reference Include="Owlcat.Runtime.Core">
 		  <HintPath>$(WrathPath)\Wrath_Data\Managed\Owlcat.Runtime.Core.dll</HintPath>
 	  </Reference>
 	  <Reference Include="Owlcat.Runtime.UI">
 		  <HintPath>$(WrathPath)\Wrath_Data\Managed\Owlcat.Runtime.UI.dll</HintPath>
+	  </Reference>
+	  <Reference Include="Owlcat.Runtime.Validation">
+	    <HintPath>$(WrathPath)\Wrath_Data\Managed\Owlcat.Runtime.Validation.dll</HintPath>
 	  </Reference>
 	  <Reference Include="Owlcat.Runtime.Visual">
 		  <HintPath>$(WrathPath)\Wrath_Data\Managed\Owlcat.Runtime.Visual.dll</HintPath>
@@ -103,13 +110,13 @@
       <Assembly Include="$(OutputPath)\KineticistElementsExpanded.dll" />
 	  <ModConfig Include="$(OutputPath)\Info.json" />
       <debug_symbols Include="$(OutputPath)\KineticistElementsExpanded.pdb" />
-      <media Include="$(ModRepo)\Icons\*" />
+      <media Include="$(ModRepo)\Media\Icons\*" />
     </ItemGroup>
 
-    <Copy SourceFiles="@(Assembly)" DestinationFolder="$(WrathPath)\Mods\Kineticist Element - Aether" />
-    <Copy SourceFiles="@(ModConfig)" DestinationFolder="$(WrathPath)\Mods\Kineticist Element - Aether" />
-	<Copy SourceFiles="@(debug_symbols)" DestinationFolder="$(WrathPath)\Mods\Kineticist Element - Aether" />
-	<Copy SourceFiles="@(media)" DestinationFolder="$(WrathPath)\Mods\Kineticist Element - Aether\Icons" />
+    <Copy SourceFiles="@(Assembly)" DestinationFolder="$(WrathPath)\Mods\KineticistElementsExpanded" />
+    <Copy SourceFiles="@(ModConfig)" DestinationFolder="$(WrathPath)\Mods\KineticistElementsExpanded" />
+	<Copy SourceFiles="@(debug_symbols)" DestinationFolder="$(WrathPath)\Mods\KineticistElementsExpanded" />
+	<Copy SourceFiles="@(media)" DestinationFolder="$(WrathPath)\Mods\KineticistElementsExpanded\Icons" />
   </Target>
 
 

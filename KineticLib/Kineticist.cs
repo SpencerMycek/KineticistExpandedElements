@@ -1,5 +1,9 @@
 ﻿using JetBrains.Annotations;
 using KineticistElementsExpanded.Components;
+using CodexLib;
+using AnyRef = CodexLib.AnyRef;
+using Helper = CodexLib.Helper;
+using KineticistTree = CodexLib.KineticistTree;
 using Kingmaker.Blueprints;
 using Kingmaker.Blueprints.Classes;
 using Kingmaker.Blueprints.Classes.Selection;
@@ -47,6 +51,7 @@ namespace KineticistElementsExpanded.KineticLib
         public static BlueprintWeaponTypeReference ref_kinetic_blast_physical_blade_type = Helper.ToRef<BlueprintWeaponTypeReference>("b05a206f6c1133a469b2f7e30dc970ef"); // KineticBlastPhysicalBlade
         public static BlueprintWeaponTypeReference ref_kinetic_blast_energy_blade_type = Helper.ToRef<BlueprintWeaponTypeReference>("a15b2fb1d5dc4f247882a7148d50afb0"); // KineticBlastEnergyBlade
         public static BlueprintAbility blade_whirlwind = ResourcesLibrary.TryGetBlueprint<BlueprintAbility>("80f10dc9181a0f64f97a9f7ac9f47d65"); // BladeWhirlwindAbility
+        public static BlueprintArchetypeReference ref_blood_kineticist = Helper.ToRef<BlueprintArchetypeReference>("365b50dba54efb74fa24c07e9b7a838c"); // BloodKineticistArchetype
 
         // This adds blasts from the provided elements to Burn, Metakinesis, KineticBladeInfusion
         public static void ElementsBlastSetup(params KineticistTree.Element[] elements)
@@ -55,7 +60,7 @@ namespace KineticistElementsExpanded.KineticLib
             {
                 AddBlastAbilityToBurn(element.BaseAbility);
                 AddBlastAbilityToMetakinesis(element.BaseAbility);
-                AddToKineticBladeInfusion(element.BladeFeature, element.BlastFeature);
+                AddToKineticBladeInfusion(element.Blade.Feature, element.BlastFeature);
             }
         }
 
@@ -114,8 +119,11 @@ namespace KineticistElementsExpanded.KineticLib
         public static void AddBladesToKineticWhirlwind(params KineticistTree.Element[] elements)
         {
             var hasFact = blade_whirlwind.GetComponent<AbilityCasterHasFacts>();
-
-            Helper.AppendAndReplace(ref hasFact.m_Facts, elements.Select(s => AnyRef.Get(s.BladeBuff).To<BlueprintUnitFactReference>()).ToList());
+            // TODO FIX with push to CodexLib
+            //
+            //
+            //
+            //Helper.AppendAndReplace(ref hasFact.m_Facts, elements.Select(s => AnyRef.Get(s.Blade.Buff).To<BlueprintUnitFactReference>()).ToList());
         }
 
         // Trys to add a list of features (refs) to Dark Codex's Extra Wild Talent feat, if it's installed
@@ -128,7 +136,7 @@ namespace KineticistElementsExpanded.KineticLib
             }
             catch (Exception ex)
             {
-                Helper.Print($"Dark Codex not installed: {ex.Message}");
+                Helper.PrintNotification($"Dark Codex not installed: {ex.Message}");
             }
         }
 
@@ -141,7 +149,7 @@ namespace KineticistElementsExpanded.KineticLib
 
         public static void AddElementsToInfusion(KineticistTree.Infusion infusion, params KineticistTree.Element[] elements)
         {
-            AddElementsToInfusion(infusion.InfusionFeature, infusion.InfusionBuff, elements);
+            AddElementsToInfusion(infusion.Feature, infusion.Buff, elements);
         }
         // Adds elements to a provided infusions feature and buff
         public static void AddElementsToInfusion(BlueprintFeature inf_feature, BlueprintBuff inf_buff, params KineticistTree.Element[] elements)
@@ -178,7 +186,7 @@ namespace KineticistElementsExpanded.KineticLib
             var inner_checker = new ConditionsChecker
             {
                 Operation = Operation.Or,
-                Conditions = Helper.CreateContextConditionCasterHasFact(AnyRef.Get(param1.BlastFeature).To<BlueprintUnitFactReference>()).ObjToArray()
+                Conditions = Helper.CreateContextConditionCasterHasFact(AnyRef.ToRef<BlueprintUnitFactReference>(param1.BlastFeature)).ObjToArray()
             };
             var inner_conditional = new Conditional
             {
@@ -186,7 +194,7 @@ namespace KineticistElementsExpanded.KineticLib
                 IfFalse = null,
                 IfTrue = Helper.CreateActionList(Helper.CreateContextActionAddFeature(composite.BlastFeature))
             };
-            var outer_conditional = Helper.CreateConditional(Helper.CreateContextConditionHasFact(AnyRef.Get(param2.BlastFeature).To<BlueprintUnitFactReference>()),
+            var outer_conditional = Helper.CreateConditional(Helper.CreateContextConditionHasFact(AnyRef.ToRef<BlueprintUnitFactReference>(param2.BlastFeature)),
                 ifFalse: null, ifTrue: inner_conditional);
 
             var composite_action = Tree.CompositeBuff.Get().GetComponent<AddFactContextActions>();
@@ -200,17 +208,17 @@ namespace KineticistElementsExpanded.KineticLib
             var inner_checker = new ConditionsChecker
             {
                 Operation = Operation.Or,
-                Conditions = Tree.GetAll(basic: basic, basicEnergy: energy, basicPhysical: phyisical)
+                Conditions = Tree.GetAll(basic: basic, onlyEnergy: energy, onlyPhysical: phyisical, archetype: true)
                         .Select(s => Helper.CreateContextConditionHasFact(
-                            AnyRef.Get(s.BlastFeature).To<BlueprintUnitFactReference>())).ToArray()
+                            AnyRef.ToRef<BlueprintUnitFactReference>(s.BlastFeature))).ToArray()
             };
             var inner_conditional = new Conditional
             {
                 ConditionsChecker = inner_checker,
                 IfFalse = null,
-                IfTrue = Helper.CreateActionList(Helper.CreateContextActionAddFeature(composite.InfusionFeature))
+                IfTrue = Helper.CreateActionList(Helper.CreateContextActionAddFeature(composite.Feature))
             };
-            var outer_conditional = Helper.CreateConditional(Helper.CreateContextConditionHasFact(AnyRef.Get(param1.BlastFeature).To<BlueprintUnitFactReference>()),
+            var outer_conditional = Helper.CreateConditional(Helper.CreateContextConditionHasFact(AnyRef.ToRef<BlueprintUnitFactReference>(param1.BlastFeature)),
                 ifFalse: null, ifTrue: inner_conditional);
 
             var composite_action = Tree.CompositeBuff.Get().GetComponent<AddFactContextActions>();
@@ -342,7 +350,7 @@ namespace KineticistElementsExpanded.KineticLib
                     width.Feet());
                 return projectile;
             }
-
+            /* TODO Remove
             /// <summary>
             /// Alternative projectile. Requires attack roll, if weapon is not null.
             /// </summary>
@@ -358,7 +366,7 @@ namespace KineticistElementsExpanded.KineticLib
                 };
                 return result;
             }
-
+            */
             /// <summary>
             /// Element descriptor for energy blasts.
             /// </summary>
@@ -420,7 +428,7 @@ namespace KineticistElementsExpanded.KineticLib
                 ((ContextActionDealDamage)actions.Actions[0]).Value.BonusValue.ValueShared = AbilitySharedValue.Damage;
             }
 
-            var area_effect = Helper.CreateBlueprintAbilityAreaEffect("Wall"+name+"BlastArea", null, true, true,
+            var area_effect = Helper.CreateBlueprintAbilityAreaEffect("Wall"+name+"BlastArea", true, true,
                 AreaEffectShape.Wall, new Feet { m_Value = 60 },
                 prefab, unitEnter: actions);
             area_effect.m_Tags = AreaEffectTags.DestroyableInCutscene;
@@ -439,7 +447,7 @@ namespace KineticistElementsExpanded.KineticLib
                 Blast.DCForceDex()
                 );
 
-            return area_effect.ToRef();
+            return AnyRef.ToAny(area_effect);
         }
     }
 }

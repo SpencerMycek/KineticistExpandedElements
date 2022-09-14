@@ -1,4 +1,5 @@
-﻿using Kingmaker;
+﻿using CodexLib;
+using Kingmaker;
 using Kingmaker.Designers.Mechanics.Buffs;
 using Kingmaker.EntitySystem.Entities;
 using Kingmaker.EntitySystem.Stats;
@@ -45,7 +46,7 @@ namespace KineticistElementsExpanded.Components
                 }
             } catch (Exception ex)
             {
-                Helper.Print($"Exception: {ex.Message}");
+                Helper.PrintNotification($"Exception: {ex.Message}");
             }
         }
     }

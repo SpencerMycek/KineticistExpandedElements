@@ -1,4 +1,5 @@
 ﻿using Kingmaker;
+using CodexLib;
 using Kingmaker.Blueprints;
 using Kingmaker.Blueprints.Classes.Selection;
 using Kingmaker.EntitySystem.Entities;
@@ -25,7 +26,7 @@ namespace KineticistElementsExpanded.Components
             if (!isParty || this.Owner.HasFact(this.Feature))
                 return;
 
-            Helper.Print($"Applying {Feature.NameSafe()} for {this.Owner} is IsPet={Owner.IsPet} IsMainCharacter={Owner.IsMainCharacter} IsCustomCompanion={Owner.IsCustomCompanion()} IsStoryCompanion={Owner.IsStoryCompanion()}");
+            Main.Print($"Applying {Feature.NameSafe()} for {this.Owner} is IsPet={Owner.IsPet} IsMainCharacter={Owner.IsMainCharacter} IsCustomCompanion={Owner.IsCustomCompanion()} IsStoryCompanion={Owner.IsStoryCompanion()}");
             this.Owner.AddFact(this.Feature, null, this.Parameter);
         }
 

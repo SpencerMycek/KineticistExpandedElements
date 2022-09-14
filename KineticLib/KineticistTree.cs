@@ -1,4 +1,5 @@
-﻿using KineticistElementsExpanded;
+﻿using CodexLib;
+using KineticistElementsExpanded;
 using JetBrains.Annotations;
 using Kingmaker.Blueprints;
 using Kingmaker.Blueprints.Classes;
@@ -19,7 +20,7 @@ using System.Threading.Tasks;
  *  I used these functions, and added further, while learning both C# and the owlcat game engine
  */
 
-
+/*
 namespace KineticistElementsExpanded.KineticLib
 {
     public class KineticistTree
@@ -380,3 +381,4 @@ namespace KineticistElementsExpanded.KineticLib
         }
     }
 }
+*/

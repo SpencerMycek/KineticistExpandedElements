@@ -1,4 +1,5 @@
-﻿using Kingmaker.ElementsSystem;
+﻿using CodexLib;
+using Kingmaker.ElementsSystem;
 using Kingmaker.EntitySystem.Entities;
 using Kingmaker.UnitLogic.Abilities;
 using Kingmaker.UnitLogic.Abilities.Components.AreaEffects;
@@ -31,7 +32,7 @@ namespace KineticistElementsExpanded.Components
                     }
                     catch (Exception ex)
                     {
-                        Helper.Print($"Damage: Exception: {ex.Message}");
+                        Main.PrintException(ex);
                     }
                 }
             }
@@ -50,7 +51,7 @@ namespace KineticistElementsExpanded.Components
                 }
                 catch (Exception ex)
                 {
-                    Helper.Print($"Spawn: Exception: {ex.Message}");
+                    Main.PrintException(ex);
                 }
             }
             num_round = (num_round == 1) ? 0 : 1;

@@ -72,7 +72,7 @@ namespace KineticistElementsExpanded.Components
                 Vector3 normalized = (target.Point - context.Caster.Position).normalized;
                 Vector3 a = Quaternion.Euler(0f, random_float, 0f) * normalized;
                 Vector3 startPosition = GeometryUtils.ProjectToGround(target.Point + a * rnd.Next(5,10));
-                processes = processes.Append(DeliverInternal(context, launcher, Target, startPosition));
+                processes = (IEnumerator<AbilityDeliveryTarget>[])processes.Append(DeliverInternal(context, launcher, Target, startPosition));
                 var startTime = Game.Instance.TimeController.GameTime;
                 while (Game.Instance.TimeController.GameTime - startTime < (0.1).Seconds())
                     yield return null;

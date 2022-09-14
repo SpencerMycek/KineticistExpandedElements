@@ -3,12 +3,15 @@ using UnityModManagerNet;
 using HarmonyLib;
 using Kingmaker.Blueprints.JsonSystem;
 using BlueprintCore.Utils;
+using KineticistElementsExpanded;
 using KineticistElementsExpanded.ElementAether;
 using KineticistElementsExpanded.ElementWood;
 using Void = KineticistElementsExpanded.ElementVoid.Void;
 using Kingmaker;
 using System.Linq;
-
+using System.Diagnostics;
+using System.IO;
+using CodexLib;
 
 namespace KineticistElementsExpanded
 {
@@ -24,6 +27,27 @@ namespace KineticistElementsExpanded
         public static string ModPath;
 
         internal static UnityModManager.ModEntry.ModLogger logger;
+
+        [System.Diagnostics.Conditional("DEBUG")]
+        internal static void PrintDebug(string msg)
+        {
+            Main.logger?.Log(msg);
+        }
+
+        internal static void Print(string msg)
+        {
+            Main.logger?.Log(msg);
+        }
+
+        internal static void PrintError(string msg)
+        {
+            Main.logger?.Log("[Exception/Error] " + msg);
+        }
+
+        internal static void PrintException(Exception ex)
+        {
+            Main.logger?.LogException(ex);
+        }
 
         //        #region GUI
 
@@ -57,19 +81,47 @@ namespace KineticistElementsExpanded
             //modEntry.OnGUI = OnGUI;
             //modEntry.OnSaveGUI = OnSaveGUI;
             //modEntry.OnHideGUI = OnHideGUI;
-            //modEntry.OnUnload = Unload;
+            modEntry.OnUnload = Unload;
 
             try
             {
+                EnsureCodexLib(modEntry.Path);
+
                 harmony = new Harmony(modEntry.Info.Id);
                 harmony.PatchAll();
                 //Helper
+                return true;
             } catch (Exception ex)
             {
-                Helper.PrintException(ex);
+                Main.PrintException(ex);
                 return false;
             }
-            return true;
+            
+        }
+
+        private static void EnsureCodexLib(string modPath)
+        {
+            if (AppDomain.CurrentDomain.GetAssemblies().Any(a => a.FullName.StartsWith("CodexLib, ")))
+                return;
+
+            string path = null;
+            Version version = null;
+
+            foreach (string cPath in Directory.GetFiles(Directory.GetParent(modPath).FullName, "CodexLib.dll"))
+            {
+                var cVersion = new Version(FileVersionInfo.GetVersionInfo(cPath).FileVersion);
+                if (version == null || cVersion > version)
+                {
+                    path = cPath;
+                    version = cVersion;
+                }
+            }
+
+            if (path != null)
+            {
+                Print("Loading CodexLib " + path);
+                AppDomain.CurrentDomain.Load(File.ReadAllBytes(path));
+            }
         }
 
         public static bool Unload(UnityModManager.ModEntry modEntry)
@@ -90,13 +142,21 @@ namespace KineticistElementsExpanded
         {
             if (Run) return; Run = true;
 
-            Helper.Print("Loading Kineticist Elements Expanded");
+#if DEBUG
+                using var scope = new Scope(modPath: Main.ModPath, logger: Main.logger, harmony: Main.harmony, allowGuidGeneration: true);
+#else
+            using var scope = new Scope(modPath: Main.ModPath, logger: Main.logger, harmony: Main.harmony, allowGuidGeneration: false);
+#endif
+
+            MasterPatch.Run();
+
+            Main.Print("Loading Kineticist Elements Expanded");
 
             LoadSafe(Aether.Configure);
             LoadSafe(Void.Configure);
             LoadSafe(Wood.Configure);
 
-            Helper.Print("Finished loading Kineticist Elements Expanded");
+            Main.Print("Finished loading Kineticist Elements Expanded");
 
         }
 
@@ -107,14 +167,14 @@ namespace KineticistElementsExpanded
 
             try
             {
-                Helper.Print($"Loading {name}");
+                Main.logger?.Log($"Loading {name}");
                 action();
 
                 return true;
             }
             catch (Exception ex)
             {
-                Helper.PrintException(ex);
+                Main.PrintException(ex);
                 return false;
             }
         }

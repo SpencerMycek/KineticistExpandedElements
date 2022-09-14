@@ -106,7 +106,7 @@ If you notice any issues, please contact me or open up an issue on this reposito
 - Fix Summer/Winter blades correctly targeting normal AC
 - Actually compiled in release mode this time!
 
-### v2.5.3
+### v2.6.0
 
 - Fix a mistake where Aether kineticists were being given the class skills of a Chaokineticist (Void)
 - Fix an issue where everyone was getting Aether Class skills, except it was actually void class skills

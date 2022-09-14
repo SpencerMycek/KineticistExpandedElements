@@ -118,7 +118,7 @@ namespace KineticistElementsExpanded.Components
                 }
             } catch (Exception ex)
             {
-                Helper.Print($"[AddForceBlastNullifyDamage] Exception: {ex.Message}");
+                Main.PrintException(ex);
             }
         }
 
