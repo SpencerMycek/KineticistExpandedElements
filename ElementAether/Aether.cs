@@ -83,10 +83,11 @@ namespace KineticistElementsExpanded.ElementAether
 
         private static BlueprintFeatureBase CreateAetherClassSkills()
         {
+            var test = new AddClassSkill();
             var feature = Helper.CreateBlueprintFeature("AetherClassSkills", "Aether Class Skills",
                 AetherClassSkillsDescription, null, 0)
                 .SetComponents(
-                new AddClassSkill { Skill = StatType.SkillThievery },
+                new AddClassSkill  { Skill = StatType.SkillThievery },
                 new AddClassSkill { Skill = StatType.SkillKnowledgeWorld }
                 );
 

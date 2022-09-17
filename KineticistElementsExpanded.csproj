@@ -111,12 +111,14 @@
 	  <ModConfig Include="$(OutputPath)\Info.json" />
       <debug_symbols Include="$(OutputPath)\KineticistElementsExpanded.pdb" />
       <media Include="$(ModRepo)\Media\Icons\*" />
+	  <library Include="$(ModRepo)\lib\CodexLib.dll"/>
     </ItemGroup>
 
     <Copy SourceFiles="@(Assembly)" DestinationFolder="$(WrathPath)\Mods\KineticistElementsExpanded" />
     <Copy SourceFiles="@(ModConfig)" DestinationFolder="$(WrathPath)\Mods\KineticistElementsExpanded" />
 	<Copy SourceFiles="@(debug_symbols)" DestinationFolder="$(WrathPath)\Mods\KineticistElementsExpanded" />
 	<Copy SourceFiles="@(media)" DestinationFolder="$(WrathPath)\Mods\KineticistElementsExpanded\Icons" />
+	<Copy SourceFiles="@(library)" DestinationFolder="$(WrathPath)\Mods\KineticistElementsExpanded" />
   </Target>
 
 
