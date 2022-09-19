@@ -430,7 +430,7 @@ namespace KineticistElementsExpanded.ElementWood
 
         private static BlueprintAbility CreatePositiveBlastVariant_base()
         {
-            UnityEngine.Sprite icon = Helper.CreateSprite("positiveBlast.png");
+            UnityEngine.Sprite icon = Helper.CreateSprite(Main.ModPath+"/Icons/positiveBlast.png");
 
             var ability = Helper.CreateBlueprintAbility("PositiveBlastAbility", "Positive Blast",
                 PositiveBlastDescription, icon, AbilityType.Special,
@@ -742,7 +742,7 @@ namespace KineticistElementsExpanded.ElementWood
 
         public static void CreatePositiveBlastAbility(params BlueprintAbility[] variants)
         {
-            UnityEngine.Sprite icon = Helper.CreateSprite("positiveBlast.png");
+            UnityEngine.Sprite icon = Helper.CreateSprite(Main.ModPath+"/Icons/positiveBlast.png");
 
             var ability = Helper.CreateBlueprintAbility("PositiveBlastBase", "Positive Blast",
                 PositiveBlastDescription, icon, AbilityType.Special,
@@ -817,7 +817,7 @@ namespace KineticistElementsExpanded.ElementWood
 
         private static BlueprintAbility CreateWoodBlastVariant_base()
         {
-            UnityEngine.Sprite icon = Helper.CreateSprite("woodBlast.png");
+            UnityEngine.Sprite icon = Helper.CreateSprite(Main.ModPath+"/Icons/woodBlast.png");
 
             var ability = Helper.CreateBlueprintAbility("WoodBlastAbility", "Wood Blast",
                 WoodBlastDescription, icon, AbilityType.Special,
@@ -1142,7 +1142,7 @@ namespace KineticistElementsExpanded.ElementWood
 
         public static void CreateWoodBlastAbility(params BlueprintAbility[] variants)
         {
-            UnityEngine.Sprite icon = Helper.CreateSprite("woodBlast.png");
+            UnityEngine.Sprite icon = Helper.CreateSprite(Main.ModPath+"/Icons/woodBlast.png");
 
             var ability = Helper.CreateBlueprintAbility("WoodBlastBase", "Wood Blast",
                 WoodBlastDescription, icon, AbilityType.Special,
@@ -1227,7 +1227,7 @@ namespace KineticistElementsExpanded.ElementWood
 
         private static BlueprintAbility CreateVerdantBlastVariant_base()
         {
-            UnityEngine.Sprite icon = Helper.CreateSprite("verdantBlast.png");
+            UnityEngine.Sprite icon = Helper.CreateSprite(Main.ModPath+"/Icons/verdantBlast.png");
 
             var ability = Helper.CreateBlueprintAbility("VerdantBlastAbility", "Verdant Blast",
                 VerdantBlastDescription, icon, AbilityType.Special,
@@ -1548,7 +1548,7 @@ namespace KineticistElementsExpanded.ElementWood
 
         public static void CreateVerdantBlastAbility(params BlueprintAbility[] variants)
         {
-            UnityEngine.Sprite icon = Helper.CreateSprite("verdantBlast.png");
+            UnityEngine.Sprite icon = Helper.CreateSprite(Main.ModPath+"/Icons/verdantBlast.png");
 
             var ability = Helper.CreateBlueprintAbility("VerdantBlastBase", "Verdant Blast",
                 VerdantBlastDescription, icon, AbilityType.Special,
@@ -1608,7 +1608,7 @@ namespace KineticistElementsExpanded.ElementWood
 
         private static BlueprintAbility CreateAutumnBlastVariant_base()
         {
-            UnityEngine.Sprite icon = Helper.CreateSprite("verdantBlast.png");
+            UnityEngine.Sprite icon = Helper.CreateSprite(Main.ModPath+"/Icons/verdantBlast.png");
 
             var ability = Helper.CreateBlueprintAbility("AutumnBlastAbility", "Autumn Blast",
                 AutumnBlastDescription, icon, AbilityType.Special,
@@ -1932,7 +1932,7 @@ namespace KineticistElementsExpanded.ElementWood
 
         public static void CreateAutumnBlastAbility(params BlueprintAbility[] variants)
         {
-            UnityEngine.Sprite icon = Helper.CreateSprite("verdantBlast.png");
+            UnityEngine.Sprite icon = Helper.CreateSprite(Main.ModPath+"/Icons/verdantBlast.png");
 
             var ability = Helper.CreateBlueprintAbility("AutumnBlastBase", "Autumn Blast",
                 AutumnBlastDescription, icon, AbilityType.Special,
@@ -1990,7 +1990,7 @@ namespace KineticistElementsExpanded.ElementWood
 
         private static BlueprintAbility CreateSpringBlastVariant_base()
         {
-            UnityEngine.Sprite icon = Helper.CreateSprite("verdantBlast.png");
+            UnityEngine.Sprite icon = Helper.CreateSprite(Main.ModPath+"/Icons/verdantBlast.png");
 
             var ability = Helper.CreateBlueprintAbility("SpringBlastAbility", "Spring Blast",
                 SpringBlastDescription, icon, AbilityType.Special,
@@ -2314,7 +2314,7 @@ namespace KineticistElementsExpanded.ElementWood
 
         public static void CreateSpringBlastAbility(params BlueprintAbility[] variants)
         {
-            UnityEngine.Sprite icon = Helper.CreateSprite("verdantBlast.png");
+            UnityEngine.Sprite icon = Helper.CreateSprite(Main.ModPath+"/Icons/verdantBlast.png");
 
             var ability = Helper.CreateBlueprintAbility("SpringBlastBase", "Spring Blast",
                 SpringBlastDescription, icon, AbilityType.Special,
@@ -2373,7 +2373,7 @@ namespace KineticistElementsExpanded.ElementWood
 
         private static BlueprintAbility CreateSummerBlastVariant_base()
         {
-            UnityEngine.Sprite icon = Helper.CreateSprite("verdantBlast.png");
+            UnityEngine.Sprite icon = Helper.CreateSprite(Main.ModPath+"/Icons/verdantBlast.png");
 
             var ability = Helper.CreateBlueprintAbility("SummerBlastAbility", "Summer Blast",
                 SummerBlastDescription, icon, AbilityType.Special,
@@ -2697,7 +2697,7 @@ namespace KineticistElementsExpanded.ElementWood
 
         public static void CreateSummerBlastAbility(params BlueprintAbility[] variants)
         {
-            UnityEngine.Sprite icon = Helper.CreateSprite("verdantBlast.png");
+            UnityEngine.Sprite icon = Helper.CreateSprite(Main.ModPath+"/Icons/verdantBlast.png");
 
             var ability = Helper.CreateBlueprintAbility("SummerBlastBase", "Summer Blast",
                 SummerBlastDescription, icon, AbilityType.Special,
@@ -2755,7 +2755,7 @@ namespace KineticistElementsExpanded.ElementWood
 
         private static BlueprintAbility CreateWinterBlastVariant_base()
         {
-            UnityEngine.Sprite icon = Helper.CreateSprite("verdantBlast.png");
+            UnityEngine.Sprite icon = Helper.CreateSprite(Main.ModPath+"/Icons/verdantBlast.png");
 
             var ability = Helper.CreateBlueprintAbility("WinterBlastAbility", "Winter Blast",
                 WinterBlastDescription, icon, AbilityType.Special,
@@ -3079,7 +3079,7 @@ namespace KineticistElementsExpanded.ElementWood
 
         public static void CreateWinterBlastAbility(params BlueprintAbility[] variants)
         {
-            UnityEngine.Sprite icon = Helper.CreateSprite("verdantBlast.png");
+            UnityEngine.Sprite icon = Helper.CreateSprite(Main.ModPath+"/Icons/verdantBlast.png");
 
             var ability = Helper.CreateBlueprintAbility("WinterBlastBase", "Winter Blast",
                 WinterBlastDescription, icon, AbilityType.Special,
@@ -3119,7 +3119,7 @@ namespace KineticistElementsExpanded.ElementWood
 
         public static void CreatePositiveAdmixture()
         {
-            UnityEngine.Sprite icon = Helper.CreateSprite("positiveBlast.png");
+            UnityEngine.Sprite icon = Helper.CreateSprite(Main.ModPath+"/Icons/positiveBlast.png");
 
             var ability = Helper.CreateBlueprintActivatableAbility("PositiveAdmixtureAbility", "Positive Admixture",
                 PositiveAdmixtureDescription, out var buff, icon, UnitCommand.CommandType.Free, Kingmaker.UnitLogic.ActivatableAbilities.AbilityActivationType.WithUnitCommand,
@@ -3456,7 +3456,7 @@ namespace KineticistElementsExpanded.ElementWood
             var KineticRevivification = ResourcesLibrary.TryGetBlueprint<BlueprintFeature>("0377fcf4c10871f4187809d273af7f5d"); // KineticRevivificationFeature
             var HealingBurst = ResourcesLibrary.TryGetBlueprint<BlueprintFeature>("c73b37aaa2b82b44686c56db8ce14e7f"); // HealingBUrstFeature
 
-            UnityEngine.Sprite icon = Helper.CreateSprite("woodHealer.png");
+            UnityEngine.Sprite icon = Helper.CreateSprite(Main.ModPath+"/Icons/woodHealer.png");
             var negativeAffinity = Helper.ToRef<BlueprintUnitFactReference>("d5ee498e19722854198439629c1841a5"); // NegativeEnergyAffinity
             var constructType = Helper.ToRef<BlueprintUnitFactReference>("fd389783027d63343b4a5634bd81645f"); // ConstructType
 

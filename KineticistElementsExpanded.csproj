@@ -40,7 +40,7 @@
 	    <HintPath>lib\Newtonsoft.Json.dll</HintPath>
 	  </Reference>
 	  <Reference Include="CodexLib">
-	  <HintPath>lib\CodexLib.dll</HintPath>
+	  <HintPath>$(SolutionDir)\..\DarkCodex\CodexLib\CodexLib.dll</HintPath>
 	  <Private>false</Private>
 	  </Reference>
 	  <Reference Include="Owlcat.Runtime.Core">

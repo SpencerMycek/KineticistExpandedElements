@@ -263,7 +263,7 @@ namespace KineticistElementsExpanded.ElementVoid
 
         public static BlueprintFeature CreateEmptiness()
         {
-            UnityEngine.Sprite icon = Helper.CreateSprite("emptiness.png");
+            UnityEngine.Sprite icon = Helper.CreateSprite(Main.ModPath+"/Icons/emptiness.png");
 
             #region Resource
 
@@ -422,7 +422,7 @@ namespace KineticistElementsExpanded.ElementVoid
 
         private static BlueprintAbility CreateGravityBlastVariant_base()
         {
-            UnityEngine.Sprite icon = Helper.CreateSprite("gravityBlast.png");
+            UnityEngine.Sprite icon = Helper.CreateSprite(Main.ModPath+"/Icons/gravityBlast.png");
 
             var ability = Helper.CreateBlueprintAbility("GravityBlastAbility", "Gravity Blast",
                 GravityBlastDescription, icon, AbilityType.Special,
@@ -765,7 +765,7 @@ namespace KineticistElementsExpanded.ElementVoid
 
         public static void CreateGravityBlastAbility(params BlueprintAbility[] variants)
         {
-            UnityEngine.Sprite icon = Helper.CreateSprite("gravityBlast.png");
+            UnityEngine.Sprite icon = Helper.CreateSprite(Main.ModPath+"/Icons/gravityBlast.png");
 
             var ability = Helper.CreateBlueprintAbility("GravityBlastBase", "Gravity Blast", 
                 GravityBlastDescription, icon, AbilityType.Special, 
@@ -839,7 +839,7 @@ namespace KineticistElementsExpanded.ElementVoid
 
         private static BlueprintAbility CreateNegativeBlastVariant_base()
         {
-            UnityEngine.Sprite icon = Helper.CreateSprite("negativeBlast.png");
+            UnityEngine.Sprite icon = Helper.CreateSprite(Main.ModPath+"/Icons/negativeBlast.png");
 
             var ability = Helper.CreateBlueprintAbility("NegativeBlastAbility", "Negative Blast",
                 NegativeBlastDescription, icon, AbilityType.Special,
@@ -1175,7 +1175,7 @@ namespace KineticistElementsExpanded.ElementVoid
 
         public static void CreateNegativeBlastAbility(params BlueprintAbility[] variants)
         {
-            UnityEngine.Sprite icon = Helper.CreateSprite("negativeBlast.png");
+            UnityEngine.Sprite icon = Helper.CreateSprite(Main.ModPath+"/Icons/negativeBlast.png");
 
             var ability = Helper.CreateBlueprintAbility("NegativeBlastBase", "Negative Blast",
                 NegativeBlastDescription, icon, AbilityType.Special,
@@ -1262,7 +1262,7 @@ namespace KineticistElementsExpanded.ElementVoid
 
         private static BlueprintAbility CreateVoidBlastVariant_base()
         {
-            UnityEngine.Sprite icon = Helper.CreateSprite("VoidBlast.png");
+            UnityEngine.Sprite icon = Helper.CreateSprite(Main.ModPath+"/Icons/VoidBlast.png");
 
             var ability = Helper.CreateBlueprintAbility("VoidBlastAbility", "Void Blast",
                 VoidBlastDescription, icon, AbilityType.Special,
@@ -1442,7 +1442,7 @@ namespace KineticistElementsExpanded.ElementVoid
             var weapon = CreateVoidBlastBlade_weapon();
 
             #region buffs
-            var buff = Helper.CreateBlueprintBuff("KineticBladeTree.Composite_VoidBuff");
+            var buff = Helper.CreateBlueprintBuff("KineticBladeVoidBlastBuff");
             buff.Flags(true, true);
             buff.Stacking = StackingType.Replace;
             buff.SetComponents
@@ -1453,7 +1453,7 @@ namespace KineticistElementsExpanded.ElementVoid
 
             #region BlastAbility
 
-            var blade_active_ability = Helper.CreateBlueprintActivatableAbility("KineticBladeTree.Composite_VoidAbility", "Void Blast — Kinetic Blade",
+            var blade_active_ability = Helper.CreateBlueprintActivatableAbility("KineticBladeVoidBlastAbility", "Void Blast — Kinetic Blade",
                 KineticBladeDescription, out var unused, icon,
                 group: Kingmaker.UnitLogic.ActivatableAbilities.ActivatableAbilityGroup.FormInfusion, deactivateWhenDead: true);
             blade_active_ability.m_Buff = buff.ToRef();
@@ -1467,7 +1467,7 @@ namespace KineticistElementsExpanded.ElementVoid
 
             #region BlastBurnAbility
 
-            var blade_burn_ability = Helper.CreateBlueprintAbility("KineticBladeTree.Composite_VoidBurnAbility", null, null, icon,
+            var blade_burn_ability = Helper.CreateBlueprintAbility("KineticBladeVoidBlastBurnAbility", null, null, icon,
                 AbilityType.Special, UnitCommand.CommandType.Free, AbilityRange.Personal);
             blade_burn_ability.TargetSelf(CastAnimationStyle.Omni);
             blade_burn_ability.Hidden = true;
@@ -1484,7 +1484,7 @@ namespace KineticistElementsExpanded.ElementVoid
 
             #region BlastKineticBladeDamage
 
-            var blade_damage_ability = Helper.CreateBlueprintAbility("Tree.Composite_VoidKineticBladeDamage", "Void Blast",
+            var blade_damage_ability = Helper.CreateBlueprintAbility("VoidBlastKineticBladeDamage", "Void Blast",
                 VoidBlastDescription, damage_icon, AbilityType.Special, UnitCommand.CommandType.Standard, AbilityRange.Close);
             blade_damage_ability.TargetEnemy(CastAnimationStyle.Omni);
             blade_damage_ability.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten | Metamagic.Reach;
@@ -1612,7 +1612,7 @@ namespace KineticistElementsExpanded.ElementVoid
 
         public static void CreateVoidBlastAbility(params BlueprintAbility[] variants)
         {
-            UnityEngine.Sprite icon = Helper.CreateSprite("VoidBlast.png");
+            UnityEngine.Sprite icon = Helper.CreateSprite(Main.ModPath+"/Icons/VoidBlast.png");
 
             var ability = Helper.CreateBlueprintAbility("VoidBlastBase", "Void Blast",
                 VoidBlastDescription, icon, AbilityType.Special,
@@ -1707,7 +1707,7 @@ namespace KineticistElementsExpanded.ElementVoid
 
         public static void CreateNegativeAdmixture()
         {
-            UnityEngine.Sprite icon = Helper.CreateSprite("negativeAdmixture.png");
+            UnityEngine.Sprite icon = Helper.CreateSprite(Main.ModPath+"/Icons/negativeAdmixture.png");
 
             var ability = Helper.CreateBlueprintActivatableAbility("NegativeAdmixtureAbility", "Negative Admixture",
                 NegativeAdmixtureDescription, out var buff, icon, UnitCommand.CommandType.Free, Kingmaker.UnitLogic.ActivatableAbilities.AbilityActivationType.WithUnitCommand,
@@ -2587,7 +2587,7 @@ namespace KineticistElementsExpanded.ElementVoid
 
         private static BlueprintFeatureReference CreateVoidHealer()
         {
-            UnityEngine.Sprite icon = Helper.CreateSprite("voidHealer.png");
+            UnityEngine.Sprite icon = Helper.CreateSprite(Main.ModPath+"/Icons/voidHealer.png");
             var negativeAffinity = Helper.ToRef<BlueprintUnitFactReference>("d5ee498e19722854198439629c1841a5"); // NegativeEnergyAffinity
 
             var heal = new ContextActionHealTarget

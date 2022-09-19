@@ -175,9 +175,14 @@ namespace KineticistElementsExpanded.KineticLib
         public static void InfusionFeatureAddPrerequisites(BlueprintFeature inf_feature, params KineticistTree.Element[] elements)
         {
             List<BlueprintFeatureReference> feature_list = elements.Select(o => o.BlastFeature).ToList();
+            feature_list.RemoveAll(item => item == null);
+            
             var prereq_list = Helper.CreatePrerequisiteFeaturesFromList(features: feature_list.ToArray());
 
-            inf_feature.AddComponents(prereq_list);
+            if (inf_feature != null)
+            {
+                inf_feature.AddComponents(prereq_list);
+            }
         }
 
         // Adds the given blast to the composite buff with criteria of given two blasts
