@@ -49,8 +49,6 @@ namespace KineticistElementsExpanded
             Main.logger?.LogException(ex);
         }
 
-        //        #region GUI
-
         /// <summary>Called when the mod is turned to on/off.
         /// With this function you control an operation of the mod and inform users whether it is enabled or not.</summary>
         /// <param name="value">true = mod to be turned on; false = mod to be turned off</param>
