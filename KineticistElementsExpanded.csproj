@@ -1,182 +1,133 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-	<LangVersion>preview</LangVersion>
-	<!-- Set to net46 for Kingmaker -->
-	<TargetFramework>net472</TargetFramework>
-    <RootNamespace>KineticistElementsExpanded</RootNamespace>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-
-	<AssemblyName>KineticistElementsExpanded</AssemblyName>
-	<WrathPath>C:\Program Files (x86)\Steam\steamapps\common\Pathfinder Second Adventure\</WrathPath>
-	<ModRepo>C:\Users\Spenc\source\repos\Kineticist Element - Aether\</ModRepo>
+	  <TargetFramework>net472</TargetFramework>
+	  <LangVersion>preview</LangVersion>
+	  <ImplicitUsings>disable</ImplicitUsings>
+	  <Nullable>disable</Nullable>
+	  <Authors>SpencerMycek</Authors>
+	  <RepositoryUrl>https://github.com/SpencerMycek/KineticistExpandedElements</RepositoryUrl>
+	  <PackageLicenseExpression>MIT</PackageLicenseExpression>
+	  <RootNamespace>KineticistElementsExpanded</RootNamespace>
+	  <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+	  <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+	  <AssemblyName>KineticistElementsExpanded</AssemblyName>
+	  <WrathPath>C:\Program Files (x86)\Steam\steamapps\common\Pathfinder Second Adventure\</WrathPath>
+	  <WrathManaged>$(WrathPath)\Wrath_Data\Managed\</WrathManaged>
+	  <ModRepo>C:\Users\Spenc\source\repos\Kineticist Element - Aether\</ModRepo>
   </PropertyGroup>
 
-  <ItemGroup>
-    <None Update="Info.json">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	</None>
-  </ItemGroup>
+	<!-- NuGet Packages -->
+	<ItemGroup>
+		<PackageReference Include="AssemblyPublicizer" Version="1.0.1" ExcludeAssets="runtime" />
+		<PackageReference Include="BuildTaskVersionControl" Version="1.0.1" ExcludeAssets="runtime" />
+		<PackageReference Include="ILRepack.MSBuild.Task" Version="2.0.13" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+		<PackageReference Include="WW-Blueprint-Core" Version="1.3.6" />
+	</ItemGroup>
 	
+	<!-- Configuration -->
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<OutputPath>bin\Debug\Kineticist Element - Aether\</OutputPath>
+		<DebugType>portable</DebugType>
+		<DebugSymbols>true</DebugSymbols>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		<OutputPath>bin\Release\Kineticist Element - Aether\</OutputPath>
+	</PropertyGroup>
 	
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>bin\Debug\Kineticist Element - Aether\</OutputPath>
-    <DebugType>portable</DebugType>
-    <DebugSymbols>true</DebugSymbols>
-  </PropertyGroup>
+	<!-- Common References -->
+	<ItemGroup>
+		<Reference Update="System" />
+		<Reference Update="System.Core" />
+		<Reference Update="System.Data" />
+		<Reference Update="System.Drawing" />
+		<Reference Update="System.IO.Compression.FileSystem" />
+		<Reference Update="System.Numerics" />
+		<Reference Update="System.Runtime.Serialization" />
+		<Reference Update="System.Xml" />
+		<Reference Update="System.Xml.Linq" />
+	</ItemGroup>
+	
+	<!-- Project References -->
+	<ItemGroup>
+		<Reference Include="0Harmony_public" HintPath="$(WrathManaged)\0Harmony_public.dll" />
+		<Reference Include="Assembly-CSharp_public" HintPath="$(WrathManaged)\Assembly-CSharp_public.dll" />
+		<Reference Include="Owlcat.Runtime.UI_public" HintPath="$(WrathManaged)\Owlcat.Runtime.UI_public.dll" />
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <OutputPath>bin\Release\Kineticist Element - Aether\</OutputPath>
-  </PropertyGroup>
+		<Reference Include="CodexLib" HintPath="$(ModRepo)\lib\CodexLib.dll" Private="False" />
 
-  <ItemGroup>
-	  <Reference Include="Assembly-CSharp">
-	    <HintPath>$(SolutionDir)lib\Assembly-CSharp.dll</HintPath>
-	  </Reference>
-	  <Reference Include="Assembly-CSharp-firstpass.dll">
-		  <HintPath>$(WrathPath)\Wrath_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
-	  </Reference>
-	  <Reference Include="Newtonsoft.Json">
-	    <HintPath>lib\Newtonsoft.Json.dll</HintPath>
-	  </Reference>
-	  <Reference Include="CodexLib">
-	  <HintPath>$(ModRepo)\lib\CodexLib.dll</HintPath>
-	  <Private>false</Private>
-	  </Reference>
-	  <Reference Include="Owlcat.Runtime.Core">
-		  <HintPath>$(WrathPath)\Wrath_Data\Managed\Owlcat.Runtime.Core.dll</HintPath>
-	  </Reference>
-	  <Reference Include="Owlcat.Runtime.UI">
-		  <HintPath>$(WrathPath)\Wrath_Data\Managed\Owlcat.Runtime.UI.dll</HintPath>
-	  </Reference>
-	  <Reference Include="Owlcat.Runtime.Validation">
-	    <HintPath>$(WrathPath)\Wrath_Data\Managed\Owlcat.Runtime.Validation.dll</HintPath>
-	  </Reference>
-	  <Reference Include="Owlcat.Runtime.Visual">
-		  <HintPath>$(WrathPath)\Wrath_Data\Managed\Owlcat.Runtime.Visual.dll</HintPath>
-	  </Reference>
-	  <Reference Include="Unity.TextMeshPro">
-	    <HintPath>$(WrathPath)\Wrath_Data\Managed\Unity.TextMeshPro.dll</HintPath>
-	  </Reference>
-	  <Reference Include="UnityEngine.CoreModule">
-		  <HintPath>$(WrathPath)\Wrath_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
-	  </Reference>
-	  <Reference Include="UnityEngine.CoreModule">
-		  <HintPath>$(WrathPath)\Wrath_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
-	  </Reference>
-	  <Reference Include="0Harmony">
-		  <HintPath>$(WrathPath)\Wrath_Data\Managed\UnityModManager\0Harmony.dll</HintPath>
-	  </Reference>
-	  <Reference Include="UnityEngine.ImageConversionModule">
-		  <HintPath>$(WrathPath)\Wrath_Data\Managed\UnityEngine.ImageConversionModule.dll</HintPath>
-	  </Reference>
-	  <Reference Include="UnityModManager">
-		  <HintPath>$(WrathPath)\Wrath_Data\Managed\UnityModManager\UnityModManager.dll</HintPath>
-	  </Reference>
-  </ItemGroup>
+		<Reference Include="UnityModManager" HintPath="$(WrathManaged)\UnityModManager\UnityModManager.dll" />
+		<Reference Include="Assembly-CSharp-firstpass" HintPath="$(WrathManaged)\Assembly-CSharp-firstpass.dll" />
+		<Reference Include="Newtonsoft.Json" HintPath="$(WrathManaged)\Newtonsoft.Json.dll" />
+		<Reference Include="UniRx" HintPath="$(WrathManaged)\UniRx.dll" />
+		<Reference Include="DotNetZip" HintPath="$(WrathManaged)\DotNetZip.dll" />
+		<Reference Include="Owlcat.SharedTypes" HintPath="$(WrathManaged)\Owlcat.SharedTypes.dll" />
+		<Reference Include="Owlcat.Runtime.Core" HintPath="$(WrathManaged)\Owlcat.Runtime.Core.dll" />
+		<Reference Include="Owlcat.Runtime.Validation" HintPath="$(WrathManaged)\Owlcat.Runtime.Validation.dll" />
+		<Reference Include="UnityEngine" HintPath="$(WrathManaged)\UnityEngine.dll" />
+		<Reference Include="UnityTextMeshPro" HintPath="$(WrathManaged)\Unity.TextMeshPro.dll" />
+		<Reference Include="UnityEngine.UI" HintPath="$(WrathManaged)\UnityEngine.UI.dll" />
+		<Reference Include="UnityEngine.AnimationModule" HintPath="$(WrathManaged)\UnityEngine.AnimationModule.dll" />
+		<Reference Include="UnityEngine.CoreModule" HintPath="$(WrathManaged)\UnityEngine.CoreModule.dll" />
+		<Reference Include="UnityEngine.ImageConversionModule" HintPath="$(WrathManaged)\UnityEngine.ImageConversionModule.dll" />
+		<Reference Include="UnityEngine.IMGUIModule" HintPath="$(WrathManaged)\UnityEngine.IMGUIModule.dll" />
+		<Reference Include="UnityEngine.JSONSerializeModule" HintPath="$(WrathManaged)\UnityEngine.JSONSerializeModule.dll" />
+		<Reference Include="UnityEngine.ParticleSystemModule" HintPath="$(WrathManaged)\UnityEngine.ParticleSystemModule.dll" />
+		<Reference Include="UnityEngine.TextRenderingModule" HintPath="$(WrathManaged)\UnityEngine.TextRenderingModule.dll" />
+		<Reference Include="UnityEngine.InputLegacyModule" HintPath="$(WrathManaged)\UnityEngine.InputLegacyModule.dll" />
+		<Reference Include="UnityEngine.UIModule" HintPath="$(WrathManaged)\UnityEngine.UIModule.dll" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="AssemblyPublicizer" Version="1.0.1">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="ILRepack.MSBuild.Task" Version="2.0.13" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="WW-Blueprint-Core" Version="1.3.6" />
-  </ItemGroup>
+	<!-- Other Files -->
+	<ItemGroup>
+		<None Update="Info.json" CopyToOutputDirectory="PreserveNewest" />
+		<Folder Include="Media\Icons\" />
+		<Folder Include="Media\Localization\" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Media\Icons\" />
-    <Folder Include="Media\Localization\" />
-    <Folder Include="Properties\" />
-  </ItemGroup>
+	<!-- Publicize -->
+	<Target Name="Publicize" AfterTargets="Clean">
+		<ItemGroup>
+			<PublicizeInput Include="$(WrathManaged)\Assembly-CSharp.dll" />
+			<PublicizeInput Include="$(WrathManaged)\UnityModManager\0Harmony.dll" />
+			<PublicizeInput Include="$(WrathManaged)\Owlcat.Runtime.UI.dll" />
+		</ItemGroup>
+		<PublicizeTask InputAssemblies="@(PublicizeInput)" OutputDir="$(WrathManaged)" />
+	</Target>
 
-  <!-- DLL Merging -->
-  <Target Name="ILRepack" AfterTargets="Build">
-    <ItemGroup>
-      <InputAssemblies Include="BlueprintCore.dll" />
-      <InputAssemblies Include="KineticistElementsExpanded.dll" />
-      <OutputAssembly Include="KineticistElementsExpanded.dll" />
-    </ItemGroup>
+	<!-- Automatic Deployment Setup -->
+	<Target Name="DeployMod" AfterTargets="Build">
+		<ItemGroup>
+			<Assembly Include="$(OutputPath)\KineticistElementsExpanded.dll" />
+			<ModConfig Include="$(OutputPath)\Info.json" />
+			<debug_symbols Include="$(OutputPath)\KineticistElementsExpanded.pdb" />
+			<media Include="$(ModRepo)\Media\Icons\*" />
+			<library Include="$(ModRepo)\lib\CodexLib.dll" />
+		</ItemGroup>
 
-    <Message Text="Merging: @(InputAssemblies) into @(OutputAssembly)" Importance="High" />
+		<Copy SourceFiles="@(Assembly)" DestinationFolder="$(WrathPath)\Mods\KineticistElementsExpanded" />
+		<Copy SourceFiles="@(ModConfig)" DestinationFolder="$(WrathPath)\Mods\KineticistElementsExpanded" />
+		<Copy SourceFiles="@(debug_symbols)" DestinationFolder="$(WrathPath)\Mods\KineticistElementsExpanded" />
+		<Copy SourceFiles="@(media)" DestinationFolder="$(WrathPath)\Mods\KineticistElementsExpanded\Icons" />
+		<Copy SourceFiles="@(library)" DestinationFolder="$(WrathPath)\Mods\KineticistElementsExpanded" />
+	</Target>
 
-    <ILRepack OutputType="Dll" MainAssembly="KineticistElementsExpanded.dll" OutputAssembly="@(OutputAssembly)" InputAssemblies="@(InputAssemblies)" WorkingDirectory="$(OutputPath)" />
-  </Target>
+	<!-- DLL Merging -->
+	<!--
+	<Target Name="ILRepack" AfterTargets="Build">
+		<ItemGroup>
+			<InputAssemblies Include="BlueprintCore.dll" />
+			<InputAssemblies Include="KineticistElementsExpanded.dll" />
+			<OutputAssembly Include="KineticistElementsExpanded.dll" />
+		</ItemGroup>
 
-  <!-- Automatic Deployment Setup -->
-  <Target Name="DeployMod" AfterTargets="ILRepack">
-    <ItemGroup>
-      <Assembly Include="$(OutputPath)\KineticistElementsExpanded.dll" />
-	  <ModConfig Include="$(OutputPath)\Info.json" />
-      <debug_symbols Include="$(OutputPath)\KineticistElementsExpanded.pdb" />
-      <media Include="$(ModRepo)\Media\Icons\*" />
-	  <library Include="$(ModRepo)\lib\CodexLib.dll"/>
-    </ItemGroup>
+		<Message Text="Merging: @(InputAssemblies) into @(OutputAssembly)" Importance="High" />
 
-    <Copy SourceFiles="@(Assembly)" DestinationFolder="$(WrathPath)\Mods\KineticistElementsExpanded" />
-    <Copy SourceFiles="@(ModConfig)" DestinationFolder="$(WrathPath)\Mods\KineticistElementsExpanded" />
-	<Copy SourceFiles="@(debug_symbols)" DestinationFolder="$(WrathPath)\Mods\KineticistElementsExpanded" />
-	<Copy SourceFiles="@(media)" DestinationFolder="$(WrathPath)\Mods\KineticistElementsExpanded\Icons" />
-	<Copy SourceFiles="@(library)" DestinationFolder="$(WrathPath)\Mods\KineticistElementsExpanded" />
-  </Target>
+		<ILRepack OutputType="Dll" MainAssembly="KineticistElementsExpanded.dll" OutputAssembly="@(OutputAssembly)" InputAssemblies="@(InputAssemblies)" WorkingDirectory="$(OutputPath)" />
+	</Target>
+	-->
 
-
-  <!-- Publicize Target -->
-  <Target Name="Publicize" AfterTargets="Clean">
-    <ItemGroup>
-      <Assemblies Include="$(WrathPath)\Wrath_Data\Managed\Assembly-CSharp.dll" />
-      <PublicAssembly Include="$(SolutionDir)\lib\Assembly-CSharp_public.dll" />
-      <RenamedAssembly Include="$(SolutionDir)\lib\Assembly-CSharp.dll" />
-    </ItemGroup>
-
-    <PublicizeTask InputAssemblies="@(Assemblies)" OutputDir="$(SolutionDir)lib/" />
-    <Move SourceFiles="@(PublicAssembly)" DestinationFiles="@(RenamedAssembly)" />
-  </Target>
-  <ItemGroup>
-    <Reference Update="System">
-      <Private>false</Private>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Update="System.Core">
-      <Private>false</Private>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Update="System.Data">
-      <Private>false</Private>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Update="System.Drawing">
-      <Private>false</Private>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Update="System.IO.Compression.FileSystem">
-      <Private>false</Private>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Update="System.Numerics">
-      <Private>false</Private>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Update="System.Runtime.Serialization">
-      <Private>false</Private>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Update="System.Xml">
-      <Private>false</Private>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Update="System.Xml.Linq">
-      <Private>false</Private>
-    </Reference>
-  </ItemGroup>
   <ProjectExtensions><VisualStudio><UserProperties info_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
 </Project>

@@ -101,9 +101,9 @@ namespace KineticistElementsExpanded
 
         private static void EnsureCodexLib(string modPath)
         {
-            //if (AppDomain.CurrentDomain.GetAssemblies().Any(a => a.FullName.StartsWith("CodexLib, "))) {
-            //    return;
-            //}
+            if (AppDomain.CurrentDomain.GetAssemblies().Any(a => a.FullName.StartsWith("CodexLib, "))) {
+                return;
+            }
 
             string path = null;
             Version version = null;
@@ -122,12 +122,6 @@ namespace KineticistElementsExpanded
             {
                 Print("Loading CodexLib " + path);
                 AppDomain.CurrentDomain.Load(File.ReadAllBytes(path));
-
-                var x = AppDomain.CurrentDomain.GetAssemblies();
-                foreach (var assembly in x)
-                {
-                    Print(assembly.FullName);
-                }
             }
         }
 

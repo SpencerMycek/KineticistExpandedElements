@@ -3,8 +3,6 @@ using CodexLib;
 using KineticistElementsExpanded.Components;
 using KineticistElementsExpanded.Components.Properties;
 using KineticistElementsExpanded.KineticLib;
-using AnyRef = CodexLib.AnyRef;
-using Helper = CodexLib.Helper;
 using Kingmaker.Blueprints;
 using Kingmaker.Blueprints.Classes;
 using Kingmaker.Blueprints.Classes.Prerequisites;
