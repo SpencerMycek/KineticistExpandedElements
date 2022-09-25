@@ -353,25 +353,10 @@ namespace KineticistElementsExpanded.KineticLib
                     weapon.ToRef<BlueprintItemWeaponReference>(),
                     length.Feet(),
                     width.Feet());
+                projectile.Type = type;
                 return projectile;
             }
-            /* TODO Remove
-            /// <summary>
-            /// Alternative projectile. Requires attack roll, if weapon is not null.
-            /// </summary>
-            public static AbilityDeliverChainAttack ChainProjectile(string projectile_guid, [CanBeNull] BlueprintItemWeaponReference weapon, float delay = 0f)
-            {
-                var result = new AbilityDeliverChainAttack
-                {
-                    TargetsCount = Helper.CreateContextValue(AbilityRankType.DamageDice),
-                    TargetType = TargetType.Enemy,
-                    Weapon = weapon,
-                    Projectile = projectile_guid.ToRef<BlueprintProjectileReference>(),
-                    DelayBetweenChain = delay
-                };
-                return result;
-            }
-            */
+
             /// <summary>
             /// Element descriptor for energy blasts.
             /// </summary>

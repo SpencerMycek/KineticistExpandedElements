@@ -98,6 +98,19 @@ If you notice any issues, please contact me or open up an issue on this reposito
 
 ## Recent Changes
 
+### v3.0.0
+- Huge stability Update - I went over the codebase (10K+ lines) 3 times to align each element to work as similarly as possible
+- Fixes should be a lot easier in the future
+- Now using CodexLib (From DarkCodex) so everything should stay up-to-date and work great
+
+- Fix: Force Throw works again
+- Break: Many Throw does not work
+- Break: Void: Vampiric Infusion not working?
+- Break: Some infusions are just missing? (Greater Toxic/One of the Admixtures)
+
+
+- Now updated for the most recent game version (Thing should just work again<sup>tm</sup>)
+
 ### v2.5.2
 
 - Fix Negative Energy Kinetic Blade Text
