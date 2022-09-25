@@ -1,4 +1,5 @@
 ﻿using KineticistElementsExpanded.Components;
+using CodexLib;
 using HarmonyLib;
 using Kingmaker.Blueprints;
 using Kingmaker.Blueprints.Classes;
@@ -11,7 +12,6 @@ using Kingmaker.EntitySystem.Persistence.JsonUtility;
 using Kingmaker.Items;
 using Kingmaker.Localization;
 using Kingmaker.Modding;
-using Kingmaker.UI.Log.CombatLog_ThreadSystem;
 using Kingmaker.UI.MVVM._VM.Tooltip.Templates;
 using Kingmaker.UnitLogic.Abilities.Blueprints;
 using Kingmaker.UnitLogic.ActivatableAbilities;
@@ -88,6 +88,7 @@ namespace KineticistElementsExpanded
             // Cross Feature
             public static List<BlueprintAbility> AccursedStrike = new();
 
+            /*
             public static void EnsureFast()
             {
                 if (IsLoaded)
@@ -147,7 +148,7 @@ namespace KineticistElementsExpanded
                                 deserializer.Blueprint(ref sbp);
                                 if (sbp == null)
                                 {
-                                    Helper.PrintDebug("spb is null " + type.Name);
+                                    Main.PrintDebug("spb is null " + type.Name);
                                     return;
                                 }
 
@@ -155,7 +156,7 @@ namespace KineticistElementsExpanded
                                 var blueprint = (obj as T) ?? sbp as T;
                                 if (blueprint == null)
                                 {
-                                    Helper.PrintDebug("blueprint is null " + type.Name);
+                                    Main.PrintDebug("blueprint is null " + type.Name);
                                     return;
                                 }
 
@@ -165,14 +166,15 @@ namespace KineticistElementsExpanded
                                 count++;
                             }
                         }
-                        //else Helper.PrintDebug("unkown type: " + typeGuidString);
+                        //else Main.PrintDebug("unkown type: " + typeGuidString);
                     }
                 }
 
                 timer.Stop();
-                Helper.Print($"Loaded {count} out of {total} blueprints in {timer.ElapsedMilliseconds}ms, abilities={Ability.Count} activatables={Activatable.Count} items={Item.Count} enchantments={Enchantment.Count}");
+                Main.Print($"Loaded {count} out of {total} blueprints in {timer.ElapsedMilliseconds}ms, abilities={Ability.Count} activatables={Activatable.Count} items={Item.Count} enchantments={Enchantment.Count}");
             }
-
+            */
+            /*
             public static void EnsureMod()
             {
                 if (IsLoaded)
@@ -230,16 +232,16 @@ namespace KineticistElementsExpanded
                             if (__instance.Load(guid) is T bp)
                                 list.Add(bp);
                             else
-                                Helper.PrintError("unable to load " + guid);
+                                Main.PrintError("unable to load " + guid);
                         }
                     }
-                    //else Helper.PrintDebug("unkown type: " + typeGuidString);
+                    //else Main.PrintDebug("unkown type: " + typeGuidString);
                 }
 
                 timer.Stop();
-                Helper.Print($"Loaded {count} out of {assets.Length} blueprints in {timer.ElapsedMilliseconds}ms, abilities={Ability.Count} activatables={Activatable.Count} items={Item.Count} enchantments={Enchantment.Count}");
+                Main.Print($"Loaded {count} out of {assets.Length} blueprints in {timer.ElapsedMilliseconds}ms, abilities={Ability.Count} activatables={Activatable.Count} items={Item.Count} enchantments={Enchantment.Count}");
             }
-
+            */
             public static void EnsureSlow()
             {
                 if (IsLoaded)
@@ -267,7 +269,7 @@ namespace KineticistElementsExpanded
                 Load(Enchantment, Path.Combine(Main.ModPath, "resources", "Enchantment.bin"));
 
                 timer.Stop();
-                Helper.Print($"Loaded blueprints in {timer.ElapsedMilliseconds}ms, abilities={Ability.Count} activatables={Activatable.Count} items={Item.Count} enchantments={Enchantment.Count}");
+                Main.Print($"Loaded blueprints in {timer.ElapsedMilliseconds}ms, abilities={Ability.Count} activatables={Activatable.Count} items={Item.Count} enchantments={Enchantment.Count}");
             }
 
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -294,6 +296,7 @@ namespace KineticistElementsExpanded
                 Enchantment.Clear();
             }
 
+            /*
             public static void SaveBaseGame()
             {
                 // clear all cache, then populate with only base game blueprints
@@ -312,7 +315,7 @@ namespace KineticistElementsExpanded
                 Save(Item, Path.Combine(Main.ModPath, "resources", "Item.bin"));
                 Save(Enchantment, Path.Combine(Main.ModPath, "resources", "Enchantment.bin"));
             }
-
+            */
             public static void Save<T>(List<T> list, string path) where T : SimpleBlueprint
             {
                 try
@@ -327,7 +330,7 @@ namespace KineticistElementsExpanded
                 }
                 catch (Exception e)
                 {
-                    Helper.PrintException(e);
+                    Main.PrintException(e);
                 }
             }
 
@@ -346,18 +349,18 @@ namespace KineticistElementsExpanded
                             if (!list.Contains(bp))
                                 list.Add(bp);
                             else
-                                Helper.PrintDebug("duplicate blueprint: " + bp.AssetGuid);
+                                Main.PrintDebug("duplicate blueprint: " + bp.AssetGuid);
                         }
                         else
-                            Helper.Print($"wrong guid in {path}");
+                            Main.Print($"wrong guid in {path}");
                     }
 
                 }
                 catch (Exception e)
                 {
-                    Helper.PrintException(e);
+                    Main.PrintException(e);
                 }
-                // Helper.Print($"loaded {list.Count} {typeof(T).Name}");
+                // Main.Print($"loaded {list.Count} {typeof(T).Name}");
             }
 
             //public static void Dispose()

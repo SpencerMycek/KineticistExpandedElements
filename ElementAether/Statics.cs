@@ -8,7 +8,6 @@ namespace KineticistElementsExpanded.ElementAether
 {
     class Statics
     {
-        protected static readonly string ElementalFocusAetherGuid = "6AA8A023-FC1D-4DAD-B6C2-7CC01B7BF48D";
         protected static readonly string ElementalFocusAetherDescription =
             "Kineticists who focus on the element of aether—a rare substance formed when elemental"
             + " energy affects the Ethereal Plane—are called telekineticists. Telekineticists use"

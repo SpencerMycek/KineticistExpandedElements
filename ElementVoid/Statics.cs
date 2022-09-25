@@ -11,8 +11,8 @@ namespace KineticistElementsExpanded.ElementVoid
         protected static readonly string ElementalFocusVoidDescription =
             @"Like aether, void forms where elemental energy meets another material, in this case the substance of the Negative Energy Plane. Kineticists who command this strange force are referred to as chaokineticists.";
 
-        protected static readonly string VoidClassSkillsDescription = 
-            @"An Chaokineticist adds {g|Encyclopedia:Knowledge_World}Knowledge (World){/g} to her list of class {g|Encyclopedia:Skills}skills{/g}.";
+        protected static readonly string VoidClassSkillsDescription =
+            @"An Chaokineticist adds {g|Encyclopedia:Knowledge_World}Knowledge (World){/g} and {g|Encyclopedia:Mobility}Mobility{/g} to her list of class {g|Encyclopedia:Skills}skills{/g}.";
 
         protected static readonly string GravityBlastDescription =
             @"Element: Void

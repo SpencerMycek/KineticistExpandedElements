@@ -1,4 +1,5 @@
 ﻿using JetBrains.Annotations;
+using CodexLib;
 using Kingmaker;
 using Kingmaker.Blueprints;
 using Kingmaker.ElementsSystem;
@@ -94,7 +95,7 @@ namespace KineticistElementsExpanded.Components
             }
             catch (Exception ex)
             {
-                Helper.Print($"[AddForceBlastNullifyDamage] Exception: {ex.Message}");
+                Helper.PrintNotification($"[AddForceBlastNullifyDamage] Exception: {ex.Message}");
             }
         }
 
@@ -210,7 +211,7 @@ namespace KineticistElementsExpanded.Components
             }
             catch (Exception ex)
             {
-                Helper.Print($"[AddForceBlastNullifyDamage] Exception: {ex.Message}");
+                Helper.PrintNotification($"[AddForceBlastNullifyDamage] Exception: {ex.Message}");
             }
         }
 
@@ -326,7 +327,7 @@ namespace KineticistElementsExpanded.Components
             }
             catch (Exception ex)
             {
-                Helper.Print($"[AddForceBlastNullifyDamage] Exception: {ex.Message}");
+                Helper.PrintNotification($"[AddForceBlastNullifyDamage] Exception: {ex.Message}");
             }
         }
 

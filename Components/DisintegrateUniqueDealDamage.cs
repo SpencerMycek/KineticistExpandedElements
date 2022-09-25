@@ -241,9 +241,13 @@ namespace KineticistElementsExpanded.Components
             return ruleDealDamage;
         }
 
+#pragma warning disable CS0649 // Field 'DisintegrateUniqueDealDamage.Value' is never assigned to, and will always have its default value null
         public ContextDiceValue Value;
+#pragma warning restore CS0649 // Field 'DisintegrateUniqueDealDamage.Value' is never assigned to, and will always have its default value null
 
+#pragma warning disable CS0649 // Field 'DisintegrateUniqueDealDamage.m_Buff' is never assigned to, and will always have its default value null
         public BlueprintBuff m_Buff;
+#pragma warning restore CS0649 // Field 'DisintegrateUniqueDealDamage.m_Buff' is never assigned to, and will always have its default value null
 
         private DamageTypeDescription DamageTypeDesc = new DamageTypeDescription
         {

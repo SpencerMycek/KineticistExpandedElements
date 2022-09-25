@@ -1,5 +1,7 @@
 ﻿using BlueprintCore.Utils;
+using CodexLib;
 using KineticistElementsExpanded.Components;
+using KineticistElementsExpanded.Components.Properties;
 using KineticistElementsExpanded.KineticLib;
 using Kingmaker.Blueprints;
 using Kingmaker.Blueprints.Classes;
@@ -38,33 +40,17 @@ using Kingmaker.Utility;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static Kingmaker.Blueprints.BlueprintUnitTemplate;
 using static Kingmaker.Visual.Animation.Kingmaker.Actions.UnitAnimationActionCastSpell;
+using System;
 
 namespace KineticistElementsExpanded.ElementWood
 {
     class Wood : Statics
     {
         // Idea to bring Ghoran race as a dryad or something
-
-        // Fixed a mixup between Aether and Void Bonus Feats
-        // Fixed an issue where you were not granted a Blast from picking Void or Wood as a Second (or Third) Elemental Focus, when you didnt pick Wood or Void respectively as your first
-        // Added Void, Wood, and Aether to Blade Whirlwind
         
-        public static KineticistTree Tree = new();
-
-        public static KineticistTree.Element Positive = new();
-        public static KineticistTree.Element WoodBlast = new();
-        public static KineticistTree.Element Verdant = new();
-        public static KineticistTree.Element Autumn = new();
-        public static KineticistTree.Element Spring = new();
-        public static KineticistTree.Element Summer = new();
-        public static KineticistTree.Element Winter = new();
-
-        public static KineticistTree.Focus WoodFocus = new();
-
-        public static KineticistTree.Infusion Spore = new();
-        public static KineticistTree.Infusion Toxic = new();
-        public static KineticistTree.Infusion GreaterToxic = new();
+        public static KineticistTree Tree = KineticistTree.Instance;
 
         public static KineticistTree.Infusion PositiveAdmixture = new();
 
@@ -72,28 +58,33 @@ namespace KineticistElementsExpanded.ElementWood
         {
             BlueprintFeatureBase wood_class_skills = CreateWoodClassSkills();
 
+            CreateInfusions();
+
             CreateWoodBlastsSelection();
             CreateCompositeBlasts();
 
-            CreateInfusions();
+            Kineticist.AddElementsToInfusion(Tree.Spore, Tree.Wood, Tree.Composite_Verdant, Tree.Composite_Autumn, Tree.Composite_Spring, Tree.Composite_Summer, Tree.Composite_Winter);
+            Kineticist.AddElementsToInfusion(Tree.Toxic, Tree.Wood, Tree.Composite_Verdant, Tree.Composite_Autumn, Tree.Composite_Spring, Tree.Composite_Summer, Tree.Composite_Winter);
+            Kineticist.AddElementsToInfusion(Tree.ToxicGreater, Tree.Wood, Tree.Composite_Verdant, Tree.Composite_Autumn, Tree.Composite_Spring, Tree.Composite_Summer, Tree.Composite_Winter);
 
             BlueprintFeature flesh_of_wood_feature = CreateFleshofWood();
 
-            Kineticist.AddElementalDefenseIsPrereqFor(Positive.BlastFeature, Positive.BladeFeature, flesh_of_wood_feature);
-            Kineticist.AddElementalDefenseIsPrereqFor(WoodBlast.BlastFeature, WoodBlast.BladeFeature, flesh_of_wood_feature);
+            Kineticist.AddElementalDefenseIsPrereqFor(Tree.Positive.BlastFeature, Tree.Positive.Blade.Feature, flesh_of_wood_feature);
+            Kineticist.AddElementalDefenseIsPrereqFor(Tree.Wood.BlastFeature, Tree.Wood.Blade.Feature, flesh_of_wood_feature);
 
-            Kineticist.ElementsBlastSetup(Positive, WoodBlast, Verdant, Autumn, Spring, Summer, Winter);
+            Kineticist.ElementsBlastSetup(Tree.Positive, Tree.Wood, Tree.Composite_Verdant, Tree.Composite_Autumn, Tree.Composite_Spring, Tree.Composite_Summer, Tree.Composite_Winter);
 
-            EntanglePushInfusions(WoodBlast, Verdant, Autumn, Spring, Summer, Winter);
-            DazzleInfusion(Positive, Verdant);
-            FoxfireInfusions(Positive);
-            Kineticist.AddCompositeToBuff(Tree, Autumn, WoodBlast, Tree.Earth);
-            Kineticist.AddCompositeToBuff(Tree, Spring, WoodBlast, Tree.Air);
-            Kineticist.AddCompositeToBuff(Tree, Summer, WoodBlast, Tree.Fire);
-            Kineticist.AddCompositeToBuff(Tree, Winter, WoodBlast, Tree.Cold);
+            EntanglePushInfusions(Tree.Wood, Tree.Composite_Verdant, Tree.Composite_Autumn, Tree.Composite_Spring, Tree.Composite_Summer, Tree.Composite_Winter);
+            DazzleInfusion(Tree.Positive, Tree.Composite_Verdant);
+            FoxfireInfusions(Tree.Positive);
 
-            Kineticist.AddAdmixtureToBuff(Tree, PositiveAdmixture, Positive, true, true, false);
-            Kineticist.AddBladesToKineticWhirlwind(WoodBlast, Positive, Verdant, Autumn, Spring, Summer, Winter);
+            Kineticist.AddCompositeToBuff(Tree, Tree.Composite_Autumn, Tree.Wood, Tree.Earth);
+            Kineticist.AddCompositeToBuff(Tree, Tree.Composite_Spring, Tree.Wood, Tree.Air);
+            Kineticist.AddCompositeToBuff(Tree, Tree.Composite_Summer, Tree.Wood, Tree.Fire);
+            Kineticist.AddCompositeToBuff(Tree, Tree.Composite_Winter, Tree.Wood, Tree.Cold);
+
+            Kineticist.AddAdmixtureToBuff(Tree, PositiveAdmixture, Tree.Positive, true, true, false);
+            Kineticist.AddBladesToKineticWhirlwind(Tree.Wood, Tree.Positive, Tree.Composite_Verdant, Tree.Composite_Autumn, Tree.Composite_Spring, Tree.Composite_Summer, Tree.Composite_Winter);
 
 
             CreateWoodElementalFocus(wood_class_skills, flesh_of_wood_feature);
@@ -109,10 +100,11 @@ namespace KineticistElementsExpanded.ElementWood
         private static BlueprintFeatureBase CreateWoodClassSkills()
         {
             var feature = Helper.CreateBlueprintFeature("WoodClassSkills", "Wood Class Skills",
-                WoodClassSkillsDescription, null, null, 0)
+                WoodClassSkillsDescription, null, 0)
                 .SetComponents
                 (
-                Helper.CreateAddClassSkill(StatType.SkillLoreNature)
+                Helper.CreateAddClassSkill(StatType.SkillLoreNature),
+                Helper.CreateAddClassSkill(StatType.SkillKnowledgeWorld)
                 );
             return feature;
         }
@@ -123,15 +115,15 @@ namespace KineticistElementsExpanded.ElementWood
             CreateWoodBlast();
 
             var selection = Helper.CreateBlueprintFeatureSelection("WoodBlastSelection", "Wood Blast",
-                WoodBlastDescription, null, null, FeatureGroup.None, SelectionMode.Default);
+                WoodBlastDescription, null, FeatureGroup.None, SelectionMode.Default);
             selection.IsClassFeature = true;
 
             Helper.AppendAndReplace<BlueprintFeatureReference>(ref selection.m_AllFeatures,
-                AnyRef.Get(Positive.Progession).To<BlueprintFeatureReference>(),
-                AnyRef.Get(WoodBlast.Progession).To<BlueprintFeatureReference>());
+                AnyRef.ToAny(Tree.Positive.Progession),
+                AnyRef.ToAny(Tree.Wood.Progession));
 
-            Positive.Selection = selection.ToRef3();
-            WoodBlast.Selection = Positive.Selection;
+            Tree.Positive.Selection = AnyRef.ToAny(selection);
+            Tree.Wood.Selection = Tree.Positive.Selection;
         }
 
         private static void EntanglePushInfusions(params KineticistTree.Element[] elements)
@@ -200,9 +192,9 @@ namespace KineticistElementsExpanded.ElementWood
         private static void CreateWoodElementalFocus(BlueprintFeatureBase class_skills, BlueprintFeatureBase flesh_of_wood)
         {
             var progression = Helper.CreateBlueprintProgression("ElementalFocusWood", "Wood",
-                ElementalFocusWoodDescription, null, null,
+                ElementalFocusWoodDescription, null,
                 FeatureGroup.KineticElementalFocus)
-                .SetComponents(Helper.CreatePrerequisiteNoArchetype(Tree.BloodKineticist, Tree.Class));
+                .SetComponents(Helper.CreatePrerequisiteNoArchetype(Kineticist.ref_blood_kineticist, Tree.Class));
 
             progression.m_Classes = new BlueprintProgression.ClassWithLevel
             {
@@ -211,19 +203,17 @@ namespace KineticistElementsExpanded.ElementWood
             }.ObjToArray();
 
             // Can be any Wood basic: Positive or Wood
-            var entry1 = Helper.CreateLevelEntry(1, Positive.Selection, class_skills);
+            var entry1 = Helper.CreateLevelEntry(1, Tree.Positive.Selection, class_skills);
             var entry2 = Helper.CreateLevelEntry(2, flesh_of_wood);
             Helper.AddEntries(progression, entry1, entry2);
 
             Helper.AppendAndReplace(ref ((BlueprintFeatureSelection)Tree.FocusFirst.GetBlueprint()).m_AllFeatures, progression.ToRef());
-
-            WoodFocus.First = progression.ToRef3();
         }
 
         private static void CreateKineticKnightWoodFocus(BlueprintFeatureBase class_skills, BlueprintFeatureBase emptiness)
         {
             var progression = Helper.CreateBlueprintProgression("KineticKnightElementalFocusWood", "Wood",
-                ElementalFocusWoodDescription, null, null,
+                ElementalFocusWoodDescription, null,
                 FeatureGroup.KineticElementalFocus)
                 .SetComponents(new AddEquipmentEntity { EquipmentEntity = new EquipmentEntityLink { AssetId = "aecc5905323948449b4cd3bfe36e5daf" } });
 
@@ -234,19 +224,17 @@ namespace KineticistElementsExpanded.ElementWood
             }.ObjToArray();
 
             // Can be any void basic: Positive or Wood
-            var entry1 = Helper.CreateLevelEntry(1, Positive.Selection, class_skills);
+            var entry1 = Helper.CreateLevelEntry(1, Tree.Positive.Selection, class_skills);
             var entry2 = Helper.CreateLevelEntry(4, emptiness);
             Helper.AddEntries(progression, entry1, entry2);
 
             Helper.AppendAndReplace(ref ((BlueprintFeatureSelection)Tree.FocusKnight.GetBlueprint()).m_AllFeatures, progression.ToRef());
-
-            WoodFocus.Knight = progression.ToRef3();
         }
 
         private static void CreateSecondElementWood()
         {
             var progression = Helper.CreateBlueprintProgression("SecondaryElementWood", "Wood",
-                ElementalFocusWoodDescription, null, null,
+                ElementalFocusWoodDescription, null,
                 FeatureGroup.KineticElementalFocus);
             progression.HideInCharacterSheetAndLevelUp = true;
 
@@ -255,19 +243,16 @@ namespace KineticistElementsExpanded.ElementWood
                 Helper.CreateActivateTrigger
                     (
                     Helper.CreateConditionsChecker(Operation.Or,
-                        Helper.CreateHasFact(new FactOwner(), AnyRef.Get(WoodFocus.First).To<BlueprintUnitFactReference>()),
-                        Helper.CreateHasFact(new FactOwner(), AnyRef.Get(WoodFocus.Knight).To<BlueprintUnitFactReference>())),
-                    Helper.CreateActionList
-                        (
-                        Helper.CreateAddFact(new FactOwner(),
-                            AnyRef.Get(Positive.BlastFeature).To<BlueprintUnitFactReference>()),
-                        Helper.CreateAddFact(new FactOwner(),
-                            AnyRef.Get(WoodBlast.BlastFeature).To<BlueprintUnitFactReference>()),
-                        Helper.CreateAddFact(new FactOwner(),
-                            AnyRef.Get(Verdant.BlastFeature).To<BlueprintUnitFactReference>())
-                        )
+                        Helper.CreateHasFact(new FactOwner(), AnyRef.ToAny(Tree.FocusWood.First)),
+                        Helper.CreateHasFact(new FactOwner(), AnyRef.ToAny(Tree.FocusWood.Knight))
+                        ),
+                    new GameAction[] {
+                        Helper.CreateAddFact(new FactOwner(), AnyRef.ToAny(Tree.Positive.BlastFeature)),
+                        Helper.CreateAddFact(new FactOwner(), AnyRef.ToAny(Tree.Wood.BlastFeature)),
+                        Helper.CreateAddFact(new FactOwner(),  AnyRef.ToAny(Tree.Composite_Verdant.BlastFeature))
+                    }
                     ),
-                Helper.CreateAddFacts(AnyRef.Get(Tree.CompositeBuff).To<BlueprintUnitFactReference>())
+                Helper.CreateAddFacts(AnyRef.ToAny(Tree.CompositeBuff))
                 );
 
             progression.m_Classes = new BlueprintProgression.ClassWithLevel
@@ -276,19 +261,16 @@ namespace KineticistElementsExpanded.ElementWood
                 m_Class = Tree.Class
             }.ObjToArray();
 
-            // Can be any void basic: Gravity or Negative
-            var entry1 = Helper.CreateLevelEntry(7, Positive.Selection);
+            var entry1 = Helper.CreateLevelEntry(7, Tree.Positive.Selection);
             Helper.AddEntries(progression, entry1);
 
             Helper.AppendAndReplace(ref ((BlueprintFeatureSelection)Tree.FocusSecond.GetBlueprint()).m_AllFeatures, progression.ToRef());
-
-            WoodFocus.Second = progression.ToRef3();
         }
 
         private static void CreateThirdElementWood()
         {
             var progression = Helper.CreateBlueprintProgression("ThirdElementWood", "Wood",
-                ElementalFocusWoodDescription, null, null,
+                ElementalFocusWoodDescription, null,
                 FeatureGroup.KineticElementalFocus);
             progression.HideInCharacterSheetAndLevelUp = true;
 
@@ -297,16 +279,14 @@ namespace KineticistElementsExpanded.ElementWood
                 Helper.CreateActivateTrigger
                     (
                     Helper.CreateConditionsChecker(Operation.Or,
-                        Helper.CreateHasFact(new FactOwner(), AnyRef.Get(WoodFocus.First).To<BlueprintUnitFactReference>()),
-                        Helper.CreateHasFact(new FactOwner(), AnyRef.Get(WoodFocus.Knight).To<BlueprintUnitFactReference>())),
-                    Helper.CreateActionList
-                        (
-                        Helper.CreateAddFact(new FactOwner(),
-                            AnyRef.Get(Verdant.BlastFeature).To<BlueprintUnitFactReference>())
-                        )
+                        Helper.CreateHasFact(new FactOwner(), AnyRef.ToAny(Tree.FocusWood.First)),
+                        Helper.CreateHasFact(new FactOwner(), AnyRef.ToAny(Tree.FocusWood.Knight))),
+                    new GameAction[] {
+                        Helper.CreateAddFact(new FactOwner(), AnyRef.ToAny(Tree.Composite_Verdant.BlastFeature))
+                    }
                     ),
-                Helper.CreateAddFacts(AnyRef.Get(Tree.CompositeBuff).To<BlueprintUnitFactReference>()),
-                Helper.CreatePrerequisiteNoFeature(AnyRef.Get(WoodFocus.Second).To<BlueprintFeatureReference>())
+                Helper.CreateAddFacts(AnyRef.ToAny(Tree.CompositeBuff)),
+                Helper.CreatePrerequisiteNoFeature(AnyRef.ToAny(Tree.FocusWood.Second))
                 );
 
             progression.m_Classes = new BlueprintProgression.ClassWithLevel
@@ -316,14 +296,11 @@ namespace KineticistElementsExpanded.ElementWood
             }.ObjToArray();
 
             // Can be any void basic: Positive or Wood
-            var entry1 = Helper.CreateLevelEntry(15, Positive.Selection);
+            var entry1 = Helper.CreateLevelEntry(15, Tree.Positive.Selection);
             Helper.AddEntries(progression, entry1);
 
             Helper.AppendAndReplace(ref ((BlueprintFeatureSelection)Tree.FocusThird.GetBlueprint()).m_AllFeatures, progression.ToRef());
-
-            WoodFocus.Third = progression.ToRef3();
         }
-
 
         #endregion
 
@@ -335,14 +312,14 @@ namespace KineticistElementsExpanded.ElementWood
 
             #region Resource
 
-            var resource = Helper.CreateBlueprintAbilityResource("FleshofWoodResource", null,
-                FleshofWoodDescription, null, false, 6, 0, 1, 0, 3, 1, 2, true, 0, false, 0,
-                classRef: Tree.Class);
+            var resource = Helper.CreateBlueprintAbilityResource("FleshofWoodResource", "Flesh of Wood Resource",
+                FleshofWoodDescription, null, min: 0, max: 6, baseValue: 1, levelDiv: 3, levelMult: 1, startLevel: 2,
+                classes: new BlueprintCharacterClassReference[] { Tree.Class });
 
             #endregion
             #region Effect Feature
 
-            var effect_feature = Helper.CreateBlueprintFeature("FlashofWoodEffectFeature", null,
+            var effect_feature = Helper.CreateBlueprintFeature("FlashofWoodEffectFeature",
                 null, null, icon, FeatureGroup.None);
             effect_feature.Ranks = 7;
             effect_feature.HideInUI = true;
@@ -350,15 +327,16 @@ namespace KineticistElementsExpanded.ElementWood
             effect_feature.IsClassFeature = true;
             effect_feature.SetComponents
                 (
-                Helper.CreateAddFacts()
+                new AddFacts { }
                 );
 
             #endregion
             #region Effect Buff
 
             var effect_buff = Helper.CreateBlueprintBuff("FleshofWoodEffectBuff", null,
-                null, null, icon);
-            effect_buff.Flags(hidden: true, stayOnDeath: true, removeOnRest: true);
+                null, icon);
+            effect_buff.Flags(hidden: true, stayOnDeath: true);
+            effect_buff.m_Flags |= BlueprintBuff.Flags.RemoveOnRest;
             effect_buff.Stacking = StackingType.Stack;
             effect_buff.IsClassFeature = true;
             effect_buff.SetComponents
@@ -370,7 +348,7 @@ namespace KineticistElementsExpanded.ElementWood
             #region Buff
 
             var buff = Helper.CreateBlueprintBuff("FleshofWoodBuff", null,
-                null, null, icon);
+               null, icon);
             buff.Flags(hidden: true, stayOnDeath: true);
             buff.Stacking = StackingType.Replace;
             buff.IsClassFeature = true;
@@ -397,29 +375,29 @@ namespace KineticistElementsExpanded.ElementWood
             #region Ability
 
             var ability = Helper.CreateBlueprintAbility("FleshofWoodAbility", "Flesh of Wood -- Increase AC",
-                FleshofWoodDescription, null, icon, AbilityType.Special, UnitCommand.CommandType.Free,
+                FleshofWoodDescription, icon, AbilityType.Special, UnitCommand.CommandType.Free,
                 AbilityRange.Personal).TargetSelf(CastAnimationStyle.Omni);
             ability.SetComponents
                 (
                 Helper.CreateAbilityEffectRunAction(actions: effect_buff.CreateContextActionApplyBuff(permanent: true)),
-                Helper.CreateAbilityResourceLogic(resource.ToRef(), true, false, 1),
+                Helper.CreateAbilityResourceLogic(AnyRef.ToAny(resource), 1),
                 Helper.CreateAbilityAcceptBurnOnCast(1)
                 );
 
             #endregion
 
             var feature = Helper.CreateBlueprintFeature("FleshofWoodFeature", "Flesh of Wood",
-                FleshofWoodDescription, null, icon, FeatureGroup.None);
+                FleshofWoodDescription, icon, FeatureGroup.None);
             feature.IsClassFeature = true;
             feature.SetComponents
                 (
                 Helper.CreateAddFacts(buff.ToRef2(), ability.ToRef2()),
                 // Prereqs Positive/Wood Feature, Respective Blade features
-                Helper.CreatePrerequisiteFeature(Positive.BlastFeature, any: true),
-                Helper.CreatePrerequisiteFeature(Positive.BladeFeature, any: true),
-                Helper.CreatePrerequisiteFeature(WoodBlast.BlastFeature, any: true),
-                Helper.CreatePrerequisiteFeature(WoodBlast.BladeFeature, any: true),
-                Helper.CreateAddAbilityResources(false, 0, true, false, resource.ToRef())
+                Helper.CreatePrerequisiteFeature(Tree.Positive.BlastFeature, any: true),
+                Helper.CreatePrerequisiteFeature(Tree.Positive.Blade.Feature, any: true),
+                Helper.CreatePrerequisiteFeature(Tree.Wood.BlastFeature, any: true),
+                Helper.CreatePrerequisiteFeature(Tree.Wood.Blade.Feature, any: true),
+                Helper.CreateAddAbilityResources(AnyRef.ToAny(resource))
                 );
 
             return feature;
@@ -444,18 +422,16 @@ namespace KineticistElementsExpanded.ElementWood
             // Progression
             CreatePositiveBlastProgression();
 
-            //Dazzling substance
-            //Foxfire substance
         }
 
         #region Positive Variants
 
         private static BlueprintAbility CreatePositiveBlastVariant_base()
         {
-            UnityEngine.Sprite icon = Helper.CreateSprite("positiveBlast.png");
+            UnityEngine.Sprite icon = Helper.CreateSprite(Main.ModPath+"/Icons/positiveBlast.png");
 
             var ability = Helper.CreateBlueprintAbility("PositiveBlastAbility", "Positive Blast",
-                PositiveBlastDescription, null, icon, AbilityType.Special,
+                PositiveBlastDescription, icon, AbilityType.Special,
                 UnitCommand.CommandType.Standard, AbilityRange.Close, duration: null, savingThrow: null);
             ability.SetComponents
                 (
@@ -481,9 +457,9 @@ namespace KineticistElementsExpanded.ElementWood
             UnityEngine.Sprite icon = Helper.StealIcon("cb2d9e6355dd33940b2bef49e544b0bf"); // ExtendedRangeInfusion
 
             var ability = Helper.CreateBlueprintAbility("ExtendedRangePositiveBlastAbility",
-                Kineticist.ref_infusion_extendedRange.Get().m_DisplayName,
-                Kineticist.ref_infusion_extendedRange.Get().m_Description,
-                null, icon, AbilityType.Special,
+                Tree.ExtendedRange.Feature.Get().m_DisplayName,
+                Tree.ExtendedRange.Feature.Get().m_Description,
+                icon, AbilityType.Special,
                 UnitCommand.CommandType.Standard, AbilityRange.Long, duration: null, savingThrow: null);
             ability.SetComponents
                 (
@@ -493,12 +469,13 @@ namespace KineticistElementsExpanded.ElementWood
                 Kineticist.Blast.RankConfigBonus(half_bonus: true),
                 Kineticist.Blast.DCForceDex(),
                 Kineticist.Blast.BurnCost(actions, infusion: 1, blast: 0, talent: 0),
+                Kineticist.Blast.RequiredFeat(Tree.ExtendedRange.Feature),
                 Kineticist.Blast.Projectile(Resource.Projectile.SunBeam00, false, AbilityProjectileType.Simple, 0, 5),
                 Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnPrecastStart, Resource.Sfx.PreStart_Earth),
                 Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnStart, Resource.Sfx.Start_Earth)
                 ).TargetEnemy(CastAnimationStyle.Kineticist);
             ability.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten;
-            ability.m_Parent = Positive.BaseAbility;
+            ability.m_Parent = Tree.Positive.BaseAbility;
 
             return ability;
         }
@@ -507,18 +484,18 @@ namespace KineticistElementsExpanded.ElementWood
             UnityEngine.Sprite icon = Helper.StealIcon("c4f4a62a325f7c14dbcace3ce34782b5"); // SpindleInfusion
 
             var ability = Helper.CreateBlueprintAbility("SpindlePositiveBlastAbility",
-                Kineticist.ref_infusion_spindle.Get().m_DisplayName,
-                Kineticist.ref_infusion_spindle.Get().m_Description, null, icon, AbilityType.Special,
+                Tree.Spindle.Feature.Get().m_DisplayName,
+                Tree.Spindle.Feature.Get().m_Description, icon, AbilityType.Special,
                 UnitCommand.CommandType.Standard, AbilityRange.Close, duration: null, savingThrow: null);
             ability.SetComponents
                 (
                 Kineticist.Blast.RunActionDealDamage(out var actions, e: DamageEnergyType.PositiveEnergy, isAOE: false, half: false),
                 Kineticist.Blast.RankConfigDice(twice: false),
                 Kineticist.Blast.CalculateSharedValue(),
-                Kineticist.Blast.RankConfigBonus(half_bonus: false),
+                Kineticist.Blast.RankConfigBonus(half_bonus: true),
                 Kineticist.Blast.DCForceDex(),
                 Kineticist.Blast.BurnCost(actions, infusion: 2, blast: 0),
-                Kineticist.Blast.RequiredFeat(Kineticist.ref_infusion_spindle),
+                Kineticist.Blast.RequiredFeat(Tree.Spindle.Feature),
                 Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnPrecastStart, Resource.Sfx.PreStart_Earth),
                 Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnStart, Resource.Sfx.Start_Earth),
                 new AbilityDeliverChain
@@ -537,7 +514,7 @@ namespace KineticistElementsExpanded.ElementWood
                 }
                 ).TargetEnemy(CastAnimationStyle.Kineticist);
             ability.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten;
-            ability.m_Parent = Positive.BaseAbility;
+            ability.m_Parent = Tree.Positive.BaseAbility;
 
             return ability;
         }
@@ -551,37 +528,33 @@ namespace KineticistElementsExpanded.ElementWood
                     new ContextValue
                     {
                         ValueType = ContextValueType.Simple,
-                        Value = 0,
-                        ValueRank = AbilityRankType.Default,
-                        ValueShared = AbilitySharedValue.Damage
+                        Value = 0
                     }, DiceType.Zero,
                     new ContextValue
                     {
                         ValueType = ContextValueType.Rank,
-                        Value = 0,
-                        ValueRank = AbilityRankType.DamageBonus,
-                        ValueShared = AbilitySharedValue.Damage
+                        ValueRank = AbilityRankType.DamageBonus
                     }, DurationRate.Rounds),
                 m_AreaEffect = Kineticist.CreateWallAreaEffect("Positive", "098a29fefbbc4564281afa5a6887cd2c", e: DamageEnergyType.PositiveEnergy),
                 OnUnit = false
             };
 
             var ability = Helper.CreateBlueprintAbility("WallPositiveBlastAbility",
-                Kineticist.ref_infusion_wall.Get().m_DisplayName,
-                Kineticist.ref_infusion_wall.Get().m_Description, null, icon, AbilityType.Special,
+                Tree.Wall.Feature.Get().m_DisplayName,
+                Tree.Wall.Feature.Get().m_Description, icon, AbilityType.Special,
                 UnitCommand.CommandType.Standard, AbilityRange.Close, duration: null, savingThrow: null);
             ability.SetComponents
                 (
                 Helper.CreateAbilityEffectRunAction(SavingThrowType.Unknown, action),
                 Kineticist.Blast.DCForceDex(),
                 Kineticist.Blast.BurnCost(null, infusion: 3, blast: 0),
-                Kineticist.Blast.RequiredFeat(Kineticist.ref_infusion_wall),
+                Kineticist.Blast.RequiredFeat(Tree.Wall.Feature),
                 Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnPrecastStart, Resource.Sfx.PreStart_Earth),
                 Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnStart, Resource.Sfx.Start_Earth)
                 ).TargetEnemy(CastAnimationStyle.Kineticist);
             ability.CanTargetPoint = true;
             ability.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten;
-            ability.m_Parent = Positive.BaseAbility;
+            ability.m_Parent = Tree.Positive.BaseAbility;
 
             return ability;
         }
@@ -599,19 +572,19 @@ namespace KineticistElementsExpanded.ElementWood
             var weapon = CreatePositiveBlastBlade_weapon();
 
             #region buffs
-            var buff = Helper.CreateBlueprintBuff("KineticBladePositiveBlastBuff", null, null, null, null, null);
+            var buff = Helper.CreateBlueprintBuff("KineticBladePositiveBlastBuff");
             buff.Flags(true, true);
             buff.Stacking = StackingType.Replace;
             buff.SetComponents
                 (
-                new AddKineticistBlade { m_Blade = weapon.ToRef() }
+                new AddKineticistBlade { m_Blade = AnyRef.ToAny(weapon) }
                 );
             #endregion
 
             #region BlastAbility
 
             var blade_active_ability = Helper.CreateBlueprintActivatableAbility("KineticBladePositiveBlastAbility", "Positive Blast — Kinetic Blade",
-                KineticBladeDescription, out var unused, null, icon,
+                KineticBladeDescription, out var unused, icon,
                 group: Kingmaker.UnitLogic.ActivatableAbilities.ActivatableAbilityGroup.FormInfusion, deactivateWhenDead: true);
             blade_active_ability.m_Buff = buff.ToRef();
             blade_active_ability.m_ActivateOnUnitAction = Kingmaker.UnitLogic.ActivatableAbilities.AbilityActivateOnUnitActionType.Attack;
@@ -624,7 +597,7 @@ namespace KineticistElementsExpanded.ElementWood
 
             #region BlastBurnAbility
 
-            var blade_burn_ability = Helper.CreateBlueprintAbility("KineticBladePositiveBlastBurnAbility", null, null, null, icon,
+            var blade_burn_ability = Helper.CreateBlueprintAbility("KineticBladePositiveBlastBurnAbility", null, null, icon,
                 AbilityType.Special, UnitCommand.CommandType.Free, AbilityRange.Personal);
             blade_burn_ability.TargetSelf(CastAnimationStyle.Omni);
             blade_burn_ability.Hidden = true;
@@ -642,7 +615,7 @@ namespace KineticistElementsExpanded.ElementWood
             #region BlastKineticBladeDamage
 
             var blade_damage_ability = Helper.CreateBlueprintAbility("PositiveBlastKineticBladeDamage", "Positive Blast",
-                PositiveBlastDescription, null, damage_icon, AbilityType.Special, UnitCommand.CommandType.Standard, AbilityRange.Close);
+                PositiveBlastDescription, damage_icon, AbilityType.Special, UnitCommand.CommandType.Standard, AbilityRange.Close);
             blade_damage_ability.TargetEnemy(CastAnimationStyle.Omni);
             blade_damage_ability.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten | Metamagic.Reach;
             blade_damage_ability.Hidden = true;
@@ -668,7 +641,7 @@ namespace KineticistElementsExpanded.ElementWood
                 new WeaponKineticBlade { m_ActivationAbility = blade_burn_ability.ToRef(), m_Blast = blade_damage_ability.ToRef() }
                 );
 
-            var blade_feat = Helper.CreateBlueprintFeature("PositiveKineticBladeFeature", null, null, null, icon, FeatureGroup.None);
+            var blade_feat = Helper.CreateBlueprintFeature("PositiveKineticBladeFeature", null, null, icon, FeatureGroup.None);
             blade_feat.HideInUI = true;
             blade_feat.HideInCharacterSheetAndLevelUp = true;
             blade_feat.SetComponents
@@ -677,20 +650,13 @@ namespace KineticistElementsExpanded.ElementWood
                 Helper.CreateAddFeatureIfHasFact(blade_burn_ability.ToRef2())
                 );
 
-            Positive.BladeFeature = blade_feat.ToRef();
-            Positive.BladeDamageAbility = blade_damage_ability.ToRef();
-            Positive.BladeBuff = buff.ToRef();
             return blade_damage_ability;
         }
 
         private static BlueprintItemWeapon CreatePositiveBlastBlade_weapon()
         {
-            //var icon = Helper.StealIcon("43ff6714-3efb-86d4-f894-b10577329050"); // Air Kinetic Blade Weapon
-
             var weapon = Helper.CreateBlueprintItemWeapon("PositiveKineticBladeWeapon", null, null, Kineticist.ref_kinetic_blast_energy_blade_type,
-                damageOverride: new DiceFormula { m_Rolls = 0, m_Dice = DiceType.Zero },
-                form: null,
-                secondWeapon: null, false, null, 10);
+                damageOverride: new DiceFormula { m_Rolls = 0, m_Dice = DiceType.Zero }, price: 10);
             weapon.m_Enchantments = new BlueprintWeaponEnchantmentReference[1] { CreatePositiveBlastBlade_enchantment().ToRef() };
 
             weapon.m_VisualParameters.m_WeaponAnimationStyle = Kingmaker.View.Animation.WeaponAnimationStyle.SlashingOneHanded;
@@ -728,8 +694,8 @@ namespace KineticistElementsExpanded.ElementWood
                     }
                 }
             };
-            var first_rank_conf = Helper.CreateContextRankConfig(ContextRankBaseValueType.FeatureRank, type: AbilityRankType.DamageDice, feature: Tree.BlastFeature, min: 0, max: 20);
-            var second_rank_conf = Helper.CreateContextRankConfig(ContextRankBaseValueType.CustomProperty, type: AbilityRankType.DamageBonus, customProperty: Tree.MainStatProp, min: 0, max: 20);
+            var first_rank_conf = Helper.CreateContextRankConfig(ContextRankBaseValueType.FeatureRank, type: AbilityRankType.DamageDice, feature: Tree.KineticBlast, min: 0, max: 20);
+            var second_rank_conf = Helper.CreateContextRankConfig(ContextRankBaseValueType.CustomProperty, type: AbilityRankType.DamageBonus, customProperty: Tree.KineticistMainStatProperty, min: 0, max: 20);
             var second_context_calc = new ContextCalculateSharedValue
             {
                 ValueType = AbilitySharedValue.DamageBonus,
@@ -755,7 +721,7 @@ namespace KineticistElementsExpanded.ElementWood
             };
 
             var enchant = Helper.CreateBlueprintWeaponEnchantment("PositiveKineticBladeEnchantment", "Positive Blast — Kinetic Blade",
-                null, "Positive Blast", null, null, 0);
+                "Positive Blast", null, null, 0);
             enchant.SetComponents
                 (
                 first_context_calc,
@@ -774,15 +740,15 @@ namespace KineticistElementsExpanded.ElementWood
 
         public static void CreatePositiveBlastAbility(params BlueprintAbility[] variants)
         {
-            UnityEngine.Sprite icon = Helper.CreateSprite("positiveBlast.png");
+            UnityEngine.Sprite icon = Helper.CreateSprite(Main.ModPath+"/Icons/positiveBlast.png");
 
             var ability = Helper.CreateBlueprintAbility("PositiveBlastBase", "Positive Blast",
-                PositiveBlastDescription, null, icon, AbilityType.Special,
+                PositiveBlastDescription, icon, AbilityType.Special,
                 UnitCommand.CommandType.Standard, AbilityRange.Close,
                 duration: null, savingThrow: null);
             ability.SetComponents
                 (
-                Helper.CreateAbilityShowIfCasterHasFact(AnyRef.Get(Tree.FocusFirst).To<BlueprintUnitFactReference>()),
+                Helper.CreateAbilityShowIfCasterHasFact(AnyRef.ToAny(Tree.FocusFirst)),
                 Kineticist.Blast.BurnCost(null, 0, 0, 0)
                 );
             ability.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten;
@@ -791,41 +757,35 @@ namespace KineticistElementsExpanded.ElementWood
             {
                 Helper.AddToAbilityVariants(ability, v);
             }
-
-            Positive.BaseAbility = ability.ToRef();
         }
 
         public static void CreatePositiveBlastFeature()
         {
             var feature = Helper.CreateBlueprintFeature("PositiveBlastFeature", "Positive Blast",
-                PositiveBlastDescription, null, null, FeatureGroup.KineticBlast);
+                PositiveBlastDescription, null, FeatureGroup.KineticBlast);
             feature.SetComponents
                 (
-                Helper.CreateAddFeatureIfHasFact(AnyRef.Get(Positive.BaseAbility).To<BlueprintUnitFactReference>())
+                Helper.CreateAddFeatureIfHasFact(AnyRef.ToAny(Tree.Positive.BaseAbility))
                 );
             feature.HideInUI = true;
             feature.IsClassFeature = true;
-
-            Positive.BlastFeature = feature.ToRef();
         }
 
         public static void CreatePositiveBlastProgression()
         {
             var progression = Helper.CreateBlueprintProgression("PositiveBlastProgression", "Positive Blast",
-                PositiveBlastDescription, null, null, 0)
+                PositiveBlastDescription, null, 0)
                 .SetComponents
                 (
                 Helper.CreateAddFacts(Kineticist.ref_compositeBlastBuff),
                 Helper.CreateAddFeatureIfHasFact(
-                    AnyRef.Get(Kineticist.ref_infusion_kineticBlade).To<BlueprintUnitFactReference>(),
-                    AnyRef.Get(Positive.BladeFeature).To<BlueprintUnitFactReference>()),
-                Helper.CreateAddFeatureIfHasFact(AnyRef.Get(Positive.BlastFeature).To<BlueprintUnitFactReference>())
+                    AnyRef.ToAny(Tree.KineticBlade.Feature),
+                    AnyRef.ToAny(Tree.Positive.Blade.Feature)),
+                Helper.CreateAddFeatureIfHasFact(AnyRef.ToAny(Tree.Positive.BlastFeature))
                 );
 
-            var entry = Helper.CreateLevelEntry(1, AnyRef.Get(Positive.BlastFeature).To<BlueprintFeatureReference>());
+            var entry = Helper.CreateLevelEntry(1, Tree.Positive.BlastFeature);
             Helper.AddEntries(progression, entry);
-
-            Positive.Progession = progression.ToRef3();
         }
 
         #endregion
@@ -855,10 +815,10 @@ namespace KineticistElementsExpanded.ElementWood
 
         private static BlueprintAbility CreateWoodBlastVariant_base()
         {
-            UnityEngine.Sprite icon = Helper.CreateSprite("woodBlast.png");
+            UnityEngine.Sprite icon = Helper.CreateSprite(Main.ModPath+"/Icons/woodBlast.png");
 
             var ability = Helper.CreateBlueprintAbility("WoodBlastAbility", "Wood Blast",
-                WoodBlastDescription, null, icon, AbilityType.Special,
+                WoodBlastDescription, icon, AbilityType.Special,
                 UnitCommand.CommandType.Standard, AbilityRange.Close, duration: null, savingThrow: null);
             ability.SetComponents
                 (
@@ -884,9 +844,9 @@ namespace KineticistElementsExpanded.ElementWood
             UnityEngine.Sprite icon = Helper.StealIcon("cb2d9e6355dd33940b2bef49e544b0bf"); // ExtendedRangeInfusion
 
             var ability = Helper.CreateBlueprintAbility("ExtendedRangeWoodBlastAbility",
-                Kineticist.ref_infusion_extendedRange.Get().m_DisplayName,
-                Kineticist.ref_infusion_extendedRange.Get().m_Description,
-                null, icon, AbilityType.Special,
+                Tree.ExtendedRange.Feature.Get().m_DisplayName,
+                Tree.ExtendedRange.Feature.Get().m_Description,
+                icon, AbilityType.Special,
                 UnitCommand.CommandType.Standard, AbilityRange.Long, duration: null, savingThrow: null);
             ability.SetComponents
                 (
@@ -896,12 +856,13 @@ namespace KineticistElementsExpanded.ElementWood
                 Kineticist.Blast.RankConfigBonus(half_bonus: false),
                 Kineticist.Blast.DCForceDex(),
                 Kineticist.Blast.BurnCost(actions, infusion: 1, blast: 0, talent: 0),
+                Kineticist.Blast.RequiredFeat(Tree.ExtendedRange.Feature),
                 Kineticist.Blast.Projectile(Resource.Projectile.Vinetrap00_Projectile_1, true, AbilityProjectileType.Simple, 0, 5),
                 Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnPrecastStart, Resource.Sfx.PreStart_Earth),
                 Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnStart, Resource.Sfx.Start_Earth)
                 ).TargetEnemy(CastAnimationStyle.Kineticist);
             ability.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten;
-            ability.m_Parent = WoodBlast.BaseAbility;
+            ability.m_Parent = Tree.Wood.BaseAbility;
 
             ((ContextActionDealDamage)actions.Actions[0]).Value.BonusValue.ValueType = ContextValueType.Shared;
             ((ContextActionDealDamage)actions.Actions[0]).Value.BonusValue.ValueShared = AbilitySharedValue.Damage;
@@ -913,8 +874,8 @@ namespace KineticistElementsExpanded.ElementWood
             UnityEngine.Sprite icon = Helper.StealIcon("c4f4a62a325f7c14dbcace3ce34782b5"); // SpindleInfusion
 
             var ability = Helper.CreateBlueprintAbility("SpindleWoodBlastAbility",
-                Kineticist.ref_infusion_spindle.Get().m_DisplayName,
-                Kineticist.ref_infusion_spindle.Get().m_Description, null, icon, AbilityType.Special,
+                Tree.Spindle.Feature.Get().m_DisplayName,
+                Tree.Spindle.Feature.Get().m_Description, icon, AbilityType.Special,
                 UnitCommand.CommandType.Standard, AbilityRange.Close, duration: null, savingThrow: null);
             ability.SetComponents
                 (
@@ -924,7 +885,7 @@ namespace KineticistElementsExpanded.ElementWood
                 Kineticist.Blast.RankConfigBonus(half_bonus: false),
                 Kineticist.Blast.DCForceDex(),
                 Kineticist.Blast.BurnCost(actions, infusion: 2, blast: 0),
-                Kineticist.Blast.RequiredFeat(Kineticist.ref_infusion_spindle),
+                Kineticist.Blast.RequiredFeat(Tree.Spindle.Feature),
                 Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnPrecastStart, Resource.Sfx.PreStart_Earth),
                 Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnStart, Resource.Sfx.Start_Earth),
                 new AbilityDeliverChain
@@ -943,7 +904,7 @@ namespace KineticistElementsExpanded.ElementWood
                 }
                 ).TargetEnemy(CastAnimationStyle.Kineticist);
             ability.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten;
-            ability.m_Parent = WoodBlast.BaseAbility;
+            ability.m_Parent = Tree.Wood.BaseAbility;
 
             ((ContextActionDealDamage)actions.Actions[0]).Value.BonusValue.ValueType = ContextValueType.Shared;
             ((ContextActionDealDamage)actions.Actions[0]).Value.BonusValue.ValueShared = AbilitySharedValue.Damage;
@@ -976,21 +937,21 @@ namespace KineticistElementsExpanded.ElementWood
             };
 
             var ability = Helper.CreateBlueprintAbility("WallWoodBlastAbility",
-                Kineticist.ref_infusion_wall.Get().m_DisplayName,
-                Kineticist.ref_infusion_wall.Get().m_Description, null, icon, AbilityType.Special,
+                Tree.Wall.Feature.Get().m_DisplayName,
+                Tree.Wall.Feature.Get().m_Description, icon, AbilityType.Special,
                 UnitCommand.CommandType.Standard, AbilityRange.Close, duration: null, savingThrow: null);
             ability.SetComponents
                 (
                 Helper.CreateAbilityEffectRunAction(SavingThrowType.Unknown, action),
                 Kineticist.Blast.DCForceDex(),
                 Kineticist.Blast.BurnCost(null, infusion: 3, blast: 0),
-                Kineticist.Blast.RequiredFeat(Kineticist.ref_infusion_wall),
+                Kineticist.Blast.RequiredFeat(Tree.Wall.Feature),
                 Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnPrecastStart, Resource.Sfx.PreStart_Earth),
                 Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnStart, Resource.Sfx.Start_Earth)
                 ).TargetEnemy(CastAnimationStyle.Kineticist);
             ability.CanTargetPoint = true;
             ability.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten;
-            ability.m_Parent = WoodBlast.BaseAbility;
+            ability.m_Parent = Tree.Wood.BaseAbility;
 
             return ability;
         }
@@ -1009,19 +970,19 @@ namespace KineticistElementsExpanded.ElementWood
             var weapon = CreateWoodBlastBlade_weapon();
 
             #region buffs
-            var buff = Helper.CreateBlueprintBuff("KineticBladeWoodBlastBuff", null, null, null, null, null);
+            var buff = Helper.CreateBlueprintBuff("KineticBladeWoodBlastBuff");
             buff.Flags(true, true);
             buff.Stacking = StackingType.Replace;
             buff.SetComponents
                 (
-                new AddKineticistBlade { m_Blade = weapon.ToRef() }
+                new AddKineticistBlade { m_Blade = AnyRef.ToAny(weapon) }
                 );
             #endregion
 
             #region BlastAbility
 
             var blade_active_ability = Helper.CreateBlueprintActivatableAbility("KineticBladeWoodBlastAbility", "Wood Blast — Kinetic Blade",
-                KineticBladeDescription, out var unused, null, icon,
+                KineticBladeDescription, out var unused, icon,
                 group: Kingmaker.UnitLogic.ActivatableAbilities.ActivatableAbilityGroup.FormInfusion, deactivateWhenDead: true);
             blade_active_ability.m_Buff = buff.ToRef();
             blade_active_ability.m_ActivateOnUnitAction = Kingmaker.UnitLogic.ActivatableAbilities.AbilityActivateOnUnitActionType.Attack;
@@ -1034,7 +995,7 @@ namespace KineticistElementsExpanded.ElementWood
 
             #region BlastBurnAbility
 
-            var blade_burn_ability = Helper.CreateBlueprintAbility("KineticBladeWoodBlastBurnAbility", null, null, null, icon,
+            var blade_burn_ability = Helper.CreateBlueprintAbility("KineticBladeWoodBlastBurnAbility", null, null, icon,
                 AbilityType.Special, UnitCommand.CommandType.Free, AbilityRange.Personal);
             blade_burn_ability.TargetSelf(CastAnimationStyle.Omni);
             blade_burn_ability.Hidden = true;
@@ -1052,7 +1013,7 @@ namespace KineticistElementsExpanded.ElementWood
             #region BlastKineticBladeDamage
 
             var blade_damage_ability = Helper.CreateBlueprintAbility("WoodBlastKineticBladeDamage", "Wood Blast",
-                WoodBlastDescription, null, damage_icon, AbilityType.Special, UnitCommand.CommandType.Standard, AbilityRange.Close);
+                WoodBlastDescription, damage_icon, AbilityType.Special, UnitCommand.CommandType.Standard, AbilityRange.Close);
             blade_damage_ability.TargetEnemy(CastAnimationStyle.Omni);
             blade_damage_ability.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten | Metamagic.Reach;
             blade_damage_ability.Hidden = true;
@@ -1078,7 +1039,7 @@ namespace KineticistElementsExpanded.ElementWood
                 new WeaponKineticBlade { m_ActivationAbility = blade_burn_ability.ToRef(), m_Blast = blade_damage_ability.ToRef() }
                 );
 
-            var blade_feat = Helper.CreateBlueprintFeature("WoodKineticBladeFeature", null, null, null, icon, FeatureGroup.None);
+            var blade_feat = Helper.CreateBlueprintFeature("WoodKineticBladeFeature", null, null, icon, FeatureGroup.None);
             blade_feat.HideInUI = true;
             blade_feat.HideInCharacterSheetAndLevelUp = true;
             blade_feat.SetComponents
@@ -1086,10 +1047,6 @@ namespace KineticistElementsExpanded.ElementWood
                 Helper.CreateAddFeatureIfHasFact(blade_active_ability.ToRef()),
                 Helper.CreateAddFeatureIfHasFact(blade_burn_ability.ToRef2())
                 );
-
-            WoodBlast.BladeFeature = blade_feat.ToRef();
-            WoodBlast.BladeDamageAbility = blade_damage_ability.ToRef();
-            WoodBlast.BladeBuff = buff.ToRef();
             return blade_damage_ability;
         }
 
@@ -1098,9 +1055,7 @@ namespace KineticistElementsExpanded.ElementWood
             //var icon = Helper.StealIcon("43ff6714-3efb-86d4-f894-b10577329050"); // Air Kinetic Blade Weapon
 
             var weapon = Helper.CreateBlueprintItemWeapon("WoodKineticBladeWeapon", null, null, Kineticist.ref_kinetic_blast_physical_blade_type,
-                damageOverride: new DiceFormula { m_Rolls = 0, m_Dice = DiceType.Zero },
-                form: null,
-                secondWeapon: null, false, null, 10);
+                damageOverride: new DiceFormula { m_Rolls = 0, m_Dice = DiceType.Zero }, price: 10);
             weapon.m_Enchantments = new BlueprintWeaponEnchantmentReference[1] { CreateWoodBlastBlade_enchantment().ToRef() };
 
             weapon.m_VisualParameters.m_WeaponAnimationStyle = Kingmaker.View.Animation.WeaponAnimationStyle.SlashingOneHanded;
@@ -1138,8 +1093,8 @@ namespace KineticistElementsExpanded.ElementWood
                     }
                 }
             };
-            var first_rank_conf = Helper.CreateContextRankConfig(ContextRankBaseValueType.FeatureRank, type: AbilityRankType.DamageDice, feature: Tree.BlastFeature, min: 0, max: 20);
-            var second_rank_conf = Helper.CreateContextRankConfig(ContextRankBaseValueType.CustomProperty, type: AbilityRankType.DamageBonus, customProperty: Tree.MainStatProp, min: 0, max: 20);
+            var first_rank_conf = Helper.CreateContextRankConfig(ContextRankBaseValueType.FeatureRank, type: AbilityRankType.DamageDice, feature: Tree.KineticBlast, min: 0, max: 20);
+            var second_rank_conf = Helper.CreateContextRankConfig(ContextRankBaseValueType.CustomProperty, type: AbilityRankType.DamageBonus, customProperty: Tree.KineticistMainStatProperty, min: 0, max: 20);
             var second_context_calc = new ContextCalculateSharedValue
             {
                 ValueType = AbilitySharedValue.DamageBonus,
@@ -1165,7 +1120,7 @@ namespace KineticistElementsExpanded.ElementWood
             };
 
             var enchant = Helper.CreateBlueprintWeaponEnchantment("WoodKineticBladeEnchantment", "Wood Blast — Kinetic Blade",
-                null, "Wood Blast", null, null, 0);
+                "Wood Blast", null, null, 0);
             enchant.SetComponents
                 (
                 first_context_calc,
@@ -1185,15 +1140,15 @@ namespace KineticistElementsExpanded.ElementWood
 
         public static void CreateWoodBlastAbility(params BlueprintAbility[] variants)
         {
-            UnityEngine.Sprite icon = Helper.CreateSprite("woodBlast.png");
+            UnityEngine.Sprite icon = Helper.CreateSprite(Main.ModPath+"/Icons/woodBlast.png");
 
             var ability = Helper.CreateBlueprintAbility("WoodBlastBase", "Wood Blast",
-                WoodBlastDescription, null, icon, AbilityType.Special,
+                WoodBlastDescription, icon, AbilityType.Special,
                 UnitCommand.CommandType.Standard, AbilityRange.Close,
                 duration: null, savingThrow: null);
             ability.SetComponents
                 (
-                Helper.CreateAbilityShowIfCasterHasFact(AnyRef.Get(Tree.FocusFirst).To<BlueprintUnitFactReference>()),
+                Helper.CreateAbilityShowIfCasterHasFact(AnyRef.ToAny(Tree.FocusFirst)),
                 Kineticist.Blast.BurnCost(null, 0, 0, 0)
                 );
             ability.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten;
@@ -1202,48 +1157,39 @@ namespace KineticistElementsExpanded.ElementWood
             {
                 Helper.AddToAbilityVariants(ability, v);
             }
-
-            WoodBlast.BaseAbility = ability.ToRef();
         }
 
         public static void CreateWoodBlastFeature()
         {
             var feature = Helper.CreateBlueprintFeature("WoodBlastFeature", "Wood Blast",
-                WoodBlastDescription, null, null, FeatureGroup.KineticBlast);
+                WoodBlastDescription, null, FeatureGroup.KineticBlast);
             feature.SetComponents
                 (
-                Helper.CreateAddFeatureIfHasFact(AnyRef.Get(WoodBlast.BaseAbility).To<BlueprintUnitFactReference>())
+                Helper.CreateAddFeatureIfHasFact(AnyRef.ToAny(Tree.Wood.BaseAbility))
                 );
             feature.HideInUI = true;
             feature.IsClassFeature = true;
-
-            WoodBlast.BlastFeature = feature.ToRef();
         }
 
         public static void CreateWoodBlastProgression()
         {
             var progression = Helper.CreateBlueprintProgression("WoodBlastProgression", "Wood Blast",
-                WoodBlastDescription, null, null, 0)
+                WoodBlastDescription, null, 0)
                 .SetComponents
                 (
                 Helper.CreateAddFacts(Kineticist.ref_compositeBlastBuff),
                 Helper.CreateAddFeatureIfHasFact(
-                    AnyRef.Get(Kineticist.ref_infusion_kineticBlade).To<BlueprintUnitFactReference>(),
-                    AnyRef.Get(WoodBlast.BladeFeature).To<BlueprintUnitFactReference>()),
-                Helper.CreateAddFeatureIfHasFact(AnyRef.Get(WoodBlast.BlastFeature).To<BlueprintUnitFactReference>())
+                    AnyRef.ToAny(Tree.KineticBlade.Feature),
+                    AnyRef.ToAny(Tree.Wood.Blade.Feature)),
+                Helper.CreateAddFeatureIfHasFact(AnyRef.ToAny(Tree.Wood.BlastFeature))
                 );
 
-            var entry = Helper.CreateLevelEntry(1, AnyRef.Get(WoodBlast.BlastFeature).To<BlueprintFeatureReference>());
-            Helper.AddEntries(progression, entry);
-
-            WoodBlast.Progession = progression.ToRef3();
-        }
+            var entry = Helper.CreateLevelEntry(1, AnyRef.ToAny(Tree.Wood.BlastFeature));
+            Helper.AddEntries(progression, entry);        }
 
         #endregion
 
         #region Composite Blasts
-        // TODO
-        //  Positive Admixture
 
         private static void CreateCompositeBlasts()
         {
@@ -1279,10 +1225,10 @@ namespace KineticistElementsExpanded.ElementWood
 
         private static BlueprintAbility CreateVerdantBlastVariant_base()
         {
-            UnityEngine.Sprite icon = Helper.CreateSprite("verdantBlast.png");
+            UnityEngine.Sprite icon = Helper.CreateSprite(Main.ModPath+"/Icons/verdantBlast.png");
 
             var ability = Helper.CreateBlueprintAbility("VerdantBlastAbility", "Verdant Blast",
-                VerdantBlastDescription, null, icon, AbilityType.Special,
+                VerdantBlastDescription, icon, AbilityType.Special,
                 UnitCommand.CommandType.Standard, AbilityRange.Close, duration: null, savingThrow: null);
             ability.SetComponents
                 (
@@ -1309,9 +1255,9 @@ namespace KineticistElementsExpanded.ElementWood
             UnityEngine.Sprite icon = Helper.StealIcon("cb2d9e6355dd33940b2bef49e544b0bf"); // ExtendedRangeInfusion
 
             var ability = Helper.CreateBlueprintAbility("ExtendedRangeVerdantBlastAbility",
-                Kineticist.ref_infusion_extendedRange.Get().m_DisplayName,
-                Kineticist.ref_infusion_extendedRange.Get().m_Description,
-                null, icon, AbilityType.Special,
+                Tree.ExtendedRange.Feature.Get().m_DisplayName,
+                Tree.ExtendedRange.Feature.Get().m_Description,
+                icon, AbilityType.Special,
                 UnitCommand.CommandType.Standard, AbilityRange.Long, duration: null, savingThrow: null);
             ability.SetComponents
                 (
@@ -1321,12 +1267,13 @@ namespace KineticistElementsExpanded.ElementWood
                 Kineticist.Blast.RankConfigBonus(half_bonus: false),
                 Kineticist.Blast.DCForceDex(),
                 Kineticist.Blast.BurnCost(actions, infusion: 1, blast: 2, talent: 0),
+                Kineticist.Blast.RequiredFeat(Tree.ExtendedRange.Feature),
                 Kineticist.Blast.Projectile(Resource.Projectile.Vinetrap00_Projectile_1, true, AbilityProjectileType.Simple, 0, 5),
                 Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnPrecastStart, Resource.Sfx.PreStart_Earth),
                 Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnStart, Resource.Sfx.Start_Earth)
                 ).TargetEnemy(CastAnimationStyle.Kineticist);
             ability.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten;
-            ability.m_Parent = Verdant.BaseAbility;
+            ability.m_Parent = Tree.Composite_Verdant.BaseAbility;
 
             ((ContextActionDealDamage)actions.Actions[0]).Value.BonusValue.ValueType = ContextValueType.Shared;
             ((ContextActionDealDamage)actions.Actions[0]).Value.BonusValue.ValueShared = AbilitySharedValue.Damage;
@@ -1338,8 +1285,8 @@ namespace KineticistElementsExpanded.ElementWood
             UnityEngine.Sprite icon = Helper.StealIcon("c4f4a62a325f7c14dbcace3ce34782b5"); // SpindleInfusion
 
             var ability = Helper.CreateBlueprintAbility("SpindleVerdantBlastAbility",
-                Kineticist.ref_infusion_spindle.Get().m_DisplayName,
-                Kineticist.ref_infusion_spindle.Get().m_Description, null, icon, AbilityType.Special,
+                Tree.Spindle.Feature.Get().m_DisplayName,
+                Tree.Spindle.Feature.Get().m_Description, icon, AbilityType.Special,
                 UnitCommand.CommandType.Standard, AbilityRange.Close, duration: null, savingThrow: null);
             ability.SetComponents
                 (
@@ -1349,7 +1296,7 @@ namespace KineticistElementsExpanded.ElementWood
                 Kineticist.Blast.RankConfigBonus(half_bonus: false),
                 Kineticist.Blast.DCForceDex(),
                 Kineticist.Blast.BurnCost(actions, infusion: 2, blast: 2),
-                Kineticist.Blast.RequiredFeat(Kineticist.ref_infusion_spindle),
+                Kineticist.Blast.RequiredFeat(Tree.Spindle.Feature),
                 Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnPrecastStart, Resource.Sfx.PreStart_Earth),
                 Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnStart, Resource.Sfx.Start_Earth),
                 new AbilityDeliverChain
@@ -1368,7 +1315,7 @@ namespace KineticistElementsExpanded.ElementWood
                 }
                 ).TargetEnemy(CastAnimationStyle.Kineticist);
             ability.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten;
-            ability.m_Parent = Verdant.BaseAbility;
+            ability.m_Parent = Tree.Composite_Verdant.BaseAbility;
 
             ((ContextActionDealDamage)actions.Actions[0]).Value.BonusValue.ValueType = ContextValueType.Shared;
             ((ContextActionDealDamage)actions.Actions[0]).Value.BonusValue.ValueShared = AbilitySharedValue.Damage;
@@ -1385,37 +1332,33 @@ namespace KineticistElementsExpanded.ElementWood
                     new ContextValue
                     {
                         ValueType = ContextValueType.Simple,
-                        Value = 0,
-                        ValueRank = AbilityRankType.Default,
-                        ValueShared = AbilitySharedValue.Damage
+                        Value = 0
                     }, DiceType.Zero,
                     new ContextValue
                     {
                         ValueType = ContextValueType.Rank,
-                        Value = 0,
-                        ValueRank = AbilityRankType.DamageBonus,
-                        ValueShared = AbilitySharedValue.Damage
+                        ValueRank = AbilityRankType.DamageBonus
                     }, DurationRate.Rounds),
                 m_AreaEffect = Kineticist.CreateWallAreaEffect("Verdant", "098a29fefbbc4564281afa5a6887cd2c", p: PhysicalDamageForm.Bludgeoning | PhysicalDamageForm.Piercing | PhysicalDamageForm.Slashing, e: DamageEnergyType.PositiveEnergy),
                 OnUnit = false
             };
 
             var ability = Helper.CreateBlueprintAbility("WallVerdantBlastAbility",
-                Kineticist.ref_infusion_wall.Get().m_DisplayName,
-                Kineticist.ref_infusion_wall.Get().m_Description, null, icon, AbilityType.Special,
+                Tree.Wall.Feature.Get().m_DisplayName,
+                Tree.Wall.Feature.Get().m_Description, icon, AbilityType.Special,
                 UnitCommand.CommandType.Standard, AbilityRange.Close, duration: null, savingThrow: null);
             ability.SetComponents
                 (
                 Helper.CreateAbilityEffectRunAction(SavingThrowType.Unknown, action),
                 Kineticist.Blast.DCForceDex(),
                 Kineticist.Blast.BurnCost(null, infusion: 3, blast: 2),
-                Kineticist.Blast.RequiredFeat(Kineticist.ref_infusion_wall),
+                Kineticist.Blast.RequiredFeat(Tree.Wall.Feature),
                 Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnPrecastStart, Resource.Sfx.PreStart_Earth),
                 Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnStart, Resource.Sfx.Start_Earth)
                 ).TargetEnemy(CastAnimationStyle.Kineticist);
             ability.CanTargetPoint = true;
             ability.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten;
-            ability.m_Parent = Verdant.BaseAbility;
+            ability.m_Parent = Tree.Composite_Verdant.BaseAbility;
 
             return ability;
         }
@@ -1433,19 +1376,19 @@ namespace KineticistElementsExpanded.ElementWood
             var weapon = CreateVerdantBlastBlade_weapon();
 
             #region buffs
-            var buff = Helper.CreateBlueprintBuff("KineticBladeVerdantBlastBuff", null, null, null, null, null);
+            var buff = Helper.CreateBlueprintBuff("KineticBladeVerdantBlastBuff");
             buff.Flags(true, true);
             buff.Stacking = StackingType.Replace;
             buff.SetComponents
                 (
-                new AddKineticistBlade { m_Blade = weapon.ToRef() }
+                new AddKineticistBlade { m_Blade = AnyRef.ToAny(weapon) }
                 );
             #endregion
 
             #region BlastAbility
 
             var blade_active_ability = Helper.CreateBlueprintActivatableAbility("KineticBladeVerdantBlastAbility", "Verdant Blast — Kinetic Blade",
-                KineticBladeDescription, out var unused, null, icon,
+                KineticBladeDescription, out var unused, icon,
                 group: Kingmaker.UnitLogic.ActivatableAbilities.ActivatableAbilityGroup.FormInfusion, deactivateWhenDead: true);
             blade_active_ability.m_Buff = buff.ToRef();
             blade_active_ability.m_ActivateOnUnitAction = Kingmaker.UnitLogic.ActivatableAbilities.AbilityActivateOnUnitActionType.Attack;
@@ -1458,7 +1401,7 @@ namespace KineticistElementsExpanded.ElementWood
 
             #region BlastBurnAbility
 
-            var blade_burn_ability = Helper.CreateBlueprintAbility("KineticBladeVerdantBlastBurnAbility", null, null, null, icon,
+            var blade_burn_ability = Helper.CreateBlueprintAbility("KineticBladeVerdantBlastBurnAbility", null, null, icon,
                 AbilityType.Special, UnitCommand.CommandType.Free, AbilityRange.Personal);
             blade_burn_ability.TargetSelf(CastAnimationStyle.Omni);
             blade_burn_ability.Hidden = true;
@@ -1476,7 +1419,7 @@ namespace KineticistElementsExpanded.ElementWood
             #region BlastKineticBladeDamage
 
             var blade_damage_ability = Helper.CreateBlueprintAbility("VerdantBlastKineticBladeDamage", "Verdant Blast",
-                VerdantBlastDescription, null, damage_icon, AbilityType.Special, UnitCommand.CommandType.Standard, AbilityRange.Close);
+                VerdantBlastDescription, damage_icon, AbilityType.Special, UnitCommand.CommandType.Standard, AbilityRange.Close);
             blade_damage_ability.TargetEnemy(CastAnimationStyle.Omni);
             blade_damage_ability.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten | Metamagic.Reach;
             blade_damage_ability.Hidden = true;
@@ -1502,7 +1445,7 @@ namespace KineticistElementsExpanded.ElementWood
                 new WeaponKineticBlade { m_ActivationAbility = blade_burn_ability.ToRef(), m_Blast = blade_damage_ability.ToRef() }
                 );
 
-            var blade_feat = Helper.CreateBlueprintFeature("VerdantKineticBladeFeature", null, null, null, icon, FeatureGroup.None);
+            var blade_feat = Helper.CreateBlueprintFeature("VerdantKineticBladeFeature", null, null, icon, FeatureGroup.None);
             blade_feat.HideInUI = true;
             blade_feat.HideInCharacterSheetAndLevelUp = true;
             blade_feat.SetComponents
@@ -1511,9 +1454,6 @@ namespace KineticistElementsExpanded.ElementWood
                 Helper.CreateAddFeatureIfHasFact(blade_burn_ability.ToRef2())
                 );
 
-            Verdant.BladeFeature = blade_feat.ToRef();
-            Verdant.BladeDamageAbility = blade_damage_ability.ToRef();
-            Verdant.BladeBuff = buff.ToRef();
             return blade_damage_ability;
         }
 
@@ -1522,9 +1462,7 @@ namespace KineticistElementsExpanded.ElementWood
             //var icon = Helper.StealIcon("43ff6714-3efb-86d4-f894-b10577329050"); // Air Kinetic Blade Weapon
 
             var weapon = Helper.CreateBlueprintItemWeapon("VerdantKineticBladeWeapon", null, null, Kineticist.ref_kinetic_blast_physical_blade_type,
-                damageOverride: new DiceFormula { m_Rolls = 0, m_Dice = DiceType.Zero },
-                form: null,
-                secondWeapon: null, false, null, 10);
+                damageOverride: new DiceFormula { m_Rolls = 0, m_Dice = DiceType.Zero }, price: 10);
             weapon.m_Enchantments = new BlueprintWeaponEnchantmentReference[1] { CreateVerdantBlastBlade_enchantment().ToRef() };
 
             weapon.m_VisualParameters.m_WeaponAnimationStyle = Kingmaker.View.Animation.WeaponAnimationStyle.SlashingOneHanded;
@@ -1562,8 +1500,8 @@ namespace KineticistElementsExpanded.ElementWood
                     }
                 }
             };
-            var first_rank_conf = Helper.CreateContextRankConfig(ContextRankBaseValueType.FeatureRank, type: AbilityRankType.DamageDice, feature: Tree.BlastFeature, min: 0, max: 20);
-            var second_rank_conf = Helper.CreateContextRankConfig(ContextRankBaseValueType.CustomProperty, type: AbilityRankType.DamageBonus, customProperty: Tree.MainStatProp, min: 0, max: 20);
+            var first_rank_conf = Helper.CreateContextRankConfig(ContextRankBaseValueType.FeatureRank, type: AbilityRankType.DamageDice, feature: Tree.KineticBlast, min: 0, max: 20);
+            var second_rank_conf = Helper.CreateContextRankConfig(ContextRankBaseValueType.CustomProperty, type: AbilityRankType.DamageBonus, customProperty: Tree.KineticistMainStatProperty, min: 0, max: 20);
             var second_context_calc = new ContextCalculateSharedValue
             {
                 ValueType = AbilitySharedValue.DamageBonus,
@@ -1589,7 +1527,7 @@ namespace KineticistElementsExpanded.ElementWood
             };
 
             var enchant = Helper.CreateBlueprintWeaponEnchantment("VerdantKineticBladeEnchantment", "Verdant Blast — Kinetic Blade",
-                null, "Verdant Blast", null, null, 0);
+                "Verdant Blast", null, null, 0);
             enchant.SetComponents
                 (
                 first_context_calc,
@@ -1608,15 +1546,15 @@ namespace KineticistElementsExpanded.ElementWood
 
         public static void CreateVerdantBlastAbility(params BlueprintAbility[] variants)
         {
-            UnityEngine.Sprite icon = Helper.CreateSprite("verdantBlast.png");
+            UnityEngine.Sprite icon = Helper.CreateSprite(Main.ModPath+"/Icons/verdantBlast.png");
 
             var ability = Helper.CreateBlueprintAbility("VerdantBlastBase", "Verdant Blast",
-                VerdantBlastDescription, null, icon, AbilityType.Special,
+                VerdantBlastDescription, icon, AbilityType.Special,
                 UnitCommand.CommandType.Standard, AbilityRange.Close,
                 duration: null, savingThrow: null);
             ability.SetComponents
                 (
-                Helper.CreateAbilityShowIfCasterHasFact(AnyRef.Get(Tree.FocusFirst).To<BlueprintUnitFactReference>()),
+                Helper.CreateAbilityShowIfCasterHasFact(AnyRef.ToAny(Tree.FocusFirst)),
                 Kineticist.Blast.BurnCost(null, 0, 2, 0)
                 );
             ability.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten;
@@ -1625,22 +1563,22 @@ namespace KineticistElementsExpanded.ElementWood
             {
                 Helper.AddToAbilityVariants(ability, v);
             }
-
-            Verdant.BaseAbility = ability.ToRef();
         }
 
         public static void CreateVerdantBlastFeature()
         {
             var feature = Helper.CreateBlueprintFeature("VerdantBlastFeature", "Verdant Blast",
-                VerdantBlastDescription, null, null, FeatureGroup.KineticBlast);
+                VerdantBlastDescription, null, FeatureGroup.KineticBlast);
             feature.SetComponents
                 (
-                Helper.CreateAddFeatureIfHasFact(AnyRef.Get(Verdant.BaseAbility).To<BlueprintUnitFactReference>())
+                Helper.CreateAddFacts(AnyRef.ToAny(Tree.Composite_Verdant.BaseAbility)),
+                Helper.CreateAddFeatureIfHasFact(
+                    AnyRef.ToAny(Tree.KineticBlade.Feature),
+                    AnyRef.ToAny(Tree.Composite_Verdant.Blade.Feature))
                 );
+            feature.HideInCharacterSheetAndLevelUp = true;
             feature.HideInUI = true;
             feature.IsClassFeature = true;
-
-            Verdant.BlastFeature = feature.ToRef();
         }
 
         #endregion
@@ -1668,10 +1606,10 @@ namespace KineticistElementsExpanded.ElementWood
 
         private static BlueprintAbility CreateAutumnBlastVariant_base()
         {
-            UnityEngine.Sprite icon = Helper.CreateSprite("verdantBlast.png");
+            UnityEngine.Sprite icon = Helper.CreateSprite(Main.ModPath+"/Icons/verdantBlast.png");
 
             var ability = Helper.CreateBlueprintAbility("AutumnBlastAbility", "Autumn Blast",
-                AutumnBlastDescription, null, icon, AbilityType.Special,
+                AutumnBlastDescription, icon, AbilityType.Special,
                 UnitCommand.CommandType.Standard, AbilityRange.Close, duration: null, savingThrow: null);
             ability.SetComponents
                 (
@@ -1698,9 +1636,9 @@ namespace KineticistElementsExpanded.ElementWood
             UnityEngine.Sprite icon = Helper.StealIcon("cb2d9e6355dd33940b2bef49e544b0bf"); // ExtendedRangeInfusion
 
             var ability = Helper.CreateBlueprintAbility("ExtendedRangeAutumnBlastAbility",
-                Kineticist.ref_infusion_extendedRange.Get().m_DisplayName,
-                Kineticist.ref_infusion_extendedRange.Get().m_Description,
-                null, icon, AbilityType.Special,
+                Tree.ExtendedRange.Feature.Get().m_DisplayName,
+                Tree.ExtendedRange.Feature.Get().m_Description,
+                icon, AbilityType.Special,
                 UnitCommand.CommandType.Standard, AbilityRange.Long, duration: null, savingThrow: null);
             ability.SetComponents
                 (
@@ -1710,12 +1648,13 @@ namespace KineticistElementsExpanded.ElementWood
                 Kineticist.Blast.RankConfigBonus(half_bonus: false),
                 Kineticist.Blast.DCForceDex(),
                 Kineticist.Blast.BurnCost(actions, infusion: 1, blast: 2, talent: 0),
+                Kineticist.Blast.RequiredFeat(Tree.ExtendedRange.Feature),
                 Kineticist.Blast.Projectile(Resource.Projectile.Kinetic_EarthBlast00_Projectile, true, AbilityProjectileType.Simple, 0, 5),
                 Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnPrecastStart, Resource.Sfx.PreStart_Earth),
                 Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnStart, Resource.Sfx.Start_Earth)
                 ).TargetEnemy(CastAnimationStyle.Kineticist);
             ability.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten;
-            ability.m_Parent = Autumn.BaseAbility;
+            ability.m_Parent = Tree.Composite_Autumn.BaseAbility;
 
             ((ContextActionDealDamage)actions.Actions[0]).Value.BonusValue.ValueType = ContextValueType.Shared;
             ((ContextActionDealDamage)actions.Actions[0]).Value.BonusValue.ValueShared = AbilitySharedValue.Damage;
@@ -1727,8 +1666,8 @@ namespace KineticistElementsExpanded.ElementWood
             UnityEngine.Sprite icon = Helper.StealIcon("c4f4a62a325f7c14dbcace3ce34782b5"); // SpindleInfusion
 
             var ability = Helper.CreateBlueprintAbility("SpindleAutumnBlastAbility",
-                Kineticist.ref_infusion_spindle.Get().m_DisplayName,
-                Kineticist.ref_infusion_spindle.Get().m_Description, null, icon, AbilityType.Special,
+                Tree.Spindle.Feature.Get().m_DisplayName,
+                Tree.Spindle.Feature.Get().m_Description, icon, AbilityType.Special,
                 UnitCommand.CommandType.Standard, AbilityRange.Close, duration: null, savingThrow: null);
             ability.SetComponents
                 (
@@ -1738,7 +1677,7 @@ namespace KineticistElementsExpanded.ElementWood
                 Kineticist.Blast.RankConfigBonus(half_bonus: false),
                 Kineticist.Blast.DCForceDex(),
                 Kineticist.Blast.BurnCost(actions, infusion: 2, blast: 2),
-                Kineticist.Blast.RequiredFeat(Kineticist.ref_infusion_spindle),
+                Kineticist.Blast.RequiredFeat(Tree.Spindle.Feature),
                 Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnPrecastStart, Resource.Sfx.PreStart_Earth),
                 Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnStart, Resource.Sfx.Start_Earth),
                 new AbilityDeliverChain
@@ -1757,7 +1696,7 @@ namespace KineticistElementsExpanded.ElementWood
                 }
                 ).TargetEnemy(CastAnimationStyle.Kineticist);
             ability.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten;
-            ability.m_Parent = Autumn.BaseAbility;
+            ability.m_Parent = Tree.Composite_Autumn.BaseAbility;
 
             ((ContextActionDealDamage)actions.Actions[0]).Value.BonusValue.ValueType = ContextValueType.Shared;
             ((ContextActionDealDamage)actions.Actions[0]).Value.BonusValue.ValueShared = AbilitySharedValue.Damage;
@@ -1790,21 +1729,21 @@ namespace KineticistElementsExpanded.ElementWood
             };
 
             var ability = Helper.CreateBlueprintAbility("WallAutumnBlastAbility",
-                Kineticist.ref_infusion_wall.Get().m_DisplayName,
-                Kineticist.ref_infusion_wall.Get().m_Description, null, icon, AbilityType.Special,
+                Tree.Wall.Feature.Get().m_DisplayName,
+                Tree.Wall.Feature.Get().m_Description, icon, AbilityType.Special,
                 UnitCommand.CommandType.Standard, AbilityRange.Close, duration: null, savingThrow: null);
             ability.SetComponents
                 (
                 Helper.CreateAbilityEffectRunAction(SavingThrowType.Unknown, action),
                 Kineticist.Blast.DCForceDex(),
                 Kineticist.Blast.BurnCost(null, infusion: 3, blast: 2),
-                Kineticist.Blast.RequiredFeat(Kineticist.ref_infusion_wall),
+                Kineticist.Blast.RequiredFeat(Tree.Wall.Feature),
                 Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnPrecastStart, Resource.Sfx.PreStart_Earth),
                 Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnStart, Resource.Sfx.Start_Earth)
                 ).TargetEnemy(CastAnimationStyle.Kineticist);
             ability.CanTargetPoint = true;
             ability.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten;
-            ability.m_Parent = Autumn.BaseAbility;
+            ability.m_Parent = Tree.Composite_Autumn.BaseAbility;
 
             return ability;
         }
@@ -1821,19 +1760,19 @@ namespace KineticistElementsExpanded.ElementWood
             var weapon = CreateAutumnBlastBlade_weapon();
 
             #region buffs
-            var buff = Helper.CreateBlueprintBuff("KineticBladeAutumnBlastBuff", null, null, null, null, null);
+            var buff = Helper.CreateBlueprintBuff("KineticBladeAutumnBlastBuff");
             buff.Flags(true, true);
             buff.Stacking = StackingType.Replace;
             buff.SetComponents
                 (
-                new AddKineticistBlade { m_Blade = weapon.ToRef() }
+                new AddKineticistBlade { m_Blade = AnyRef.ToAny(weapon) }
                 );
             #endregion
 
             #region BlastAbility
 
             var blade_active_ability = Helper.CreateBlueprintActivatableAbility("KineticBladeAutumnBlastAbility", "Autumn Blast — Kinetic Blade",
-                KineticBladeDescription, out var unused, null, icon,
+                KineticBladeDescription, out var unused, icon,
                 group: Kingmaker.UnitLogic.ActivatableAbilities.ActivatableAbilityGroup.FormInfusion, deactivateWhenDead: true);
             blade_active_ability.m_Buff = buff.ToRef();
             blade_active_ability.m_ActivateOnUnitAction = Kingmaker.UnitLogic.ActivatableAbilities.AbilityActivateOnUnitActionType.Attack;
@@ -1846,7 +1785,7 @@ namespace KineticistElementsExpanded.ElementWood
 
             #region BlastBurnAbility
 
-            var blade_burn_ability = Helper.CreateBlueprintAbility("KineticBladeAutumnBlastBurnAbility", null, null, null, icon,
+            var blade_burn_ability = Helper.CreateBlueprintAbility("KineticBladeAutumnBlastBurnAbility", null, null, icon,
                 AbilityType.Special, UnitCommand.CommandType.Free, AbilityRange.Personal);
             blade_burn_ability.TargetSelf(CastAnimationStyle.Omni);
             blade_burn_ability.Hidden = true;
@@ -1864,7 +1803,7 @@ namespace KineticistElementsExpanded.ElementWood
             #region BlastKineticBladeDamage
 
             var blade_damage_ability = Helper.CreateBlueprintAbility("AutumnBlastKineticBladeDamage", "Autumn Blast",
-                AutumnBlastDescription, null, damage_icon, AbilityType.Special, UnitCommand.CommandType.Standard, AbilityRange.Close);
+                AutumnBlastDescription, damage_icon, AbilityType.Special, UnitCommand.CommandType.Standard, AbilityRange.Close);
             blade_damage_ability.TargetEnemy(CastAnimationStyle.Omni);
             blade_damage_ability.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten | Metamagic.Reach;
             blade_damage_ability.Hidden = true;
@@ -1890,7 +1829,7 @@ namespace KineticistElementsExpanded.ElementWood
                 new WeaponKineticBlade { m_ActivationAbility = blade_burn_ability.ToRef(), m_Blast = blade_damage_ability.ToRef() }
                 );
 
-            var blade_feat = Helper.CreateBlueprintFeature("AutumnKineticBladeFeature", null, null, null, icon, FeatureGroup.None);
+            var blade_feat = Helper.CreateBlueprintFeature("AutumnKineticBladeFeature", null, null, icon, FeatureGroup.None);
             blade_feat.HideInUI = true;
             blade_feat.HideInCharacterSheetAndLevelUp = true;
             blade_feat.SetComponents
@@ -1899,9 +1838,6 @@ namespace KineticistElementsExpanded.ElementWood
                 Helper.CreateAddFeatureIfHasFact(blade_burn_ability.ToRef2())
                 );
 
-            Autumn.BladeFeature = blade_feat.ToRef();
-            Autumn.BladeDamageAbility = blade_damage_ability.ToRef();
-            Autumn.BladeBuff = buff.ToRef();
             return blade_damage_ability;
         }
 
@@ -1910,9 +1846,7 @@ namespace KineticistElementsExpanded.ElementWood
             //var icon = Helper.StealIcon("43ff6714-3efb-86d4-f894-b10577329050"); // Air Kinetic Blade Weapon
 
             var weapon = Helper.CreateBlueprintItemWeapon("AutumnKineticBladeWeapon", null, null, Kineticist.ref_kinetic_blast_physical_blade_type,
-                damageOverride: new DiceFormula { m_Rolls = 0, m_Dice = DiceType.Zero },
-                form: null,
-                secondWeapon: null, false, null, 10);
+                damageOverride: new DiceFormula { m_Rolls = 0, m_Dice = DiceType.Zero }, price: 10);
             weapon.m_Enchantments = new BlueprintWeaponEnchantmentReference[1] { CreateAutumnBlastBlade_enchantment().ToRef() };
 
             weapon.m_VisualParameters.m_WeaponAnimationStyle = Kingmaker.View.Animation.WeaponAnimationStyle.SlashingOneHanded;
@@ -1950,8 +1884,8 @@ namespace KineticistElementsExpanded.ElementWood
                     }
                 }
             };
-            var first_rank_conf = Helper.CreateContextRankConfig(ContextRankBaseValueType.FeatureRank, type: AbilityRankType.DamageDice, feature: Tree.BlastFeature, min: 0, max: 20);
-            var second_rank_conf = Helper.CreateContextRankConfig(ContextRankBaseValueType.CustomProperty, type: AbilityRankType.DamageBonus, customProperty: Tree.MainStatProp, min: 0, max: 20);
+            var first_rank_conf = Helper.CreateContextRankConfig(ContextRankBaseValueType.FeatureRank, type: AbilityRankType.DamageDice, feature: Tree.KineticBlast, min: 0, max: 20);
+            var second_rank_conf = Helper.CreateContextRankConfig(ContextRankBaseValueType.CustomProperty, type: AbilityRankType.DamageBonus, customProperty: Tree.KineticistMainStatProperty, min: 0, max: 20);
             var second_context_calc = new ContextCalculateSharedValue
             {
                 ValueType = AbilitySharedValue.DamageBonus,
@@ -1977,7 +1911,7 @@ namespace KineticistElementsExpanded.ElementWood
             };
 
             var enchant = Helper.CreateBlueprintWeaponEnchantment("AutumnKineticBladeEnchantment", "Autumn Blast — Kinetic Blade",
-                null, "Autumn Blast", null, null, 0);
+                "Autumn Blast", null, null, 0);
             enchant.SetComponents
                 (
                 first_context_calc,
@@ -1996,15 +1930,15 @@ namespace KineticistElementsExpanded.ElementWood
 
         public static void CreateAutumnBlastAbility(params BlueprintAbility[] variants)
         {
-            UnityEngine.Sprite icon = Helper.CreateSprite("verdantBlast.png");
+            UnityEngine.Sprite icon = Helper.CreateSprite(Main.ModPath+"/Icons/verdantBlast.png");
 
             var ability = Helper.CreateBlueprintAbility("AutumnBlastBase", "Autumn Blast",
-                AutumnBlastDescription, null, icon, AbilityType.Special,
+                AutumnBlastDescription, icon, AbilityType.Special,
                 UnitCommand.CommandType.Standard, AbilityRange.Close,
                 duration: null, savingThrow: null);
             ability.SetComponents
                 (
-                Helper.CreateAbilityShowIfCasterHasFact(AnyRef.Get(Tree.FocusFirst).To<BlueprintUnitFactReference>()),
+                Helper.CreateAbilityShowIfCasterHasFact(AnyRef.ToAny(Tree.FocusFirst)),
                 Kineticist.Blast.BurnCost(null, 0, 2, 0)
                 );
             ability.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten;
@@ -2013,22 +1947,21 @@ namespace KineticistElementsExpanded.ElementWood
             {
                 Helper.AddToAbilityVariants(ability, v);
             }
-
-            Autumn.BaseAbility = ability.ToRef();
         }
 
         public static void CreateAutumnBlastFeature()
         {
             var feature = Helper.CreateBlueprintFeature("AutumnBlastFeature", "Autumn Blast",
-                AutumnBlastDescription, null, null, FeatureGroup.KineticBlast);
+                AutumnBlastDescription, null, FeatureGroup.KineticBlast);
             feature.SetComponents
                 (
-                Helper.CreateAddFeatureIfHasFact(AnyRef.Get(Autumn.BaseAbility).To<BlueprintUnitFactReference>())
+                Helper.CreateAddFacts(AnyRef.ToAny(Tree.Composite_Autumn.BaseAbility)),
+                Helper.CreateAddFeatureIfHasFact(
+                    AnyRef.ToAny(Tree.KineticBlade.Feature),
+                    AnyRef.ToAny(Tree.Composite_Autumn.Blade.Feature))
                 );
             feature.HideInUI = true;
             feature.IsClassFeature = true;
-
-            Autumn.BlastFeature = feature.ToRef();
         }
 
         #endregion
@@ -2055,10 +1988,10 @@ namespace KineticistElementsExpanded.ElementWood
 
         private static BlueprintAbility CreateSpringBlastVariant_base()
         {
-            UnityEngine.Sprite icon = Helper.CreateSprite("verdantBlast.png");
+            UnityEngine.Sprite icon = Helper.CreateSprite(Main.ModPath+"/Icons/verdantBlast.png");
 
             var ability = Helper.CreateBlueprintAbility("SpringBlastAbility", "Spring Blast",
-                SpringBlastDescription, null, icon, AbilityType.Special,
+                SpringBlastDescription, icon, AbilityType.Special,
                 UnitCommand.CommandType.Standard, AbilityRange.Close, duration: null, savingThrow: null);
             ability.SetComponents
                 (
@@ -2085,9 +2018,9 @@ namespace KineticistElementsExpanded.ElementWood
             UnityEngine.Sprite icon = Helper.StealIcon("cb2d9e6355dd33940b2bef49e544b0bf"); // ExtendedRangeInfusion
 
             var ability = Helper.CreateBlueprintAbility("ExtendedRangeSpringBlastAbility",
-                Kineticist.ref_infusion_extendedRange.Get().m_DisplayName,
-                Kineticist.ref_infusion_extendedRange.Get().m_Description,
-                null, icon, AbilityType.Special,
+                Tree.ExtendedRange.Feature.Get().m_DisplayName,
+                Tree.ExtendedRange.Feature.Get().m_Description,
+                icon, AbilityType.Special,
                 UnitCommand.CommandType.Standard, AbilityRange.Long, duration: null, savingThrow: null);
             ability.SetComponents
                 (
@@ -2097,12 +2030,13 @@ namespace KineticistElementsExpanded.ElementWood
                 Kineticist.Blast.RankConfigBonus(half_bonus: false),
                 Kineticist.Blast.DCForceDex(),
                 Kineticist.Blast.BurnCost(actions, infusion: 1, blast: 2, talent: 0),
+                Kineticist.Blast.RequiredFeat(Tree.ExtendedRange.Feature),
                 Kineticist.Blast.Projectile(Resource.Projectile.WindProjectile00, true, AbilityProjectileType.Simple, 0, 5),
                 Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnPrecastStart, Resource.Sfx.PreStart_Earth),
                 Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnStart, Resource.Sfx.Start_Earth)
                 ).TargetEnemy(CastAnimationStyle.Kineticist);
             ability.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten;
-            ability.m_Parent = Spring.BaseAbility;
+            ability.m_Parent = Tree.Composite_Spring.BaseAbility;
 
             ((ContextActionDealDamage)actions.Actions[0]).Value.BonusValue.ValueType = ContextValueType.Shared;
             ((ContextActionDealDamage)actions.Actions[0]).Value.BonusValue.ValueShared = AbilitySharedValue.Damage;
@@ -2114,8 +2048,8 @@ namespace KineticistElementsExpanded.ElementWood
             UnityEngine.Sprite icon = Helper.StealIcon("c4f4a62a325f7c14dbcace3ce34782b5"); // SpindleInfusion
 
             var ability = Helper.CreateBlueprintAbility("SpindleSpringBlastAbility",
-                Kineticist.ref_infusion_spindle.Get().m_DisplayName,
-                Kineticist.ref_infusion_spindle.Get().m_Description, null, icon, AbilityType.Special,
+                Tree.Spindle.Feature.Get().m_DisplayName,
+                Tree.Spindle.Feature.Get().m_Description, icon, AbilityType.Special,
                 UnitCommand.CommandType.Standard, AbilityRange.Close, duration: null, savingThrow: null);
             ability.SetComponents
                 (
@@ -2125,7 +2059,7 @@ namespace KineticistElementsExpanded.ElementWood
                 Kineticist.Blast.RankConfigBonus(half_bonus: false),
                 Kineticist.Blast.DCForceDex(),
                 Kineticist.Blast.BurnCost(actions, infusion: 2, blast: 2),
-                Kineticist.Blast.RequiredFeat(Kineticist.ref_infusion_spindle),
+                Kineticist.Blast.RequiredFeat(Tree.Spindle.Feature),
                 Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnPrecastStart, Resource.Sfx.PreStart_Earth),
                 Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnStart, Resource.Sfx.Start_Earth),
                 new AbilityDeliverChain
@@ -2144,7 +2078,7 @@ namespace KineticistElementsExpanded.ElementWood
                 }
                 ).TargetEnemy(CastAnimationStyle.Kineticist);
             ability.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten;
-            ability.m_Parent = Spring.BaseAbility;
+            ability.m_Parent = Tree.Composite_Spring.BaseAbility;
 
             ((ContextActionDealDamage)actions.Actions[0]).Value.BonusValue.ValueType = ContextValueType.Shared;
             ((ContextActionDealDamage)actions.Actions[0]).Value.BonusValue.ValueShared = AbilitySharedValue.Damage;
@@ -2177,21 +2111,21 @@ namespace KineticistElementsExpanded.ElementWood
             };
 
             var ability = Helper.CreateBlueprintAbility("WallSpringBlastAbility",
-                Kineticist.ref_infusion_wall.Get().m_DisplayName,
-                Kineticist.ref_infusion_wall.Get().m_Description, null, icon, AbilityType.Special,
+                Tree.Wall.Feature.Get().m_DisplayName,
+                Tree.Wall.Feature.Get().m_Description, icon, AbilityType.Special,
                 UnitCommand.CommandType.Standard, AbilityRange.Close, duration: null, savingThrow: null);
             ability.SetComponents
                 (
                 Helper.CreateAbilityEffectRunAction(SavingThrowType.Unknown, action),
                 Kineticist.Blast.DCForceDex(),
                 Kineticist.Blast.BurnCost(null, infusion: 3, blast: 2),
-                Kineticist.Blast.RequiredFeat(Kineticist.ref_infusion_wall),
+                Kineticist.Blast.RequiredFeat(Tree.Wall.Feature),
                 Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnPrecastStart, Resource.Sfx.PreStart_Earth),
                 Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnStart, Resource.Sfx.Start_Earth)
                 ).TargetEnemy(CastAnimationStyle.Kineticist);
             ability.CanTargetPoint = true;
             ability.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten;
-            ability.m_Parent = Spring.BaseAbility;
+            ability.m_Parent = Tree.Composite_Spring.BaseAbility;
 
             return ability;
         }
@@ -2208,19 +2142,19 @@ namespace KineticistElementsExpanded.ElementWood
             var weapon = CreateSpringBlastBlade_weapon();
 
             #region buffs
-            var buff = Helper.CreateBlueprintBuff("KineticBladeSpringBlastBuff", null, null, null, null, null);
+            var buff = Helper.CreateBlueprintBuff("KineticBladeSpringBlastBuff");
             buff.Flags(true, true);
             buff.Stacking = StackingType.Replace;
             buff.SetComponents
                 (
-                new AddKineticistBlade { m_Blade = weapon.ToRef() }
+                new AddKineticistBlade { m_Blade = AnyRef.ToAny(weapon) }
                 );
             #endregion
 
             #region BlastAbility
 
             var blade_active_ability = Helper.CreateBlueprintActivatableAbility("KineticBladeSpringBlastAbility", "Spring Blast — Kinetic Blade",
-                KineticBladeDescription, out var unused, null, icon,
+                KineticBladeDescription, out var unused, icon,
                 group: Kingmaker.UnitLogic.ActivatableAbilities.ActivatableAbilityGroup.FormInfusion, deactivateWhenDead: true);
             blade_active_ability.m_Buff = buff.ToRef();
             blade_active_ability.m_ActivateOnUnitAction = Kingmaker.UnitLogic.ActivatableAbilities.AbilityActivateOnUnitActionType.Attack;
@@ -2233,7 +2167,7 @@ namespace KineticistElementsExpanded.ElementWood
 
             #region BlastBurnAbility
 
-            var blade_burn_ability = Helper.CreateBlueprintAbility("KineticBladeSpringBlastBurnAbility", null, null, null, icon,
+            var blade_burn_ability = Helper.CreateBlueprintAbility("KineticBladeSpringBlastBurnAbility", null, null, icon,
                 AbilityType.Special, UnitCommand.CommandType.Free, AbilityRange.Personal);
             blade_burn_ability.TargetSelf(CastAnimationStyle.Omni);
             blade_burn_ability.Hidden = true;
@@ -2251,7 +2185,7 @@ namespace KineticistElementsExpanded.ElementWood
             #region BlastKineticBladeDamage
 
             var blade_damage_ability = Helper.CreateBlueprintAbility("SpringBlastKineticBladeDamage", "Spring Blast",
-                VerdantBlastDescription, null, damage_icon, AbilityType.Special, UnitCommand.CommandType.Standard, AbilityRange.Close);
+                VerdantBlastDescription, damage_icon, AbilityType.Special, UnitCommand.CommandType.Standard, AbilityRange.Close);
             blade_damage_ability.TargetEnemy(CastAnimationStyle.Omni);
             blade_damage_ability.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten | Metamagic.Reach;
             blade_damage_ability.Hidden = true;
@@ -2277,7 +2211,7 @@ namespace KineticistElementsExpanded.ElementWood
                 new WeaponKineticBlade { m_ActivationAbility = blade_burn_ability.ToRef(), m_Blast = blade_damage_ability.ToRef() }
                 );
 
-            var blade_feat = Helper.CreateBlueprintFeature("SpringKineticBladeFeature", null, null, null, icon, FeatureGroup.None);
+            var blade_feat = Helper.CreateBlueprintFeature("SpringKineticBladeFeature", null, null, icon, FeatureGroup.None);
             blade_feat.HideInUI = true;
             blade_feat.HideInCharacterSheetAndLevelUp = true;
             blade_feat.SetComponents
@@ -2286,9 +2220,6 @@ namespace KineticistElementsExpanded.ElementWood
                 Helper.CreateAddFeatureIfHasFact(blade_burn_ability.ToRef2())
                 );
 
-            Spring.BladeFeature = blade_feat.ToRef();
-            Spring.BladeDamageAbility = blade_damage_ability.ToRef();
-            Spring.BladeBuff = buff.ToRef();
             return blade_damage_ability;
         }
 
@@ -2297,9 +2228,7 @@ namespace KineticistElementsExpanded.ElementWood
             //var icon = Helper.StealIcon("43ff6714-3efb-86d4-f894-b10577329050"); // Air Kinetic Blade Weapon
 
             var weapon = Helper.CreateBlueprintItemWeapon("SpringKineticBladeWeapon", null, null, Kineticist.ref_kinetic_blast_physical_blade_type,
-                damageOverride: new DiceFormula { m_Rolls = 0, m_Dice = DiceType.Zero },
-                form: null,
-                secondWeapon: null, false, null, 10);
+                damageOverride: new DiceFormula { m_Rolls = 0, m_Dice = DiceType.Zero }, price: 10);
             weapon.m_Enchantments = new BlueprintWeaponEnchantmentReference[1] { CreateSpringBlastBlade_enchantment().ToRef() };
 
             weapon.m_VisualParameters.m_WeaponAnimationStyle = Kingmaker.View.Animation.WeaponAnimationStyle.SlashingOneHanded;
@@ -2337,8 +2266,8 @@ namespace KineticistElementsExpanded.ElementWood
                     }
                 }
             };
-            var first_rank_conf = Helper.CreateContextRankConfig(ContextRankBaseValueType.FeatureRank, type: AbilityRankType.DamageDice, feature: Tree.BlastFeature, min: 0, max: 20);
-            var second_rank_conf = Helper.CreateContextRankConfig(ContextRankBaseValueType.CustomProperty, type: AbilityRankType.DamageBonus, customProperty: Tree.MainStatProp, min: 0, max: 20);
+            var first_rank_conf = Helper.CreateContextRankConfig(ContextRankBaseValueType.FeatureRank, type: AbilityRankType.DamageDice, feature: Tree.KineticBlast, min: 0, max: 20);
+            var second_rank_conf = Helper.CreateContextRankConfig(ContextRankBaseValueType.CustomProperty, type: AbilityRankType.DamageBonus, customProperty: Tree.KineticistMainStatProperty, min: 0, max: 20);
             var second_context_calc = new ContextCalculateSharedValue
             {
                 ValueType = AbilitySharedValue.DamageBonus,
@@ -2364,7 +2293,7 @@ namespace KineticistElementsExpanded.ElementWood
             };
 
             var enchant = Helper.CreateBlueprintWeaponEnchantment("SpringKineticBladeEnchantment", "Spring Blast — Kinetic Blade",
-                null, "Spring Blast", null, null, 0);
+                "Spring Blast", null, null, 0);
             enchant.SetComponents
                 (
                 first_context_calc,
@@ -2383,15 +2312,15 @@ namespace KineticistElementsExpanded.ElementWood
 
         public static void CreateSpringBlastAbility(params BlueprintAbility[] variants)
         {
-            UnityEngine.Sprite icon = Helper.CreateSprite("verdantBlast.png");
+            UnityEngine.Sprite icon = Helper.CreateSprite(Main.ModPath+"/Icons/verdantBlast.png");
 
             var ability = Helper.CreateBlueprintAbility("SpringBlastBase", "Spring Blast",
-                SpringBlastDescription, null, icon, AbilityType.Special,
+                SpringBlastDescription, icon, AbilityType.Special,
                 UnitCommand.CommandType.Standard, AbilityRange.Close,
                 duration: null, savingThrow: null);
             ability.SetComponents
                 (
-                Helper.CreateAbilityShowIfCasterHasFact(AnyRef.Get(Tree.FocusFirst).To<BlueprintUnitFactReference>()),
+                Helper.CreateAbilityShowIfCasterHasFact(AnyRef.ToAny(Tree.FocusFirst)),
                 Kineticist.Blast.BurnCost(null, 0, 2, 0)
                 );
             ability.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten;
@@ -2400,22 +2329,21 @@ namespace KineticistElementsExpanded.ElementWood
             {
                 Helper.AddToAbilityVariants(ability, v);
             }
-
-            Spring.BaseAbility = ability.ToRef();
         }
 
         public static void CreateSpringBlastFeature()
         {
             var feature = Helper.CreateBlueprintFeature("SpringBlastFeature", "Spring Blast",
-                SpringBlastDescription, null, null, FeatureGroup.KineticBlast);
+                SpringBlastDescription, null, FeatureGroup.KineticBlast);
             feature.SetComponents
                 (
-                Helper.CreateAddFeatureIfHasFact(AnyRef.Get(Spring.BaseAbility).To<BlueprintUnitFactReference>())
+                Helper.CreateAddFacts(AnyRef.ToAny(Tree.Composite_Spring.BaseAbility)),
+                Helper.CreateAddFeatureIfHasFact(
+                    AnyRef.ToAny(Tree.KineticBlade.Feature),
+                    AnyRef.ToAny(Tree.Composite_Spring.Blade.Feature))
                 );
             feature.HideInUI = true;
             feature.IsClassFeature = true;
-
-            Spring.BlastFeature = feature.ToRef();
         }
 
         #endregion
@@ -2443,10 +2371,10 @@ namespace KineticistElementsExpanded.ElementWood
 
         private static BlueprintAbility CreateSummerBlastVariant_base()
         {
-            UnityEngine.Sprite icon = Helper.CreateSprite("verdantBlast.png");
+            UnityEngine.Sprite icon = Helper.CreateSprite(Main.ModPath+"/Icons/verdantBlast.png");
 
             var ability = Helper.CreateBlueprintAbility("SummerBlastAbility", "Summer Blast",
-                SummerBlastDescription, null, icon, AbilityType.Special,
+                SummerBlastDescription, icon, AbilityType.Special,
                 UnitCommand.CommandType.Standard, AbilityRange.Close, duration: null, savingThrow: null);
             ability.SetComponents
                 (
@@ -2473,9 +2401,9 @@ namespace KineticistElementsExpanded.ElementWood
             UnityEngine.Sprite icon = Helper.StealIcon("cb2d9e6355dd33940b2bef49e544b0bf"); // ExtendedRangeInfusion
 
             var ability = Helper.CreateBlueprintAbility("ExtendedRangeSummerBlastAbility",
-                Kineticist.ref_infusion_extendedRange.Get().m_DisplayName,
-                Kineticist.ref_infusion_extendedRange.Get().m_Description,
-                null, icon, AbilityType.Special,
+                Tree.ExtendedRange.Feature.Get().m_DisplayName,
+                Tree.ExtendedRange.Feature.Get().m_Description,
+                icon, AbilityType.Special,
                 UnitCommand.CommandType.Standard, AbilityRange.Long, duration: null, savingThrow: null);
             ability.SetComponents
                 (
@@ -2485,12 +2413,13 @@ namespace KineticistElementsExpanded.ElementWood
                 Kineticist.Blast.RankConfigBonus(half_bonus: false),
                 Kineticist.Blast.DCForceDex(),
                 Kineticist.Blast.BurnCost(actions, infusion: 1, blast: 2, talent: 0),
+                Kineticist.Blast.RequiredFeat(Tree.ExtendedRange.Feature),
                 Kineticist.Blast.Projectile(Resource.Projectile.FireCommonProjectile00, true, AbilityProjectileType.Simple, 0, 5),
                 Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnPrecastStart, Resource.Sfx.PreStart_Earth),
                 Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnStart, Resource.Sfx.Start_Earth)
                 ).TargetEnemy(CastAnimationStyle.Kineticist);
             ability.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten;
-            ability.m_Parent = Summer.BaseAbility;
+            ability.m_Parent = Tree.Composite_Summer.BaseAbility;
 
             ((ContextActionDealDamage)actions.Actions[0]).Value.BonusValue.ValueType = ContextValueType.Shared;
             ((ContextActionDealDamage)actions.Actions[0]).Value.BonusValue.ValueShared = AbilitySharedValue.Damage;
@@ -2502,8 +2431,8 @@ namespace KineticistElementsExpanded.ElementWood
             UnityEngine.Sprite icon = Helper.StealIcon("c4f4a62a325f7c14dbcace3ce34782b5"); // SpindleInfusion
 
             var ability = Helper.CreateBlueprintAbility("SpindleSummerBlastAbility",
-                Kineticist.ref_infusion_spindle.Get().m_DisplayName,
-                Kineticist.ref_infusion_spindle.Get().m_Description, null, icon, AbilityType.Special,
+                Tree.Spindle.Feature.Get().m_DisplayName,
+                Tree.Spindle.Feature.Get().m_Description, icon, AbilityType.Special,
                 UnitCommand.CommandType.Standard, AbilityRange.Close, duration: null, savingThrow: null);
             ability.SetComponents
                 (
@@ -2513,7 +2442,7 @@ namespace KineticistElementsExpanded.ElementWood
                 Kineticist.Blast.RankConfigBonus(half_bonus: false),
                 Kineticist.Blast.DCForceDex(),
                 Kineticist.Blast.BurnCost(actions, infusion: 2, blast: 2),
-                Kineticist.Blast.RequiredFeat(Kineticist.ref_infusion_spindle),
+                Kineticist.Blast.RequiredFeat(Tree.Spindle.Feature),
                 Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnPrecastStart, Resource.Sfx.PreStart_Earth),
                 Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnStart, Resource.Sfx.Start_Earth),
                 new AbilityDeliverChain
@@ -2532,7 +2461,7 @@ namespace KineticistElementsExpanded.ElementWood
                 }
                 ).TargetEnemy(CastAnimationStyle.Kineticist);
             ability.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten;
-            ability.m_Parent = Summer.BaseAbility;
+            ability.m_Parent = Tree.Composite_Summer.BaseAbility;
 
             ((ContextActionDealDamage)actions.Actions[0]).Value.BonusValue.ValueType = ContextValueType.Shared;
             ((ContextActionDealDamage)actions.Actions[0]).Value.BonusValue.ValueShared = AbilitySharedValue.Damage;
@@ -2565,21 +2494,21 @@ namespace KineticistElementsExpanded.ElementWood
             };
 
             var ability = Helper.CreateBlueprintAbility("WallSummerBlastAbility",
-                Kineticist.ref_infusion_wall.Get().m_DisplayName,
-                Kineticist.ref_infusion_wall.Get().m_Description, null, icon, AbilityType.Special,
+                Tree.Wall.Feature.Get().m_DisplayName,
+                Tree.Wall.Feature.Get().m_Description, icon, AbilityType.Special,
                 UnitCommand.CommandType.Standard, AbilityRange.Close, duration: null, savingThrow: null);
             ability.SetComponents
                 (
                 Helper.CreateAbilityEffectRunAction(SavingThrowType.Unknown, action),
                 Kineticist.Blast.DCForceDex(),
                 Kineticist.Blast.BurnCost(null, infusion: 3, blast: 2),
-                Kineticist.Blast.RequiredFeat(Kineticist.ref_infusion_wall),
+                Kineticist.Blast.RequiredFeat(Tree.Wall.Feature),
                 Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnPrecastStart, Resource.Sfx.PreStart_Earth),
                 Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnStart, Resource.Sfx.Start_Earth)
                 ).TargetEnemy(CastAnimationStyle.Kineticist);
             ability.CanTargetPoint = true;
             ability.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten;
-            ability.m_Parent = Summer.BaseAbility;
+            ability.m_Parent = Tree.Composite_Summer.BaseAbility;
 
             return ability;
         }
@@ -2596,19 +2525,19 @@ namespace KineticistElementsExpanded.ElementWood
             var weapon = CreateSummerBlastBlade_weapon();
 
             #region buffs
-            var buff = Helper.CreateBlueprintBuff("KineticBladeSummerBlastBuff", null, null, null, null, null);
+            var buff = Helper.CreateBlueprintBuff("KineticBladeSummerBlastBuff");
             buff.Flags(true, true);
             buff.Stacking = StackingType.Replace;
             buff.SetComponents
                 (
-                new AddKineticistBlade { m_Blade = weapon.ToRef() }
+                new AddKineticistBlade { m_Blade = AnyRef.ToAny(weapon) }
                 );
             #endregion
 
             #region BlastAbility
 
             var blade_active_ability = Helper.CreateBlueprintActivatableAbility("KineticBladeSummerBlastAbility", "Summer Blast — Kinetic Blade",
-                KineticBladeDescription, out var unused, null, icon,
+                KineticBladeDescription, out var unused, icon,
                 group: Kingmaker.UnitLogic.ActivatableAbilities.ActivatableAbilityGroup.FormInfusion, deactivateWhenDead: true);
             blade_active_ability.m_Buff = buff.ToRef();
             blade_active_ability.m_ActivateOnUnitAction = Kingmaker.UnitLogic.ActivatableAbilities.AbilityActivateOnUnitActionType.Attack;
@@ -2621,7 +2550,7 @@ namespace KineticistElementsExpanded.ElementWood
 
             #region BlastBurnAbility
 
-            var blade_burn_ability = Helper.CreateBlueprintAbility("KineticBladeSummerBlastBurnAbility", null, null, null, icon,
+            var blade_burn_ability = Helper.CreateBlueprintAbility("KineticBladeSummerBlastBurnAbility", null, null, icon,
                 AbilityType.Special, UnitCommand.CommandType.Free, AbilityRange.Personal);
             blade_burn_ability.TargetSelf(CastAnimationStyle.Omni);
             blade_burn_ability.Hidden = true;
@@ -2639,7 +2568,7 @@ namespace KineticistElementsExpanded.ElementWood
             #region BlastKineticBladeDamage
 
             var blade_damage_ability = Helper.CreateBlueprintAbility("SummerBlastKineticBladeDamage", "Summer Blast",
-                SummerBlastDescription, null, damage_icon, AbilityType.Special, UnitCommand.CommandType.Standard, AbilityRange.Close);
+                SummerBlastDescription, damage_icon, AbilityType.Special, UnitCommand.CommandType.Standard, AbilityRange.Close);
             blade_damage_ability.TargetEnemy(CastAnimationStyle.Omni);
             blade_damage_ability.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten | Metamagic.Reach;
             blade_damage_ability.Hidden = true;
@@ -2665,7 +2594,7 @@ namespace KineticistElementsExpanded.ElementWood
                 new WeaponKineticBlade { m_ActivationAbility = blade_burn_ability.ToRef(), m_Blast = blade_damage_ability.ToRef() }
                 );
 
-            var blade_feat = Helper.CreateBlueprintFeature("SummerKineticBladeFeature", null, null, null, icon, FeatureGroup.None);
+            var blade_feat = Helper.CreateBlueprintFeature("SummerKineticBladeFeature", null, null, icon, FeatureGroup.None);
             blade_feat.HideInUI = true;
             blade_feat.HideInCharacterSheetAndLevelUp = true;
             blade_feat.SetComponents
@@ -2674,9 +2603,6 @@ namespace KineticistElementsExpanded.ElementWood
                 Helper.CreateAddFeatureIfHasFact(blade_burn_ability.ToRef2())
                 );
 
-            Summer.BladeFeature = blade_feat.ToRef();
-            Summer.BladeDamageAbility = blade_damage_ability.ToRef();
-            Summer.BladeBuff = buff.ToRef();
             return blade_damage_ability;
         }
 
@@ -2685,9 +2611,7 @@ namespace KineticistElementsExpanded.ElementWood
             //var icon = Helper.StealIcon("43ff6714-3efb-86d4-f894-b10577329050"); // Air Kinetic Blade Weapon
 
             var weapon = Helper.CreateBlueprintItemWeapon("SummerKineticBladeWeapon", null, null, Kineticist.ref_kinetic_blast_physical_blade_type,
-                damageOverride: new DiceFormula { m_Rolls = 0, m_Dice = DiceType.Zero },
-                form: null,
-                secondWeapon: null, false, null, 10);
+                damageOverride: new DiceFormula { m_Rolls = 0, m_Dice = DiceType.Zero }, price: 10);
             weapon.m_Enchantments = new BlueprintWeaponEnchantmentReference[1] { CreateSummerBlastBlade_enchantment().ToRef() };
 
             weapon.m_VisualParameters.m_WeaponAnimationStyle = Kingmaker.View.Animation.WeaponAnimationStyle.SlashingOneHanded;
@@ -2725,8 +2649,8 @@ namespace KineticistElementsExpanded.ElementWood
                     }
                 }
             };
-            var first_rank_conf = Helper.CreateContextRankConfig(ContextRankBaseValueType.FeatureRank, type: AbilityRankType.DamageDice, feature: Tree.BlastFeature, min: 0, max: 20);
-            var second_rank_conf = Helper.CreateContextRankConfig(ContextRankBaseValueType.CustomProperty, type: AbilityRankType.DamageBonus, customProperty: Tree.MainStatProp, min: 0, max: 20);
+            var first_rank_conf = Helper.CreateContextRankConfig(ContextRankBaseValueType.FeatureRank, type: AbilityRankType.DamageDice, feature: Tree.KineticBlast, min: 0, max: 20);
+            var second_rank_conf = Helper.CreateContextRankConfig(ContextRankBaseValueType.CustomProperty, type: AbilityRankType.DamageBonus, customProperty: Tree.KineticistMainStatProperty, min: 0, max: 20);
             var second_context_calc = new ContextCalculateSharedValue
             {
                 ValueType = AbilitySharedValue.DamageBonus,
@@ -2752,7 +2676,7 @@ namespace KineticistElementsExpanded.ElementWood
             };
 
             var enchant = Helper.CreateBlueprintWeaponEnchantment("SummerKineticBladeEnchantment", "Summer Blast — Kinetic Blade",
-                null, "Summer Blast", null, null, 0);
+                "Summer Blast", null, null, 0);
             enchant.SetComponents
                 (
                 first_context_calc,
@@ -2771,15 +2695,15 @@ namespace KineticistElementsExpanded.ElementWood
 
         public static void CreateSummerBlastAbility(params BlueprintAbility[] variants)
         {
-            UnityEngine.Sprite icon = Helper.CreateSprite("verdantBlast.png");
+            UnityEngine.Sprite icon = Helper.CreateSprite(Main.ModPath+"/Icons/verdantBlast.png");
 
             var ability = Helper.CreateBlueprintAbility("SummerBlastBase", "Summer Blast",
-                SummerBlastDescription, null, icon, AbilityType.Special,
+                SummerBlastDescription, icon, AbilityType.Special,
                 UnitCommand.CommandType.Standard, AbilityRange.Close,
                 duration: null, savingThrow: null);
             ability.SetComponents
                 (
-                Helper.CreateAbilityShowIfCasterHasFact(AnyRef.Get(Tree.FocusFirst).To<BlueprintUnitFactReference>()),
+                Helper.CreateAbilityShowIfCasterHasFact(AnyRef.ToAny(Tree.FocusFirst)),
                 Kineticist.Blast.BurnCost(null, 0, 2, 0)
                 );
             ability.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten;
@@ -2788,22 +2712,21 @@ namespace KineticistElementsExpanded.ElementWood
             {
                 Helper.AddToAbilityVariants(ability, v);
             }
-
-            Summer.BaseAbility = ability.ToRef();
         }
 
         public static void CreateSummerBlastFeature()
         {
             var feature = Helper.CreateBlueprintFeature("SummerBlastFeature", "Summer Blast",
-                SummerBlastDescription, null, null, FeatureGroup.KineticBlast);
+                SummerBlastDescription, null, FeatureGroup.KineticBlast);
             feature.SetComponents
                 (
-                Helper.CreateAddFeatureIfHasFact(AnyRef.Get(Summer.BaseAbility).To<BlueprintUnitFactReference>())
+                Helper.CreateAddFacts(AnyRef.ToAny(Tree.Composite_Summer.BaseAbility)),
+                Helper.CreateAddFeatureIfHasFact(
+                    AnyRef.ToAny(Tree.KineticBlade.Feature),
+                    AnyRef.ToAny(Tree.Composite_Summer.Blade.Feature))
                 );
             feature.HideInUI = true;
             feature.IsClassFeature = true;
-
-            Summer.BlastFeature = feature.ToRef();
         }
 
         #endregion
@@ -2830,10 +2753,10 @@ namespace KineticistElementsExpanded.ElementWood
 
         private static BlueprintAbility CreateWinterBlastVariant_base()
         {
-            UnityEngine.Sprite icon = Helper.CreateSprite("verdantBlast.png");
+            UnityEngine.Sprite icon = Helper.CreateSprite(Main.ModPath+"/Icons/verdantBlast.png");
 
             var ability = Helper.CreateBlueprintAbility("WinterBlastAbility", "Winter Blast",
-                WinterBlastDescription, null, icon, AbilityType.Special,
+                WinterBlastDescription, icon, AbilityType.Special,
                 UnitCommand.CommandType.Standard, AbilityRange.Close, duration: null, savingThrow: null);
             ability.SetComponents
                 (
@@ -2860,9 +2783,9 @@ namespace KineticistElementsExpanded.ElementWood
             UnityEngine.Sprite icon = Helper.StealIcon("cb2d9e6355dd33940b2bef49e544b0bf"); // ExtendedRangeInfusion
 
             var ability = Helper.CreateBlueprintAbility("ExtendedRangeWinterBlastAbility",
-                Kineticist.ref_infusion_extendedRange.Get().m_DisplayName,
-                Kineticist.ref_infusion_extendedRange.Get().m_Description,
-                null, icon, AbilityType.Special,
+                Tree.ExtendedRange.Feature.Get().m_DisplayName,
+                Tree.ExtendedRange.Feature.Get().m_Description,
+                icon, AbilityType.Special,
                 UnitCommand.CommandType.Standard, AbilityRange.Long, duration: null, savingThrow: null);
             ability.SetComponents
                 (
@@ -2872,12 +2795,13 @@ namespace KineticistElementsExpanded.ElementWood
                 Kineticist.Blast.RankConfigBonus(half_bonus: false),
                 Kineticist.Blast.DCForceDex(),
                 Kineticist.Blast.BurnCost(actions, infusion: 1, blast: 2, talent: 0),
+                Kineticist.Blast.RequiredFeat(Tree.ExtendedRange.Feature),
                 Kineticist.Blast.Projectile(Resource.Projectile.ColdCommonProjectile00, true, AbilityProjectileType.Simple, 0, 5),
                 Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnPrecastStart, Resource.Sfx.PreStart_Earth),
                 Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnStart, Resource.Sfx.Start_Earth)
                 ).TargetEnemy(CastAnimationStyle.Kineticist);
             ability.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten;
-            ability.m_Parent = Winter.BaseAbility;
+            ability.m_Parent = Tree.Composite_Winter.BaseAbility;
 
             ((ContextActionDealDamage)actions.Actions[0]).Value.BonusValue.ValueType = ContextValueType.Shared;
             ((ContextActionDealDamage)actions.Actions[0]).Value.BonusValue.ValueShared = AbilitySharedValue.Damage;
@@ -2889,8 +2813,8 @@ namespace KineticistElementsExpanded.ElementWood
             UnityEngine.Sprite icon = Helper.StealIcon("c4f4a62a325f7c14dbcace3ce34782b5"); // SpindleInfusion
 
             var ability = Helper.CreateBlueprintAbility("SpindleWinterBlastAbility",
-                Kineticist.ref_infusion_spindle.Get().m_DisplayName,
-                Kineticist.ref_infusion_spindle.Get().m_Description, null, icon, AbilityType.Special,
+                Tree.Spindle.Feature.Get().m_DisplayName,
+                Tree.Spindle.Feature.Get().m_Description, icon, AbilityType.Special,
                 UnitCommand.CommandType.Standard, AbilityRange.Close, duration: null, savingThrow: null);
             ability.SetComponents
                 (
@@ -2900,7 +2824,7 @@ namespace KineticistElementsExpanded.ElementWood
                 Kineticist.Blast.RankConfigBonus(half_bonus: false),
                 Kineticist.Blast.DCForceDex(),
                 Kineticist.Blast.BurnCost(actions, infusion: 2, blast: 2),
-                Kineticist.Blast.RequiredFeat(Kineticist.ref_infusion_spindle),
+                Kineticist.Blast.RequiredFeat(Tree.ExtendedRange.Feature),
                 Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnPrecastStart, Resource.Sfx.PreStart_Earth),
                 Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnStart, Resource.Sfx.Start_Earth),
                 new AbilityDeliverChain
@@ -2919,7 +2843,7 @@ namespace KineticistElementsExpanded.ElementWood
                 }
                 ).TargetEnemy(CastAnimationStyle.Kineticist);
             ability.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten;
-            ability.m_Parent = Winter.BaseAbility;
+            ability.m_Parent = Tree.Composite_Winter.BaseAbility;
 
             ((ContextActionDealDamage)actions.Actions[0]).Value.BonusValue.ValueType = ContextValueType.Shared;
             ((ContextActionDealDamage)actions.Actions[0]).Value.BonusValue.ValueShared = AbilitySharedValue.Damage;
@@ -2952,21 +2876,21 @@ namespace KineticistElementsExpanded.ElementWood
             };
 
             var ability = Helper.CreateBlueprintAbility("WallWinterBlastAbility",
-                Kineticist.ref_infusion_wall.Get().m_DisplayName,
-                Kineticist.ref_infusion_wall.Get().m_Description, null, icon, AbilityType.Special,
+                Tree.Wall.Feature.Get().m_DisplayName,
+                Tree.Wall.Feature.Get().m_Description, icon, AbilityType.Special,
                 UnitCommand.CommandType.Standard, AbilityRange.Close, duration: null, savingThrow: null);
             ability.SetComponents
                 (
                 Helper.CreateAbilityEffectRunAction(SavingThrowType.Unknown, action),
                 Kineticist.Blast.DCForceDex(),
                 Kineticist.Blast.BurnCost(null, infusion: 3, blast: 2),
-                Kineticist.Blast.RequiredFeat(Kineticist.ref_infusion_wall),
+                Kineticist.Blast.RequiredFeat(Tree.Wall.Feature),
                 Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnPrecastStart, Resource.Sfx.PreStart_Earth),
                 Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnStart, Resource.Sfx.Start_Earth)
                 ).TargetEnemy(CastAnimationStyle.Kineticist);
             ability.CanTargetPoint = true;
             ability.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten;
-            ability.m_Parent = Winter.BaseAbility;
+            ability.m_Parent = Tree.Composite_Winter.BaseAbility;
 
             return ability;
         }
@@ -2983,19 +2907,19 @@ namespace KineticistElementsExpanded.ElementWood
             var weapon = CreateWinterBlastBlade_weapon();
 
             #region buffs
-            var buff = Helper.CreateBlueprintBuff("KineticBladeWinterBlastBuff", null, null, null, null, null);
+            var buff = Helper.CreateBlueprintBuff("KineticBladeWinterBlastBuff");
             buff.Flags(true, true);
             buff.Stacking = StackingType.Replace;
             buff.SetComponents
                 (
-                new AddKineticistBlade { m_Blade = weapon.ToRef() }
+                new AddKineticistBlade { m_Blade = AnyRef.ToAny(weapon) }
                 );
             #endregion
 
             #region BlastAbility
 
             var blade_active_ability = Helper.CreateBlueprintActivatableAbility("KineticBladeWinterBlastAbility", "Winter Blast — Kinetic Blade",
-                KineticBladeDescription, out var unused, null, icon,
+                KineticBladeDescription, out var unused, icon,
                 group: Kingmaker.UnitLogic.ActivatableAbilities.ActivatableAbilityGroup.FormInfusion, deactivateWhenDead: true);
             blade_active_ability.m_Buff = buff.ToRef();
             blade_active_ability.m_ActivateOnUnitAction = Kingmaker.UnitLogic.ActivatableAbilities.AbilityActivateOnUnitActionType.Attack;
@@ -3008,7 +2932,7 @@ namespace KineticistElementsExpanded.ElementWood
 
             #region BlastBurnAbility
 
-            var blade_burn_ability = Helper.CreateBlueprintAbility("KineticBladeWinterBlastBurnAbility", null, null, null, icon,
+            var blade_burn_ability = Helper.CreateBlueprintAbility("KineticBladeWinterBlastBurnAbility", null, null, icon,
                 AbilityType.Special, UnitCommand.CommandType.Free, AbilityRange.Personal);
             blade_burn_ability.TargetSelf(CastAnimationStyle.Omni);
             blade_burn_ability.Hidden = true;
@@ -3026,7 +2950,7 @@ namespace KineticistElementsExpanded.ElementWood
             #region BlastKineticBladeDamage
 
             var blade_damage_ability = Helper.CreateBlueprintAbility("WinterBlastKineticBladeDamage", "Winter Blast",
-                WinterBlastDescription, null, damage_icon, AbilityType.Special, UnitCommand.CommandType.Standard, AbilityRange.Close);
+                WinterBlastDescription, damage_icon, AbilityType.Special, UnitCommand.CommandType.Standard, AbilityRange.Close);
             blade_damage_ability.TargetEnemy(CastAnimationStyle.Omni);
             blade_damage_ability.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten | Metamagic.Reach;
             blade_damage_ability.Hidden = true;
@@ -3052,7 +2976,7 @@ namespace KineticistElementsExpanded.ElementWood
                 new WeaponKineticBlade { m_ActivationAbility = blade_burn_ability.ToRef(), m_Blast = blade_damage_ability.ToRef() }
                 );
 
-            var blade_feat = Helper.CreateBlueprintFeature("WinterKineticBladeFeature", null, null, null, icon, FeatureGroup.None);
+            var blade_feat = Helper.CreateBlueprintFeature("WinterKineticBladeFeature", null, null, icon, FeatureGroup.None);
             blade_feat.HideInUI = true;
             blade_feat.HideInCharacterSheetAndLevelUp = true;
             blade_feat.SetComponents
@@ -3061,9 +2985,6 @@ namespace KineticistElementsExpanded.ElementWood
                 Helper.CreateAddFeatureIfHasFact(blade_burn_ability.ToRef2())
                 );
 
-            Winter.BladeFeature = blade_feat.ToRef();
-            Winter.BladeDamageAbility = blade_damage_ability.ToRef();
-            Winter.BladeBuff = buff.ToRef();
             return blade_damage_ability;
         }
 
@@ -3072,9 +2993,7 @@ namespace KineticistElementsExpanded.ElementWood
             //var icon = Helper.StealIcon("43ff6714-3efb-86d4-f894-b10577329050"); // Air Kinetic Blade Weapon
 
             var weapon = Helper.CreateBlueprintItemWeapon("WinterKineticBladeWeapon", null, null, Kineticist.ref_kinetic_blast_physical_blade_type,
-                damageOverride: new DiceFormula { m_Rolls = 0, m_Dice = DiceType.Zero },
-                form: null,
-                secondWeapon: null, false, null, 10);
+                damageOverride: new DiceFormula { m_Rolls = 0, m_Dice = DiceType.Zero }, price: 10);
             weapon.m_Enchantments = new BlueprintWeaponEnchantmentReference[1] { CreateWinterBlastBlade_enchantment().ToRef() };
 
             weapon.m_VisualParameters.m_WeaponAnimationStyle = Kingmaker.View.Animation.WeaponAnimationStyle.SlashingOneHanded;
@@ -3112,8 +3031,8 @@ namespace KineticistElementsExpanded.ElementWood
                     }
                 }
             };
-            var first_rank_conf = Helper.CreateContextRankConfig(ContextRankBaseValueType.FeatureRank, type: AbilityRankType.DamageDice, feature: Tree.BlastFeature, min: 0, max: 20);
-            var second_rank_conf = Helper.CreateContextRankConfig(ContextRankBaseValueType.CustomProperty, type: AbilityRankType.DamageBonus, customProperty: Tree.MainStatProp, min: 0, max: 20);
+            var first_rank_conf = Helper.CreateContextRankConfig(ContextRankBaseValueType.FeatureRank, type: AbilityRankType.DamageDice, feature: Tree.KineticBlast, min: 0, max: 20);
+            var second_rank_conf = Helper.CreateContextRankConfig(ContextRankBaseValueType.CustomProperty, type: AbilityRankType.DamageBonus, customProperty: Tree.KineticistMainStatProperty, min: 0, max: 20);
             var second_context_calc = new ContextCalculateSharedValue
             {
                 ValueType = AbilitySharedValue.DamageBonus,
@@ -3139,7 +3058,7 @@ namespace KineticistElementsExpanded.ElementWood
             };
 
             var enchant = Helper.CreateBlueprintWeaponEnchantment("WinterKineticBladeEnchantment", "Winter Blast — Kinetic Blade",
-                null, "Winter Blast", null, null, 0);
+                "Winter Blast", null, null, 0);
             enchant.SetComponents
                 (
                 first_context_calc,
@@ -3158,15 +3077,15 @@ namespace KineticistElementsExpanded.ElementWood
 
         public static void CreateWinterBlastAbility(params BlueprintAbility[] variants)
         {
-            UnityEngine.Sprite icon = Helper.CreateSprite("verdantBlast.png");
+            UnityEngine.Sprite icon = Helper.CreateSprite(Main.ModPath+"/Icons/verdantBlast.png");
 
             var ability = Helper.CreateBlueprintAbility("WinterBlastBase", "Winter Blast",
-                WinterBlastDescription, null, icon, AbilityType.Special,
+                WinterBlastDescription, icon, AbilityType.Special,
                 UnitCommand.CommandType.Standard, AbilityRange.Close,
                 duration: null, savingThrow: null);
             ability.SetComponents
                 (
-                Helper.CreateAbilityShowIfCasterHasFact(AnyRef.Get(Tree.FocusFirst).To<BlueprintUnitFactReference>()),
+                Helper.CreateAbilityShowIfCasterHasFact(AnyRef.ToAny(Tree.FocusFirst)),
                 Kineticist.Blast.BurnCost(null, 0, 2, 0)
                 );
             ability.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten;
@@ -3175,22 +3094,21 @@ namespace KineticistElementsExpanded.ElementWood
             {
                 Helper.AddToAbilityVariants(ability, v);
             }
-
-            Winter.BaseAbility = ability.ToRef();
         }
 
         public static void CreateWinterBlastFeature()
         {
             var feature = Helper.CreateBlueprintFeature("WinterBlastFeature", "Winter Blast",
-                WinterBlastDescription, null, null, FeatureGroup.KineticBlast);
+                WinterBlastDescription, null, FeatureGroup.KineticBlast);
             feature.SetComponents
                 (
-                Helper.CreateAddFeatureIfHasFact(AnyRef.Get(Winter.BaseAbility).To<BlueprintUnitFactReference>())
+                Helper.CreateAddFacts(AnyRef.ToAny(Tree.Composite_Winter.BaseAbility)),
+                Helper.CreateAddFeatureIfHasFact(
+                    AnyRef.ToAny(Tree.KineticBlade.Feature),
+                    AnyRef.ToAny(Tree.Composite_Winter.Blade.Feature))
                 );
             feature.HideInUI = true;
             feature.IsClassFeature = true;
-
-            Winter.BlastFeature = feature.ToRef();
         }
 
         #endregion
@@ -3199,10 +3117,10 @@ namespace KineticistElementsExpanded.ElementWood
 
         public static void CreatePositiveAdmixture()
         {
-            UnityEngine.Sprite icon = Helper.CreateSprite("positiveBlast.png");
+            UnityEngine.Sprite icon = Helper.CreateSprite(Main.ModPath+"/Icons/positiveBlast.png");
 
             var ability = Helper.CreateBlueprintActivatableAbility("PositiveAdmixtureAbility", "Positive Admixture",
-                PositiveAdmixtureDescription, out var buff, null, icon, UnitCommand.CommandType.Free, Kingmaker.UnitLogic.ActivatableAbilities.AbilityActivationType.WithUnitCommand,
+                PositiveAdmixtureDescription, out var buff, icon, UnitCommand.CommandType.Free, Kingmaker.UnitLogic.ActivatableAbilities.AbilityActivationType.WithUnitCommand,
                 Kingmaker.UnitLogic.ActivatableAbilities.ActivatableAbilityGroup.None, true, true);
             ability.m_ActivateWithUnitCommand = UnitCommand.CommandType.Free;
 
@@ -3212,7 +3130,7 @@ namespace KineticistElementsExpanded.ElementWood
                 (
                 new AbilityUniquePositiveAdmixture
                 {
-                    m_AbilityList = Tree.BaseBasicEnergy
+                    m_AbilityList = Tree.GetAll(basic: true, onlyEnergy: true, archetype: true).Select(s => s.BaseAbility).ToArray()
                 },
                 new AddKineticistBurnModifier
                 {
@@ -3233,16 +3151,16 @@ namespace KineticistElementsExpanded.ElementWood
                 );
 
             var feature = Helper.CreateBlueprintFeature("PositiveAdmixtureFeature", "Positive Admixture",
-                PositiveAdmixtureDescription, null, icon, FeatureGroup.None);
+                PositiveAdmixtureDescription, icon, FeatureGroup.None);
             feature.SetComponents
                 (
-                Helper.CreateAddFacts(ability.ToRef2())
+                Helper.CreateAddFacts(AnyRef.ToAny(ability))
                 );
 
-            PositiveAdmixture.InfusionFeature = feature.ToRef();
-            PositiveAdmixture.InfusionBuff = buff.ToRef();
+            PositiveAdmixture.Feature = feature.ToRef();
+            PositiveAdmixture.Buff = buff.ToRef();
 
-            Kineticist.AddElementsToInfusion(feature, buff, Tree.GetAll(basic: true, composites: false, basicPhysical: false).ToList().ToArray());
+            Kineticist.AddElementsToInfusion(feature, buff, Tree.GetAll(basic: true, onlyEnergy: true).ToList().ToArray());
         }
 
 
@@ -3251,18 +3169,26 @@ namespace KineticistElementsExpanded.ElementWood
         #endregion
 
         #region Infusions
-        // TODO
-        //  Dazzling
-        //  entangling
-        //  foxfire
         public static void CreateInfusions()
         {
             CreateSporeInfusion();
             CreateToxicInfusion();
             CreateGreaterToxicInfusion();
+
+            Kineticist.TryDarkCodexAddExtraWildTalent
+                (
+                Tree.Spore.Feature,
+                Tree.Toxic.Feature,
+                Tree.ToxicGreater.Feature
+                );
+            Helper.AppendAndReplace(ref Kineticist.infusion_selection.m_AllFeatures,
+                Tree.Spore.Feature,
+                Tree.Toxic.Feature,
+                Tree.ToxicGreater.Feature
+                );
+
         }
 
-        // Spore - Substance - lvl 5 burn 2 autumn spring summer verdant winter wood - Fort negates
         public static void CreateSporeInfusion()
         {
             UnityEngine.Sprite icon = Helper.StealIcon("d797007a142a6c0409a74b064065a15e"); // Poison
@@ -3280,15 +3206,18 @@ namespace KineticistElementsExpanded.ElementWood
                 DiceCountValue = new ContextValue { Value = 0, ValueType = ContextValueType.Simple },
                 BonusValue = new ContextValue { Value = 10, ValueType = ContextValueType.Simple }
             };
-            var poison_buff = Helper.CreateBlueprintBuff("SporeInfusionPoison", "Spores", "Taking 1d6 poison damage per round for 10 rounds.",
-                null, icon, null, null);
+
+            var deal_damage = Helper.CreateContextActionDealDamage(DamageEnergyType.Acid, poison_damage);
+            deal_damage.Duration = poison_duration;
+            deal_damage.DamageType.Type = Kingmaker.RuleSystem.Rules.Damage.DamageType.Direct;
+
+            var poison_buff = Helper.CreateBlueprintBuff("SporeInfusionPoison", "Spores", "Taking 1d6 poison damage per round for 10 rounds.", icon);
             poison_buff.SetComponents
                 (
-                Helper.CreateAddFactContextActions(on: null, off: null, round: new GameAction[] { Helper.CreateContextActionDealDamageDirect(poison_damage, poison_duration) })
+                Helper.CreateAddFactContextActions(on: null, off: null, round: new GameAction[] { deal_damage })
                 );
 
-            var disease_buff = Helper.CreateBlueprintBuff("SporeInfusionDisease", "Poison Puff", "Taking 1d6 Dex damage daily, Cure: 2 consecutive saves",
-                null, icon, null, null);
+            var disease_buff = Helper.CreateBlueprintBuff("SporeInfusionDisease", "Poison Puff", "Taking 1d6 Dex damage daily, Cure: 2 consecutive saves", icon);
             disease_buff.SetComponents
                 (
                 new BuffPoisonStatDamage
@@ -3304,7 +3233,7 @@ namespace KineticistElementsExpanded.ElementWood
 
 
             var ability = Helper.CreateBlueprintActivatableAbility("SporeInfusionAbility", "Spore Infusion",
-                SporeInfusionDescription, out var buff, null, icon, UnitCommand.CommandType.Free, Kingmaker.UnitLogic.ActivatableAbilities.AbilityActivationType.WithUnitCommand,
+                SporeInfusionDescription, out var buff, icon, UnitCommand.CommandType.Free, Kingmaker.UnitLogic.ActivatableAbilities.AbilityActivationType.WithUnitCommand,
                 Kingmaker.UnitLogic.ActivatableAbilities.ActivatableAbilityGroup.SubstanceInfusion, true, true);
             ability.m_ActivateWithUnitCommand = UnitCommand.CommandType.Free;
 
@@ -3342,27 +3271,21 @@ namespace KineticistElementsExpanded.ElementWood
                 );
 
             var feature = Helper.CreateBlueprintFeature("SporeInfusionFeature", "Spore Infusion",
-                SporeInfusionDescription, null, icon, FeatureGroup.KineticBlastInfusion);
+                SporeInfusionDescription, icon, FeatureGroup.KineticBlastInfusion);
             feature.SetComponents
                 (
                 Helper.CreatePrerequisiteClassLevel(Tree.Class, 10),
-                Helper.CreatePrerequisiteFeaturesFromList(true,
-                    WoodBlast.BlastFeature, Verdant.BlastFeature, Autumn.BlastFeature, Spring.BlastFeature, Summer.BlastFeature, Winter.BlastFeature   
-                ),
-                Helper.CreateAddFacts(ability.ToRef2())
+                Helper.CreateAddFacts(AnyRef.ToAny(ability))
                 );
-
-            Spore.InfusionFeature = feature.ToRef();
-            Spore.InfusionBuff = buff.ToRef();
         }
-        // Toxic - Substance - lvl 4 burn 3 wood blasts - Fort negates
+
         public static void CreateToxicInfusion()
         {
             UnityEngine.Sprite icon = Helper.StealIcon("4e42460798665fd4cb9173ffa7ada323"); // Sickened
             var sickened = Helper.ToRef<BlueprintBuffReference>("4e42460798665fd4cb9173ffa7ada323"); // Sickened
 
             var ability = Helper.CreateBlueprintActivatableAbility("ToxicInfusionAbility", "Toxic Infusion",
-                ToxicInfusionDescription, out var buff, null, icon, UnitCommand.CommandType.Free, Kingmaker.UnitLogic.ActivatableAbilities.AbilityActivationType.WithUnitCommand,
+                ToxicInfusionDescription, out var buff, icon, UnitCommand.CommandType.Free, Kingmaker.UnitLogic.ActivatableAbilities.AbilityActivationType.WithUnitCommand,
                 Kingmaker.UnitLogic.ActivatableAbilities.ActivatableAbilityGroup.SubstanceInfusion, true, true);
             ability.m_ActivateWithUnitCommand = UnitCommand.CommandType.Free;
 
@@ -3400,27 +3323,20 @@ namespace KineticistElementsExpanded.ElementWood
                 );
 
             var feature = Helper.CreateBlueprintFeature("ToxicInfusionFeature", "Toxic Infusion",
-                ToxicInfusionDescription, null, icon, FeatureGroup.KineticBlastInfusion);
+                ToxicInfusionDescription, icon, FeatureGroup.KineticBlastInfusion);
             feature.SetComponents
                 (
                 Helper.CreatePrerequisiteClassLevel(Tree.Class, 8),
-                Helper.CreatePrerequisiteFeaturesFromList(true,
-                    WoodBlast.BlastFeature, Verdant.BlastFeature, Autumn.BlastFeature, Spring.BlastFeature, Summer.BlastFeature, Winter.BlastFeature
-                ),
-                Helper.CreateAddFacts(ability.ToRef2())
+                Helper.CreateAddFacts(AnyRef.ToAny(ability))
                 );
-
-            Toxic.InfusionFeature = feature.ToRef();
-            Toxic.InfusionBuff = buff.ToRef();
         }
 
-        // Greater Toxic - substance - level 7 burn 3 wood blast - Fort negates
         public static void CreateGreaterToxicInfusion()
         {
             UnityEngine.Sprite icon = Helper.StealIcon("4e42460798665fd4cb9173ffa7ada323"); // Sickened Icon
 
             var poison_buff = Helper.CreateBlueprintBuff("GreaterToxicInfusionDisease", "Toxic", "Taking 1d2 Con damage for 6 rounds, Cure: 2 consecutive saves",
-                null, icon, null, null);
+                icon);
             poison_buff.SetComponents
                 (
                 new BuffPoisonStatDamage
@@ -3434,7 +3350,7 @@ namespace KineticistElementsExpanded.ElementWood
                 );
 
             var ability = Helper.CreateBlueprintActivatableAbility("GreaterToxicInfusionAbility", "GreaterToxic Infusion",
-                GreaterToxicInfusionDescription, out var buff, null, icon, UnitCommand.CommandType.Free, Kingmaker.UnitLogic.ActivatableAbilities.AbilityActivationType.WithUnitCommand,
+                GreaterToxicInfusionDescription, out var buff, icon, UnitCommand.CommandType.Free, Kingmaker.UnitLogic.ActivatableAbilities.AbilityActivationType.WithUnitCommand,
                 Kingmaker.UnitLogic.ActivatableAbilities.ActivatableAbilityGroup.SubstanceInfusion, true, true);
             ability.m_ActivateWithUnitCommand = UnitCommand.CommandType.Free;
 
@@ -3472,22 +3388,16 @@ namespace KineticistElementsExpanded.ElementWood
                 );
 
             var feature = Helper.CreateBlueprintFeature("GreaterToxicInfusionFeature", "GreaterToxic Infusion",
-                GreaterToxicInfusionDescription, null, icon, FeatureGroup.KineticBlastInfusion);
+                GreaterToxicInfusionDescription, icon, FeatureGroup.KineticBlastInfusion);
             feature.SetComponents
                 (
                 Helper.CreatePrerequisiteClassLevel(Tree.Class, 14),
-                Helper.CreatePrerequisiteFeaturesFromList(true,
-                    WoodBlast.BlastFeature, Verdant.BlastFeature, Autumn.BlastFeature, Spring.BlastFeature, Summer.BlastFeature, Winter.BlastFeature
-                ),
-                Helper.CreateAddFacts(ability.ToRef2()),
+                Helper.CreateAddFacts(AnyRef.ToAny(ability)),
                 new RemoveFeatureOnApply
                 {
-                    m_Feature = AnyRef.Get(Toxic.InfusionFeature).To<BlueprintUnitFactReference>()
+                        m_Feature = AnyRef.ToAny(Tree.Toxic.Feature)
                 }
                 );
-
-            GreaterToxic.InfusionFeature = feature.ToRef();
-            GreaterToxic.InfusionBuff = buff.ToRef();
         }
 
         #endregion
@@ -3514,7 +3424,7 @@ namespace KineticistElementsExpanded.ElementWood
 
         private static void AddToSkilledKineticist()
         {
-            var buff = Helper.CreateBlueprintBuff("SkilledKineticistWoodBuff", "Skilled Kineticist", null, null, null, null);
+            var buff = Helper.CreateBlueprintBuff("SkilledKineticistWoodBuff", "Skilled Kineticist");
             buff.Flags(true, true);
             buff.Stacking = StackingType.Replace;
             buff.SetComponents
@@ -3525,7 +3435,7 @@ namespace KineticistElementsExpanded.ElementWood
                 StatType.SkillLoreNature)
                 );
 
-            var condition = Helper.CreateContextConditionHasFact(AnyRef.Get(WoodFocus.First).To<BlueprintUnitFactReference>());
+            var condition = Helper.CreateContextConditionHasFact(AnyRef.ToAny(Tree.FocusWood.First));
             var conditional = Helper.CreateConditional(condition,
                 ifTrue: buff.CreateContextActionApplyBuff(0, DurationRate.Rounds, false, false, false, true, true));
 
@@ -3535,7 +3445,7 @@ namespace KineticistElementsExpanded.ElementWood
 
         private static void AddToExpandedDefense(BlueprintFeature elemental_defense)
         {
-            var selection = AnyRef.Get(Kineticist.ref_expanded_defense).To<BlueprintFeatureSelectionReference>().Get();
+            var selection = AnyRef.ToRef<BlueprintFeatureSelectionReference>(Kineticist.ref_expanded_defense).Get();
             Helper.AppendAndReplace(ref selection.m_AllFeatures, elemental_defense.ToRef());
         }
 
@@ -3544,7 +3454,7 @@ namespace KineticistElementsExpanded.ElementWood
             var KineticRevivification = ResourcesLibrary.TryGetBlueprint<BlueprintFeature>("0377fcf4c10871f4187809d273af7f5d"); // KineticRevivificationFeature
             var HealingBurst = ResourcesLibrary.TryGetBlueprint<BlueprintFeature>("c73b37aaa2b82b44686c56db8ce14e7f"); // HealingBUrstFeature
 
-            UnityEngine.Sprite icon = Helper.CreateSprite("woodHealer.png");
+            UnityEngine.Sprite icon = Helper.CreateSprite(Main.ModPath+"/Icons/woodHealer.png");
             var negativeAffinity = Helper.ToRef<BlueprintUnitFactReference>("d5ee498e19722854198439629c1841a5"); // NegativeEnergyAffinity
             var constructType = Helper.ToRef<BlueprintUnitFactReference>("fd389783027d63343b4a5634bd81645f"); // ConstructType
 
@@ -3568,7 +3478,7 @@ namespace KineticistElementsExpanded.ElementWood
             calc_shared_duration.Value.BonusValue.ValueShared = AbilitySharedValue.Damage;
 
             var ability = Helper.CreateBlueprintAbility("WoodHealerAbility", "Wood Healer",
-                WoodHealerDescription, null, icon, AbilityType.SpellLike, UnitCommand.CommandType.Standard,
+                WoodHealerDescription, icon, AbilityType.SpellLike, UnitCommand.CommandType.Standard,
                 AbilityRange.Touch, null, null).TargetAlly(CastAnimationStyle.Kineticist);
             ability.SpellResistance = true;
             ability.SetComponents
@@ -3584,16 +3494,16 @@ namespace KineticistElementsExpanded.ElementWood
                 );
 
             var feature = Helper.CreateBlueprintFeature("WoodHealerFeature", "Wood Healer",
-                WoodHealerDescription, null, icon, FeatureGroup.KineticWildTalent);
+                WoodHealerDescription, icon, FeatureGroup.KineticWildTalent);
             feature.IsClassFeature = true;
             feature.SetComponents
                 (
                 Helper.CreatePrerequisiteFeaturesFromList(true,
-                    AnyRef.Get(WoodFocus.First).To<BlueprintFeatureReference>(),
-                    AnyRef.Get(WoodFocus.Second).To<BlueprintFeatureReference>(),
-                    AnyRef.Get(WoodFocus.Third).To<BlueprintFeatureReference>(),
-                    AnyRef.Get(WoodFocus.Knight).To<BlueprintFeatureReference>()),
-                Helper.CreatePrerequisiteFeature(Positive.BlastFeature),
+                    AnyRef.ToAny(Tree.FocusWood.First),
+                    AnyRef.ToAny(Tree.FocusWood.Second),
+                    AnyRef.ToAny(Tree.FocusWood.Third),
+                    AnyRef.ToAny(Tree.FocusWood.Knight)),
+                Helper.CreatePrerequisiteFeature(Tree.Positive.BlastFeature),
                 Helper.CreateAddFacts(ability.ToRef2()),
                 Helper.CreatePrerequisiteNoFeature(feature.ToRef())
                 );
@@ -3615,15 +3525,15 @@ namespace KineticistElementsExpanded.ElementWood
             UnityEngine.Sprite icon = Helper.StealIcon("11f4072ea766a5840a46e6660894527d"); //BloodlineFeyWoodlandStride
 
             var feature = Helper.CreateBlueprintFeature("WoodlandStepFeature", "Woodland Step",
-                WoodlandStepDescription, null, icon, FeatureGroup.KineticWildTalent);
+                WoodlandStepDescription, icon, FeatureGroup.KineticWildTalent);
             feature.SetComponents
                 (
                 Helper.CreatePrerequisiteFeaturesFromList(true,
-                    AnyRef.Get(WoodFocus.First).To<BlueprintFeatureReference>(),
-                    AnyRef.Get(WoodFocus.Second).To<BlueprintFeatureReference>(),
-                    AnyRef.Get(WoodFocus.Third).To<BlueprintFeatureReference>(),
-                    AnyRef.Get(WoodFocus.Knight).To<BlueprintFeatureReference>()),
-                Helper.CreatePrerequisiteFeature(Positive.BlastFeature),
+                    AnyRef.ToAny(Tree.FocusWood.First),
+                    AnyRef.ToAny(Tree.FocusWood.Second),
+                    AnyRef.ToAny(Tree.FocusWood.Third),
+                    AnyRef.ToAny(Tree.FocusWood.Knight)),
+                Helper.CreatePrerequisiteFeature(Tree.Positive.BlastFeature),
                 Helper.CreatePrerequisiteNoFeature(feature.ToRef()),
                 new AddConditionImmunity
                 {
@@ -3641,8 +3551,8 @@ namespace KineticistElementsExpanded.ElementWood
             PrefabLink onStart = new PrefabLink { AssetId = "c8782bace2956d641892f8a6a523bdfa" }; // JaggedFleshBuff
 
             var buff = Helper.CreateBlueprintBuff("ThornFleshBuff", "Thorn Flesh", 
-                ThornFleshDescription, null, icon, onStart);
-            buff.Flags(removeOnRest: true);
+                ThornFleshDescription, icon, onStart);
+            buff.m_Flags |= BlueprintBuff.Flags.RemoveOnRest;
             buff.FxOnRemove = onStart;
             buff.SetComponents
                 (
@@ -3662,7 +3572,7 @@ namespace KineticistElementsExpanded.ElementWood
                 );
 
             var ability = Helper.CreateBlueprintAbility("ThornFleshAbility", "Thorn Flesh",
-                ThornFleshDescription, null, icon, AbilityType.Supernatural, UnitCommand.CommandType.Standard,
+                ThornFleshDescription, icon, AbilityType.Supernatural, UnitCommand.CommandType.Standard,
                 AbilityRange.Personal, null, null).TargetSelf(CastAnimationStyle.Self);
             ability.SetComponents
                 (
@@ -3684,7 +3594,7 @@ namespace KineticistElementsExpanded.ElementWood
                 );
 
             var feature = Helper.CreateBlueprintFeature("ThornFleshFeature", "Thorn Flesh",
-                ThornFleshDescription, null, icon, FeatureGroup.KineticWildTalent);
+                ThornFleshDescription, icon, FeatureGroup.KineticWildTalent);
             feature.SetComponents
                 (
                 Helper.CreatePrerequisiteFeature(elemental_defense.ToRef()),
@@ -3698,8 +3608,9 @@ namespace KineticistElementsExpanded.ElementWood
         private static BlueprintFeatureReference CreateHerbalAntivenom()
         {
             var buff = Helper.CreateBlueprintBuff("HerbalAntivenomBuff", "Herbal Antivenom",
-                HerbalAntivenomDescription, null, null);
-            buff.Flags(hidden: true, stayOnDeath: true, removeOnRest: false);
+                HerbalAntivenomDescription);
+            buff.Flags(hidden: true, stayOnDeath: true);
+            buff.m_Flags |= BlueprintBuff.Flags.RemoveOnRest;
             buff.SetComponents
                 (
                 new SavingThrowBonusAgainstDescriptor
@@ -3717,14 +3628,14 @@ namespace KineticistElementsExpanded.ElementWood
                 );
 
             var feature = Helper.CreateBlueprintFeature("HerbalAntivenomFeature", "Herbal Antivenom",
-                HerbalAntivenomDescription, null, null, FeatureGroup.KineticWildTalent);
+                HerbalAntivenomDescription, null, FeatureGroup.KineticWildTalent);
             feature.SetComponents
                 (
                 Helper.CreatePrerequisiteFeaturesFromList(true,
-                    AnyRef.Get(WoodFocus.First).To<BlueprintFeatureReference>(),
-                    AnyRef.Get(WoodFocus.Second).To<BlueprintFeatureReference>(),
-                    AnyRef.Get(WoodFocus.Third).To<BlueprintFeatureReference>(),
-                    AnyRef.Get(WoodFocus.Knight).To<BlueprintFeatureReference>()),
+                    AnyRef.ToAny(Tree.FocusWood.First),
+                    AnyRef.ToAny(Tree.FocusWood.Second),
+                    AnyRef.ToAny(Tree.FocusWood.Third),
+                    AnyRef.ToAny(Tree.FocusWood.Knight)),
                 Helper.CreatePrerequisiteClassLevel(Tree.Class, 8),
                 Helper.CreateAddFacts(buff.ToRef2())
                 );
@@ -3737,7 +3648,7 @@ namespace KineticistElementsExpanded.ElementWood
             UnityEngine.Sprite icon = Helper.StealIcon("0fd00984a2c0e0a429cf1a911b4ec5ca"); // Entangle
 
             var ability = Helper.CreateBlueprintAbility("WildGrowthAbility", "Wild Growth",
-                WildGrowthDescription, null, icon, AbilityType.SpellLike, UnitCommand.CommandType.Standard, 
+                WildGrowthDescription, icon, AbilityType.SpellLike, UnitCommand.CommandType.Standard, 
                 AbilityRange.Long, null, null).TargetPoint(CastAnimationStyle.Omni);
             ability.SetComponents
                 (
@@ -3758,14 +3669,14 @@ namespace KineticistElementsExpanded.ElementWood
                 );
 
             var feature = Helper.CreateBlueprintFeature("WildGrowthFeature", "Wild Growth",
-                WildGrowthDescription, null, null, FeatureGroup.KineticWildTalent);
+                WildGrowthDescription, null, FeatureGroup.KineticWildTalent);
             feature.SetComponents
                 (
                 Helper.CreatePrerequisiteFeaturesFromList(true,
-                    AnyRef.Get(WoodFocus.First).To<BlueprintFeatureReference>(),
-                    AnyRef.Get(WoodFocus.Second).To<BlueprintFeatureReference>(),
-                    AnyRef.Get(WoodFocus.Third).To<BlueprintFeatureReference>(),
-                    AnyRef.Get(WoodFocus.Knight).To<BlueprintFeatureReference>()),
+                    AnyRef.ToAny(Tree.FocusWood.First),
+                    AnyRef.ToAny(Tree.FocusWood.Second),
+                    AnyRef.ToAny(Tree.FocusWood.Third),
+                    AnyRef.ToAny(Tree.FocusWood.Knight)),
                 Helper.CreatePrerequisiteClassLevel(Tree.Class, 10),
                 Helper.CreateAddFacts(ability.ToRef2())
                 );
@@ -3778,7 +3689,7 @@ namespace KineticistElementsExpanded.ElementWood
             UnityEngine.Sprite icon = Helper.StealIcon("01300baad090d634cb1a1b2defe068d6"); // ClashingRocks
 
             var ability_target = Helper.CreateBlueprintAbility("ForestSiegeAbilityTarget", "Command Plants",
-                ForestSiegeDescription, null, icon, AbilityType.SpellLike, UnitCommand.CommandType.Standard,
+                ForestSiegeDescription, icon, AbilityType.SpellLike, UnitCommand.CommandType.Standard,
                 AbilityRange.Long).TargetEnemy(CastAnimationStyle.Kineticist);
             ability_target.SetComponents
                 (
@@ -3797,11 +3708,12 @@ namespace KineticistElementsExpanded.ElementWood
                 );
 
             var buff = Helper.CreateBlueprintBuff("ForestSiegeBuff", "Forest Siege",
-                "You may command plant-life to hurl rocks at a target", null, icon);
-            buff.Flags(removeOnRest: true, stayOnDeath: true);
+                "You may command plant-life to hurl rocks at a target", icon);
+            buff.Flags(stayOnDeath: true);
+            buff.m_Flags |= BlueprintBuff.Flags.RemoveOnRest;
 
             var ability_buff = Helper.CreateBlueprintAbility("ForestSiegeAbilityBuff", "Empower Plant-life",
-                ForestSiegeDescription, null, icon, AbilityType.SpellLike, UnitCommand.CommandType.Standard,
+                ForestSiegeDescription, icon, AbilityType.SpellLike, UnitCommand.CommandType.Standard,
                 AbilityRange.Personal).TargetSelf(CastAnimationStyle.Kineticist);
             ability_buff.SetComponents
                 (
@@ -3810,20 +3722,20 @@ namespace KineticistElementsExpanded.ElementWood
                 );
 
             var ability_base = Helper.CreateBlueprintAbility("ForestSiegeAbilityBase", "Forest Siege",
-                ForestSiegeDescription, null, icon, AbilityType.SpellLike, UnitCommand.CommandType.Standard,
+                ForestSiegeDescription, icon, AbilityType.SpellLike, UnitCommand.CommandType.Standard,
                 AbilityRange.Personal);
 
             Helper.AddToAbilityVariants(ability_base, ability_buff, ability_target);
 
             var feature = Helper.CreateBlueprintFeature("ForestSiegeFeature", "Forest Siege",
-                ForestSiegeDescription, null, icon, FeatureGroup.KineticWildTalent);
+                ForestSiegeDescription, icon, FeatureGroup.KineticWildTalent);
             feature.SetComponents
                 (
                 Helper.CreatePrerequisiteFeaturesFromList(true,
-                    AnyRef.Get(WoodFocus.First).To<BlueprintFeatureReference>(),
-                    AnyRef.Get(WoodFocus.Second).To<BlueprintFeatureReference>(),
-                    AnyRef.Get(WoodFocus.Third).To<BlueprintFeatureReference>(),
-                    AnyRef.Get(WoodFocus.Knight).To<BlueprintFeatureReference>()),
+                    AnyRef.ToAny(Tree.FocusWood.First),
+                    AnyRef.ToAny(Tree.FocusWood.Second),
+                    AnyRef.ToAny(Tree.FocusWood.Third),
+                    AnyRef.ToAny(Tree.FocusWood.Knight)),
                 Helper.CreatePrerequisiteClassLevel(Tree.Class, 18),
                 Helper.CreateAddFacts(ability_base.ToRef2())
                 );
@@ -3844,16 +3756,24 @@ namespace KineticistElementsExpanded.ElementWood
                 BonusValue = new ContextValue { Value = 8, ValueType = ContextValueType.Simple }
             };
 
-            var pool = AnyRef.Get(Helper.CreateBlueprintSummonPool("WoodSoldiersSummonPool", null, 4, true).ToRef()).To<BlueprintSummonPoolReference>();
+            string pool_guid = Helper.GetGuid("WoodSoldiersSummonPool");
+            var pool = new BlueprintSummonPool
+            {
+                name = "WoodSoldiersSummonPool",
+                Limit = 4,
+                DoNotRemoveDeadUnits = false
+            };
+            Helper.AddAsset(pool, pool_guid);
+            var pool_ref = AnyRef.ToRef<BlueprintSummonPoolReference>(pool);
 
             #region Golem Buffs
 
-            var buff_autumn = Helper.CreateBlueprintBuff("WoodSoldiersAutumnBuff", "Autumn Soldier", WoodSoldiersDescription, null, icon);
+            var buff_autumn = Helper.CreateBlueprintBuff("WoodSoldiersAutumnBuff", "Autumn Soldier", WoodSoldiersDescription, icon);
             buff_autumn.SetComponents // Burrow Speed, Resistance to Physical
                 (
                 new AddDamageResistancePhysical { }
                 );
-            var buff_spring = Helper.CreateBlueprintBuff("WoodSoldiersSpringBuff", "Spring Soldier", WoodSoldiersDescription, null, icon);
+            var buff_spring = Helper.CreateBlueprintBuff("WoodSoldiersSpringBuff", "Spring Soldier", WoodSoldiersDescription, icon);
             buff_spring.SetComponents // Flight, Difficult terrain and AC bonus
                 (
                 new AddConditionImmunity
@@ -3867,7 +3787,7 @@ namespace KineticistElementsExpanded.ElementWood
                     Value = 3
                 }
                 );
-            var buff_summer = Helper.CreateBlueprintBuff("WoodSoldiersSummerBuff", "Summer Soldier", WoodSoldiersDescription, null, icon);
+            var buff_summer = Helper.CreateBlueprintBuff("WoodSoldiersSummerBuff", "Summer Soldier", WoodSoldiersDescription, icon);
             buff_summer.SetComponents // Fire Resistance, Fire damage on attacks
                 (
                 new AddDamageResistanceEnergy {  Type = DamageEnergyType.Fire },
@@ -3880,7 +3800,7 @@ namespace KineticistElementsExpanded.ElementWood
                     EnergyDamageDice = new DiceFormula { m_Dice = DiceType.D6, m_Rolls = 1 }
                 }
                 );
-            var buff_winter = Helper.CreateBlueprintBuff("WoodSoldiersWinterBuff", "Winter Soldier", WoodSoldiersDescription, null, icon);
+            var buff_winter = Helper.CreateBlueprintBuff("WoodSoldiersWinterBuff", "Winter Soldier", WoodSoldiersDescription, icon);
             buff_winter.SetComponents // Cold Resistance, Cold damage on attacks
                 (
                 new AddDamageResistanceEnergy { Type = DamageEnergyType.Cold },
@@ -3899,36 +3819,37 @@ namespace KineticistElementsExpanded.ElementWood
             var summon = new ContextActionSpawnMonster
             {
                 m_Blueprint = unit,
-                m_SummonPool = pool,
+                m_SummonPool = pool_ref,
                 CountValue = context_four,
                 DurationValue = context_duration_hours,
                 UseLimitFromSummonPool = true,
                 AfterSpawn = Helper.CreateActionList(
                     Helper.CreateConditional(
-                        Helper.CreateContextConditionCasterHasFact(AnyRef.Get(Autumn.BlastFeature).To<BlueprintUnitFactReference>()),
+                        Helper.CreateContextConditionCasterHasFact(AnyRef.ToAny(Tree.Composite_Autumn.BlastFeature)),
                         ifFalse: null,
                         ifTrue: buff_autumn.CreateContextActionApplyBuff(permanent: true)),
                     Helper.CreateConditional(
-                        Helper.CreateContextConditionCasterHasFact(AnyRef.Get(Spring.BlastFeature).To<BlueprintUnitFactReference>()),
+                        Helper.CreateContextConditionCasterHasFact(AnyRef.ToAny(Tree.Composite_Spring.BlastFeature)),
                         ifFalse: null,
                         ifTrue: buff_spring.CreateContextActionApplyBuff(permanent: true)),
                     Helper.CreateConditional(
-                        Helper.CreateContextConditionCasterHasFact(AnyRef.Get(Summer.BlastFeature).To<BlueprintUnitFactReference>()),
+                        Helper.CreateContextConditionCasterHasFact(AnyRef.ToAny(Tree.Composite_Summer.BlastFeature)),
                         ifFalse: null,
                         ifTrue: buff_summer.CreateContextActionApplyBuff(permanent: true)),
                     Helper.CreateConditional(
-                        Helper.CreateContextConditionCasterHasFact(AnyRef.Get(Winter.BlastFeature).To<BlueprintUnitFactReference>()),
+                        Helper.CreateContextConditionCasterHasFact(AnyRef.ToAny(Tree.Composite_Winter.BlastFeature)),
                         ifFalse: null,
                         ifTrue: buff_winter.CreateContextActionApplyBuff(permanent: true))
                     )
             };
 
             var buff = Helper.CreateBlueprintBuff("WoodSoldiersBuff", "Wood Soldier",
-                WoodSoldiersDescription, null, icon, null, null);
-            buff.Flags(hidden: true, removeOnRest: true, stayOnDeath: true);
+                WoodSoldiersDescription, icon);
+            buff.Flags(hidden: true, stayOnDeath: true);
+            buff.m_Flags |= BlueprintBuff.Flags.RemoveOnRest;
 
             var ability = Helper.CreateBlueprintAbility("WoodSoldiersAbility", "Wood Soldiers",
-                WoodSoldiersDescription, null, icon, AbilityType.Supernatural, UnitCommand.CommandType.Free,
+                WoodSoldiersDescription, icon, AbilityType.Supernatural, UnitCommand.CommandType.Free,
                 AbilityRange.Close, null, null).TargetPoint(CastAnimationStyle.Kineticist);
             ability.SetComponents
                 (
@@ -3942,14 +3863,14 @@ namespace KineticistElementsExpanded.ElementWood
                 );
 
             var feature = Helper.CreateBlueprintFeature("WoodSoldiersFeature", "Wood Soldiers",
-                WoodSoldiersDescription, null, icon, FeatureGroup.KineticWildTalent);
+                WoodSoldiersDescription, icon, FeatureGroup.KineticWildTalent);
             feature.SetComponents
                 (
                 Helper.CreatePrerequisiteFeaturesFromList(true,
-                    AnyRef.Get(WoodFocus.First).To<BlueprintFeatureReference>(),
-                    AnyRef.Get(WoodFocus.Second).To<BlueprintFeatureReference>(),
-                    AnyRef.Get(WoodFocus.Third).To<BlueprintFeatureReference>(),
-                    AnyRef.Get(WoodFocus.Knight).To<BlueprintFeatureReference>()),
+                    AnyRef.ToAny(Tree.FocusWood.First),
+                    AnyRef.ToAny(Tree.FocusWood.Second),
+                    AnyRef.ToAny(Tree.FocusWood.Third),
+                    AnyRef.ToAny(Tree.FocusWood.Knight)),
                 Helper.CreatePrerequisiteClassLevel(Tree.Class, 16),
                 Helper.CreateAddFacts(ability.ToRef2())
                 );
@@ -3967,61 +3888,61 @@ namespace KineticistElementsExpanded.ElementWood
             var trip_greater = Helper.ToRef<BlueprintFeatureReference>("4cc71ae82bdd85b40b3cfe6697bb7949"); // SpellPenetration
 
             var wild_0 = Helper.CreateBlueprintFeatureSelection("WildTalentBonusFeatWood", wood_wild_talent_name,
-                wood_wild_talent_description, null, null, FeatureGroup.KineticWildTalent, SelectionMode.Default);
+                wood_wild_talent_description, null, FeatureGroup.KineticWildTalent, SelectionMode.Default);
             wild_0.SetComponents
                 (
-                Helper.CreatePrerequisiteFeature(AnyRef.Get(WoodFocus.First).To<BlueprintFeatureReference>(), true),
-                Helper.CreatePrerequisiteFeature(AnyRef.Get(WoodFocus.Second).To<BlueprintFeatureReference>(), true),
-                Helper.CreatePrerequisiteFeature(AnyRef.Get(WoodFocus.Third).To<BlueprintFeatureReference>(), true),
+                Helper.CreatePrerequisiteFeature(AnyRef.ToAny(Tree.FocusWood.First), true),
+                Helper.CreatePrerequisiteFeature(AnyRef.ToAny(Tree.FocusWood.Second), true),
+                Helper.CreatePrerequisiteFeature(AnyRef.ToAny(Tree.FocusWood.Third), true),
                 Helper.CreatePrerequisiteNoFeature(trip, false),
                 Helper.CreatePrerequisiteNoFeature(spell_pen, false),
-                Helper.CreatePrerequisiteFeature(AnyRef.Get(WoodFocus.Knight).To<BlueprintFeatureReference>(), true)
+                Helper.CreatePrerequisiteFeature(AnyRef.ToAny(Tree.FocusWood.Knight), true)
                 );
             wild_0.IgnorePrerequisites = true;
             Helper.AppendAndReplace(ref wild_0.m_AllFeatures, spell_pen, precise_shot, trip);
 
             var wild_1 = Helper.CreateBlueprintFeatureSelection("WildTalentBonusFeatWood1", wood_wild_talent_name,
-                wood_wild_talent_description, null, null, FeatureGroup.KineticWildTalent, SelectionMode.Default);
+                wood_wild_talent_description, null, FeatureGroup.KineticWildTalent, SelectionMode.Default);
             wild_1.SetComponents
                 (
-                Helper.CreatePrerequisiteFeature(AnyRef.Get(WoodFocus.First).To<BlueprintFeatureReference>(), true),
-                Helper.CreatePrerequisiteFeature(AnyRef.Get(WoodFocus.Second).To<BlueprintFeatureReference>(), true),
-                Helper.CreatePrerequisiteFeature(AnyRef.Get(WoodFocus.Third).To<BlueprintFeatureReference>(), true),
+                Helper.CreatePrerequisiteFeature(AnyRef.ToAny(Tree.FocusWood.First), true),
+                Helper.CreatePrerequisiteFeature(AnyRef.ToAny(Tree.FocusWood.Second), true),
+                Helper.CreatePrerequisiteFeature(AnyRef.ToAny(Tree.FocusWood.Third), true),
                 Helper.CreatePrerequisiteNoFeature(trip, false),
                 Helper.CreatePrerequisiteFeature(spell_pen, false),
-                Helper.CreatePrerequisiteFeature(AnyRef.Get(WoodFocus.Knight).To<BlueprintFeatureReference>(), true)
+                Helper.CreatePrerequisiteFeature(AnyRef.ToAny(Tree.FocusWood.Knight), true)
                 );
             wild_1.IgnorePrerequisites = true;
             Helper.AppendAndReplace(ref wild_1.m_AllFeatures, spell_pen_greater, precise_shot, trip);
 
             var wild_2 = Helper.CreateBlueprintFeatureSelection("WildTalentBonusFeatWood2", wood_wild_talent_name,
-                wood_wild_talent_description, null, null, FeatureGroup.KineticWildTalent, SelectionMode.Default);
+                wood_wild_talent_description, null, FeatureGroup.KineticWildTalent, SelectionMode.Default);
             wild_2.SetComponents
                 (
-                Helper.CreatePrerequisiteFeature(AnyRef.Get(WoodFocus.First).To<BlueprintFeatureReference>(), true),
-                Helper.CreatePrerequisiteFeature(AnyRef.Get(WoodFocus.Second).To<BlueprintFeatureReference>(), true),
-                Helper.CreatePrerequisiteFeature(AnyRef.Get(WoodFocus.Third).To<BlueprintFeatureReference>(), true),
+                Helper.CreatePrerequisiteFeature(AnyRef.ToAny(Tree.FocusWood.First), true),
+                Helper.CreatePrerequisiteFeature(AnyRef.ToAny(Tree.FocusWood.Second), true),
+                Helper.CreatePrerequisiteFeature(AnyRef.ToAny(Tree.FocusWood.Third), true),
                 Helper.CreatePrerequisiteFeature(trip, false),
                 Helper.CreatePrerequisiteNoFeature(spell_pen, false),
-                Helper.CreatePrerequisiteFeature(AnyRef.Get(WoodFocus.Knight).To<BlueprintFeatureReference>(), true)
+                Helper.CreatePrerequisiteFeature(AnyRef.ToAny(Tree.FocusWood.Knight), true)
                 );
             wild_2.IgnorePrerequisites = true;
             Helper.AppendAndReplace(ref wild_2.m_AllFeatures, spell_pen, precise_shot, trip_greater);
 
             var wild_3 = Helper.CreateBlueprintFeatureSelection("WildTalentBonusFeatWood3", wood_wild_talent_name,
-                wood_wild_talent_description, null, null, FeatureGroup.KineticWildTalent, SelectionMode.Default);
+                wood_wild_talent_description, null, FeatureGroup.KineticWildTalent, SelectionMode.Default);
             wild_3.SetComponents
                 (
-                Helper.CreatePrerequisiteFeature(AnyRef.Get(WoodFocus.First).To<BlueprintFeatureReference>(), true),
-                Helper.CreatePrerequisiteFeature(AnyRef.Get(WoodFocus.Second).To<BlueprintFeatureReference>(), true),
-                Helper.CreatePrerequisiteFeature(AnyRef.Get(WoodFocus.Third).To<BlueprintFeatureReference>(), true),
+                Helper.CreatePrerequisiteFeature(AnyRef.ToAny(Tree.FocusWood.First), true),
+                Helper.CreatePrerequisiteFeature(AnyRef.ToAny(Tree.FocusWood.Second), true),
+                Helper.CreatePrerequisiteFeature(AnyRef.ToAny(Tree.FocusWood.Third), true),
                 Helper.CreatePrerequisiteFeature(trip, false),
                 Helper.CreatePrerequisiteFeature(spell_pen, false),
                 new PrerequisiteSelectionPossible
                 {
-                    m_ThisFeature = wild_3.ToRef3()
+                    m_ThisFeature = AnyRef.ToAny(wild_3)
                 },
-                Helper.CreatePrerequisiteFeature(AnyRef.Get(WoodFocus.Knight).To<BlueprintFeatureReference>(), true)
+                Helper.CreatePrerequisiteFeature(AnyRef.ToAny(Tree.FocusWood.Knight), true)
                 );
             wild_3.IgnorePrerequisites = true;
             Helper.AppendAndReplace(ref wild_3.m_AllFeatures, spell_pen_greater, precise_shot, trip_greater);
@@ -4055,7 +3976,18 @@ namespace KineticistElementsExpanded.ElementWood
             };
             var barks = Helper.ToRef<BlueprintUnitAsksListReference>("34ca66289f4899347a7ab9bef34a13f0"); // StoneGolem_barks
 
-            var unit = Helper.CreateBlueprintUnit("WoodSoldierUnit", "Wood Soldier", null, null, null);
+            string guid_Unit = Helper.GetGuid("WoodSoldierUnit");
+            string guid_Template = Helper.GetGuid("WoodSoldierAdvancedTemplate");
+
+            var unit = new BlueprintUnit
+            {
+                name = "WoodSoldierUnit",
+                m_DisplayName = "Wood Soldier".CreateString(),
+                m_Description = "Wooden soldier".CreateString(),
+                m_Icon = null
+            };
+            Helper.AddAsset(unit, guid_Unit);
+
             unit.SetComponents
                 (
                 new AddClassLevels
@@ -4138,7 +4070,26 @@ namespace KineticistElementsExpanded.ElementWood
             };
             unit.m_AddFacts = add_facts;
 
-            return unit.ToRef2();
+            StatAdjustment[] adjustments = new StatAdjustment[] 
+            {
+                new StatAdjustment { Stat = StatType.Strength, Adjustment = 4 },
+                new StatAdjustment { Stat = StatType.Dexterity, Adjustment = 4 },
+                new StatAdjustment { Stat = StatType.Wisdom, Adjustment = 4 },
+                new StatAdjustment { Stat = StatType.Charisma, Adjustment = 4 }
+            };
+
+            var advanced = new BlueprintUnitTemplate
+            {
+                name = "WoodenSoldierAdvancedTemplate",
+                m_RemoveFacts = Array.Empty<BlueprintUnitFactReference>(),
+                m_AddFacts = Array.Empty<BlueprintUnitFactReference>(),
+                StatAdjustments = adjustments
+            };
+            Helper.AddAsset(advanced, guid_Template);
+
+            unit.m_AdditionalTemplates = new BlueprintUnitTemplateReference[] { AnyRef.ToAny(advanced) };
+
+            return AnyRef.ToAny(unit);
         }
 
         #endregion

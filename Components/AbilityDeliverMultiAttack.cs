@@ -87,7 +87,7 @@ namespace KineticistElementsExpanded.Components
             var processes = new IEnumerator<AbilityDeliveryTarget>[targetsCount];
             foreach (var currentTarget in Targets)
             {
-                processes = processes.Append(DeliverInternal(context, launcher, currentTarget));
+                processes = (IEnumerator<AbilityDeliveryTarget>[])processes.Append(DeliverInternal(context, launcher, currentTarget));
             }
 
             for (;;)

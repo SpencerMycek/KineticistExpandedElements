@@ -10,8 +10,8 @@ namespace KineticistElementsExpanded.ElementWood
     {
         protected static readonly string ElementalFocusWoodDescription =
             @"Kineticists who focus on the concept of wood as an element are known as phytokineticists. Phytokineticists share a strong bond with the Fey World and channel the power of primordial life. As there is no “Elemental Plane of Wood,” the phytokineticist draws upon pockets of vital energy that form when the Elemental Planes grind against the borders of the Fey World.";
-        protected static readonly string WoodClassSkillsDescription = 
-            @"A phytokineticist adds {g|Encyclopedia:Lore_Nature}Lore Nature{/g} to her list of class skills.";
+        protected static readonly string WoodClassSkillsDescription =
+            @"A phytokineticist adds {g|Encyclopedia:Lore_Nature}Lore Nature{/g} and {g|Encyclopedia:Knowledge_World}Knowledge (World){/g} to her list of class skills.";
 
         protected static readonly string PositiveBlastDescription = @"Element: Wood
 Type: simple blast
