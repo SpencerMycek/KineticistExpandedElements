@@ -1,0 +1,283 @@
+﻿[
+  {
+
+    "Key": "Void",
+    "ProcessTemplates": false,
+    "enGB": "Void"
+  },
+  {
+    "Key": "Void.Focus.Description",
+    "ProcessTemplates": false,
+    "enGB": "Like aether, void forms where elemental energy meets another material, in this case the substance of the Negative Energy Plane. Kineticists who command this strange force are referred to as chaokineticists."
+  },
+  {
+    "Key": "Void.Skills.Name",
+    "ProcessTemplates": false,
+    "enGB": "Void Class Skills"
+  },
+  {
+    "Key": "Void.Skills.Description",
+    "ProcessTemplates": true,
+    "enGB": "An Chaokineticist adds {g|Encyclopedia:Knowledge_World}Knowledge (World){/g} and {g|Encyclopedia:Mobility}Mobility{/g} to her list of class {g|Encyclopedia:Skills}skills{/g}."
+  },
+  {
+    "Key": "Void.Defense",
+    "ProcessTemplates": false,
+    "enGB": "Emptiness"
+  },
+  {
+    "Key": "Void.Defense.Description",
+    "ProcessTemplates": true,
+    "enGB": "Element: Void\nType: defense\nLevel: —\nBurn: 0\n{g|Encyclopedia:Damage}Damage{/g}: negative energy\nYour body becomes an empty husk, fueled by an internal void. You gain negative energy resistance 2, a 5% chance to ignore critical hits and sneak attacks, and a +1 bonus on Will saves against emotion effects. By accepting 1 point of burn, you can increase the resistance to negative energy by 2, the chance to ignore critical hits and sneak attacks by 5%, and the bonus on Will saves against emotion effects by 1 until the next time your burn is removed"
+  },
+  {
+    "Key": "Void.Selection.Name",
+    "ProcessTemplates": false,
+    "enGB": "Gravity Blast"
+  },
+  {
+    "Key": "Void.Selection.Description",
+    "ProcessTemplates": false,
+    "enGB": ""
+  },
+  {
+    "Key": "Void.Gravity.Name",
+    "ProcessTemplates": false,
+    "enGB": "Gravity Blast"
+  },
+  {
+    "Key": "Void.Gravity.Description",
+    "ProcessTemplates": true,
+    "enGB": "Element: Void\nType: simple blast\nLevel: —\nBurn: 0\nBlast Type: physical\n{g|Encyclopedia:Damage}Damage{/g}: {g|Encyclopedia:Damage_Type}bludgeoning{/g}\nYou manipulate gravity to distort and buffet your foe’s body."
+  },
+  {
+    "Key": "Gravity.Blade.Prefix",
+    "ProcessTemplates": false,
+    "enGB": "Gravity Blast"
+  },
+  {
+    "Key": "Gravity.Blade.Enchant",
+    "ProcessTemplates": false,
+    "enGB": "Gravity Blast — Kinetic Blade"
+  },
+  {
+    "Key": "Void.Negative.Name",
+    "ProcessTemplates": false,
+    "enGB": "Negative Blast"
+  },
+  {
+    "Key": "Void.Negative.Description",
+    "ProcessTemplates": true,
+    "enGB": "Element: Void\nType: simple blast\nLevel: —\nBurn: 0\nBlast Type: physical\n{g|Encyclopedia:Damage}Damage{/g}: negative energy\nYou blast your foe with negative energy."
+  },
+  {
+    "Key": "Negative.Blade.Prefix",
+    "ProcessTemplates": false,
+    "enGB": "Negative Blast"
+  },
+  {
+    "Key": "Negative.Blade.Enchant",
+    "ProcessTemplates": false,
+    "enGB": "Negative Blast — Kinetic Blade"
+  },
+  {
+    "Key": "Void.Void.Name",
+    "ProcessTemplates": false,
+    "enGB": "Void Blast"
+  },
+  {
+    "Key": "Void.Void.Description",
+    "ProcessTemplates": true,
+    "enGB": "Element: void\nType: composite blast\nLevel: —\nBurn: 2\nPrerequisite(s): primary element (void), expanded element (void)\nBlast Type: physical\n{g|Encyclopedia:Damage}Damage{/g}: half bludgeoning, half negative energy\nYou call forth the power of the void to annihilate your foe."
+  },
+  {
+    "Key": "Void.Blade.Prefix",
+    "ProcessTemplates": false,
+    "enGB": "Void Blast"
+  },
+  {
+    "Key": "Void.Blade.Enchant",
+    "ProcessTemplates": false,
+    "enGB": "Void Blast — Kinetic Blade"
+  },
+  {
+    "Key": "Void.Admixture.Gravity.Name",
+    "ProcessTemplates": false,
+    "enGB": "Gravitic Boost"
+  },
+  {
+    "Key": "Void.Admixture.Gravity.Description",
+    "ProcessTemplates": false,
+    "enGB": "Element: void\nType: composite blast\nLevel: —\nBurn: 2\nPrerequisite(s): gravity blast, any other physical simple blast\nBlast Type: special\n{g|Encyclopedia:Damage}Damage{/g}: see text\nYou infuse a simple physical blast with added gravity, increasing its damage dice from d6s to d8s; it otherwise deals damage as per the simple blast."
+  },
+  {
+    "Key": "Void.Admixture.Gravity.Greater.Name",
+    "ProcessTemplates": false,
+    "enGB": "Gravitic Boost, Greater"
+  },
+  {
+    "Key": "Void.Admixture.Gravity.Greater.Description",
+    "ProcessTemplates": false,
+    "enGB": "Element: void\nType: composite blast\nLevel: —\nBurn: 3\nPrerequisite(s): gravity blast, any other physical composite blast\nBlast Type: special\n{g|Encyclopedia:Damage}Damage{/g}: see text\nYou infuse a composite physical blast with added gravity, increasing its damage dice from d6s to d8s."
+  },
+  {
+    "Key": "Void.Admixture.Negative.Name",
+    "ProcessTemplates": false,
+    "enGB": "Negative Admixture"
+  },
+  {
+    "Key": "Void.Admixture.Negative.Description",
+    "ProcessTemplates": false,
+    "enGB": "Element: void\nType: composite blast\nLevel: —\nBurn: 2\nPrerequisite(s): negative blast, any other energy simple blast\nBlast Type: special\n{g|Encyclopedia:Damage}Damage{/g}: see text\nYou infuse a simple physical Choose another simple energy blast you know. Negative admixture’s damage is half negative energy, and half the chosen blast’s type. with added gravity, increasing its damage dice from d6s to d8s; it otherwise deals damage as per the simple blast."
+  },
+  {
+    "Key": "Void.BonusWild.Name",
+    "ProcessTemplates": false,
+    "enGB": "Kineticist Bonus Feat — Void"
+  },
+  {
+    "Key": "Void.BonusWild.Description",
+    "ProcessTemplates": true,
+    "enGB": "A character that selects this talent gains a bonus {g|Encyclopedia:Feat}feat{/g}. These feats must be taken from the following list: Spell Penetration, Greater Spell Penetration, Precise Shot, Trip, Greater Trip"
+  },
+  {
+    "Key": "Void.CorpsePuppet.Name",
+    "ProcessTemplates": false,
+    "enGB": "Corpse Puppet"
+  },
+  {
+    "Key": "Void.CorpsePuppet.Description",
+    "ProcessTemplates": true,
+    "enGB": "Element: Void\nType: utility\nLevel: 4\nBurn: 1\nYou draw upon negative energy to animate a nearby corpse. This ability functions as Animate Dead"
+  },
+  {
+    "Key": "Void.CurseBreaker.Name",
+    "ProcessTemplates": false,
+    "enGB": "Curse Breaker"
+  },
+  {
+    "Key": "Void.CurseBreaker.Description",
+    "ProcessTemplates": true,
+    "enGB": "Element: Void\nType: utility\nLevel: 4\nBurn: 1\nPrerequisite: emptiness\nThe power of void protects you from curses and allows you to remove or suppress them. You gain a +4 bonus on saving throws against curses and hexes. You can accept 1 point of burn as a standard action to attempt a caster level check to remove a curse on yourself or another as per remove curse."
+  },
+  {
+    "Key": "Void.GravityControl.Name",
+    "ProcessTemplates": false,
+    "enGB": "Gravity Control"
+  },
+  {
+    "Key": "Void.GravityControl.Description",
+    "ProcessTemplates": true,
+    "enGB": "Element: Void\nType: utility\nLevel: 3\nBurn: 0\nPrerequisite: emptiness\nYou use your gravitic abilities to move yourself, as per flame jet."
+  },
+  {
+    "Key": "Void.GravityControl.Greater.Name",
+    "ProcessTemplates": false,
+    "enGB": "Gravity Control, Greater"
+  },
+  {
+    "Key": "Void.GravityControl.Greater.Description",
+    "ProcessTemplates": true,
+    "enGB": "Element: Void\nType: utility\nLevel: 3\nBurn: 0\nPrerequisite: emptiness\nYou use your gravitic abilities to move yourself, as per greater flame jet."
+  },
+  {
+    "Key": "Void.UndeadGrip.Name",
+    "ProcessTemplates": false,
+    "enGB": "Undead Grip"
+  },
+  {
+    "Key": "Void.UndeadGrip.Description",
+    "ProcessTemplates": true,
+    "enGB": "Element: Void\nType: utility\nLevel: 3\nBurn: 1\n{g|Encyclopedia:Saving_Throw}Saving Throw{/g}: Will negates\nSpell Resistance: yes\nThis functions as hold monster, except it only works on undead creatures."
+  },
+  {
+    "Key": "Void.VoidHealer.Name",
+    "ProcessTemplates": false,
+    "enGB": "Void Healer"
+  },
+  {
+    "Key": "Void.VoidHealer.Description",
+    "ProcessTemplates": true,
+    "enGB": "Element: Void\nType: utility\nLevel: 1\nBurn: 1\nThis functions as kinetic healer, except it heals undead (and others healed by negative energy)."
+  },
+  {
+    "Key": "Void.Singularity.Name",
+    "ProcessTemplates": false,
+    "enGB": "Singularity"
+  },
+  {
+    "Key": "Void.Singularity.Description",
+    "ProcessTemplates": false,
+    "enGB": "Element: void\nType: form infusion\nLevel: 4\nBurn: 3\nAssociated Blasts: gravity, negative, void\n{g|Encyclopedia:Saving_Throw}Saving Throw{/g}: Reflex half\nYou create a growing singularity. Choose a grid intersection within 30 feet. All creatures and objects in a 5-foot-radius burst centered on the intersection take 1/4 your blast’s normal amount of damage (or half damage for a negative blast). On your next turn, the singularity deals damage in a 10-foot-radius burst, and on your turn after that, it deals damage in a 15-foot-radius burst. The DC is Dexterity-based."
+  },
+  {
+    "Key": "Void.Dampening.Name",
+    "ProcessTemplates": false,
+    "enGB": "Dampening Infusion"
+  },
+  {
+    "Key": "Void.Dampening.Description",
+    "ProcessTemplates": false,
+    "enGB": "Element: void\nType: substance infusion\nLevel: 1\nBurn: 1\nAssociated Blasts: negative, void\n{g|Encyclopedia:Saving_Throw}Saving Throw{/g}: Will negates\nYour kinetic blast swirls with darkness, making it harder for your foes to see. This otherwise functions as dazzling infusion."
+  },
+  {
+    "Key": "Void.Enervating.Name",
+    "ProcessTemplates": false,
+    "enGB": "Enervating Infusion"
+  },
+  {
+    "Key": "Void.Enervating.Description",
+    "ProcessTemplates": false,
+    "enGB": "Element: void\nType: substance infusion\nLevel: 7\nBurn: 4\nAssociated Blasts: negative, void\n{g|Encyclopedia:Saving_Throw}Saving Throw{/g}: Fortitude negates\nYour kinetic blast drains life force. Foes that take damage from your infused blast also take 1 temporary negative level. Negative levels from this infusion fade after 24 hours and never become permanent."
+  },
+  {
+    "Key": "Void.Pulling.Name",
+    "ProcessTemplates": false,
+    "enGB": "Pulling Infusion"
+  },
+  {
+    "Key": "Void.Pulling.Description",
+    "ProcessTemplates": false,
+    "enGB": "Element: void\nType: substance infusion\nLevel: 1\nBurn: 1\nAssociated Blasts: gravity, void\n{g|Encyclopedia:Saving_Throw}Saving Throw{/g}: none\nYour kinetic blast pulls foes toward you. Attempt a drag combat maneuver check against each target damaged by your infused blast (the blast always drags the foe closer to you), using your Constitution modifier instead of your Strength modifier to determine your CMB."
+  },
+  {
+    "Key": "Void.Unnerving.Name",
+    "ProcessTemplates": false,
+    "enGB": "Unnerving Inufsion"
+  },
+  {
+    "Key": "Void.Unnerving.Description",
+    "ProcessTemplates": false,
+    "enGB": "Element: void\nType: substance infusion\nLevel: 3\nBurn: 2\nAssociated Blasts: negative, void\n{g|Encyclopedia:Saving_Throw}Saving Throw{/g}: Will negates\nYour kinetic blast sends the fear of oblivion into your foes. Whenever an infused blast deals negative energy damage to a living foe, it is shaken for 1 round."
+  },
+  {
+    "Key": "Void.Vampiric.Name",
+    "ProcessTemplates": false,
+    "enGB": "Vampiric Infusion"
+  },
+  {
+    "Key": "Void.Vampiric.Description",
+    "ProcessTemplates": false,
+    "enGB": "Element: void\nType: substance infusion\nLevel: 5\nBurn: 3\nPrerequisite: Kinetic Healer\nAssociated Blasts: negative, void\n{g|Encyclopedia:Saving_Throw}Saving Throw{/g}: none\nYour kinetic blast can drain your foes’ vitality to replenish your own. If your blast hits (or the enemy fails its saving throw against a blast without an attack roll), you're next activation of the Kinetic Healer Wild Talent is free."
+  },
+  {
+    "Key": "Void.Vampiric.Buff.Name",
+    "ProcessTemplates": false,
+    "enGB": "Vampiric Infusion — Void Healer"
+  },
+  {
+    "Key": "Void.Vampiric.Buff.Description",
+    "ProcessTemplates": false,
+    "enGB": "Your next Void Healer ability burn cost is reduced to zero."
+  },
+  {
+    "Key": "Void.Weighing.Name",
+    "ProcessTemplates": false,
+    "enGB": "Weighing Infusion"
+  },
+  {
+    "Key": "Void.Weighing.Description",
+    "ProcessTemplates": false,
+    "enGB": "Element: void\nType: substance infusion\nLevel: 2\nBurn: 2\nAssociated Blasts: gravity, void\n{g|Encyclopedia:Saving_Throw}Saving Throw{/g}: Reflex negates\nThis infusion functions as entangling infusion, except it entangles and immobilizes a foe by increasing its weight, rather than surrounding it in elemental matter."
+  }
+]

@@ -98,6 +98,17 @@ If you notice any issues, please contact me or open up an issue on this reposito
 
 ## Recent Changes
 
+### v3.0.1
+- Fix damage modification of Disintegrate/Admixtures/Foe Throw
+- Fix potential doll issues when using a modded kinetic blade
+	- Issue would occur when loading a save with a character had a modded kinetic blade equipped
+	- The character would become untargetable (unless clicking on the portrait), and would appear with none of their items equipped visually
+- Fixed damage types of certain kinetic blades (Specifically Force Blade)
+- Kinetic Blade Icons updated (this isn't a good change, as its the same as their normal blast ones, but I'm working on getting some new ones)
+- Fixed a compatibility issue with DarkCodex (Fixes a few known things like Kinetic Fist, and a bunch of unknown things, probably)
+- Greater Gravitic Boost, Aetheric Boost/Greater, added (But won't show up if using DarkCodex)
+- Localization support added: English
+
 ### v3.0.0
 - Huge stability Update - I went over the codebase (10K+ lines) 3 times to align each element to work as similarly as possible
 - Fixes should be a lot easier in the future
@@ -128,15 +139,22 @@ If you notice any issues, please contact me or open up an issue on this reposito
 
 ## Known Issues
 
+### Maybe some Wood Issues
+I did have a problem loading my Wood testing save, so reach out if there are any issues loading your Wood Kineticists out there
+
 ### Disintigration Infusion
 This is a very strange infusion, both doubling damage, and halving it. For whatever reason, it does not work with the Spindle infusion, still working on that
 
 ### Admixtures
 These work pretty well in all cases, I have only seen a single issue: When using either of the energy admixtures, and you crit, the damage modified by the admixture will not deal double damage, but the original damage type will.
+When using DarkCodex, admixtures are not added. I believe this is due to DarkCodex, and it is in Truinto's to-do backlog to make sure they are added
 
 ### Wood Soldiers
 It is possible, if you use the ability after one or two dies, to have up to 7 wood soldiers, still trying to figure out how to limit the amount of summons
 Using the ability at 4 or more Soldiers causes you to take burn, but does not summon soldiers (Max 4, but the ability shouldnt go off)
+
+### Whirlwind and Blades
+Blades have a few issues, and whirlwind not working with modded blades is one of them. Reach out if you find more please
 
 
 [1]: https://github.com/Truinto

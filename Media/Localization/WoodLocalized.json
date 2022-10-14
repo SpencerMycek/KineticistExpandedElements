@@ -1,0 +1,358 @@
+﻿[
+  {
+
+    "Key": "Wood",
+    "ProcessTemplates": false,
+    "enGB": "Wood"
+  },
+  {
+    "Key": "Wood.Focus.Description",
+    "ProcessTemplates": false,
+    "enGB": "Kineticists who focus on the concept of wood as an element are known as phytokineticists. Phytokineticists share a strong bond with the Fey World and channel the power of primordial life. As there is no “Elemental Plane of Wood,” the phytokineticist draws upon pockets of vital energy that form when the Elemental Planes grind against the borders of the Fey World."
+  },
+  {
+    "Key": "Wood.Skills.Name",
+    "ProcessTemplates": false,
+    "enGB": "Wood Class Skills"
+  },
+  {
+    "Key": "Wood.Skills.Description",
+    "ProcessTemplates": true,
+    "enGB": "A phytokineticist adds {g|Encyclopedia:Lore_Nature}Lore Nature{/g} and {g|Encyclopedia:Knowledge_World}Knowledge (World){/g} to her list of class skills."
+  },
+  {
+    "Key": "Wood.Defense",
+    "ProcessTemplates": false,
+    "enGB": "Flesh of Wood"
+  },
+  {
+    "Key": "Wood.Defense.Description",
+    "ProcessTemplates": true,
+    "enGB": "Element: Wood\nType: defense (Su)\nLevel: —\nBurn: 0\nYour skin toughens like timber, turning aside some blows. You gain a +1 enhancement bonus to your existing natural armor bonus. By accepting 1 point of burn, you can increase this enhancement bonus by 1. For every 3 levels beyond 2nd, you can accept 1 additional point of burn to further increase this enhancement bonus by 1 (to a maximum of +7 at 17th level)."
+  },
+  {
+    "Key": "Wood.Defense.Button",
+    "ProcessTemplates": true,
+    "enGB": "Flesh of Wood — Increase AC"
+  },
+  {
+    "Key": "Wood.Selection.Name",
+    "ProcessTemplates": false,
+    "enGB": "Wood Blast"
+  },
+  {
+    "Key": "Wood.Selection.Description",
+    "ProcessTemplates": false,
+    "enGB": ""
+  },
+  {
+    "Key": "Wood.Positive.Name",
+    "ProcessTemplates": false,
+    "enGB": "Wood Blast"
+  },
+  {
+    "Key": "Wood.Positive.Description",
+    "ProcessTemplates": true,
+    "enGB": "Element: Wood\nType: simple blast\nLevel: —\nBurn: 0\nBlast Type: energy\n{g|Encyclopedia:Damage}Damage{/g}: {g|Encyclopedia:Damage_Type}positive energy{/g}\nYou blast your foe with positive energy."
+  },
+  {
+    "Key": "Positive.Blade.Prefix",
+    "ProcessTemplates": false,
+    "enGB": "Positive Blast"
+  },
+  {
+    "Key": "Positive.Blade.Enchant",
+    "ProcessTemplates": false,
+    "enGB": "Positive Blast — Kinetic Blade"
+  },
+  {
+    "Key": "Wood.Wood.Name",
+    "ProcessTemplates": false,
+    "enGB": "Wood Blast"
+  },
+  {
+    "Key": "Wood.Wood.Description",
+    "ProcessTemplates": true,
+    "enGB": "Element: Wood\nType: simple blast\nLevel: —\nBurn: 0\nBlast Type: physical\n{g|Encyclopedia:Damage}Damage{/g}: {g|Encyclopedia:Damage_Type}bludgeoning{/g}, piercing, and slashing\nYou lash out with boughs, vines, or a deluge of stinging blooms."
+  },
+  {
+    "Key": "Wood.Blade.Prefix",
+    "ProcessTemplates": false,
+    "enGB": "Wood Blast"
+  },
+  {
+    "Key": "Wood.Blade.Enchant",
+    "ProcessTemplates": false,
+    "enGB": "Wood Blast — Kinetic Blade"
+  },
+  {
+    "Key": "Wood.Verdant.Name",
+    "ProcessTemplates": false,
+    "enGB": "Verdant Blast"
+  },
+  {
+    "Key": "Wood.Verdant.Description",
+    "ProcessTemplates": true,
+    "enGB": "Element: Wood\nType: composite blast\nLevel: —\nBurn: 2\nPrerequisite(s): primary element(wood), expanded element(wood)\nBlast Type: physical\n{g|Encyclopedia:Damage}Damage{/g}: {g|Encyclopedia:Damage_Type}bludgeoning{/g}, piercing, slashing, and positive\nYou blast your foes with fanciful wild plant growth overflowing with positive energy from the First World. Verdant Blast’s damage counts as positive energy only when it would be beneficial to you."
+  },
+  {
+    "Key": "Verdant.Blade.Prefix",
+    "ProcessTemplates": false,
+    "enGB": "Verdant Blast"
+  },
+  {
+    "Key": "Verdant.Blade.Enchant",
+    "ProcessTemplates": false,
+    "enGB": "Verdant Blast — Kinetic Blade"
+  },
+  {
+    "Key": "Wood.Autumn.Name",
+    "ProcessTemplates": false,
+    "enGB": "Autumn Blast"
+  },
+  {
+    "Key": "Wood.Autumn.Description",
+    "ProcessTemplates": true,
+    "enGB": "Element: Earth and Wood\nType: composite blast\nLevel: —\nBurn: 2\nPrerequisite(s): earth blast, wood blast\nBlast Type: physical\n{g|Encyclopedia:Damage}Damage{/g}: {g|Encyclopedia:Damage_Type}bludgeoning{/g}, piercing, and slashing\nA burst of fallen leaves and earthy decay batters a single foe."
+  },
+  {
+    "Key": "Autumn.Blade.Prefix",
+    "ProcessTemplates": false,
+    "enGB": "Autumn Blast"
+  },
+  {
+    "Key": "Autumn.Blade.Enchant",
+    "ProcessTemplates": false,
+    "enGB": "Autumn Blast — Kinetic Blade"
+  },
+  {
+    "Key": "Wood.Spring.Name",
+    "ProcessTemplates": false,
+    "enGB": "Spring Blast"
+  },
+  {
+    "Key": "Wood.Spring.Description",
+    "ProcessTemplates": true,
+    "enGB": "Element: Air and Wood\nType: composite blast\nLevel: —\nBurn: 2\nPrerequisite(s): air blast, wood blast\nBlast Type: physical\n{g|Encyclopedia:Damage}Damage{/g}: {g|Encyclopedia:Damage_Type}bludgeoning{/g}, piercing, and slashing\nSharp blossoms and pummeling seeds buffet your foe."
+  },
+  {
+    "Key": "Spring.Blade.Prefix",
+    "ProcessTemplates": false,
+    "enGB": "Spring Blast"
+  },
+  {
+    "Key": "Spring.Blade.Enchant",
+    "ProcessTemplates": false,
+    "enGB": "Spring Blast — Kinetic Blade"
+  },
+  {
+    "Key": "Wood.Summer.Name",
+    "ProcessTemplates": false,
+    "enGB": "Summer Blast"
+  },
+  {
+    "Key": "Wood.Summer.Description",
+    "ProcessTemplates": true,
+    "enGB": "Element: Fire and Wood\nType: composite blast\nLevel: —\nBurn: 2\nPrerequisite(s): fire blast, wood blast\nBlast Type: physical\n{g|Encyclopedia:Damage}Damage{/g}: half fire and {g|Encyclopedia:Damage_Type}bludgeoning{/g}, piercing, and slashing \nA burning blast of heat and sun-dried foliage tears at your foe."
+  },
+  {
+    "Key": "Summer.Blade.Prefix",
+    "ProcessTemplates": false,
+    "enGB": "Summer Blast"
+  },
+  {
+    "Key": "Summer.Blade.Enchant",
+    "ProcessTemplates": false,
+    "enGB": "Summer Blast — Kinetic Blade"
+  },
+  {
+    "Key": "Wood.Winter.Name",
+    "ProcessTemplates": false,
+    "enGB": "Winter Blast"
+  },
+  {
+    "Key": "Wood.Winter.Description",
+    "ProcessTemplates": true,
+    "enGB": "Element: Water and Wood\nType: composite blast\nLevel: —\nBurn: 2\nPrerequisite(s): cold blast, wood blast\nBlast Type: physical\n{g|Encyclopedia:Damage}Damage{/g}: half cold and {g|Encyclopedia:Damage_Type}bludgeoning{/g}, piercing, and slashing \nYou unleash a blast of frigid frost and jagged, bare branches at your target."
+  },
+  {
+    "Key": "Winter.Blade.Prefix",
+    "ProcessTemplates": false,
+    "enGB": "Winter Blast"
+  },
+  {
+    "Key": "Winter.Blade.Enchant",
+    "ProcessTemplates": false,
+    "enGB": "Winter Blast — Kinetic Blade"
+  },
+  {
+    "Key": "Wood.Admixture.Positive.Name",
+    "ProcessTemplates": false,
+    "enGB": "Positive Admixture"
+  },
+  {
+    "Key": "Wood.Admixture.Positive.Description",
+    "ProcessTemplates": false,
+    "enGB": "Element: Wood\nType: composite blast\nLevel: —\nBurn: 2\nPrerequisite(s): positive blast, any other simple energy blastBlast Type: energy\n{g|Encyclopedia:Damage}Damage{/g}: see text\nChoose another energy simple blast you know. Positive admixture’s damage is half positive energy, and half the chosen blast’s type."
+  },
+  {
+    "Key": "Wood.BonusWild.Name",
+    "ProcessTemplates": false,
+    "enGB": "Kineticist Bonus Feat — Wood"
+  },
+  {
+    "Key": "Wood.BonusWild.Description",
+    "ProcessTemplates": true,
+    "enGB": "A character that selects this talent gains a bonus {g|Encyclopedia:Feat}feat{/g}. These feats must be taken from the following list: Spell Penetration, Greater Spell Penetration, Precise Shot, Trip, Greater Trip"
+  },
+  {
+    "Key": "Wood.WoodHealer.Name",
+    "ProcessTemplates": false,
+    "enGB": "Wood Healer"
+  },
+  {
+    "Key": "Wood.WoodHealer.Description",
+    "ProcessTemplates": true,
+    "enGB": "Element: Wood\nType: utility\nLevel: 1\nBurn: 1\nPrerequisites: positive blast\nThis functions as kinetic healer, but you must base the amount of healing on your positive blast, not wood blast. This wild talent counts as kinetic healer for prerequisites for selecting other kineticist wild talents."
+  },
+  {
+    "Key": "Wood.Step.Name",
+    "ProcessTemplates": false,
+    "enGB": "Woodland Step"
+  },
+  {
+    "Key": "Wood.Step.Description",
+    "ProcessTemplates": true,
+    "enGB": "Element: Wood\nType: utility\nLevel: 1\nBurn: 0 \nYou can move through any sort difficult terrain at your normal {g|Encyclopedia:Speed}speed{/g} and without taking {g|Encyclopedia:Damage}damage{/g} or suffering any other impairment."
+  },
+  {
+    "Key": "Wood.ThornFlesh.Name",
+    "ProcessTemplates": false,
+    "enGB": "Thorn Flesh"
+  },
+  {
+    "Key": "Wood.ThornFlesh.Description",
+    "ProcessTemplates": true,
+    "enGB": "Element: Wood\nType: utility\nLevel: 3\nBurn: 1\nPrerequisite(s): flesh of wood\nYou cover your body in barbed thorns that injure foes who strike you. Until the next time your burn is removed, while your flesh of wood is active, any creature that strikes you with an {g|Encyclopedia:UnarmedAttack}unarmed{/g} strike or {g|Encyclopedia:NaturalAttack}natural weapon{/g} or that grapples you takes {g|Encyclopedia:Dice}1d6{/g} points of {g|Encyclopedia:Damage_Type}piercing damage{/g}."
+  },
+  {
+    "Key": "Wood.Herbal.Name",
+    "ProcessTemplates": false,
+    "enGB": "Herbal Antivenom"
+  },
+  {
+    "Key": "Wood.Herbal.Description",
+    "ProcessTemplates": true,
+    "enGB": "Element: Wood\nType: utility\nLevel: 8\nBurn: 0\nYour body can produce the herbal remedies necessary to counter almost any poison. You gain a +5 alchemical bonus on saving throws against poison as if always under the effect of antitoxin. \n\nIn addition your knowledge in healing gives you a +5 bonus to Lore: Religion"
+  },
+  {
+    "Key": "Wood.WildGrowth.Name",
+    "ProcessTemplates": false,
+    "enGB": "Wild Growth"
+  },
+  {
+    "Key": "Wood.WildGrowth.Description",
+    "ProcessTemplates": true,
+    "enGB": "Element: Wood\nType: utility\nLevel: 8\nBurn: 0\nYou cause tall grass, weeds, and other plants to wrap around creatures in the area of effect or those that enter the area. Creatures that fail their Reflex {g|Encyclopedia:Saving_Throw}save{/g} gain the entangled condition. Creatures that succeed at their save can move as normal, but those that remain in the area must save again each {g|Encyclopedia:Combat_Round}round{/g}. Creatures that move into the area must save immediately.\nEntangled creatures can break free by making a {g|Encyclopedia:Combat_Maneuvers}combat maneuver{/g} {g|Encyclopedia:Check}check{/g}, {g|Encyclopedia:Athletics}Athletics check{/g}, or {g|Encyclopedia:Mobility}Mobility check{/g} against the {g|Encyclopedia:DC}DC{/g} of this ability every round.\nThe entire area of effect is considered difficult terrain while the effect lasts."
+  },
+  {
+    "Key": "Wood.Siege.Name",
+    "ProcessTemplates": false,
+    "enGB": "Forest Siege"
+  },
+  {
+    "Key": "Wood.Siege.Ability.Name",
+    "ProcessTemplates": false,
+    "enGB": "Command Plant-Life"
+  },
+  {
+    "Key": "Wood.Siege.Action.Name",
+    "ProcessTemplates": false,
+    "enGB": "Empower Plant-Life"
+  },
+  {
+    "Key": "Wood.Siege.Buff.Description",
+    "ProcessTemplates": false,
+    "enGB": "You may command plant-life to hurl rocks at a target"
+  },
+  {
+    "Key": "Wood.Siege.Description",
+    "ProcessTemplates": true,
+    "enGB": "Element: Wood\nType: utility\nLevel: 9\nBurn: 1\nYou can transform available plant life into a besieging army. This ability affects one plant for every three Kineticist Levels. \nAfter spending the burn to activity this ability, until the next time your burn is removed. You can spend a Standard action to cause nearby plants to act like heavy catapults, throwing rocks at a chosen target, dealing 6d6 Bludgeoning damage if they hit."
+  },
+  {
+    "Key": "Wood.Soldiers.Name",
+    "ProcessTemplates": false,
+    "enGB": "Wood Soldiers"
+  },
+  {
+    "Key": "Wood.Soldiers.Buff.Name",
+    "ProcessTemplates": false,
+    "enGB": "Elementally infused wood"
+  },
+  {
+    "Key": "Wood.Soldiers.Description",
+    "ProcessTemplates": true,
+    "enGB": "Element: Wood\nType: utility\nLevel: 8\nBurn: 1\nYour presence animates surrounding plant life and causes it to fight by your side. You summon four wooden golems that last until the next time you recover burn. If you have the Spring, Summer, Autumn, or Winter blasts, your golems will gain unique upgrades.\n\nAutumn Blast: Your Wood Soldiers gain resistance to physical damage\nSpring Blast: Your Wood Soldiers gain a fly speed, which provides a +3 to AC and immunity to ground based effects\nSummer Blast: Your Wood Soldiers gain resistance to fire, and deal 1d6 extra fire damage on all attacks\nWinder Blast: Your Wood Soldiers gain resistance to cold,  and deal 1d6 extra cold damage on all attacks"
+  },
+  {
+    "Key": "Wood.Soldiers.Unit.Name",
+    "ProcessTemplates": true,
+    "enGB": "Wood Soldier"
+  },
+  {
+    "Key": "Wood.Soldiers.Unit.Description",
+    "ProcessTemplates": true,
+    "enGB": "Wooden Soldier — Summoned by a Phytokineticist"
+  },
+  {
+    "Key": "Wood.Spore.Name",
+    "ProcessTemplates": false,
+    "enGB": "Spore Infusion"
+  },
+  {
+    "Key": "Wood.Spore.Description",
+    "ProcessTemplates": true,
+    "enGB": "Element: Wood\nType: substance infusion\nLevel: 5\nBurn: 2\n{g|Encyclopedia:Saving_Throw}Saving Throw{/g}: Fortitude negates\nAssociated Blasts: autumn, spring, summer, verdant, winter, wood\nCreatures that take damage from your blast are infected with spores. If the target fails its Fortitude save, it takes 1d6 points of damage per round for 10 rounds as plants and fungi grow out of its body. At the end of that time, the target is exposed to the pulsing puffs disease. This infusion is a disease effect\n\n\tPulsing Puffs: Blast—injury; save Fort DC 18; onset 1 minute; frequency 1/day; effect 1d6 Dex damage; cure 2 consecutive saves."
+  },
+  {
+    "Key": "Wood.Spore.Poison.Name",
+    "ProcessTemplates": false,
+    "enGB": "Spores"
+  },
+  {
+    "Key": "Wood.Spore.Poison.Description",
+    "ProcessTemplates": true,
+    "enGB": "Taking 1d6 poison damage per round for 10 rounds."
+  },
+  {
+    "Key": "Wood.Spore.Disease.Name",
+    "ProcessTemplates": true,
+    "enGB": "Poison Puff"
+  },
+  {
+    "Key": "Wood.Spore.Disease.Description",
+    "ProcessTemplates": true,
+    "enGB": "Taking 1d6 Dex damage daily, Cure: 2 consecutive saves"
+  },
+  {
+    "Key": "Wood.Toxic.Name",
+    "ProcessTemplates": false,
+    "enGB": "Toxic Infusion"
+  },
+  {
+    "Key": "Wood.Toxic.Description",
+    "ProcessTemplates": true,
+    "enGB": "Element: Wood\nType: substance infusion\nLevel: 4\nBurn: 3\n{g|Encyclopedia:Saving_Throw}Saving Throw{/g}: Fortitude negates\nAssociated Blasts: autumn, spring, summer, verdant, winter, wood\nThe plants in your blast are mildly toxic. All creatures that take piercing or slashing damage from your blast are sickened for 1 round."
+  },
+  {
+    "Key": "Wood.Toxic.Greater.Name",
+    "ProcessTemplates": false,
+    "enGB": "Toxif Infusion, Greater"
+  },
+  {
+    "Key": "Wood.Toxic.Greater.Description",
+    "ProcessTemplates": true,
+    "enGB": "Element: Wood\nType: substance infusion\nLevel: 7\nBurn: 3\nPrerequisite(s): toxic infusion\n{g|Encyclopedia:Saving_Throw}Saving Throw{/g}: Fortitude negates\nAssociated Blasts: autumn, spring, summer, verdant, winter, wood\nYour plant toxin is more virulent. All creatures that take piercing or slashing damage from your blast are exposed to your poison.\n\n\tBlast— injury; save Fort; frequency 1/round for 6 rounds; effect 1d2 Con damage; cure 2 consecutive saves."
+  }
+]

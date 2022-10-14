@@ -29,6 +29,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using Kingmaker.Enums;
+using Kingmaker.UnitLogic.Mechanics.Components;
 
 namespace KineticistElementsExpanded.Components
 {
@@ -90,7 +92,7 @@ namespace KineticistElementsExpanded.Components
                 }
 
                 BaseDamage damage = ruleDealDamage.DamageBundle.First;
-                damage.ReplaceDice(new DiceFormula(damage.Dice.Rolls, DiceType.D8));
+                damage.Dice.Modify(new DiceFormula(damage.Dice.BaseFormula.Rolls, DiceType.D8), ModifierDescriptor.UntypedStackable);
 
             }
             catch (Exception ex)
@@ -139,6 +141,118 @@ namespace KineticistElementsExpanded.Components
 
         public BlueprintAbilityReference[] m_AbilityList;
     }
+
+    public class AbilityUniqueAethericBoost : UnitFactComponentDelegate, IInitiatorRulebookHandler<RuleDealDamage>, IRulebookHandler<RuleDealDamage>, ISubscriber, IInitiatorRulebookSubscriber, IInitiatorRulebookHandler<RuleDealStatDamage>, IRulebookHandler<RuleDealStatDamage>, IInitiatorRulebookHandler<RuleDrainEnergy>, IRulebookHandler<RuleDrainEnergy>
+    {
+
+        public AbilityUniqueAethericBoost(params BlueprintAbilityReference[] list)
+        {
+            this.m_AbilityList = list;
+        }
+
+        public ReferenceArrayProxy<BlueprintAbility, BlueprintAbilityReference> AbilityList
+        {
+            get
+            {
+                return this.m_AbilityList;
+            }
+        }
+
+        public void ApplyAboutToTrigger(RulebookTargetEvent evt, [NotNull] MechanicsContext context)
+        {
+            try
+            {
+                RuleDealDamage ruleDealDamage = evt as RuleDealDamage;
+                AbilityExecutionContext abilityExecutionContext;
+
+                // Make sure we only triggered on allowed abilities
+                if ((abilityExecutionContext = (context as AbilityExecutionContext)) != null)
+                {
+                    AbilityData ability = abilityExecutionContext.Ability;
+                    if (!this.AbilityList.Contains(ability.Blueprint))
+                    {
+                        IEnumerable<BlueprintAbility> source = this.AbilityList;
+                        AbilityData convertedFrom = ability.ConvertedFrom;
+                        if (!source.Contains((convertedFrom != null) ? convertedFrom.Blueprint : null))
+                        {
+                            return;
+                        }
+                    }
+                }
+                else
+                {
+                    AbilityData ability2 = evt.Reason.Ability;
+                    BlueprintAbility blueprintAbility;
+                    if ((blueprintAbility = ((ability2 != null) ? ability2.Blueprint : null)) == null)
+                    {
+                        MechanicsContext parentContext = context.ParentContext;
+                        blueprintAbility = (((parentContext != null) ? parentContext.AssociatedBlueprint : null) as BlueprintAbility);
+                    }
+                    BlueprintAbility blueprintAbility2 = blueprintAbility;
+                    if (blueprintAbility2 == null)
+                    {
+                        return;
+                    }
+                    if (!this.AbilityList.Contains(blueprintAbility2) && !this.AbilityList.Contains(blueprintAbility2.Parent))
+                    {
+                        return;
+                    }
+                }
+
+                var final_value = value.Calculate(context);
+
+                BaseDamage damage = ruleDealDamage.DamageBundle.First;
+                damage.AddModifier(new Modifier(final_value, ModifierDescriptor.UntypedStackable));
+
+            }
+            catch (Exception ex)
+            {
+                Helper.PrintNotification($"[AethericBoost] Exception: {ex.Message}");
+            }
+        }
+
+        public void ApplyDidTrigger(RulebookTargetEvent evt, [NotNull] MechanicsContext context)
+        {
+        }
+
+        #region Triggers
+
+        public void OnEventAboutToTrigger(RuleDealDamage evt)
+        {
+            this.ApplyAboutToTrigger(evt, base.Context);
+        }
+
+        public void OnEventAboutToTrigger(RuleDealStatDamage evt)
+        {
+            this.ApplyAboutToTrigger(evt, base.Context);
+        }
+
+        public void OnEventAboutToTrigger(RuleDrainEnergy evt)
+        {
+            this.ApplyAboutToTrigger(evt, base.Context);
+        }
+
+        public void OnEventDidTrigger(RuleDealDamage evt)
+        {
+            this.ApplyDidTrigger(evt, base.Context);
+        }
+
+        public void OnEventDidTrigger(RuleDealStatDamage evt)
+        {
+            this.ApplyDidTrigger(evt, base.Context);
+        }
+
+        public void OnEventDidTrigger(RuleDrainEnergy evt)
+        {
+            this.ApplyDidTrigger(evt, base.Context);
+        }
+
+        #endregion
+
+        public BlueprintAbilityReference[] m_AbilityList;
+        public ContextDiceValue value;
+    }
+
 
     public class AbilityUniqueNegativeAdmixture : UnitFactComponentDelegate, IInitiatorRulebookHandler<RuleDealDamage>, IRulebookHandler<RuleDealDamage>, ISubscriber, IInitiatorRulebookSubscriber, IInitiatorRulebookHandler<RuleDealStatDamage>, IRulebookHandler<RuleDealStatDamage>, IInitiatorRulebookHandler<RuleDrainEnergy>, IRulebookHandler<RuleDrainEnergy>
     {
@@ -198,7 +312,7 @@ namespace KineticistElementsExpanded.Components
                 }
 
                 BaseDamage damage = ruleDealDamage.DamageBundle.First;
-                damage.ReplaceDice(new DiceFormula(damage.Dice.Rolls / 2, damage.Dice.Dice));
+                damage.Dice.Modify(new DiceFormula(damage.Dice.BaseFormula.Rolls/2, damage.Dice.BaseFormula.Dice), ModifierDescriptor.UntypedStackable);
 
                 DamageTypeDescription typeDescription = damage.CreateTypeDescription();
                 typeDescription.Type = DamageType.Energy;
@@ -314,7 +428,7 @@ namespace KineticistElementsExpanded.Components
                 }
 
                 BaseDamage damage = ruleDealDamage.DamageBundle.First;
-                damage.ReplaceDice(new DiceFormula(damage.Dice.Rolls / 2, damage.Dice.Dice));
+                damage.Dice.Modify(new DiceFormula(damage.Dice.BaseFormula.Rolls/2, damage.Dice.BaseFormula.Dice), ModifierDescriptor.UntypedStackable);
 
                 DamageTypeDescription typeDescription = damage.CreateTypeDescription();
                 typeDescription.Type = DamageType.Energy;

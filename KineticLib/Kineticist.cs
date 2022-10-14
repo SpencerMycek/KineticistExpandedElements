@@ -31,6 +31,11 @@ using Kingmaker.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Kingmaker.UnitLogic.Class.Kineticist.ActivatableAbility;
+using Kingmaker.UnitLogic.Commands.Base;
+using Kingmaker.View.Animation;
+using BlueprintCore.Utils;
+using Kingmaker.UnitLogic.Mechanics.Conditions;
 
 namespace KineticistElementsExpanded.KineticLib
 {
@@ -210,10 +215,11 @@ namespace KineticistElementsExpanded.KineticLib
         // Adds the given admixture to the composite buff
         public static void AddAdmixtureToBuff(KineticistTree Tree, KineticistTree.Infusion composite, KineticistTree.Element param1, bool basic, bool energy, bool phyisical)
         {
+
             var inner_checker = new ConditionsChecker
             {
                 Operation = Operation.Or,
-                Conditions = Tree.GetAll(basic: basic, onlyEnergy: energy, onlyPhysical: phyisical, archetype: true)
+                Conditions = Tree.GetAll(basic: basic, composite: !basic, onlyEnergy: energy, onlyPhysical: phyisical, archetype: true)
                         .Select(s => Helper.CreateContextConditionHasFact(
                             AnyRef.ToRef<BlueprintUnitFactReference>(s.BlastFeature))).ToArray()
             };
@@ -228,7 +234,6 @@ namespace KineticistElementsExpanded.KineticLib
 
             var composite_action = Tree.CompositeBuff.Get().GetComponent<AddFactContextActions>();
             Helper.AppendAndReplace(ref composite_action.Activated.Actions, outer_conditional);
-
         }
 
 
@@ -398,6 +403,191 @@ namespace KineticistElementsExpanded.KineticLib
                 return buff;
             }
 
+        }
+
+        #endregion
+
+        #region Blade Construction
+        
+        public static class Blade
+        {
+            public static BlueprintAbility CreateKineticBlade(KineticistTree tree, string element, string prefix, bool isComposite, string prefabAssetId, string projectileUID, UnityEngine.Sprite icon, UnityEngine.Sprite damage_icon, PhysicalDamageForm p = (PhysicalDamageForm)0, DamageEnergyType e = (DamageEnergyType)255, AbilityEffectRunAction damageTypeOverride = null)
+            {
+                var kinetic_blade_enable_buff = ResourcesLibrary.TryGetBlueprint<BlueprintBuff>("426a9c07-9ee7-ac34-aa8e-0054f2218074"); // KineticBladeEnableBuff
+                var kinetic_blade_hide_feature = ResourcesLibrary.TryGetBlueprint<BlueprintFeature>("4d39ccef-7b5b-2e94-58e8-599eae3c3be0"); // KineticBladeHideFeature
+                //var icon = Helper.StealIcon("89acea31-3b9a-9cb4-d86b-bbca01b90346"); // KineticBladeAirBlastAbility
+                //var damage_icon = Helper.StealIcon("89cc522f-2e14-44b4-0ba1-757320c58530"); // AirBlastKineticBladeDamage
+
+                bool isPhysical = p != (PhysicalDamageForm)0;
+                bool overrideAction = damageTypeOverride != null;
+
+                var weapon = CreateBlueprintItemWeapon(tree, element, prefix, isPhysical, isComposite, prefabAssetId);
+
+                #region BlastAbility
+
+                var blade_active_ability = Helper.CreateBlueprintActivatableAbility("KineticBlade"+element+"BlastAbility", out var buff, LocalizationTool.GetString(element+".Blade.Enchant"),
+                    LocalizationTool.GetString("Blade.Description"), icon, group: Kingmaker.UnitLogic.ActivatableAbilities.ActivatableAbilityGroup.FormInfusion, deactivateWhenDead: true);
+                blade_active_ability.m_ActivateOnUnitAction = Kingmaker.UnitLogic.ActivatableAbilities.AbilityActivateOnUnitActionType.Attack;
+                blade_active_ability.SetComponents
+                    (
+                    new RestrictionCanUseKineticBlade { }
+                    );
+
+                #endregion
+
+                #region buffs
+                buff.Flags(true, true, null, null);
+                buff.Stacking = StackingType.Replace;
+                buff.SetComponents
+                    (
+                    new AddKineticistBlade { m_Blade = AnyRef.ToAny(weapon) }
+                    );
+                #endregion
+
+                #region BlastBurnAbility
+
+                var blade_burn_ability = Helper.CreateBlueprintAbility("KineticBlade"+element+"BlastBurnAbility", null, null, icon,
+                    AbilityType.Special, UnitCommand.CommandType.Free, AbilityRange.Personal);
+                blade_burn_ability.TargetSelf();
+                blade_burn_ability.Hidden = true;
+                blade_burn_ability.DisableLog = true;
+                blade_burn_ability.AvailableMetamagic = Metamagic.Extend | Metamagic.Heighten;
+                blade_burn_ability.SetComponents
+                    (
+                    new AbilityKineticist { Amount = 1, InfusionBurnCost = 1 },
+                    Helper.CreateAbilityEffectRunAction(SavingThrowType.Unknown, kinetic_blade_enable_buff.CreateContextActionApplyBuff(asChild: true)),
+                    new AbilityKineticBlade { }
+                    );
+
+                #endregion
+
+                #region BlastKineticBladeDamage
+
+                ActionList actions = null;
+
+                var blade_damage_ability = Helper.CreateBlueprintAbility(element+"BlastKineticBladeDamage", LocalizationTool.GetString(element + ".Blade.Prefix"),
+                    LocalizationTool.GetString("Blade.Description"), damage_icon, AbilityType.Special, UnitCommand.CommandType.Standard, AbilityRange.Close);
+                blade_damage_ability.TargetEnemy();
+                blade_damage_ability.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten | Metamagic.Reach;
+                blade_damage_ability.Hidden = true;
+                blade_damage_ability.SetComponents
+                    (
+                    Helper.CreateAbilityShowIfCasterHasFact(kinetic_blade_hide_feature.ToRef2()),
+                    new AbilityDeliveredByWeapon { },
+                    overrideAction ? damageTypeOverride :
+                        Kineticist.Blast.RunActionDealDamage(out actions, p, e, isAOE: false, half: false),
+                    Kineticist.Blast.RankConfigDice(twice: isComposite && (p == (PhysicalDamageForm)0 || e == (DamageEnergyType)255), half: false),
+                    Kineticist.Blast.RankConfigBonus(half_bonus: !isPhysical),
+                    Kineticist.Blast.DCForceDex(),
+                    Kineticist.Blast.BurnCost(actions, infusion: 1),
+                    Kineticist.Blast.Projectile(projectileUID, isPhysical, AbilityProjectileType.Simple, 0, 5),
+                    Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnPrecastStart, Resource.Sfx.PreStart_Earth),
+                    Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnStart, Resource.Sfx.Start_Earth)
+                    );
+                blade_damage_ability.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten;
+
+                #endregion
+
+                weapon.Get().SetComponents
+                    (
+                    new WeaponKineticBlade { m_ActivationAbility = blade_burn_ability.ToRef(), m_Blast = blade_damage_ability.ToRef() }
+                    );
+
+                var blade_feat = Helper.CreateBlueprintFeature(element+"KineticBladeFeature", null, null, icon, FeatureGroup.None);
+                blade_feat.HideInUI = true;
+                blade_feat.HideInCharacterSheetAndLevelUp = true;
+                blade_feat.SetComponents
+                    (
+                    Helper.CreateAddFeatureIfHasFact(blade_active_ability.ToRef()),
+                    Helper.CreateAddFeatureIfHasFact(blade_burn_ability.ToRef2())
+                    );
+
+                return blade_damage_ability;
+            }
+
+            public static BlueprintItemWeaponReference CreateBlueprintItemWeapon(KineticistTree tree, string element, string prefix, bool isPhysical, bool isComposite, string prefabAssetId)
+            {
+                var weapon = Helper.CreateBlueprintItemWeapon(element+"KineticBladeWeapon", LocalizationTool.GetString(element+".Blade.Prefix"), LocalizationTool.GetString("Blade.Description"), isPhysical? Kineticist.ref_kinetic_blast_physical_blade_type: Kineticist.ref_kinetic_blast_energy_blade_type,
+                    damageOverride: new DiceFormula { m_Rolls = 0, m_Dice = DiceType.Zero }, price: 10);
+                weapon.m_Enchantments = new BlueprintWeaponEnchantmentReference[1] { CreateBlueprintWeaponEnchantment(tree, element, prefix, prefabAssetId, isPhysical, isComposite) };
+                weapon.m_EquipmentEntity = AnyRef.ToAny("");
+                weapon.m_EquipmentEntityAlternatives = new KingmakerEquipmentEntityReference[0] { };
+                weapon.m_VisualParameters.m_WeaponAnimationStyle = Kingmaker.View.Animation.WeaponAnimationStyle.SlashingOneHanded;
+                weapon.m_VisualParameters.m_SpecialAnimation = Kingmaker.Visual.Animation.Kingmaker.UnitAnimationSpecialAttackType.None;
+                weapon.m_VisualParameters.m_WeaponModel = new PrefabLink { AssetId = "7c05296dbc70bf6479e66df7d9719d1e" };
+                weapon.m_VisualParameters.m_WeaponBeltModelOverride = null;
+                weapon.m_VisualParameters.m_WeaponSheathModelOverride = new PrefabLink { AssetId = "f777a23c850d099428c33807f83cd3d6" };
+
+                // Components are done later, in calling function
+                return AnyRef.ToAny(weapon);
+            }
+
+            public static BlueprintWeaponEnchantmentReference CreateBlueprintWeaponEnchantment(KineticistTree tree, string element, string prefix, string prefabAssetId, bool isPhysical, bool isComposite)
+            {
+                var first_context_calc = new ContextCalculateSharedValue
+                {
+                    ValueType = AbilitySharedValue.Damage,
+                    Modifier = 1.0,
+                    Value = new ContextDiceValue
+                    {
+                        DiceType = DiceType.One,
+                        DiceCountValue = new ContextValue
+                        {
+                            ValueType = ContextValueType.Simple,
+                            Value = 0,
+                        },
+                        BonusValue = new ContextValue
+                        {
+                            ValueType = isPhysical ? ContextValueType.Rank : ContextValueType.Simple,
+                            Value = 0,
+                            ValueRank = isComposite ? AbilityRankType.DamageBonus : AbilityRankType.DamageDice,
+                        }
+                    }
+                };
+                var first_rank_conf = Helper.CreateContextRankConfig(
+                    ContextRankBaseValueType.FeatureRank,
+                    progression: isComposite ? ContextRankProgression.MultiplyByModifier : ContextRankProgression.AsIs,
+                    stepLevel: 2,
+                    type: AbilityRankType.DamageDice, 
+                    feature: tree.KineticBlast, min: 0, max: 20);
+                var second_rank_conf = Helper.CreateContextRankConfig(
+                    ContextRankBaseValueType.CustomProperty, 
+                    progression: isPhysical ? ContextRankProgression.AsIs : ContextRankProgression.Div2,
+                    type: AbilityRankType.DamageBonus, 
+                    customProperty: tree.KineticistMainStatProperty, 
+                    min: 0, max: 20);
+                var second_context_calc = new ContextCalculateSharedValue
+                {
+                    ValueType = AbilitySharedValue.DamageBonus,
+                    Modifier = 1.0,
+                    Value = new ContextDiceValue
+                    {
+                        DiceType = DiceType.Zero,
+                        DiceCountValue = new ContextValue
+                        {
+                            ValueType = ContextValueType.Rank,
+                            ValueRank = AbilityRankType.DamageDice
+                        },
+                        BonusValue = new ContextValue
+                        {
+                            ValueType = ContextValueType.Rank,
+                            ValueRank = AbilityRankType.DamageBonus
+                        }
+                    }
+                };
+
+                var enchant = Helper.CreateBlueprintWeaponEnchantment(element+"KineticBladeEnchantment", LocalizationTool.GetString(element+".Blade.Enchant"));
+                enchant.SetComponents
+                    (
+                    first_context_calc,
+                    first_rank_conf,
+                    second_rank_conf
+                    );
+                if (!isComposite) enchant.AddComponents(second_context_calc);
+                enchant.WeaponFxPrefab = new PrefabLink { AssetId = prefabAssetId };
+
+                return AnyRef.ToAny(enchant);
+            }
         }
 
         #endregion

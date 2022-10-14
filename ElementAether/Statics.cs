@@ -9,40 +9,19 @@ namespace KineticistElementsExpanded.ElementAether
     class Statics
     {
         protected static readonly string ElementalFocusAetherDescription =
-            "Kineticists who focus on the element of aether—a rare substance formed when elemental"
-            + " energy affects the Ethereal Plane—are called telekineticists. Telekineticists use"
-            + " strands of aether to move objects with their minds.";
+            "Kineticists who focus on the element of aether—a rare substance formed when elemental energy affects the Ethereal Plane—are called telekineticists. Telekineticists use strands of aether to move objects with their minds.";
 
-        protected static readonly string AetherClassSkillsDescription = "An Telekineticist adds"
-            + " {g|Encyclopedia:Trickery}Trickery{/g} and {g|Encyclopedia:Knowledge_World}Knowledge"
-            + " (World){/g} to her list of class {g|Encyclopedia:Skills}skills{/g}.";
+        protected static readonly string AetherClassSkillsDescription = "An Telekineticist adds {g|Encyclopedia:Trickery}Trickery{/g} and {g|Encyclopedia:Knowledge_World}Knowledge (World){/g} to her list of class {g|Encyclopedia:Skills}skills{/g}.";
 
         protected static readonly string TelekineticBlastDescription =
-@"Element: aether
-Type: simple blast
-Level: --
-Burn: 0
-Blast Type: physical
-{g|Encyclopedia:Damage}Damage{/g}: {g|Encyclopedia:Damage_Type}bludgeoning{/g}, piercing, and"
-+ @"slashing
-You throw a nearby unattended object enfolded in strands of aether at a single foe as a ranged attack";
+@"Element: aether\nType: simple blast\nLevel: --\nBurn: 0\nBlast Type: physical\n{g|Encyclopedia:Damage}Damage{/g}: {g|Encyclopedia:Damage_Type}bludgeoning{/g}, piercing, and slashing\nYou throw a nearby unattended object enfolded in strands of aether at a single foe as a ranged attack";
 
         protected static readonly string ForceBlastDescription =
-@"Element: aether
-Type: composite blast
-level: —
-Burn: 2
-Prerequisites: primary element (aether), expanded element (aether)
-Blast Type: energy
-{g|Encyclopedia:Damage}Damage{/g}: force
-You throw a burst of force at a foe";
+@"Element: aether\nType: composite blast\nlevel: —\nBurn: 2\nPrerequisites: primary element (aether), expanded element (aether)\nBlast Type: energy\n{g|Encyclopedia:Damage}Damage{/g}: force\nYou throw a burst of force at a foe";
 
 
         protected static readonly string ForceWardDescription =
-@"You constantly surround yourself with a ward of force. You gain a number of temporary hit points equal to your kineticist level.
-
-These temporary hit points regenerate at a rate of 1 per minute. By accepting 1 point of burn as a standard action, you can increase the maximum number of temporary hit points provided by your force ward by half your kineticist level until the next time your burn is removed.
-If you use this ability multiple times, the increases stack. For every two times you use this ability, the regeneration effect increases by 1.";
+@"You constantly surround yourself with a ward of force. You gain a number of temporary hit points equal to your kineticist level.\n\nThese temporary hit points regenerate at a rate of 1 per minute. By accepting 1 point of burn as a standard action, you can increase the maximum number of temporary hit points provided by your force ward by half your kineticist level until the next time your burn is removed.\nIf you use this ability multiple times, the increases stack. For every two times you use this ability, the regeneration effect increases by 1.";
 
 
         protected static readonly string TelekineticInvisibilityDescription =
@@ -52,12 +31,10 @@ If you use this ability multiple times, the increases stack. For every two times
 @"A Telekineticist can use {g|Encyclopedia:Trickery}Trickery{/g} at a range of 30 feet.";
 
         protected static readonly string TelekineticManeuversDescription =
-@"A Telekineticist can perform combat maneuvers (trip, disarm, bullrush, pull) at range using your main Kineticist stat. 
-If you possess the Telekinetic Finesse wild talent, add Dirty Trick to the list of combat maneuvers you can perform; using Dexterity instead of your main Kineticist stat.";
+@"A Telekineticist can perform combat maneuvers (trip, disarm, bullrush, pull) at range using your main Kineticist stat. \nIf you possess the Telekinetic Finesse wild talent, add Dirty Trick to the list of combat maneuvers you can perform; using Dexterity instead of your main Kineticist stat.";
 
         protected static readonly string TelekineticManeuversPullDescription =
-@"A pull attempts to pull an opponent straight towards you without doing any harm. If your {g|Encyclopedia:Combat_Maneuvers}combat maneuver{/g} is successful, your target is pulled 5 feet. For every 5 by which your {g|Encyclopedia:Attack}attack{/g} exceeds your opponent's {g|Encyclopedia:CMD}CMD{/g}, you can pull the target an additional 5 feet.
-An enemy being moved by a pull does not provoke an {g|Encyclopedia:Attack_Of_Opportunity}attack of opportunity{/g} because of the movement. You cannot pull a creature into a square that is occupied by a solid object or obstacle.";
+@"A pull attempts to pull an opponent straight towards you without doing any harm. If your {g|Encyclopedia:Combat_Maneuvers}combat maneuver{/g} is successful, your target is pulled 5 feet. For every 5 by which your {g|Encyclopedia:Attack}attack{/g} exceeds your opponent's {g|Encyclopedia:CMD}CMD{/g}, you can pull the target an additional 5 feet.\nAn enemy being moved by a pull does not provoke an {g|Encyclopedia:Attack_Of_Opportunity}attack of opportunity{/g} because of the movement. You cannot pull a creature into a square that is occupied by a solid object or obstacle.";
 
         protected static readonly string TouchsiteReactiveDescription =
 @"Your strands of aether surround you, making it virtually impossible for a violent motion to catch you off guard, so long as the motion originates within their range. The character can react to danger before her senses would normally allow her to do so. She cannot be caught {g|Encyclopedia:Flat_Footed}flat-footed{/g}, nor does she lose her {g|Encyclopedia:Dexterity}Dexterity{/g} {g|Encyclopedia:Bonus}bonus{/g} to {g|Encyclopedia:Armor_Class}AC{/g} if the {g|Encyclopedia:Attack}attacker{/g} is invisible. She still loses her Dexterity bonus to AC if immobilized. A character with this ability can still lose her Dexterity bonus to AC if an opponent successfully uses the feint {g|Encyclopedia:CA_Types}action{/g} against her.";
@@ -82,50 +59,19 @@ You form a weapon using your kinetic abilities. You create a nonreach, light or 
 You can use this form infusion once as part of an {g|Encyclopedia:Attack}attack{/g} {g|Encyclopedia:CA_Types}action{/g}, a charge action, or a full-attack action in order to make {g|Encyclopedia:MeleeAttack}melee attacks{/g} with your kinetic blade. Since it's part of another action (and isn't an action itself), using this wild talent doesn't provoke any additional {g|Encyclopedia:Attack_Of_Opportunity}attacks of opportunity{/g}. The kinetic blade deals your kinetic blast damage on each hit (applying any modifiers to your kinetic blast's damage as normal, but not your {g|Encyclopedia:Strength}Strength{/g} modifier). The blade disappears at the end of your turn. The weapon deals the same {g|Encyclopedia:Damage_Type}damage type{/g} that your kinetic blast deals, and it interacts with {g|Encyclopedia:Armor_Class}Armor Class{/g} and {g|Encyclopedia:Spell_Resistance}spell resistance{/g} as normal for a blast of its type. The kinetic blade doesn't add the damage {g|Encyclopedia:Bonus}bonus{/g} from elemental overflow.";
 
         protected static readonly string DisintegratingInfusionDescription =
-@"Element: aether
-Type: substance infusion
-Level: 6
-Burn: 4
-Associated Blasts: force
-{g|Encyclopedia:Saving_Throw}Saving Throw{/g}: Fortitude
-You can use force to rip your targets apart. Against creatures, your kinetic blast deals double its normal amount of damage, but targets receive a saving throw to reduce the damage to half the blast’s normal amount of damage (for a total of 1/4 of the blast’s increased damage). Any creature reduced to 0 or fewer hit points by the blast is disintegrated, as the spell disintegrate. ";
+@"Element: aether\nType: substance infusion\nLevel: 6\nBurn: 4\nAssociated Blasts: force\n{g|Encyclopedia:Saving_Throw}Saving Throw{/g}: Fortitude\nYou can use force to rip your targets apart. Against creatures, your kinetic blast deals double its normal amount of damage, but targets receive a saving throw to reduce the damage to half the blast’s normal amount of damage (for a total of 1/4 of the blast’s increased damage). Any creature reduced to 0 or fewer hit points by the blast is disintegrated, as the spell disintegrate. ";
 
         protected static readonly string ManyThrowInfusionDescription =
-@"Element: aether
-Type: form infusion
-Level: 6
-Burn: 4
-Prerequisite(s): extended range
-Associated Blasts: telekinesis
-{g|Encyclopedia:Saving_Throw}Saving Throw{/g}: None
-You grab a large number of objects and throw them all at once.
-
-You can use your telekinetic blast to make attack rolls against a number of targets equal to your kineticist level within 120 feet, but no two targets can be more than 30 feet apart.";
+@"Element: aether\nType: form infusion\nLevel: 6\nBurn: 4\nPrerequisite(s): extended range\nAssociated Blasts: telekinesis\n{g|Encyclopedia:Saving_Throw}Saving Throw{/g}: None\nYou grab a large number of objects and throw them all at once.\n\nYou can use your telekinetic blast to make attack rolls against a number of targets equal to your kineticist level within 120 feet, but no two targets can be more than 30 feet apart.";
 
         protected static readonly string ForceHookInfusionDescription =
-@"Element: aether
-Type: form infusion
-Level: 3
-Burn: 2
-Associated Blasts: force
-{g|Encyclopedia:Saving_Throw}Saving Throw{/g}: None
-Your force blast hooks onto its target and drags you adjacent to it.";
+@"Element: aether\nType: form infusion\nLevel: 3\nBurn: 2\nAssociated Blasts: force\n{g|Encyclopedia:Saving_Throw}Saving Throw{/g}: None\nYour force blast hooks onto its target and drags you adjacent to it.";
 
         protected static readonly string FoeThrowInfusionDescription =
-@"Element: aether
-Type: form infusion
-Level: 3
-Burn: 2
-Associated Blasts: telekinetic
-{g|Encyclopedia:Saving_Throw}Saving Throw{/g}: Fortitude negates; see text
-Your telekinetic blast can throw a Large or smaller creature instead of an unattended object; you can increase the burn cost by 1 to affect a creature of a larger size. If the creature you attempt to throw succeeds at a Fortitude save, it negates the blast entirely.
-
-Otherwise, if your blast hits, both the thrown creature and the target take the full amount of damage from your telekinetic blast, and the thrown creature falls prone in the last unoccupied space along its path. If your blast misses, the thrown creature can choose to occupy any space within 30 feet of the target, it doesn’t fall prone, and it takes half the normal amount of damage from your blast. The movement doesn’t provoke attacks of opportunity.";
+@"Element: aether\nType: form infusion\nLevel: 3\nBurn: 2\nAssociated Blasts: telekinetic\n{g|Encyclopedia:Saving_Throw}Saving Throw{/g}: Fortitude negates; see text\nYour telekinetic blast can throw a Large or smaller creature instead of an unattended object; you can increase the burn cost by 1 to affect a creature of a larger size. If the creature you attempt to throw succeeds at a Fortitude save, it negates the blast entirely.\n\nOtherwise, if your blast hits, both the thrown creature and the target take the full amount of damage from your telekinetic blast, and the thrown creature falls prone in the last unoccupied space along its path. If your blast misses, the thrown creature can choose to occupy any space within 30 feet of the target, it doesn’t fall prone, and it takes half the normal amount of damage from your blast. The movement doesn’t provoke attacks of opportunity.";
 
         protected static readonly string FoeThrowInfusionTargetAbilityDescription = 
-@"Choose a target to LIFT them. Preparing them to be thrown.
-
-Note: Lifting has no effect on the target, and lifting one creature put's down any other lifted creature.";
+@"Choose a target to LIFT them. Preparing them to be thrown.\n\nNote: Lifting has no effect on the target, and lifting one creature put's down any other lifted creature.";
 
         protected static readonly string FoeThrowInfusionThrowAbilityDescription = 
 @"Throw the lifted creature at the target enemy.";

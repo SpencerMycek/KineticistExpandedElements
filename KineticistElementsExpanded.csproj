@@ -83,7 +83,6 @@
 	<ItemGroup>
 		<None Update="Info.json" CopyToOutputDirectory="PreserveNewest" />
 		<Folder Include="Media\Icons\" />
-		<Folder Include="Media\Localization\" />
 		<Reference Include="Assembly-CSharp" HintPath="$(SolutionDir)lib\Assembly-CSharp.dll" />
 	</ItemGroup>
 
@@ -109,7 +108,7 @@
 	<Target Name="ILRepack" AfterTargets="Build">
 		<ItemGroup>
 			<InputAssemblies Include="BlueprintCore.dll" />
-			<InputAssemblies Include="$(ModRepo)\lib\CodexLib.dll" />
+			<!--<InputAssemblies Include="$(ModRepo)\lib\CodexLib.dll" />-->
 			<InputAssemblies Include="KineticistElementsExpanded.dll" />
 			<OutputAssembly Include="KineticistElementsExpanded.dll" />
 		</ItemGroup>
@@ -127,6 +126,7 @@
 			<debug_symbols Include="$(OutputPath)\KineticistElementsExpanded.pdb" />
 			<media Include="$(ModRepo)\Media\Icons\*" />
 			<library Include="$(ModRepo)\lib\CodexLib.dll" />
+			<l8n Include="$(ModRepo)\Media\Localization\*" />
 		</ItemGroup>
 
 		<Copy SourceFiles="@(Assembly)" DestinationFolder="$(WrathPath)\Mods\KineticistElementsExpanded" />
@@ -134,6 +134,7 @@
 		<Copy SourceFiles="@(debug_symbols)" DestinationFolder="$(WrathPath)\Mods\KineticistElementsExpanded" />
 		<Copy SourceFiles="@(media)" DestinationFolder="$(WrathPath)\Mods\KineticistElementsExpanded\Icons" />
 		<Copy SourceFiles="@(library)" DestinationFolder="$(WrathPath)\Mods\KineticistElementsExpanded" />
+		<Copy SourceFiles="@(l8n)" DestinationFolder="$(WrathPath)\Mods\KineticistElementsExpanded\l8n" />
 	</Target>
 
   <ProjectExtensions><VisualStudio><UserProperties info_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>

@@ -150,6 +150,7 @@ namespace KineticistElementsExpanded
             MasterPatch.Run();
 
             Main.Print("Loading Kineticist Elements Expanded");
+            LocalizationTool.LoadLocalizationPacks(new String[4] { Main.ModPath + "l8n\\GeneralLocalized.json", Main.ModPath + "l8n\\AetherLocalized.json", Main.ModPath + "l8n\\VoidLocalized.json", Main.ModPath + "l8n\\WoodLocalized.json" });
 
             LoadSafe(Aether.Configure);
             LoadSafe(Void.Configure);

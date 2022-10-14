@@ -4,6 +4,7 @@ using Kingmaker.Blueprints;
 using Kingmaker.ElementsSystem;
 using Kingmaker.EntitySystem.Entities;
 using Kingmaker.EntitySystem.Stats;
+using Kingmaker.Enums;
 using Kingmaker.Enums.Damage;
 using Kingmaker.Items;
 using Kingmaker.PubSubSystem;
@@ -114,7 +115,7 @@ namespace KineticistElementsExpanded.Components
                 } else
                 {
                     BaseDamage damage = ruleDealDamage.DamageBundle.First;
-                    damage.ReplaceDice(new DiceFormula(damage.Dice.Rolls * 2, damage.Dice.Dice));
+                    damage.Dice.Modify(new DiceFormula(damage.Dice.BaseFormula.Rolls * 2, damage.Dice.BaseFormula.Dice), ModifierDescriptor.UntypedStackable);
                 }
             } catch (Exception ex)
             {
@@ -181,9 +182,9 @@ namespace KineticistElementsExpanded.Components
             DamageCriticalModifierType? crit = (ruleAttackRoll.IsCriticalConfirmed) ? ((context != null) ? DamageCriticalModifierTypeExtension.FromInt(ruleAttackRoll.WeaponStats.CriticalMultiplier) : new DamageCriticalModifierType?(ruleAttackRoll.Weapon.Blueprint.CriticalModifier)) : null;
 
             BaseDamage baseDamage = this.DamageTypeDesc.GetDamageDescriptor(dices, bonus + bolsteredBonus).CreateDamage();
-            baseDamage.EmpowerBonus = (empower ? 1.5f : baseDamage.EmpowerBonus);
-            if (maximize)
-                baseDamage.CalculationType = DamageCalculationType.Maximized;
+            baseDamage.EmpowerBonus = new ValueWithSource<float>(empower ? 1.5f : baseDamage.EmpowerBonus);
+            //if (maximize)
+            //    baseDamage.CalculationType = DamageCalculationType.Maximized;
             baseDamage.CriticalModifier = ((crit != null) ? new int?(crit.GetValueOrDefault().IntValue()) : null);
             baseDamage.SourceFact = ContextDataHelper.GetFact();
             return baseDamage;

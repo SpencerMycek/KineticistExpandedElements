@@ -117,9 +117,9 @@ namespace KineticistElementsExpanded.Components
             DamageCriticalModifierType? crit = (ruleAttackRoll.IsCriticalConfirmed) ? ((context != null) ? DamageCriticalModifierTypeExtension.FromInt(ruleAttackRoll.WeaponStats.CriticalMultiplier) : new DamageCriticalModifierType?(ruleAttackRoll.Weapon.Blueprint.CriticalModifier)) : null;
 
             BaseDamage baseDamage = this.DamageTypeDesc.GetDamageDescriptor(dices, bonus + bolsteredBonus).CreateDamage();
-            baseDamage.EmpowerBonus = (empower ? 1.5f : baseDamage.EmpowerBonus);
-            if (maximize)
-                baseDamage.CalculationType = DamageCalculationType.Maximized;
+            baseDamage.EmpowerBonus = new ValueWithSource<float>(empower ? 1.5f : baseDamage.EmpowerBonus);
+            //if (maximize)
+            //    baseDamage.CalculationType = DamageCalculationType.Maximized;
             baseDamage.CriticalModifier = ((crit != null) ? new int?(crit.GetValueOrDefault().IntValue()) : null);
             baseDamage.SourceFact = ContextDataHelper.GetFact();
             ContextAttackData contextAttackData = ContextData<ContextAttackData>.Current;
@@ -199,9 +199,9 @@ namespace KineticistElementsExpanded.Components
             DamageCriticalModifierType? crit = (ruleAttackRoll.IsCriticalConfirmed) ? ((context != null) ? DamageCriticalModifierTypeExtension.FromInt(ruleAttackRoll.WeaponStats.CriticalMultiplier) : new DamageCriticalModifierType?(ruleAttackRoll.Weapon.Blueprint.CriticalModifier)) : null;
 
             BaseDamage baseDamage = this.DamageTypeDesc.GetDamageDescriptor(dices, bonus + bolsteredBonus).CreateDamage();
-            baseDamage.EmpowerBonus = (empower ? 1.5f : baseDamage.EmpowerBonus);
-            if (maximize)
-                baseDamage.CalculationType = DamageCalculationType.Maximized;
+            baseDamage.EmpowerBonus = new ValueWithSource<float>(empower ? 1.5f : baseDamage.EmpowerBonus);
+            //if (maximize)
+            //    baseDamage.CalculationType = DamageCalculationType.Maximized;
             baseDamage.CriticalModifier = ((crit != null) ? new int?(crit.GetValueOrDefault().IntValue()) : null);
             baseDamage.SourceFact = ContextDataHelper.GetFact();
             ContextAttackData contextAttackData = ContextData<ContextAttackData>.Current;
