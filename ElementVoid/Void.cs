@@ -693,6 +693,7 @@ namespace KineticistElementsExpanded.ElementVoid
                 Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnPrecastStart, Resource.Sfx.PreStart_Earth),
                 Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnStart, Resource.Sfx.Start_Earth)
                 ).TargetEnemy(CastAnimationStyle.Kineticist);
+            ability.SpellResistance = true;
             ability.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten;
 
             return ability;
@@ -718,6 +719,7 @@ namespace KineticistElementsExpanded.ElementVoid
                 Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnPrecastStart, Resource.Sfx.PreStart_Earth),
                 Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnStart, Resource.Sfx.Start_Earth)
                 ).TargetEnemy(CastAnimationStyle.Kineticist);
+            ability.SpellResistance = true;
             ability.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten;
             ability.m_Parent = Tree.Negative.BaseAbility;
 
@@ -757,6 +759,7 @@ namespace KineticistElementsExpanded.ElementVoid
                     m_Condition = new ConditionsChecker { Conditions = null, Operation = Operation.And }
                 }
                 ).TargetEnemy(CastAnimationStyle.Kineticist);
+            ability.SpellResistance = true;
             ability.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten;
             ability.m_Parent = Tree.Negative.BaseAbility;
 
@@ -802,6 +805,7 @@ namespace KineticistElementsExpanded.ElementVoid
                 Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnStart, Resource.Sfx.Start_Earth)
                 ).TargetEnemy(CastAnimationStyle.Kineticist);
             ability.CanTargetPoint = true;
+            ability.SpellResistance = true;
             ability.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten;
             ability.m_Parent = Tree.Negative.BaseAbility;
 
@@ -826,6 +830,7 @@ namespace KineticistElementsExpanded.ElementVoid
                 Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnStart, Resource.Sfx.Start_Earth)
                 ).TargetEnemy(CastAnimationStyle.Kineticist);
             ability.CanTargetPoint = true;
+            ability.SpellResistance = true;
             ability.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten;
             ability.m_Parent = Tree.Negative.BaseAbility;
 

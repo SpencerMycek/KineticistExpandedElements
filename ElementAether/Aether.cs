@@ -739,6 +739,7 @@ namespace KineticistElementsExpanded.ElementAether
                 Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnPrecastStart, Resource.Sfx.PreStart_Earth),
                 Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnStart, Resource.Sfx.Start_Earth)
                 ).TargetEnemy(CastAnimationStyle.Kineticist);
+            ability.SpellResistance = true;
             ability.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten;
 
             return ability;
@@ -765,6 +766,7 @@ namespace KineticistElementsExpanded.ElementAether
                 Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnPrecastStart, Resource.Sfx.PreStart_Earth),
                 Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnStart, Resource.Sfx.Start_Earth)
                 ).TargetEnemy(CastAnimationStyle.Kineticist);
+            ability.SpellResistance = true;
             ability.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten;
             ability.m_Parent = Tree.Composite_Force.BaseAbility;
 
@@ -812,6 +814,7 @@ namespace KineticistElementsExpanded.ElementAether
                     m_Condition = new ConditionsChecker { Conditions = null, Operation = Operation.And }
                 }
                 ).TargetEnemy(CastAnimationStyle.Kineticist);
+            ability.SpellResistance = true;
             ability.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten;
             ability.m_Parent = Tree.Composite_Force.BaseAbility;
 
@@ -853,6 +856,7 @@ namespace KineticistElementsExpanded.ElementAether
                 Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnStart, Resource.Sfx.Start_Earth)
                 ).TargetEnemy(CastAnimationStyle.Kineticist);
             ability.CanTargetPoint = true;
+            ability.SpellResistance = true;
             ability.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten;
             ability.m_Parent = Tree.Composite_Force.BaseAbility;
 
@@ -883,6 +887,7 @@ namespace KineticistElementsExpanded.ElementAether
                     AppearDuration = 0.1f
                     }
                 ).TargetEnemy(CastAnimationStyle.Kineticist);
+            ability.SpellResistance = true;
             ability.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten;
             ability.m_Parent = Tree.Composite_Force.BaseAbility;
 
@@ -902,6 +907,7 @@ namespace KineticistElementsExpanded.ElementAether
                 Helper.CreateAbilityShowIfCasterHasFact(AnyRef.ToAny(Tree.FocusFirst)),
                 Kineticist.Blast.BurnCost(null, 0, 2, 0)
                 );
+            ability.SpellResistance = true;
             ability.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten;
 
             foreach (var v in variants)

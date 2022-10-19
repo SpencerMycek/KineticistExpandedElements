@@ -78,7 +78,7 @@
   {
     "Key": "Aether.Admixture.Aether.Description",
     "ProcessTemplates": false,
-    "enGB": "\"Element: aether\\nType: composite blast\\nLevel: —\\nBurn: 2\\nPrerequisite(s): telekinetic blast, any other simple blast\\nBlast Type: special\\n{g|Encyclopedia:Damage}Damage{/g}: see text\\nYou infuse a simple blast you know with aether, causing it to deal 1 additional point of damage of the same type for each of its damage dice; it otherwise acts as the simple blast."
+    "enGB": "Element: aether\nType: composite blast\nLevel: —\nBurn: 2\nPrerequisite(s): telekinetic blast, any other simple blast\nBlast Type: special\n{g|Encyclopedia:Damage}Damage{/g}: see text\nYou infuse a simple blast you know with aether, causing it to deal 1 additional point of damage of the same type for each of its damage dice; it otherwise acts as the simple blast."
   },
   {
     "Key": "Aether.Admixture.Aether.Greater.Name",
@@ -88,7 +88,7 @@
   {
     "Key": "Aether.Admixture.Aether.Greater.Description",
     "ProcessTemplates": false,
-    "enGB": "\"Element: aether\\nType: composite blast\\nLevel: —\\nBurn: 3\\nPrerequisite(s): telekinetic blast, any other simple blast\\nBlast Type: special\\n{g|Encyclopedia:Damage}Damage{/g}: see text\\nYou infuse a composite blast you know with aether, causing it to deal 1 additional point of damage of the same type for each of its damage dice."
+    "enGB": "Element: aether\nType: composite blast\nLevel: —\nBurn: 3\nPrerequisite(s): telekinetic blast, any other simple blast\nBlast Type: special\n{g|Encyclopedia:Damage}Damage{/g}: see text\nYou infuse a composite blast you know with aether, causing it to deal 1 additional point of damage of the same type for each of its damage dice."
   },
   {
     "Key": "Aether.ManyThrow.Name",

@@ -451,6 +451,7 @@ namespace KineticistElementsExpanded.ElementWood
                 Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnPrecastStart, Resource.Sfx.PreStart_Earth),
                 Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnStart, Resource.Sfx.Start_Earth)
                 ).TargetEnemy(CastAnimationStyle.Kineticist);
+            ability.SpellResistance = true;
             ability.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten;
 
             //((ContextActionDealDamage)actions.Actions[0]).Value.BonusValue.ValueType = ContextValueType.Shared;
@@ -480,6 +481,7 @@ namespace KineticistElementsExpanded.ElementWood
                 Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnPrecastStart, Resource.Sfx.PreStart_Earth),
                 Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnStart, Resource.Sfx.Start_Earth)
                 ).TargetEnemy(CastAnimationStyle.Kineticist);
+            ability.SpellResistance = true;
             ability.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten;
             ability.m_Parent = Tree.Positive.BaseAbility;
 
@@ -519,6 +521,7 @@ namespace KineticistElementsExpanded.ElementWood
                     m_Condition = new ConditionsChecker { Conditions = null, Operation = Operation.And }
                 }
                 ).TargetEnemy(CastAnimationStyle.Kineticist);
+            ability.SpellResistance = true;
             ability.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten;
             ability.m_Parent = Tree.Positive.BaseAbility;
 
@@ -559,6 +562,7 @@ namespace KineticistElementsExpanded.ElementWood
                 Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnStart, Resource.Sfx.Start_Earth)
                 ).TargetEnemy(CastAnimationStyle.Kineticist);
             ability.CanTargetPoint = true;
+            ability.SpellResistance = true;
             ability.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten;
             ability.m_Parent = Tree.Positive.BaseAbility;
 

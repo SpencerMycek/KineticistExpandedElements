@@ -72,7 +72,10 @@ namespace KineticistElementsExpanded.Components
             int targetsCount = this.TargetsCount.Calculate(context);
 
             if (launcher == null)
+            {
+                Main.PrintError("Launcher Missing");
                 yield break;
+            }
 
             int targetIndex = 0;
 
@@ -84,11 +87,18 @@ namespace KineticistElementsExpanded.Components
                 targetIndex++;
             }
 
+            //var processes = new IEnumerator<AbilityDeliveryTarget>[targetsCount];
+            //foreach (var currentTarget in Targets)
+            //{
+            //    processes = (IEnumerator<AbilityDeliveryTarget>[])processes.Append(DeliverInternal(context, launcher, currentTarget));
+            //}
             var processes = new IEnumerator<AbilityDeliveryTarget>[targetsCount];
-            foreach (var currentTarget in Targets)
+            foreach (UnitEntityData currentTarget in Targets)
             {
-                processes = (IEnumerator<AbilityDeliveryTarget>[])processes.Append(DeliverInternal(context, launcher, currentTarget));
+                var temp = new IEnumerator<AbilityDeliveryTarget>[] { DeliverInternal(context, launcher, currentTarget) };
+                processes = processes.Concat(temp).ToArray();
             }
+            Main.Print("Deliver Processes Created");
 
             for (;;)
             {
@@ -118,7 +128,7 @@ namespace KineticistElementsExpanded.Components
                 }
                 yield return null;
             }
-            
+            Main.Print("End of Deliver");
             yield break;
         }
 
@@ -142,9 +152,10 @@ namespace KineticistElementsExpanded.Components
 
                 while (!proj.IsHit) // wait until projectile hit
                 {
+                    yield return null;
                     if (proj.Cleared) // stop if projectile controller cleared projectiles
                         yield break;
-                    yield return null;
+                    EntityPoolEnumerator<UnitEntityData> entityPoolEnumerator = default(EntityPoolEnumerator<UnitEntityData>);
                 }
 
                 attackRoll?.ConsumeMirrorImageIfNecessary();

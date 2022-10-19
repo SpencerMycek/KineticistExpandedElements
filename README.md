@@ -98,6 +98,12 @@ If you notice any issues, please contact me or open up an issue on this reposito
 
 ## Recent Changes
 
+### v3.0.2
+- Fix typo causing Aetheric Boost (and Greater) descriptions to be formatted incorrectly
+- Fix error causing multi-projectile attacks (Forest Siege and Many Throw) to fail and have no projectiles
+- Fix energy blasts so they actually require a Spell Resistance roll, as intended
+- Fix the version number so UMM stops yelling at you
+
 ### v3.0.1
 - Fix damage modification of Disintegrate/Admixtures/Foe Throw
 - Fix potential doll issues when using a modded kinetic blade
