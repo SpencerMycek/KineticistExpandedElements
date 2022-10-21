@@ -1,0 +1,6 @@
+KineticistElementsExpanded/Icons/*
+KineticistElementsExpanded/l8n/*
+KineticistElementsExpanded/blueprints.txt
+KineticistElementsExpanded/CodexLib.dll
+KineticistElementsExpanded/Info.json
+KineticistElementsExpanded/KineticistElementsExpanded.dll
