@@ -19,10 +19,10 @@
 
 	<!-- NuGet Packages -->
 	<ItemGroup>
-		<PackageReference Include="AssemblyPublicizer" Version="1.0.1" ExcludeAssets="runtime" />
+		<PackageReference Include="AssemblyPublicizer" Version="1.0.2" ExcludeAssets="runtime" />
 		<PackageReference Include="ILRepack.MSBuild.Task" Version="2.0.13" />
-		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-		<PackageReference Include="WW-Blueprint-Core" Version="2.2.5" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
+		<PackageReference Include="WW-Blueprint-Core" Version="2.7.8" />
 	</ItemGroup>
 
 	<!-- Configuration -->
