@@ -8,8 +8,12 @@ fc /b check.commit latest.commit >nul
 
 if errorlevel 1 (
 	echo Downloading CodexLib...
-	curl -s -O "https://github.com/Truinto/DarkCodex/raw/master/CodexLib/CodexLib.dll"
+	curl -LOs "https://github.com/Truinto/DarkCodex/raw/master/CodexLib/CodexLib.dll"
+	curl -LOs "https://github.com/Truinto/DarkCodex/raw/master/CodexLib/CodexLib.xml"
     move "check.commit" "latest.commit" >nul
 ) else (
+	echo CodexLib is up to date
 	del check.commit
 )
+
+timeout 5
