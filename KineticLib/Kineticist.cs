@@ -182,7 +182,7 @@ namespace KineticistElementsExpanded.KineticLib
             List<BlueprintFeatureReference> feature_list = elements.Select(o => o.BlastFeature).ToList();
             feature_list.RemoveAll(item => item == null);
             
-            var prereq_list = Helper.CreatePrerequisiteFeaturesFromList(features: feature_list.ToArray());
+            var prereq_list = Helper.CreatePrerequisiteFeaturesFromList(true, features: feature_list.ToArray());
 
             if (inf_feature != null)
             {
@@ -507,7 +507,7 @@ namespace KineticistElementsExpanded.KineticLib
 
             public static BlueprintItemWeaponReference CreateBlueprintItemWeapon(KineticistTree tree, string element, string prefix, bool isPhysical, bool isComposite, string prefabAssetId)
             {
-                var weapon = Helper.CreateBlueprintItemWeapon(element+"KineticBladeWeapon", LocalizationTool.GetString(element+".Blade.Prefix"), LocalizationTool.GetString("Blade.Description"), isPhysical? Kineticist.ref_kinetic_blast_physical_blade_type: Kineticist.ref_kinetic_blast_energy_blade_type,
+                var weapon = Helper.CreateBlueprintItemWeapon(element+"KineticBladeWeapon", LocalizationTool.GetString(element+".Blade.Prefix"), LocalizationTool.GetString("Blade.Description"), null, isPhysical? Kineticist.ref_kinetic_blast_physical_blade_type: Kineticist.ref_kinetic_blast_energy_blade_type,
                     damageOverride: new DiceFormula { m_Rolls = 0, m_Dice = DiceType.Zero }, price: 10);
                 weapon.m_Enchantments = new BlueprintWeaponEnchantmentReference[1] { CreateBlueprintWeaponEnchantment(tree, element, prefix, prefabAssetId, isPhysical, isComposite) };
                 weapon.m_EquipmentEntity = AnyRef.ToAny("");
