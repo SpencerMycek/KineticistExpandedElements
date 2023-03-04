@@ -1,6 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
+		<AssemblyVersion>3.0.4</AssemblyVersion>
+		<FileVersion>3.0.4</FileVersion>
 		<TargetFramework>net472</TargetFramework>
 		<LangVersion>preview</LangVersion>
 		<ImplicitUsings>disable</ImplicitUsings>
@@ -10,28 +12,18 @@
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<RootNamespace>KineticistElementsExpanded</RootNamespace>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		<AssemblyName>KineticistElementsExpanded</AssemblyName>
+		<OutputPath>bin\Debug\HolyVindicator\</OutputPath>
+		<DebugType>embedded</DebugType>
+		<DebugSymbols>true</DebugSymbols>
 	</PropertyGroup>
 
 	<!-- NuGet Packages -->
 	<ItemGroup>
 		<PackageReference Include="AssemblyPublicizer" Version="1.0.2" ExcludeAssets="runtime" />
-		<PackageReference Include="ILRepack.MSBuild.Task" Version="2.0.13" />
-		<PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
+		<PackageReference Include="ILRepack.Lib.MSBuild.Task" Version="2.0.18.2" ExcludeAssets="runtime" />
 		<PackageReference Include="WW-Blueprint-Core" Version="2.7.8" />
 	</ItemGroup>
-
-	<!-- Configuration -->
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-		<OutputPath>bin\Debug\HolyVindicator\</OutputPath>
-		<DebugType>portable</DebugType>
-		<DebugSymbols>true</DebugSymbols>
-	</PropertyGroup>
-
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-		<OutputPath>bin\Release\HolyVindicator\</OutputPath>
-	</PropertyGroup>
 
 	<!-- Common References -->
 	<ItemGroup>
@@ -74,13 +66,13 @@
 		<Reference Include="UnityEngine.TextRenderingModule" HintPath="$(WrathManaged)\UnityEngine.TextRenderingModule.dll" />
 		<Reference Include="UnityEngine.InputLegacyModule" HintPath="$(WrathManaged)\UnityEngine.InputLegacyModule.dll" />
 		<Reference Include="UnityEngine.UIModule" HintPath="$(WrathManaged)\UnityEngine.UIModule.dll" />
+
+		<Reference Update="@(Reference)" Private="false" />
 	</ItemGroup>
 
 	<!-- Other Files -->
 	<ItemGroup>
 		<None Update="Info.json" CopyToOutputDirectory="PreserveNewest" />
-		<Folder Include="Media\Icons\" />
-		<Reference Include="Assembly-CSharp" HintPath="$(SolutionDir)lib\Assembly-CSharp.dll" />
 	</ItemGroup>
 
 	<!-- Publicize -->
@@ -103,25 +95,21 @@
 
 
 	<!-- DLL Merging -->
-	<Target Name="ILRepack" AfterTargets="Build">
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
 		<ItemGroup>
-			<InputAssemblies Include="BlueprintCore.dll" />
-			<!--<InputAssemblies Include="$(ModRepo)\lib\CodexLib.dll" />-->
-			<InputAssemblies Include="KineticistElementsExpanded.dll" />
-			<OutputAssembly Include="KineticistElementsExpanded.dll" />
+			<InputAssemblies Include="$(TargetDir)KineticistElementsExpanded.dll" />
+			<InputAssemblies Include="$(TargetDir)BlueprintCore.dll" />
+			<OutputAssembly Include="$(TargetDir)KineticistElementsExpanded.dll" />
 		</ItemGroup>
 
-		<Message Text="Merging: @(InputAssemblies) into @(OutputAssembly)" Importance="High" />
-
-		<ILRepack OutputType="Dll" MainAssembly="KineticistElementsExpanded.dll" OutputAssembly="@(OutputAssembly)" InputAssemblies="@(InputAssemblies)" WorkingDirectory="$(OutputPath)" />
+		<ILRepack Union="true" LibraryPath="$(WrathManaged);$(WrathManaged)\UnityModManager" InputAssemblies="@(InputAssemblies)" OutputFile="@(OutputAssembly)" />
 	</Target>
 
 	<!-- Automatic Deployment Setup -->
-	<Target Name="DeployMod" AfterTargets="ILRepack">
+	<Target Name="DeployMod" AfterTargets="PostBuild">
 		<ItemGroup>
 			<Assembly Include="$(OutputPath)\KineticistElementsExpanded.dll" />
 			<ModConfig Include="$(OutputPath)\Info.json" />
-			<debug_symbols Include="$(OutputPath)\KineticistElementsExpanded.pdb" />
 			<media Include="$(SolutionDir)\Media\Icons\*" />
 			<library Include="$(SolutionDir)\lib\CodexLib.dll" />
 			<l8n Include="$(SolutionDir)\Media\Localization\*" />
@@ -133,9 +121,11 @@
 		<Copy SourceFiles="@(debug_symbols)" DestinationFolder="$(WrathPath)\Mods\KineticistElementsExpanded" />
 		<Copy SourceFiles="@(media)" DestinationFolder="$(WrathPath)\Mods\KineticistElementsExpanded\Icons" />
 		<Copy SourceFiles="@(library)" DestinationFolder="$(WrathPath)\Mods\KineticistElementsExpanded" />
-		<Copy SourceFiles="@(l8n)" DestinationFolder="$(WrathPath)\Mods\KineticistElementsExpanded\l8n" />
+		<Copy SourceFiles="@(l8n)" DestinationFolder="$(WrathPath)\Mods\KineticistElementsExpanded\l8n" />		
+		<Message Text="Copied to $(WrathPath)\Mods\KineticistElementsExpanded" Importance="High" />
 		
 		<Exec Condition="'$(Configuration)'=='Release'" WorkingDirectory="$(WrathPath)\Mods\" Command="&quot;$(Zip7)&quot; u &quot;-x!*.zip&quot; &quot;@(zipoutput)&quot; @&quot;$(MSBuildThisFileDirectory)filelist.txt&quot; &gt;NUL" />
+		<Message Condition="'$(Configuration)'=='Release'" Text="Updated $(TargetName).zip" Importance="High" />
 	</Target>
 
   <ProjectExtensions><VisualStudio><UserProperties info_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>

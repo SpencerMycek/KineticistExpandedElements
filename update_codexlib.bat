@@ -15,5 +15,3 @@ if errorlevel 1 (
 	echo CodexLib is up to date
 	del check.commit
 )
-
-timeout 5
