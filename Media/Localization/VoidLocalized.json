@@ -1,283 +1,394 @@
-﻿[
+[
   {
-
     "Key": "Void",
     "ProcessTemplates": false,
-    "enGB": "Void"
+    "enGB": "Void",
+    "ruRU": "Пустота",
+    "zh_CN": "虚空"
   },
   {
     "Key": "Void.Focus.Description",
     "ProcessTemplates": false,
-    "enGB": "Like aether, void forms where elemental energy meets another material, in this case the substance of the Negative Energy Plane. Kineticists who command this strange force are referred to as chaokineticists."
+    "enGB": "Like aether, void forms where elemental energy meets another material, in this case the substance of the Negative Energy Plane. Kineticists who command this strange force are referred to as chaokineticists.",
+    "ruRU": "Как и эфир, пустота образуется на месте контакта стихийных энергий с материей другого плана, в данном случае Плана Негативной Энергии. Кинетики, способные управлять такой странной силой, называются хаокинетиками.",
+    "zh_CN": "和以太类似，虚空是元素能量的另一种形态，它是负能量位面的基质。混沌使（Chaokineticists）通过类似于操纵以太的方式操控着这种力量。"
   },
   {
     "Key": "Void.Skills.Name",
     "ProcessTemplates": false,
-    "enGB": "Void Class Skills"
+    "enGB": "Void Class Skills",
+    "ruRU": "Классовые навыки пустоты",
+    "zh_CN": "虚空本职技能"
   },
   {
     "Key": "Void.Skills.Description",
     "ProcessTemplates": true,
-    "enGB": "An Chaokineticist adds {g|Encyclopedia:Knowledge_World}Knowledge (World){/g} and {g|Encyclopedia:Mobility}Mobility{/g} to her list of class {g|Encyclopedia:Skills}skills{/g}."
+    "enGB": "An Chaokineticist adds {g|Encyclopedia:Knowledge_World}Knowledge (World){/g} and {g|Encyclopedia:Mobility}Mobility{/g} to her list of class {g|Encyclopedia:Skills}skills{/g}.",
+    "ruRU": "Хаокинетик добавляет {g|Encyclopedia:Knowledge_World}Знание (мир){/g} и {g|Encyclopedia:Mobility}Подвижность{/g} к ее списку классовых {g|Encyclopedia:Skills}навыков{/g}.",
+    "zh_CN": "An Chaokineticist adds {g|Encyclopedia:Knowledge_World}Knowledge (World){/g} and {g|Encyclopedia:Mobility}Mobility{/g} to her list of class {g|Encyclopedia:Skills}skills{/g}."
   },
   {
     "Key": "Void.Defense",
     "ProcessTemplates": false,
-    "enGB": "Emptiness"
+    "enGB": "Emptiness",
+    "ruRU": "Пустотелость",
+    "zh_CN": "空寂"
   },
   {
     "Key": "Void.Defense.Description",
     "ProcessTemplates": true,
-    "enGB": "Element: Void\nType: defense\nLevel: —\nBurn: 0\n{g|Encyclopedia:Damage}Damage{/g}: negative energy\nYour body becomes an empty husk, fueled by an internal void. You gain negative energy resistance 2, a 5% chance to ignore critical hits and sneak attacks, and a +1 bonus on Will saves against emotion effects. By accepting 1 point of burn, you can increase the resistance to negative energy by 2, the chance to ignore critical hits and sneak attacks by 5%, and the bonus on Will saves against emotion effects by 1 until the next time your burn is removed"
+    "enGB": "Element: Void\nType: defense\nLevel: —\nBurn: 0\n{g|Encyclopedia:Damage}Damage{/g}: negative energy\nYour body becomes an empty husk, fueled by an internal void. You gain negative energy resistance 2, a 5% chance to ignore critical hits and sneak attacks, and a +1 bonus on Will saves against emotion effects. By accepting 1 point of burn, you can increase the resistance to negative energy by 2, the chance to ignore critical hits and sneak attacks by 5%, and the bonus on Will saves against emotion effects by 1 until the next time your burn is removed",
+    "ruRU": "Элемент: Пустота\nТип: защитный\nКруг: —\nВыгорание: 0\n{g|Encyclopedia:Damage}Урон{/g}: негативная энергия\nВаше тело становится пустой оболочкой, наполненной втнутренней пустотой. Вы получаете сопротивление негативной энергии 2, 5% шанс проигнорировать критический удар или атаку исподтишка и +1 бонус к спасброскам Воли против эффектов эмоций. Принимая 1 очко выгорания, вы можете увеличить сопротивление негативной энергии на 2, шанс проигнорировать критический удар или атаку исподтишка на 5% и бонус к спасброскам Воли против эффектов эмоций на 1 до тех пор, пока выгорание не будет снято.",
+    "zh_CN": "你的躯体成为了一具由虚空能量驱动的空壳。你获得2点负能量抗力，5%的机率忽视重击和偷袭，并且在对抗情绪效果的意志豁免上获得+1加值。通过承受1点超载，你可以增加2点负能量抗力，忽视重击和偷袭的机率提高5%，并且对抗情绪效果的意志豁免加值增加1，直至你所承受的超载得以移除为止。"
   },
   {
     "Key": "Void.Selection.Name",
     "ProcessTemplates": false,
-    "enGB": "Gravity Blast"
+    "enGB": "Gravity Blast",
+    "ruRU": "Заряд гравитации",
+    "zh_CN": "重压"
   },
   {
     "Key": "Void.Selection.Description",
     "ProcessTemplates": false,
-    "enGB": ""
+    "enGB": "",
+    "ruRU": "",
+    "zh_CN": ""
   },
   {
     "Key": "Void.Gravity.Name",
     "ProcessTemplates": false,
-    "enGB": "Gravity Blast"
+    "enGB": "Gravity Blast",
+    "ruRU": "Заряд гравитации",
+    "zh_CN": "重压"
   },
   {
     "Key": "Void.Gravity.Description",
     "ProcessTemplates": true,
-    "enGB": "Element: Void\nType: simple blast\nLevel: —\nBurn: 0\nBlast Type: physical\n{g|Encyclopedia:Damage}Damage{/g}: {g|Encyclopedia:Damage_Type}bludgeoning{/g}\nYou manipulate gravity to distort and buffet your foe’s body."
+    "enGB": "Element: Void\nType: simple blast\nLevel: —\nBurn: 0\nBlast Type: physical\n{g|Encyclopedia:Damage}Damage{/g}: {g|Encyclopedia:Damage_Type}bludgeoning{/g}\nYou manipulate gravity to distort and buffet your foe’s body.",
+    "ruRU": "Элемент: Пустота\nТип: простой заряд\nКруг: —\nВыгорание: 0\nТип заряда: физический\n{g|Encyclopedia:Damage}Урон{/g}: {g|Encyclopedia:Damage_Type}дробящий{/g}\nВы оперируете гравитацией, чтобы исказить и смять тело врага.",
+    "zh_CN": "元素: 虚空\n类别: 简易念袭\nLevel: —\n超载: 0\n念袭性质: 物理\n{g|Encyclopedia:Damage}伤害类型{/g}: {g|Encyclopedia:Damage_Type}盾击{/g}\n你操控重力碾碎你的敌人。"
   },
   {
     "Key": "Gravity.Blade.Prefix",
     "ProcessTemplates": false,
-    "enGB": "Gravity Blast"
+    "enGB": "Gravity Blast",
+    "ruRU": "Заряд гравитации",
+    "zh_CN": "重压"
   },
   {
     "Key": "Gravity.Blade.Enchant",
     "ProcessTemplates": false,
-    "enGB": "Gravity Blast — Kinetic Blade"
+    "enGB": "Gravity Blast — Kinetic Blade",
+    "ruRU": "Заряд гравитации - Кинетический клинок",
+    "zh_CN": "重压-念刃"
   },
   {
     "Key": "Void.Negative.Name",
     "ProcessTemplates": false,
-    "enGB": "Negative Blast"
+    "enGB": "Negative Blast",
+    "ruRU": "Негативный заряд",
+    "zh_CN": "负能"
   },
   {
     "Key": "Void.Negative.Description",
     "ProcessTemplates": true,
-    "enGB": "Element: Void\nType: simple blast\nLevel: —\nBurn: 0\nBlast Type: physical\n{g|Encyclopedia:Damage}Damage{/g}: negative energy\nYou blast your foe with negative energy."
+    "enGB": "Element: Void\nType: simple blast\nLevel: —\nBurn: 0\nBlast Type: physical\n{g|Encyclopedia:Damage}Damage{/g}: negative energy\nYou blast your foe with negative energy.",
+    "ruRU": "Элемент: Пустота\nТип: простой заряд\nКруг: —\nВыгорание: 0\nТип заряда: физический\n{g|Encyclopedia:Damage}Урон{/g}: негативная энергия\nВы наносите урон врагу сгустком негативной энергии.",
+    "zh_CN": "元素: 虚空\n类别: 简易念袭\n等级: —\n超载: 0\n念袭性质: 能量\n{g|Encyclopedia:Damage}伤害类型{/g}: 负能量\n你可以用负能量攻击你的敌人。"
   },
   {
     "Key": "Negative.Blade.Prefix",
     "ProcessTemplates": false,
-    "enGB": "Negative Blast"
+    "enGB": "Negative Blast",
+    "ruRU": "Негативный заряд",
+    "zh_CN": "负能"
   },
   {
     "Key": "Negative.Blade.Enchant",
     "ProcessTemplates": false,
-    "enGB": "Negative Blast — Kinetic Blade"
+    "enGB": "Negative Blast — Kinetic Blade",
+    "ruRU": "Негативный заряд - Кинетический клинок",
+    "zh_CN": "负能-念刃"
   },
   {
     "Key": "Void.Void.Name",
     "ProcessTemplates": false,
-    "enGB": "Void Blast"
+    "enGB": "Void Blast",
+    "ruRU": "Заряд Пустоты",
+    "zh_CN": "虚无力"
   },
   {
     "Key": "Void.Void.Description",
     "ProcessTemplates": true,
-    "enGB": "Element: void\nType: composite blast\nLevel: —\nBurn: 2\nPrerequisite(s): primary element (void), expanded element (void)\nBlast Type: physical\n{g|Encyclopedia:Damage}Damage{/g}: half bludgeoning, half negative energy\nYou call forth the power of the void to annihilate your foe."
+    "enGB": "Element: void\nType: composite blast\nLevel: —\nBurn: 2\nPrerequisite(s): primary element (void), expanded element (void)\nBlast Type: physical\n{g|Encyclopedia:Damage}Damage{/g}: half bludgeoning, half negative energy\nYou call forth the power of the void to annihilate your foe.",
+    "ruRU": "Элемент: Пустота\nТип: составной заряд\nКруг: —\nВыгорание: 2\nТребования: основной элемент (Пустота), расширенный элемент (Пустота)\nТип заряда: физический\n{g|Encyclopedia:Damage}Урон{/g}: наполовину дробящий, наполовину негативная энергия\nВы призываете силу Пустоты, чтобы уничтожить своего врага.",
+    "zh_CN": "元素: 虚空\n类别: 复合念袭\n等级: —\n超载: 2\n前置: 首要元素(虚空), 元素扩展 (虚空)\n念袭性质: 物理\n{g|Encyclopedia:Damage}伤害类型{/g}: 一半钝击，一半负能量\n你召唤虚空之力湮灭你的敌人。"
   },
   {
     "Key": "Void.Blade.Prefix",
     "ProcessTemplates": false,
-    "enGB": "Void Blast"
+    "enGB": "Void Blast",
+    "ruRU": "Заряд Пустоты",
+    "zh_CN": "虚无力"
   },
   {
     "Key": "Void.Blade.Enchant",
     "ProcessTemplates": false,
-    "enGB": "Void Blast — Kinetic Blade"
+    "enGB": "Void Blast — Kinetic Blade",
+    "ruRU": "Заряд Пустоты - Кинетический клинок",
+    "zh_CN": "虚无力-念刃"
   },
   {
     "Key": "Void.Admixture.Gravity.Name",
     "ProcessTemplates": false,
-    "enGB": "Gravitic Boost"
+    "enGB": "Gravitic Boost",
+    "ruRU": "Усиление гравитацией",
+    "zh_CN": "重压推进"
   },
   {
     "Key": "Void.Admixture.Gravity.Description",
     "ProcessTemplates": false,
-    "enGB": "Element: void\nType: composite blast\nLevel: —\nBurn: 2\nPrerequisite(s): gravity blast, any other physical simple blast\nBlast Type: special\n{g|Encyclopedia:Damage}Damage{/g}: see text\nYou infuse a simple physical blast with added gravity, increasing its damage dice from d6s to d8s; it otherwise deals damage as per the simple blast."
+    "enGB": "Element: void\nType: composite blast\nLevel: —\nBurn: 2\nPrerequisite(s): gravity blast, any other physical simple blast\nBlast Type: special\n{g|Encyclopedia:Damage}Damage{/g}: see text\nYou infuse a simple physical blast with added gravity, increasing its damage dice from d6s to d8s; it otherwise deals damage as per the simple blast.",
+    "ruRU": "Элемент: Пустота\nТип: составной заряд\nКруг: —\nВыгорание: 2\nТребования: заряд гравитации, любой другой физический простой заряд\nТип заряда: специальный\n{g|Encyclopedia:Damage}Урон{/g}: смотри описание\nВы усиливаете простой физический заряд гравитацией, увеличивая кость урона с d6 до d8; в остальном усиленный заряд наносит урон как простой заряд.",
+    "zh_CN": "元素: 虚空\n类别: 复合念袭\n等级: —\n超载: 2\n前置: 重压, 任意其他简易念\n念袭性质: 特殊\n{g|Encyclopedia:Damage}伤害类型{/g}: 见后文\n你将重压加入到一个简易物理念袭中，将伤害骰从d6增加到d8；在其他方面则如同简易念袭一般造成伤害。"
   },
   {
     "Key": "Void.Admixture.Gravity.Greater.Name",
     "ProcessTemplates": false,
-    "enGB": "Gravitic Boost, Greater"
+    "enGB": "Gravitic Boost, Greater",
+    "ruRU": "Усиление гравитацией, Высшее",
+    "zh_CN": "高等重压推进"
   },
   {
     "Key": "Void.Admixture.Gravity.Greater.Description",
     "ProcessTemplates": false,
-    "enGB": "Element: void\nType: composite blast\nLevel: —\nBurn: 3\nPrerequisite(s): gravity blast, any other physical composite blast\nBlast Type: special\n{g|Encyclopedia:Damage}Damage{/g}: see text\nYou infuse a composite physical blast with added gravity, increasing its damage dice from d6s to d8s."
+    "enGB": "Element: void\nType: composite blast\nLevel: —\nBurn: 3\nPrerequisite(s): gravity blast, any other physical composite blast\nBlast Type: special\n{g|Encyclopedia:Damage}Damage{/g}: see text\nYou infuse a composite physical blast with added gravity, increasing its damage dice from d6s to d8s.",
+    "ruRU": "Элемент: Пустота\nТип: составной заряд\nКруг: —\nВыгорание: 3\nТребования: заряд гравитации, любой другой физический составной заряд\nТип заряда: специальный\n{g|Encyclopedia:Damage}Урон{/g}: смотри описание\nВы усиливаете составной физический заряд гравитацией, увеличивая кость урона с d6 до d8",
+    "zh_CN": "元素: 虚空\n类别: 复合念袭\n等级: —\n超载: 3\n前置: 重压, 任意其他复合物理念袭\n念袭性质: 特殊\n{g|Encyclopedia:Damage}伤害类型{/g}: 见后文\n你将重压加入到一个复合物理念袭中，将伤害骰从d6增加到d8；在其他方面则如同简易念袭一般造成伤害。"
   },
   {
     "Key": "Void.Admixture.Negative.Name",
     "ProcessTemplates": false,
-    "enGB": "Negative Admixture"
+    "enGB": "Negative Admixture",
+    "ruRU": "Негативная примесь",
+    "zh_CN": "负能混爆"
   },
   {
     "Key": "Void.Admixture.Negative.Description",
     "ProcessTemplates": false,
-    "enGB": "Element: void\nType: composite blast\nLevel: —\nBurn: 2\nPrerequisite(s): negative blast, any other energy simple blast\nBlast Type: special\n{g|Encyclopedia:Damage}Damage{/g}: see text\nYou infuse a simple physical Choose another simple energy blast you know. Negative admixture’s damage is half negative energy, and half the chosen blast’s type. with added gravity, increasing its damage dice from d6s to d8s; it otherwise deals damage as per the simple blast."
+    "enGB": "Element: void\nType: composite blast\nLevel: —\nBurn: 2\nPrerequisite(s): negative blast, any other energy simple blast\nBlast Type: special\n{g|Encyclopedia:Damage}Damage{/g}: see text\nChoose another simple energy blast you know. Negative admixture’s damage is half negative energy, and half the chosen blast’s type.",
+    "ruRU": "Элемент: Пустота\nТип: составной заряд\nКруг: —\nВыгорание: 2\nТребования: негативный заряд, любой другой энергетический простой заряд\nТип заряда: специальный\n{g|Encyclopedia:Damage}Урон{/g}: смотри описание\nВыберите другой простой энергетический заряд, известный вам. Урон негативной примеси наполовину негативной энергией, наполовину выбранного простого заряда.",
+    "zh_CN": "元素: 虚空\n类别: 复合念袭\n等级: —\n超载: 2\n前置: 负能, 任意其他简易念袭\n念袭性质: 特殊\n{g|Encyclopedia:Damage}伤害类型{/g}: 见后文\n选择你所知的另一个简易念袭击。负能混爆的伤害一半为负能量，一半为你所选择念袭的类型。"
   },
   {
     "Key": "Void.BonusWild.Name",
     "ProcessTemplates": false,
-    "enGB": "Kineticist Bonus Feat — Void"
+    "enGB": "Kineticist Bonus Feat — Void",
+    "ruRU": "Дополнительная черта кинетика - Пустота",
+    "zh_CN": "操念使奖励专长-虚空"
   },
   {
     "Key": "Void.BonusWild.Description",
     "ProcessTemplates": true,
-    "enGB": "A character that selects this talent gains a bonus {g|Encyclopedia:Feat}feat{/g}. These feats must be taken from the following list: Spell Penetration, Greater Spell Penetration, Precise Shot, Trip, Greater Trip"
+    "enGB": "A character that selects this talent gains a bonus {g|Encyclopedia:Feat}feat{/g}. These feats must be taken from the following list: Spell Penetration, Greater Spell Penetration, Precise Shot, Trip, Greater Trip",
+    "ruRU": "Выбирая этот прием, персонаж может взять дополнительную {g|Encyclopedia:Feat}черту{/g}. Эти черты он выбирает из следующего списка: Преодолевающая магия, Преодолевающая магия+, Меткий выстрел, Сбивание с ног, Сбивание с ног+",
+    "zh_CN": "A character that selects this talent gains a bonus {g|Encyclopedia:Feat}feat{/g}. These feats must be taken from the following list: 法术穿透，高等法术穿透，精准设计，绊摔，高等绊摔"
   },
   {
     "Key": "Void.CorpsePuppet.Name",
     "ProcessTemplates": false,
-    "enGB": "Corpse Puppet"
+    "enGB": "Corpse Puppet",
+    "ruRU": "Труп-марионетка",
+    "zh_CN": "尸体傀儡"
   },
   {
     "Key": "Void.CorpsePuppet.Description",
     "ProcessTemplates": true,
-    "enGB": "Element: Void\nType: utility\nLevel: 4\nBurn: 1\nYou draw upon negative energy to animate a nearby corpse. This ability functions as Animate Dead"
+    "enGB": "Element: Void\nType: utility\nLevel: 4\nBurn: 1\nYou draw upon negative energy to animate a nearby corpse. This ability functions as Animate Dead",
+    "ruRU": "Элемент: Пустота\nТип: вспомогательный\nКруг: 4\nВыгорание: 1\nВы взываете к негативной энергии, чтобы поднять ближайший труп. Эта способность работает как Оживить мертвецов.",
+    "zh_CN": "元素: 虚空\n类型: 通用\n等级: 4\n超载: 1\n你使用负能量来以丧尸或者快速丧尸（由你选择）的形式驱动一个附近的尸体。 该能力同操作死尸"
   },
   {
     "Key": "Void.CurseBreaker.Name",
     "ProcessTemplates": false,
-    "enGB": "Curse Breaker"
+    "enGB": "Curse Breaker",
+    "ruRU": "Разрушитель проклятий",
+    "zh_CN": "破除诅咒"
   },
   {
     "Key": "Void.CurseBreaker.Description",
     "ProcessTemplates": true,
-    "enGB": "Element: Void\nType: utility\nLevel: 4\nBurn: 1\nPrerequisite: emptiness\nThe power of void protects you from curses and allows you to remove or suppress them. You gain a +4 bonus on saving throws against curses and hexes. You can accept 1 point of burn as a standard action to attempt a caster level check to remove a curse on yourself or another as per remove curse."
+    "enGB": "Element: Void\nType: utility\nLevel: 4\nBurn: 1\nPrerequisite: emptiness\nThe power of void protects you from curses and allows you to remove or suppress them. You gain a +4 bonus on saving throws against curses and hexes. You can accept 1 point of burn as a standard action to attempt a caster level check to remove a curse on yourself or another as per remove curse.",
+    "ruRU": "Элемент: Пустота\nТип: вспомогательный\nКруг: 4\nВыгорание: 1\nМощь Пустоты защищает вас от проклятий и позволяет снимать или подавлять их. Вы получаете +4 бонус к спасброскам против проклятий и наговоров. Вы можете принять 1 очко выгорания в качестве стандартного действия, чтобы совершить проверку уровня заклинателя для снятия проклятия с себя или кого-то другого, как при использовании заклинания Снятие проклятия.",
+    "zh_CN": "元素: 虚空\n类型: 通用\n等级: 4\n超载: 1\n前置: 空寂\n虚空的力量令你免受诅咒，并且使你可以移除或压制它。你在对抗诅咒和巫术的豁免上获得+4加值。你可以额外承受1点超载，通过一个标准动作，尝试一次施法者等级检定来移除一个你自己或者其他目标身上的诅咒，如同移除诅咒（Remove Curse）。"
   },
   {
     "Key": "Void.GravityControl.Name",
     "ProcessTemplates": false,
-    "enGB": "Gravity Control"
+    "enGB": "Gravity Control",
+    "ruRU": "Власть над гравитацией",
+    "zh_CN": "重力控制"
   },
   {
     "Key": "Void.GravityControl.Description",
     "ProcessTemplates": true,
-    "enGB": "Element: Void\nType: utility\nLevel: 3\nBurn: 0\nPrerequisite: emptiness\nYou use your gravitic abilities to move yourself, as per flame jet."
+    "enGB": "Element: Void\nType: utility\nLevel: 3\nBurn: 0\nPrerequisite: emptiness\nYou use your gravitic abilities to move yourself. As a standard action you can propel yourself up to 60 feet in a straight line, including into the air; any movement upward costs double. If you end your turn mid-air, you fall on your next turn unless you use gravity control again.",
+    "ruRU": "Элемент: Пустота\nТип: вспомогательный\nКруг: 3\nВыгорание: 0\nТребования: Пустотелость\nВы используете свои способности управления гравитацией, чтобы перемещаться. В качестве стандартного действия вы можете переместить себя на расстояние до 60 футов по прямой линии, включая в воздух; Любое движение вверх стоит вдвое больше. Если вы завершили свой ход в воздухе, на следующий ход вы упадете, если только не используете Власть над гравитацией снова.",
+    "zh_CN": "元素: 虚空\n类别: 通用\n等级: 3\n超载: 0\n前置: 空寂\n你可以就如同火焰喷进（flame jet）一般操控重力移动自身。"
   },
   {
     "Key": "Void.GravityControl.Greater.Name",
     "ProcessTemplates": false,
-    "enGB": "Gravity Control, Greater"
+    "enGB": "Gravity Control, Greater",
+    "ruRU": "Великая власть над гравитацией",
+    "zh_CN": "高等重力控制"
   },
   {
     "Key": "Void.GravityControl.Greater.Description",
     "ProcessTemplates": true,
-    "enGB": "Element: Void\nType: utility\nLevel: 3\nBurn: 0\nPrerequisite: emptiness\nYou use your gravitic abilities to move yourself, as per greater flame jet."
+    "enGB": "Element: Void\nType: utility\nLevel: 3\nBurn: 0\nPrerequisite: emptiness\nYou can use gravity control as a move action and can hover without spending an action.",
+    "ruRU": "Элемент: Пустота\nТип: вспомогательный\nКруг: 3\nВыгорание: 0\nТребования: Пустотелость\nВы можете использовать Власть над гравитацией в качестве сопутствующего действия, а также левитировать без затраты действия.",
+    "zh_CN": "元素: 虚空\n类别: 通用\n等级: 3\n超载: 0\n前置: 空寂\n你对重力的操作更进一步。这项原力在其他方面的功能就如同高等火焰喷进（flame jet，greater）。"
   },
   {
     "Key": "Void.UndeadGrip.Name",
     "ProcessTemplates": false,
-    "enGB": "Undead Grip"
+    "enGB": "Undead Grip",
+    "ruRU": "Мертвая хватка",
+    "zh_CN": "束缚亡灵"
   },
   {
     "Key": "Void.UndeadGrip.Description",
     "ProcessTemplates": true,
-    "enGB": "Element: Void\nType: utility\nLevel: 3\nBurn: 1\n{g|Encyclopedia:Saving_Throw}Saving Throw{/g}: Will negates\nSpell Resistance: yes\nThis functions as hold monster, except it only works on undead creatures."
+    "enGB": "Element: Void\nType: utility\nLevel: 3\nBurn: 1\n{g|Encyclopedia:Saving_Throw}Saving Throw{/g}: Will negates\nSpell Resistance: yes\nThis functions as hold monster, except it only works on undead creatures.",
+    "ruRU": "Элемент: Пустота\nТип: вспомогательный\nКруг: 3\nВыгорание: 1\n{g|Encyclopedia:Saving_Throw}Спасбросок{/g}: Воли нейтрализует\nСопротивление магии: да\nСпособность действует как заклинание Обездвижить чудовище за исключением того, что действует только на нежить.",
+    "zh_CN": "元素: 虚空\n类别: 通用\n等级: 3\n超载: 1\n{g|Encyclopedia:Saving_Throw}豁免{/g}: 意志\n法术抗力: 可\n该原力如同束缚元素（Elemental Grip），除了它作用于单个不死生物，如同死灵定身术 （Halt Undead）。"
   },
   {
     "Key": "Void.VoidHealer.Name",
     "ProcessTemplates": false,
-    "enGB": "Void Healer"
+    "enGB": "Void Healer",
+    "ruRU": "Целитель Пустоты",
+    "zh_CN": "虚空医者"
   },
   {
     "Key": "Void.VoidHealer.Description",
     "ProcessTemplates": true,
-    "enGB": "Element: Void\nType: utility\nLevel: 1\nBurn: 1\nThis functions as kinetic healer, except it heals undead (and others healed by negative energy)."
+    "enGB": "Element: Void\nType: utility\nLevel: 1\nBurn: 1\nThis functions as kinetic healer, except it heals undead (and others healed by negative energy).",
+    "ruRU": "Элемент: Пустота\nТип: вспомогательный\nКруг: 3\nВыгорание: 1\nСпособность действует как Кинетический целитель, но лечит только нежить и других существ, которые лечатся негативной энергией.",
+    "zh_CN": "元素: 虚空\n类别: 通用\n等级: 1\n超载: 1\n此能力如同念力医者（Kinetic Healer, OA）般生效，除了它被用于治疗不死生物（以及其他受到负能量治疗的生物）。"
   },
   {
     "Key": "Void.Singularity.Name",
     "ProcessTemplates": false,
-    "enGB": "Singularity"
+    "enGB": "Singularity",
+    "ruRU": "Сингулярность",
+    "zh_CN": "奇点"
   },
   {
     "Key": "Void.Singularity.Description",
     "ProcessTemplates": false,
-    "enGB": "Element: void\nType: form infusion\nLevel: 4\nBurn: 3\nAssociated Blasts: gravity, negative, void\n{g|Encyclopedia:Saving_Throw}Saving Throw{/g}: Reflex half\nYou create a growing singularity. Choose a grid intersection within 30 feet. All creatures and objects in a 5-foot-radius burst centered on the intersection take 1/4 your blast’s normal amount of damage (or half damage for a negative blast). On your next turn, the singularity deals damage in a 10-foot-radius burst, and on your turn after that, it deals damage in a 15-foot-radius burst. The DC is Dexterity-based."
+    "enGB": "Element: void\nType: form infusion\nLevel: 4\nBurn: 3\nAssociated Blasts: gravity, negative, void\n{g|Encyclopedia:Saving_Throw}Saving Throw{/g}: Reflex half\nYou create a growing singularity. Choose a grid intersection within 30 feet. All creatures and objects in a 5-foot-radius burst centered on the intersection take 1/4 your blast’s normal amount of damage (or half damage for a negative blast). On your next turn, the singularity deals damage in a 10-foot-radius burst, and on your turn after that, it deals damage in a 15-foot-radius burst. The DC is Dexterity-based.",
+    "ruRU": "Элемент: Пустота\nТип: вливание формы\nКруг: 4\nВыгорание: 3\nСвязанные заряды: гравитации, негативный, Пустоты\n{g|Encyclopedia:Saving_Throw}Спасбросок{/g}: Реакции уменьшает вдвое\nВы создаете растущую сингулярность. Выберите точку в пределах 30 футов. Все существа и объекты в радиусе 5 футов получают 1/4 урона от вашего заряда (1/2 для негативного заряда). На ваш следующий ход сингулярность наносит урон в радиусе 10 футов и через ход - в радиусе 15 футов. {g|Encyclopedia:DC}Сложность{/g} спасброска зависит от {g|Encyclopedia:Dexterity}Ловкости{/g}.",
+    "zh_CN": "元素: 虚空\n类别: 塑形注能\n等级: 4\n超载: 3\n关联念袭类别: 重压，负能，虚无力\n{g|Encyclopedia:Saving_Throw}豁免{/g}: 强韧，通过则减半\n你创造了一个不断增长的奇点。选择30尺内的一个网格交点，所有在交点中心5尺半径爆发范围内的生物和物体受到相当于念袭正常伤害的四分之一的伤害（负能量则为一半伤害）。在你的下一回合，奇点造成伤害的范围变成10尺半径爆发；再往后一回合，其造成伤害的范围变成15尺半径爆发。该豁免DC基于敏捷。"
   },
   {
     "Key": "Void.Dampening.Name",
     "ProcessTemplates": false,
-    "enGB": "Dampening Infusion"
+    "enGB": "Dampening Infusion",
+    "ruRU": "Притупляющее вливание",
+    "zh_CN": "障目注能"
   },
   {
     "Key": "Void.Dampening.Description",
     "ProcessTemplates": false,
-    "enGB": "Element: void\nType: substance infusion\nLevel: 1\nBurn: 1\nAssociated Blasts: negative, void\n{g|Encyclopedia:Saving_Throw}Saving Throw{/g}: Will negates\nYour kinetic blast swirls with darkness, making it harder for your foes to see. This otherwise functions as dazzling infusion."
+    "enGB": "Element: void\nType: substance infusion\nLevel: 1\nBurn: 1\nAssociated Blasts: negative, void\n{g|Encyclopedia:Saving_Throw}Saving Throw{/g}: Will negates\nYour kinetic blast swirls with darkness, making it harder for your foes to see. This otherwise functions as dazzling infusion.",
+    "ruRU": "Элемент: Пустота\nТип: вливание эссенции\nКруг: 1\nВыгорание: 1\nСвязанные заряды: негативный, Пустоты\n{g|Encyclopedia:Saving_Throw}Спасбросок{/g}: Воли нейтрализует\nВаш кинетический заряд окружен темнотой, мешая врагам видеть. Способность действует как Ослепляющее вливание. ",
+    "zh_CN": "元素: 虚空\n类别: 性质注能\n等级: 1\n超载: 1\n关联念袭类别: 负能，虚无力\n{g|Encyclopedia:Saving_Throw}豁免{/g}: 意志\n你的念袭携带有黑暗的力量，使你更难被看到，如同炫目注能。"
   },
   {
     "Key": "Void.Enervating.Name",
     "ProcessTemplates": false,
-    "enGB": "Enervating Infusion"
+    "enGB": "Enervating Infusion",
+    "ruRU": "Изнуряющее вливание",
+    "zh_CN": "衰弱注能"
   },
   {
     "Key": "Void.Enervating.Description",
     "ProcessTemplates": false,
-    "enGB": "Element: void\nType: substance infusion\nLevel: 7\nBurn: 4\nAssociated Blasts: negative, void\n{g|Encyclopedia:Saving_Throw}Saving Throw{/g}: Fortitude negates\nYour kinetic blast drains life force. Foes that take damage from your infused blast also take 1 temporary negative level. Negative levels from this infusion fade after 24 hours and never become permanent."
+    "enGB": "Element: void\nType: substance infusion\nLevel: 7\nBurn: 4\nAssociated Blasts: negative, void\n{g|Encyclopedia:Saving_Throw}Saving Throw{/g}: Fortitude negates\nYour kinetic blast drains life force. Foes that take damage from your infused blast also take 1 temporary negative level. Negative levels from this infusion fade after 24 hours and never become permanent.",
+    "ruRU": "Элемент: Пустота\nТип: вливание эссенции\nКруг: 7\nВыгорание: 4\nСвязанные заряды: негативный, Пустоты\n{g|Encyclopedia:Saving_Throw}Спасбросок{/g}: Стойкости нейтрализует\nВаш кинетический заряд вытягивает жизненную силу. Враги, получившие урон от заряда также получают 1 негативный уровень. Негативные уровни от этого вливания снимаются после 24 часов и не могут стать постоянными.",
+    "zh_CN": "元素：虚空\n类别：性质注能\n等级: 7\n超载: 4\n关联念袭类别: 负能，虚无力\n{g|Encyclopedia:Saving_Throw}豁免{/g}: 强韧，通过则无效\n你的念袭击能够吸取生命的力量。每当注能念袭对敌人造成伤害时，同时使其获得1个临时负向等级。由此注能造成的负向等级会在24小时后被移除，并且永远不会成为永久负向等级。"
   },
   {
     "Key": "Void.Pulling.Name",
     "ProcessTemplates": false,
-    "enGB": "Pulling Infusion"
+    "enGB": "Pulling Infusion",
+    "ruRU": "Притягивающее вливание",
+    "zh_CN": "拉行注能"
   },
   {
     "Key": "Void.Pulling.Description",
     "ProcessTemplates": false,
-    "enGB": "Element: void\nType: substance infusion\nLevel: 1\nBurn: 1\nAssociated Blasts: gravity, void\n{g|Encyclopedia:Saving_Throw}Saving Throw{/g}: none\nYour kinetic blast pulls foes toward you. Attempt a drag combat maneuver check against each target damaged by your infused blast (the blast always drags the foe closer to you), using your Constitution modifier instead of your Strength modifier to determine your CMB."
+    "enGB": "Element: void\nType: substance infusion\nLevel: 1\nBurn: 1\nAssociated Blasts: gravity, void\n{g|Encyclopedia:Saving_Throw}Saving Throw{/g}: none\nYour kinetic blast pulls foes toward you. Attempt a drag combat maneuver check against each target damaged by your infused blast (the blast always drags the foe closer to you), using your Constitution modifier instead of your Strength modifier to determine your CMB.",
+    "ruRU": "Элемент: Пустота\nТип: вливание эссенции\nКруг: 1\nВыгорание: 1\nСвязанные заряды: гравитации, Пустоты\n{g|Encyclopedia:Saving_Throw}Спасбросок{/g}: нет\nВаш кинетический заряд притягивает врагов к вам. Совершите проверку боевого маневра против каждой цели, получившей урон от вашего заряда, используя модификатор Выносливости вместо Силы для определения вашего МБМ. Заряд всегда притягивает врагов к вам.",
+    "zh_CN": "元素：虚空\n类别: 性质注能\n等级: 1\n超载: 1\n关联念袭类别: 重力，虚无力\n{g|Encyclopedia:Saving_Throw}豁免{/g}: 无\n你的念袭将敌人拽向你这边。尝试一次拖拽战技检定对抗每个被你的注能念袭伤害的目标（此注能只能使敌人靠近你），使用你的体质调整值替代你的力量调整值来确定战技检定的加值。"
   },
   {
     "Key": "Void.Unnerving.Name",
     "ProcessTemplates": false,
-    "enGB": "Unnerving Inufsion"
+    "enGB": "Unnerving Inufsion",
+    "ruRU": "Пугающее вливание",
+    "zh_CN": "恐吓注能"
   },
   {
     "Key": "Void.Unnerving.Description",
     "ProcessTemplates": false,
-    "enGB": "Element: void\nType: substance infusion\nLevel: 3\nBurn: 2\nAssociated Blasts: negative, void\n{g|Encyclopedia:Saving_Throw}Saving Throw{/g}: Will negates\nYour kinetic blast sends the fear of oblivion into your foes. Whenever an infused blast deals negative energy damage to a living foe, it is shaken for 1 round."
+    "enGB": "Element: void\nType: substance infusion\nLevel: 3\nBurn: 2\nAssociated Blasts: negative, void\n{g|Encyclopedia:Saving_Throw}Saving Throw{/g}: Will negates\nYour kinetic blast sends the fear of oblivion into your foes. Whenever an infused blast deals negative energy damage to a living foe, it is shaken for 1 round.",
+    "ruRU": "Элемент: Пустота\nТип: вливание эссенции\nКруг: 3\nВыгорание: 2\nСвязанные заряды: негативный, Пустоты\n{g|Encyclopedia:Saving_Throw}Спасбросок{/g}: Воли нейтрализует\nВаш кинетический заряд внушает врагам страх небытия. Когда заряд с вливанием наносит негативный урон живому врагу, враг становится потрясен на 1 раунд.",
+    "zh_CN": "元素：虚空\n类别: 性质注能\n等级: 3\n超载: 2\n关联念袭类别: 负能，虚无力\n{g|Encyclopedia:Saving_Throw}豁免{/g}: 意志，通过则无效\n你的念袭将不可见的恐惧传递给敌人，每当念袭对敌人产生负能量伤害是，敌人进入战栗1轮"
   },
   {
     "Key": "Void.Vampiric.Name",
     "ProcessTemplates": false,
-    "enGB": "Vampiric Infusion"
+    "enGB": "Vampiric Infusion",
+    "ruRU": "Вампирическое вливание",
+    "zh_CN": "吸血注能"
   },
   {
     "Key": "Void.Vampiric.Description",
     "ProcessTemplates": false,
-    "enGB": "Element: void\nType: substance infusion\nLevel: 5\nBurn: 3\nPrerequisite: Kinetic Healer\nAssociated Blasts: negative, void\n{g|Encyclopedia:Saving_Throw}Saving Throw{/g}: none\nYour kinetic blast can drain your foes’ vitality to replenish your own. If your blast hits (or the enemy fails its saving throw against a blast without an attack roll), you're next activation of the Kinetic Healer Wild Talent is free."
+    "enGB": "Element: void\nType: substance infusion\nLevel: 5\nBurn: 3\nPrerequisite: Kinetic Healer\nAssociated Blasts: negative, void\n{g|Encyclopedia:Saving_Throw}Saving Throw{/g}: none\nYour kinetic blast can drain your foes’ vitality to replenish your own. If your blast hits (or the enemy fails its saving throw against a blast without an attack roll), you're next activation of the Kinetic Healer Wild Talent is free.",
+    "ruRU": "Элемент: Пустота\nТип: вливание субстанции\nКруг: 5\nВыгорание: 3\nТребование: Кинетический целитель\nСвязанные заряды: негативный, Пустоты\n{g|Encyclopedia:Saving_Throw}Спасбросок{/g}: нет\nВаш кинетический заряд вытягивает жизненную силу врагов, передавая ее вам. Если ваш заряд попадает по врагу (то есть враг проваливает свой спасбросок против заряда без {g|Encyclopedia:Attack}броска на попадание{/g}), кинетик может активировать дикий талант Кинетический целитель, не расходуя выгорания.",
+    "zh_CN": "元素：虚空\n类别: 性质注能\n等级: 5\n超载: 3\n前置: 念力医者\n关联念袭类别: 负能，虚无力\n{g|Encyclopedia:Saving_Throw}豁免{/g}: 无\n你的念袭可以损耗敌人的活力来治疗你自己。如果你的念袭命中敌人（或者对你的念袭豁免失败），你使用的下一个念力医者无须承受超载。"
   },
   {
     "Key": "Void.Vampiric.Buff.Name",
     "ProcessTemplates": false,
-    "enGB": "Vampiric Infusion — Void Healer"
+    "enGB": "Vampiric Infusion — Void Healer",
+    "ruRU": "Вампирическое вливание - целитель Пустоты",
+    "zh_CN": "吸血注能 — 虚空医者"
   },
   {
     "Key": "Void.Vampiric.Buff.Description",
     "ProcessTemplates": false,
-    "enGB": "Your next Void Healer ability burn cost is reduced to zero."
+    "enGB": "Your next Void Healer ability burn cost is reduced to zero.",
+    "ruRU": "Ваше следующее применение способности целитель Пустоты не стоит выгорания.",
+    "zh_CN": "你使用的下一个虚空医者无须承受超载。"
   },
   {
     "Key": "Void.Weighing.Name",
     "ProcessTemplates": false,
-    "enGB": "Weighing Infusion"
+    "enGB": "Weighing Infusion",
+    "ruRU": "Утяжеляющее вливание",
+    "zh_CN": "加重注能"
   },
   {
     "Key": "Void.Weighing.Description",
     "ProcessTemplates": false,
-    "enGB": "Element: void\nType: substance infusion\nLevel: 2\nBurn: 2\nAssociated Blasts: gravity, void\n{g|Encyclopedia:Saving_Throw}Saving Throw{/g}: Reflex negates\nThis infusion functions as entangling infusion, except it entangles and immobilizes a foe by increasing its weight, rather than surrounding it in elemental matter."
+    "enGB": "Element: void\nType: substance infusion\nLevel: 2\nBurn: 2\nAssociated Blasts: gravity, void\n{g|Encyclopedia:Saving_Throw}Saving Throw{/g}: Reflex negates\nThis infusion functions as entangling infusion, except it entangles and immobilizes a foe by increasing its weight, rather than surrounding it in elemental matter.",
+    "ruRU": "Элемент: Пустота\nТип: вливание субстанции\nКруг: 2\nВыгорание: 2\nСвязанные заряды: гравитации, негативный, Пустоты\n{g|Encyclopedia:Saving_Throw}Спасбросок{/g}: Реакции нейтрализует\nЭто вливание действует аналогично Оплетающему вливанию за исключением того, что обездвиживает врагов увеличением их веса, а не окружает элементальной материей.",
+    "zh_CN": "元素：虚空\n类别: 性质注能\n等级: 2\n超载: 2\n关联念袭类别: 重力，虚无力\n{g|Encyclopedia:Saving_Throw}豁免{/g}: 反射，通过则无效\n该注能如同纠缠注能（Entangle Infusion），除了该注能通过增加目标的重量来令其纠缠（entangle）与无法移动（immobilize），而不是通过元素物质缠绕敌人。"
   }
 ]

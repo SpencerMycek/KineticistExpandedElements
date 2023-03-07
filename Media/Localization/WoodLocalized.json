@@ -1,358 +1,499 @@
-﻿[
+[
   {
-
     "Key": "Wood",
     "ProcessTemplates": false,
-    "enGB": "Wood"
+    "enGB": "Wood",
+    "ruRU": "Дерево",
+    "zh_CN": "木"
   },
   {
     "Key": "Wood.Focus.Description",
     "ProcessTemplates": false,
-    "enGB": "Kineticists who focus on the concept of wood as an element are known as phytokineticists. Phytokineticists share a strong bond with the Fey World and channel the power of primordial life. As there is no “Elemental Plane of Wood,” the phytokineticist draws upon pockets of vital energy that form when the Elemental Planes grind against the borders of the Fey World."
+    "enGB": "Kineticists who focus on the concept of wood as an element are known as phytokineticists. Phytokineticists share a strong bond with the Fey World and channel the power of primordial life. As there is no “Elemental Plane of Wood,” the phytokineticist draws upon pockets of vital energy that form when the Elemental Planes grind against the borders of the Fey World.",
+    "ruRU": "Кинетики, специализирующиеся на дереве как элементе, называются фитокинетиками. Фитокинетики тесно связаны с Первым Миром и проводят энергию первозданной жизни. Так как «стихийного плана Дерева» не существует, фитокинетики черпают силу жизни в местах, где стихийные планы соприкасаются с Первым Миром.",
+    "zh_CN": "植木操念使与第一世界（the First World）紧密相连，引导最为原始的生命之力。世界上并没有“木元素位面”，因为这一元素位面早已一头撞碎在第一世界的边境上。"
   },
   {
     "Key": "Wood.Skills.Name",
     "ProcessTemplates": false,
-    "enGB": "Wood Class Skills"
+    "enGB": "Wood Class Skills",
+    "ruRU": "Классовые навыки дерева",
+    "zh_CN": "木元素本职技能"
   },
   {
     "Key": "Wood.Skills.Description",
     "ProcessTemplates": true,
-    "enGB": "A phytokineticist adds {g|Encyclopedia:Lore_Nature}Lore Nature{/g} and {g|Encyclopedia:Knowledge_World}Knowledge (World){/g} to her list of class skills."
+    "enGB": "A phytokineticist adds {g|Encyclopedia:Lore_Nature}Lore Nature{/g} and {g|Encyclopedia:Knowledge_World}Knowledge (World){/g} to her list of class skills.",
+    "ruRU": "Фитокинетик добавляет {g|Encyclopedia:Lore_Nature}Знание (природа){/g} и {g|Encyclopedia:Knowledge_World}Знание (мир){/g} к ее списку классовых {g|Encyclopedia:Skills}навыков{/g}.",
+    "zh_CN": "A phytokineticist adds {g|Encyclopedia:Lore_Nature}Lore Nature{/g} and {g|Encyclopedia:Knowledge_World}Knowledge (World){/g} to her list of class skills."
   },
   {
     "Key": "Wood.Defense",
     "ProcessTemplates": false,
-    "enGB": "Flesh of Wood"
+    "enGB": "Flesh of Wood",
+    "ruRU": "Плоть из дерева",
+    "zh_CN": "木身"
   },
   {
     "Key": "Wood.Defense.Description",
     "ProcessTemplates": true,
-    "enGB": "Element: Wood\nType: defense (Su)\nLevel: —\nBurn: 0\nYour skin toughens like timber, turning aside some blows. You gain a +1 enhancement bonus to your existing natural armor bonus. By accepting 1 point of burn, you can increase this enhancement bonus by 1. For every 3 levels beyond 2nd, you can accept 1 additional point of burn to further increase this enhancement bonus by 1 (to a maximum of +7 at 17th level)."
+    "enGB": "Element: Wood\nType: defense (Su)\nLevel: —\nBurn: 0\nYour skin toughens like timber, turning aside some blows. You gain a +1 enhancement bonus to your existing natural armor bonus. By accepting 1 point of burn, you can increase this enhancement bonus by 1. For every 3 levels beyond 2nd, you can accept 1 additional point of burn to further increase this enhancement bonus by 1 (to a maximum of +7 at 17th level).",
+    "ruRU": "Элемент: дерево\nТип: защитный\nКруг: —\nВыгорание: 0\nВаша кожа твердеет, как дерево, отражая удары. Вы получаете +1 бонус усиления к природной броне. Принимая 1 очко выгорания, вы можете увеличить этот бонус усиления на 1. За каждые 3 уровня после второго, вы можете принять еще 1 очко выгорания, чтобы дополнительно увеличить бонус усиления на 1 (вплоть до +7 на 17 уровне).",
+    "zh_CN": "元素: 木\n类别: 护身 (Su)\n等级: —\n超载: 0\n你的皮肤像是木头般紧实，足以卸除掉一些打击力。你在你已有的天生防御上获得+1增强加值。通过承受1点超载，你可以将增强加值再提升1点。在2级后的每3级，你可以额外承受1点超载从而进一步将增强加值提升1点（最多在20级达到+7）。"
   },
   {
     "Key": "Wood.Defense.Button",
     "ProcessTemplates": true,
-    "enGB": "Flesh of Wood — Increase AC"
+    "enGB": "Flesh of Wood — Increase AC",
+    "ruRU": "Плоть из дерева - увеличить бонус брони",
+    "zh_CN": "Flesh of Wood — Increase AC"
   },
   {
     "Key": "Wood.Selection.Name",
     "ProcessTemplates": false,
-    "enGB": "Wood Blast"
+    "enGB": "Wood Blast",
+    "ruRU": "Заряд дерева",
+    "zh_CN": "木袭"
   },
   {
     "Key": "Wood.Selection.Description",
     "ProcessTemplates": false,
-    "enGB": ""
+    "enGB": "",
+    "ruRU": "",
+    "zh_CN": ""
   },
   {
     "Key": "Wood.Positive.Name",
     "ProcessTemplates": false,
-    "enGB": "Wood Blast"
+    "enGB": "Positive Blast",
+    "ruRU": "Позитивный заряд",
+    "zh_CN": "木袭"
   },
   {
     "Key": "Wood.Positive.Description",
     "ProcessTemplates": true,
-    "enGB": "Element: Wood\nType: simple blast\nLevel: —\nBurn: 0\nBlast Type: energy\n{g|Encyclopedia:Damage}Damage{/g}: {g|Encyclopedia:Damage_Type}positive energy{/g}\nYou blast your foe with positive energy."
+    "enGB": "Element: Wood\nType: simple blast\nLevel: —\nBurn: 0\nBlast Type: energy\n{g|Encyclopedia:Damage}Damage{/g}: {g|Encyclopedia:Damage_Type}positive energy{/g}\nYou blast your foe with positive energy.",
+    "ruRU": "Элемент: дерево\nТип: простой заряд\nКруг: —\nВыгорание: 0\nТип заряда: энергетический\n{g|Encyclopedia:Damage}Урон{/g}: {g|Encyclopedia:Damage_Type}позитивная энергия{/g}\nВы наносите урон врагу позитивной энергией.",
+    "zh_CN": "元素: 木\n类别: 简易念袭\n等级: —\n超载: 0\n念袭性质: 能量\n{g|Encyclopedia:Damage}伤害类型{/g}: {g|Encyclopedia:Damage_Type}正能量{/g}\n你使用正能量攻击你的敌人。"
   },
   {
     "Key": "Positive.Blade.Prefix",
     "ProcessTemplates": false,
-    "enGB": "Positive Blast"
+    "enGB": "Positive Blast",
+    "ruRU": "Позитивный заряд",
+    "zh_CN": "正能量念袭"
   },
   {
     "Key": "Positive.Blade.Enchant",
     "ProcessTemplates": false,
-    "enGB": "Positive Blast — Kinetic Blade"
+    "enGB": "Positive Blast — Kinetic Blade",
+    "ruRU": "Позитивный заряд - Кинетический клинок",
+    "zh_CN": "正能量念袭-念刃"
   },
   {
     "Key": "Wood.Wood.Name",
     "ProcessTemplates": false,
-    "enGB": "Wood Blast"
+    "enGB": "Wood Blast",
+    "ruRU": "Заряд дерева",
+    "zh_CN": "木袭"
   },
   {
     "Key": "Wood.Wood.Description",
     "ProcessTemplates": true,
-    "enGB": "Element: Wood\nType: simple blast\nLevel: —\nBurn: 0\nBlast Type: physical\n{g|Encyclopedia:Damage}Damage{/g}: {g|Encyclopedia:Damage_Type}bludgeoning{/g}, piercing, and slashing\nYou lash out with boughs, vines, or a deluge of stinging blooms."
+    "enGB": "Element: Wood\nType: simple blast\nLevel: —\nBurn: 0\nBlast Type: physical\n{g|Encyclopedia:Damage}Damage{/g}: {g|Encyclopedia:Damage_Type}bludgeoning{/g}, piercing, and slashing\nYou lash out with boughs, vines, or a deluge of stinging blooms.",
+    "ruRU": "Элемент: дерево\nТип: простой заряд\nКруг: --\nВыгорание: 0\nТип заряда: физический\n{g|Encyclopedia:Damage}урон{/g}: {g|Encyclopedia:Damage_Type}дробящий{/g}, колющий и режущий\nВы атакуете ветками, лозами или потоком колючек.",
+    "zh_CN": "元素: 木\n类别: 简易念袭\n等级: —\n超载: 0\n念袭性质: 物理\n{g|Encyclopedia:Damage}伤害类型{/g}: {g|Encyclopedia:Damage_Type}钝击{/g}挥砍或穿刺\n你使用树枝、藤蔓或者说带刺的花朵发起攻击。"
   },
   {
     "Key": "Wood.Blade.Prefix",
     "ProcessTemplates": false,
-    "enGB": "Wood Blast"
+    "enGB": "Wood Blast",
+    "ruRU": "Заряд дерева",
+    "zh_CN": "木袭"
   },
   {
     "Key": "Wood.Blade.Enchant",
     "ProcessTemplates": false,
-    "enGB": "Wood Blast — Kinetic Blade"
+    "enGB": "Wood Blast — Kinetic Blade",
+    "ruRU": "Заряд дерева - Кинетический клинок",
+    "zh_CN": "木袭-念刃"
   },
   {
     "Key": "Wood.Verdant.Name",
     "ProcessTemplates": false,
-    "enGB": "Verdant Blast"
+    "enGB": "Verdant Blast",
+    "ruRU": "Изумрудный заряд",
+    "zh_CN": "藤花乱舞"
   },
   {
     "Key": "Wood.Verdant.Description",
     "ProcessTemplates": true,
-    "enGB": "Element: Wood\nType: composite blast\nLevel: —\nBurn: 2\nPrerequisite(s): primary element(wood), expanded element(wood)\nBlast Type: physical\n{g|Encyclopedia:Damage}Damage{/g}: {g|Encyclopedia:Damage_Type}bludgeoning{/g}, piercing, slashing, and positive\nYou blast your foes with fanciful wild plant growth overflowing with positive energy from the First World. Verdant Blast’s damage counts as positive energy only when it would be beneficial to you."
+    "enGB": "Element: Wood\nType: composite blast\nLevel: —\nBurn: 2\nPrerequisite(s): primary element(wood), expanded element(wood)\nBlast Type: physical\n{g|Encyclopedia:Damage}Damage{/g}: {g|Encyclopedia:Damage_Type}bludgeoning{/g}, piercing, slashing, and positive\nYou blast your foes with fanciful wild plant growth overflowing with positive energy from the First World. Verdant Blast’s damage counts as positive energy only when it would be beneficial to you.",
+    "ruRU": "Элемент: дерево\nТип: составной заряд\nКруг: —\nВыгорание: 2\nТребования: основной элемент (дерево), расширенный элемент (дерево)\nТип заряда: физический\n{g|Encyclopedia:Damage_Type}дробящий{/g}, колющий, режущий и позитивный\nВы атакуете врага зарядом из причудливых растений, наполненных позитивной энергией из Первого Мира. Изумрудного заряд наносит урон позитивной энергией только в случае, если это вам выгодно.",
+    "zh_CN": "元素: 木\n类别: 复合念袭\n等级: —\n超载: 2\n前置: 首要元素（木），扩展元素（木）\n念袭性质: 物理\n{g|Encyclopedia:Damage}伤害{/g}: {g|Encyclopedia:Damage_Type}钝击{/g}, 挥砍，穿刺，以及可选正能量\n你通过在正能量下疯狂生长的来自第一世界的奇特植物攻击敌人。藤花乱舞的伤害只有在对你有益的时候才算正能量。"
   },
   {
     "Key": "Verdant.Blade.Prefix",
     "ProcessTemplates": false,
-    "enGB": "Verdant Blast"
+    "enGB": "Verdant Blast",
+    "ruRU": "Изумрудный заряд",
+    "zh_CN": "藤花乱舞"
   },
   {
     "Key": "Verdant.Blade.Enchant",
     "ProcessTemplates": false,
-    "enGB": "Verdant Blast — Kinetic Blade"
+    "enGB": "Verdant Blast — Kinetic Blade",
+    "ruRU": "Изумрудный заряд - Кинетический клинок",
+    "zh_CN": "藤花乱舞-念刃"
   },
   {
     "Key": "Wood.Autumn.Name",
     "ProcessTemplates": false,
-    "enGB": "Autumn Blast"
+    "enGB": "Autumn Blast",
+    "ruRU": "Осенний заряд",
+    "zh_CN": "起秋尘"
   },
   {
     "Key": "Wood.Autumn.Description",
     "ProcessTemplates": true,
-    "enGB": "Element: Earth and Wood\nType: composite blast\nLevel: —\nBurn: 2\nPrerequisite(s): earth blast, wood blast\nBlast Type: physical\n{g|Encyclopedia:Damage}Damage{/g}: {g|Encyclopedia:Damage_Type}bludgeoning{/g}, piercing, and slashing\nA burst of fallen leaves and earthy decay batters a single foe."
+    "enGB": "Element: Earth and Wood\nType: composite blast\nLevel: —\nBurn: 2\nPrerequisite(s): earth blast, wood blast\nBlast Type: physical\n{g|Encyclopedia:Damage}Damage{/g}: {g|Encyclopedia:Damage_Type}bludgeoning{/g}, piercing, and slashing\nA burst of fallen leaves and earthy decay batters a single foe.",
+    "ruRU": "Элемент: земля и дерево\nТип: составной заряд\nКруг: —\nВыгорание: 2\nТребования: заряд земли, заряд дерева\nТип заряда: физический\n{g|Encyclopedia:Damage_Type}дробящий{/g}, колющий и режущий\nВы громите врага зарядом опавших листьев и гниющей древесины.",
+    "zh_CN": "元素：土和木\n类别: 复合念袭\n等级: —\n超载: 2\n前置: 岩击，木袭\n念袭性质: 物理\n{g|Encyclopedia:Damage}伤害类型{/g}: {g|Encyclopedia:Damage_Type}钝击{/g}, 穿刺或挥砍中的任意两种\n一阵落叶和浮土袭向一名敌人。"
   },
   {
     "Key": "Autumn.Blade.Prefix",
     "ProcessTemplates": false,
-    "enGB": "Autumn Blast"
+    "enGB": "Autumn Blast",
+    "ruRU": "Осенний заряд",
+    "zh_CN": "起秋尘"
   },
   {
     "Key": "Autumn.Blade.Enchant",
     "ProcessTemplates": false,
-    "enGB": "Autumn Blast — Kinetic Blade"
+    "enGB": "Autumn Blast — Kinetic Blade",
+    "ruRU": "Осенний заряд - Кинетический клинок",
+    "zh_CN": "起秋尘-念刃"
   },
   {
     "Key": "Wood.Spring.Name",
     "ProcessTemplates": false,
-    "enGB": "Spring Blast"
+    "enGB": "Spring Blast",
+    "ruRU": "Весенний заряд",
+    "zh_CN": "拂春风"
   },
   {
     "Key": "Wood.Spring.Description",
     "ProcessTemplates": true,
-    "enGB": "Element: Air and Wood\nType: composite blast\nLevel: —\nBurn: 2\nPrerequisite(s): air blast, wood blast\nBlast Type: physical\n{g|Encyclopedia:Damage}Damage{/g}: {g|Encyclopedia:Damage_Type}bludgeoning{/g}, piercing, and slashing\nSharp blossoms and pummeling seeds buffet your foe."
+    "enGB": "Element: Air and Wood\nType: composite blast\nLevel: —\nBurn: 2\nPrerequisite(s): air blast, wood blast\nBlast Type: physical\n{g|Encyclopedia:Damage}Damage{/g}: {g|Encyclopedia:Damage_Type}bludgeoning{/g}, piercing, and slashing\nSharp blossoms and pummeling seeds buffet your foe.",
+    "ruRU": "Элемент: воздух и дерево\nТип: составной заряд\nКруг: —\nВыгорание: 2\nТребования: заряд воздуха, заряд дерева\nТип заряда: физический\n{g|Encyclopedia:Damage_Type}дробящий{/g}, колющий и режущий\nВы поражаете врага острыми соцветиями и твердыми семенами.",
+    "zh_CN": "元素：气和木\n类别: 复合念袭\n等级: —\n超载: 2\n前置: 突风，木袭\n念袭性质: 物理\n{g|Encyclopedia:Damage}伤害类型{/g}: {g|Encyclopedia:Damage_Type}钝击{/g}, 穿刺或者挥砍\n锋锐的花瓣和坚实的种子袭向你的敌人。"
   },
   {
     "Key": "Spring.Blade.Prefix",
     "ProcessTemplates": false,
-    "enGB": "Spring Blast"
+    "enGB": "Spring Blast",
+    "ruRU": "Весенний заряд",
+    "zh_CN": "拂春风"
   },
   {
     "Key": "Spring.Blade.Enchant",
     "ProcessTemplates": false,
-    "enGB": "Spring Blast — Kinetic Blade"
+    "enGB": "Spring Blast — Kinetic Blade",
+    "ruRU": "Весенний заряд - Кинетический клинок",
+    "zh_CN": "拂春风-念刃"
   },
   {
     "Key": "Wood.Summer.Name",
     "ProcessTemplates": false,
-    "enGB": "Summer Blast"
+    "enGB": "Summer Blast",
+    "ruRU": "Летний заряд",
+    "zh_CN": "通夏火"
   },
   {
     "Key": "Wood.Summer.Description",
     "ProcessTemplates": true,
-    "enGB": "Element: Fire and Wood\nType: composite blast\nLevel: —\nBurn: 2\nPrerequisite(s): fire blast, wood blast\nBlast Type: physical\n{g|Encyclopedia:Damage}Damage{/g}: half fire and {g|Encyclopedia:Damage_Type}bludgeoning{/g}, piercing, and slashing \nA burning blast of heat and sun-dried foliage tears at your foe."
+    "enGB": "Element: Fire and Wood\nType: composite blast\nLevel: —\nBurn: 2\nPrerequisite(s): fire blast, wood blast\nBlast Type: physical\n{g|Encyclopedia:Damage}Damage{/g}: half fire and {g|Encyclopedia:Damage_Type}bludgeoning{/g}, piercing, and slashing \nA burning blast of heat and sun-dried foliage tears at your foe.",
+    "ruRU": "Элемент: огонь и дерево\nТип: составной заряд\nКруг: —\nВыгорание: 2\nТребования: заряд огня, заряд дерева\nТип заряда: физический\n{g|Encyclopedia:Damage}Урон{/g}, наполовину огненный и {g|Encyclopedia:Damage_Type}дробящий{/g}, колющий и режущий\nВы разрываете врага пылающим зарядом жары и высушенной на солнце растительности.",
+    "zh_CN": "元素: 火和木\n类别: 复合念袭\n等级: —\n超载: 2\n前置: 火冲，木袭\n念袭性质: 物理\n{g|Encyclopedia:Damage}伤害类型{/g}: 一半火焰 {g|Encyclopedia:Damage_Type}一半钝击{/g}, 穿刺或挥砍 \n热浪席卷着枯焦的树叶袭向你的敌人。"
   },
   {
     "Key": "Summer.Blade.Prefix",
     "ProcessTemplates": false,
-    "enGB": "Summer Blast"
+    "enGB": "Summer Blast",
+    "ruRU": "Летний заряд",
+    "zh_CN": "通夏火"
   },
   {
     "Key": "Summer.Blade.Enchant",
     "ProcessTemplates": false,
-    "enGB": "Summer Blast — Kinetic Blade"
+    "enGB": "Summer Blast — Kinetic Blade",
+    "ruRU": "Летний заряд - Кинетический клинок",
+    "zh_CN": "通夏火-念刃"
   },
   {
     "Key": "Wood.Winter.Name",
     "ProcessTemplates": false,
-    "enGB": "Winter Blast"
+    "enGB": "Winter Blast",
+    "ruRU": "Зимний заряд",
+    "zh_CN": "漫冬雪"
   },
   {
     "Key": "Wood.Winter.Description",
     "ProcessTemplates": true,
-    "enGB": "Element: Water and Wood\nType: composite blast\nLevel: —\nBurn: 2\nPrerequisite(s): cold blast, wood blast\nBlast Type: physical\n{g|Encyclopedia:Damage}Damage{/g}: half cold and {g|Encyclopedia:Damage_Type}bludgeoning{/g}, piercing, and slashing \nYou unleash a blast of frigid frost and jagged, bare branches at your target."
+    "enGB": "Element: Water and Wood\nType: composite blast\nLevel: —\nBurn: 2\nPrerequisite(s): cold blast, wood blast\nBlast Type: physical\n{g|Encyclopedia:Damage}Damage{/g}: half cold and {g|Encyclopedia:Damage_Type}bludgeoning{/g}, piercing, and slashing \nYou unleash a blast of frigid frost and jagged, bare branches at your target.",
+    "ruRU": "Элемент: вода и дерево\nТип: составной заряд\nКруг: —\nВыгорание: 2\nТребования: заряд льда, заряд дерева\nТип заряда: физический\n{g|Encyclopedia:Damage}Урон{/g}, наполовину ледяной и {g|Encyclopedia:Damage_Type}дробящий{/g}, колющий и режущий\nВы выпускаете во врага заряд стужи и острых, голых ветвей.",
+    "zh_CN": "元素: 水和木\n类别: 复合念袭\n等级: —\n超载: 2\n前置: 霜打，木袭\n念袭性质: 物理\n{g|Encyclopedia:Damage}伤害类型{/g}: 一半寒冷 {g|Encyclopedia:Damage_Type}，一半钝击{/g}, 穿刺或挥砍 \n你挥舞着布满寒霜的枝条狠狠抽打你的敌人。"
   },
   {
     "Key": "Winter.Blade.Prefix",
     "ProcessTemplates": false,
-    "enGB": "Winter Blast"
+    "enGB": "Winter Blast",
+    "ruRU": "Зимний заряд",
+    "zh_CN": "漫冬雪"
   },
   {
     "Key": "Winter.Blade.Enchant",
     "ProcessTemplates": false,
-    "enGB": "Winter Blast — Kinetic Blade"
+    "enGB": "Winter Blast — Kinetic Blade",
+    "ruRU": "Зимний заряд - Кинетический клинок",
+    "zh_CN": "漫冬雪-念刃"
   },
   {
     "Key": "Wood.Admixture.Positive.Name",
     "ProcessTemplates": false,
-    "enGB": "Positive Admixture"
+    "enGB": "Positive Admixture",
+    "ruRU": "Позитивная примесь",
+    "zh_CN": "正能混爆"
   },
   {
     "Key": "Wood.Admixture.Positive.Description",
     "ProcessTemplates": false,
-    "enGB": "Element: Wood\nType: composite blast\nLevel: —\nBurn: 2\nPrerequisite(s): positive blast, any other simple energy blastBlast Type: energy\n{g|Encyclopedia:Damage}Damage{/g}: see text\nChoose another energy simple blast you know. Positive admixture’s damage is half positive energy, and half the chosen blast’s type."
+    "enGB": "Element: Wood\nType: composite blast\nLevel: —\nBurn: 2\nPrerequisite(s): positive blast, any other simple energy blastBlast Type: energy\n{g|Encyclopedia:Damage}Damage{/g}: see text\nChoose another energy simple blast you know. Positive admixture’s damage is half positive energy, and half the chosen blast’s type.",
+    "ruRU": "Элемент: дерево\nТип: составной заряд\nКруг: —\nВыгорание: 2\nТребования: позитивный заряд, любой другой энергетический простой заряд\nТип заряда: специальный\n{g|Encyclopedia:Damage}Урон{/g}: смотри описание\nВыберите другой простой энергетический заряд, известный вам. Урон позитивной примеси наполовину позитивной энергией, наполовину выбранного простого заряда.",
+    "zh_CN": "元素: 木\n类别: 复合念袭\n等级: —\n超载: 2\n前置: 正能量念袭, 任何其他简易能量念袭\n念袭性质: 能量\n{g|Encyclopedia:Damage}伤害类型{/g}: 见下文\n选择另外一种你所知的简易能量念袭。正能量混合的伤害一半为正能量伤害，另一半为所选念袭类型。"
   },
   {
     "Key": "Wood.BonusWild.Name",
     "ProcessTemplates": false,
-    "enGB": "Kineticist Bonus Feat — Wood"
+    "enGB": "Kineticist Bonus Feat — Wood",
+    "ruRU": "Дополнительная черта кинетика - дерево",
+    "zh_CN": "操念使奖励专长 — 木"
   },
   {
     "Key": "Wood.BonusWild.Description",
     "ProcessTemplates": true,
-    "enGB": "A character that selects this talent gains a bonus {g|Encyclopedia:Feat}feat{/g}. These feats must be taken from the following list: Spell Penetration, Greater Spell Penetration, Precise Shot, Trip, Greater Trip"
+    "enGB": "A character that selects this talent gains a bonus {g|Encyclopedia:Feat}feat{/g}. These feats must be taken from the following list: Spell Penetration, Greater Spell Penetration, Precise Shot, Trip, Greater Trip",
+    "ruRU": "Выбирая этот прием, персонаж может взять дополнительную {g|Encyclopedia:Feat}черту{/g}. Эти черты он выбирает из следующего списка: Преодолевающая магия, Преодолевающая магия+, Меткий выстрел, Сбивание с ног, Сбивание с ног+",
+    "zh_CN": "A character that selects this talent gains a bonus {g|Encyclopedia:Feat}feat{/g}. These feats must be taken from the following list: 法术穿透, 高等法术穿透, 精准射击, 绊摔, 高等绊摔"
   },
   {
     "Key": "Wood.WoodHealer.Name",
     "ProcessTemplates": false,
-    "enGB": "Wood Healer"
+    "enGB": "Wood Healer",
+    "ruRU": "Древесный целитель",
+    "zh_CN": "草木医者"
   },
   {
     "Key": "Wood.WoodHealer.Description",
     "ProcessTemplates": true,
-    "enGB": "Element: Wood\nType: utility\nLevel: 1\nBurn: 1\nPrerequisites: positive blast\nThis functions as kinetic healer, but you must base the amount of healing on your positive blast, not wood blast. This wild talent counts as kinetic healer for prerequisites for selecting other kineticist wild talents."
+    "enGB": "Element: Wood\nType: utility\nLevel: 1\nBurn: 1\nPrerequisites: positive blast\nThis functions as kinetic healer, but you must base the amount of healing on your positive blast, not wood blast. This wild talent counts as kinetic healer for prerequisites for selecting other kineticist wild talents.",
+    "ruRU": "Элемент: дерево\nТип: вспомогательный\nКруг: 1\nВыгорание: 1\nСпособность действует как Кинетический целитель, но но берет в расчет исцеление от позитивного заряда, а не заряда дерева. Этот дикий талант считается как Кинетический целитель для других диких талантов кинетика.",
+    "zh_CN": "元素: 木\n类别: 通用\n等级: 1\n超载: 1\n前置: 正能量念袭\n如同念力医者，但是你必须令你的治疗量基于你的正能量念袭，而不是木念袭。可以替代念力医者作为其他通用原力的先决条件。."
   },
   {
     "Key": "Wood.Step.Name",
     "ProcessTemplates": false,
-    "enGB": "Woodland Step"
+    "enGB": "Woodland Step",
+    "ruRU": "Лесная поступь",
+    "zh_CN": "木行术p"
   },
   {
     "Key": "Wood.Step.Description",
     "ProcessTemplates": true,
-    "enGB": "Element: Wood\nType: utility\nLevel: 1\nBurn: 0 \nYou can move through any sort difficult terrain at your normal {g|Encyclopedia:Speed}speed{/g} and without taking {g|Encyclopedia:Damage}damage{/g} or suffering any other impairment."
+    "enGB": "Element: Wood\nType: utility\nLevel: 1\nBurn: 0 \nYou can move through any sort difficult terrain at your normal {g|Encyclopedia:Speed}speed{/g} and without taking {g|Encyclopedia:Damage}damage{/g} or suffering any other impairment.",
+    "ruRU": "Элемент: дерево\nТип: вспомогательный\nКруг: 1\nВыгорание: 0\nвы можете {g|Encyclopedia:Speed}перемещаться{/g} по труднопреодолимой местности со своей обычной скоростью, не получая {g|Encyclopedia:Damage}урона{/g} и не страдая от других неудобств.",
+    "zh_CN": "元素：木\n类别: 通用\n等级: 1\n超载: 0 \n你可以在困难地形中以正常{g|Encyclopedia:Speed}速度{/g}移动，而不受任何{g|Encyclopedia:Damage}伤害{/g}或者其他损害。"
   },
   {
     "Key": "Wood.ThornFlesh.Name",
     "ProcessTemplates": false,
-    "enGB": "Thorn Flesh"
+    "enGB": "Thorn Flesh",
+    "ruRU": "Шипастая плоть",
+    "zh_CN": "棘肤"
   },
   {
     "Key": "Wood.ThornFlesh.Description",
     "ProcessTemplates": true,
-    "enGB": "Element: Wood\nType: utility\nLevel: 3\nBurn: 1\nPrerequisite(s): flesh of wood\nYou cover your body in barbed thorns that injure foes who strike you. Until the next time your burn is removed, while your flesh of wood is active, any creature that strikes you with an {g|Encyclopedia:UnarmedAttack}unarmed{/g} strike or {g|Encyclopedia:NaturalAttack}natural weapon{/g} or that grapples you takes {g|Encyclopedia:Dice}1d6{/g} points of {g|Encyclopedia:Damage_Type}piercing damage{/g}."
+    "enGB": "Element: Wood\nType: utility\nLevel: 3\nBurn: 1\nPrerequisite(s): flesh of wood\nYou cover your body in barbed thorns that injure foes who strike you. Until the next time your burn is removed, while your flesh of wood is active, any creature that strikes you with an {g|Encyclopedia:UnarmedAttack}unarmed{/g} strike or {g|Encyclopedia:NaturalAttack}natural weapon{/g} or that grapples you takes {g|Encyclopedia:Dice}1d6{/g} points of {g|Encyclopedia:Damage_Type}piercing damage{/g}.",
+    "ruRU": "Элемент: дерево\nТип: вспомогательный\nКруг: 3\nВыгорание: 1\nТребования: Плоть из дерева\nВы покрываете свое тело зазубренными шипами, которые повреждают {g|Encyclopedia:Attack}нападающих{/g} противников. До момента, когда будет снято выгорание и Плоть из дерева активна, любое существо, атакующее вас {g|Encyclopedia:UnarmedAttack}без оружия{/g}, либо с помощью {g|Encyclopedia:NaturalAttack}естественного оружия{/g} оружия ближнего боя, либо пытающееся выполнить захват, получает {g|Encyclopedia:Dice}1d6{/g} {g|Encyclopedia:Damage_Type}колющего урона{/g}",
+    "zh_CN": "元素：木\n类别: 通用\n等级: 3\n超载: 1\n前置: 木身\n你将荆棘覆于皮肤之上，以此伤害那些敢于攻击你的敌人。此能力如同锯齿皮肤。"
   },
   {
     "Key": "Wood.Herbal.Name",
     "ProcessTemplates": false,
-    "enGB": "Herbal Antivenom"
+    "enGB": "Herbal Antivenom",
+    "ruRU": "Травяное противоядие",
+    "zh_CN": "解毒草药"
   },
   {
     "Key": "Wood.Herbal.Description",
     "ProcessTemplates": true,
-    "enGB": "Element: Wood\nType: utility\nLevel: 8\nBurn: 0\nYour body can produce the herbal remedies necessary to counter almost any poison. You gain a +5 alchemical bonus on saving throws against poison as if always under the effect of antitoxin. \n\nIn addition your knowledge in healing gives you a +5 bonus to Lore: Religion"
+    "enGB": "Element: Wood\nType: utility\nLevel: 8\nBurn: 0\nYour body can produce the herbal remedies necessary to counter almost any poison. You gain a +5 alchemical bonus on saving throws against poison as if always under the effect of antitoxin. \n\nIn addition your knowledge in healing gives you a +5 bonus to Lore: Religion",
+    "ruRU": "Элемент: дерево\nТип: вспомогательный\nКруг: 8\nВыгорание: 0\nВаше тело производит противоядия, необходимые для противодействия практически любому яду. Вы получаете +5 алхимический бонус к спасброскам против яда как если бы вы были под действием Противоядия. В дополнение ваши познания в исцелении дают вам бонус +5 к Знание (религия).",
+    "zh_CN": "元素: 木\n类别: 通用\n等级: 8\n超载: 0\n你的身体可以产生对抗任何毒素所需的植物成分。在对抗毒素时，你在豁免检定上获得+5炼金加值，如同受到抗毒剂的影响。此外，你的医疗知识使你的学识：宗教获得+5加值。"
   },
   {
     "Key": "Wood.WildGrowth.Name",
     "ProcessTemplates": false,
-    "enGB": "Wild Growth"
+    "enGB": "Wild Growth",
+    "ruRU": "Дикий рост",
+    "zh_CN": "野性生长"
   },
   {
     "Key": "Wood.WildGrowth.Description",
     "ProcessTemplates": true,
-    "enGB": "Element: Wood\nType: utility\nLevel: 8\nBurn: 0\nYou cause tall grass, weeds, and other plants to wrap around creatures in the area of effect or those that enter the area. Creatures that fail their Reflex {g|Encyclopedia:Saving_Throw}save{/g} gain the entangled condition. Creatures that succeed at their save can move as normal, but those that remain in the area must save again each {g|Encyclopedia:Combat_Round}round{/g}. Creatures that move into the area must save immediately.\nEntangled creatures can break free by making a {g|Encyclopedia:Combat_Maneuvers}combat maneuver{/g} {g|Encyclopedia:Check}check{/g}, {g|Encyclopedia:Athletics}Athletics check{/g}, or {g|Encyclopedia:Mobility}Mobility check{/g} against the {g|Encyclopedia:DC}DC{/g} of this ability every round.\nThe entire area of effect is considered difficult terrain while the effect lasts."
+    "enGB": "Element: Wood\nType: utility\nLevel: 8\nBurn: 0\nYou cause tall grass, weeds, and other plants to wrap around creatures in the area of effect or those that enter the area. Creatures that fail their Reflex {g|Encyclopedia:Saving_Throw}save{/g} gain the entangled condition. Creatures that succeed at their save can move as normal, but those that remain in the area must save again each {g|Encyclopedia:Combat_Round}round{/g}. Creatures that move into the area must save immediately.\nEntangled creatures can break free by making a {g|Encyclopedia:Combat_Maneuvers}combat maneuver{/g} {g|Encyclopedia:Check}check{/g}, {g|Encyclopedia:Athletics}Athletics check{/g}, or {g|Encyclopedia:Mobility}Mobility check{/g} against the {g|Encyclopedia:DC}DC{/g} of this ability every round.\nThe entire area of effect is considered difficult terrain while the effect lasts.",
+    "ruRU": "Элемент: дерево\nТип: вспомогательный\nКруг: 8\nВыгорание: 0\nВы заставляете траву, кусты и другие растения опутывать существ, находящихся в зоне действия способности или входящих в нее. Существа, провалившие {g|Encyclopedia:Saving_Throw}спасбросок{/g} реакции, оказываются опутаны. При успешном спасброске существа могут двигаться как обычно, но те, кто остался в зоне действия, каждый {g|Encyclopedia:Combat_Round}раунд{/g} должны делать новый спасбросок. Существа, которые перемещаются в эту зону, должны немедленно сделать спасбросок.\nОпутанные существа каждый раунд могут {g|Encyclopedia:Check}попытаться{/g} освободиться, сделав успешную проверку {g|Encyclopedia:Combat_Maneuvers}боевого маневра{/g}, либо навыка {g|Encyclopedia:Athletics}Атлетика{/g} или {g|Encyclopedia:Mobility}Подвижность{/g}, против {g|Encyclopedia:DC}сложности{/g} способности.\nПока эффект в силе, вся зона его действия считается труднопреодолимой местностью.",
+    "zh_CN": "元素: 木\n类别: 通用\n等级: 8\n超载: 0\n你能够用生命的能力滋长植物，以此阻碍你的敌人。在效果开始时位于范围内或者进入生效范围的生物须进行反射豁免，失败则被纠缠，成功则可以正常移动。被纠缠的生物每回合可使用战技、灵巧或者运动检定尝试挣脱纠缠。效果持续时，整个区域被认为时困难地形。"
   },
   {
     "Key": "Wood.Siege.Name",
     "ProcessTemplates": false,
-    "enGB": "Forest Siege"
+    "enGB": "Forest Siege",
+    "ruRU": "Лесная осада",
+    "zh_CN": "战争之林"
   },
   {
     "Key": "Wood.Siege.Ability.Name",
     "ProcessTemplates": false,
-    "enGB": "Command Plant-Life"
+    "enGB": "Command Plant-Life",
+    "ruRU": "Команда растительности",
+    "zh_CN": "Command Plant-Life"
   },
   {
     "Key": "Wood.Siege.Action.Name",
     "ProcessTemplates": false,
-    "enGB": "Empower Plant-Life"
+    "enGB": "Empower Plant-Life",
+    "ruRU": "Усилить растительность",
+    "zh_CN": "Empower Plant-Life"
   },
   {
     "Key": "Wood.Siege.Buff.Description",
     "ProcessTemplates": false,
-    "enGB": "You may command plant-life to hurl rocks at a target"
+    "enGB": "You may command plant-life to hurl rocks at a target",
+    "ruRU": "Вы можете приказать древням кидать камни в цель",
+    "zh_CN": "你可以命令植物向目标投掷石块。"
   },
   {
     "Key": "Wood.Siege.Description",
     "ProcessTemplates": true,
-    "enGB": "Element: Wood\nType: utility\nLevel: 9\nBurn: 1\nYou can transform available plant life into a besieging army. This ability affects one plant for every three Kineticist Levels. \nAfter spending the burn to activity this ability, until the next time your burn is removed. You can spend a Standard action to cause nearby plants to act like heavy catapults, throwing rocks at a chosen target, dealing 6d6 Bludgeoning damage if they hit."
+    "enGB": "Element: Wood\nType: utility\nLevel: 9\nBurn: 1\nYou can transform available plant life into a besieging army. This ability affects one plant for every three Kineticist Levels. \nAfter spending the burn to activity this ability, until the next time your burn is removed you can spend a Standard action to cause nearby plants to act like heavy catapults, throwing rocks at a chosen target, dealing 6d6 Bludgeoning damage if they hit.",
+    "ruRU": "Элемент: дерево\nТип: вспомогательный\nКруг: 9\nВыгорание: 1\nВы можете превратить доступную растительность в осадную армию. Эта способность влияет на одно растение за каждые 3 уровня кинетика. После принятия выгорания для активации этой способности и до момента, пока выгорание не будет снято, вы можете Основным действием заставить ближайшую растительность вести себя, как тяжелые катапульты, которые будут атаковать выбранную цель и наносить 6d6 дробящего урона при попадании.",
+    "zh_CN": "元素: 木\n类别: 通用\n等级: 9\n超载: 1\n你可以将可用的植物转化为围城的军队。这个能力每三个操念使等级影响一个植物。在消耗超载后激活此技能，直到下次你的超载被移除。你可以花一个标准动作使附近的植物像重型投石器一样，向选定的目标投掷石块，如果他们击中目标，造成6d6的钝击伤害。"
   },
   {
     "Key": "Wood.Soldiers.Name",
     "ProcessTemplates": false,
-    "enGB": "Wood Soldiers"
+    "enGB": "Wood Soldiers",
+    "ruRU": "Древесные солдаты",
+    "zh_CN": "竖木为兵"
   },
   {
     "Key": "Wood.Soldiers.Buff.Name",
     "ProcessTemplates": false,
-    "enGB": "Elementally infused wood"
+    "enGB": "Elementally infused wood",
+    "ruRU": "Насыщенное стихиями дерево",
+    "zh_CN": "Elementally infused wood"
   },
   {
     "Key": "Wood.Soldiers.Description",
     "ProcessTemplates": true,
-    "enGB": "Element: Wood\nType: utility\nLevel: 8\nBurn: 1\nYour presence animates surrounding plant life and causes it to fight by your side. You summon four wooden golems that last until the next time you recover burn. If you have the Spring, Summer, Autumn, or Winter blasts, your golems will gain unique upgrades.\n\nAutumn Blast: Your Wood Soldiers gain resistance to physical damage\nSpring Blast: Your Wood Soldiers gain a fly speed, which provides a +3 to AC and immunity to ground based effects\nSummer Blast: Your Wood Soldiers gain resistance to fire, and deal 1d6 extra fire damage on all attacks\nWinder Blast: Your Wood Soldiers gain resistance to cold,  and deal 1d6 extra cold damage on all attacks"
+    "enGB": "Element: Wood\nType: utility\nLevel: 8\nBurn: 1\nYour presence animates surrounding plant life and causes it to fight by your side. You summon four wooden golems that last until the next time you recover burn. If you have the Spring, Summer, Autumn, or Winter blasts, your golems will gain unique upgrades.\n\nAutumn Blast: Your Wood Soldiers gain resistance to physical damage\nSpring Blast: Your Wood Soldiers gain a fly speed, which provides a +3 to AC and immunity to ground based effects\nSummer Blast: Your Wood Soldiers gain resistance to fire, and deal 1d6 extra fire damage on all attacks\nWinder Blast: Your Wood Soldiers gain resistance to cold,  and deal 1d6 extra cold damage on all attacks",
+    "ruRU": "Элемент: дерево\nТип: вспомогательный\nКруг: 8\nВыгорание: 1\nВаше присутствие оживляет окружающую растительность и заставляет ее драться на вашей стороне. Вы призываете четырех деревянных големов, которые живут до момента, пока выгорание не будет снято. Если вы имеете Весенний, Летний, Осенний или Зимный заряд, ваши големы получат уникальные усиления.\n\nОсенний заряд: Выши древесные солдаты получают сопротивление к физическому урону\nВесенний заряд: Ваши древесные солдаты получают бонус +3 к бронеи неуязвимость к наземным эффектам\nЛетний взрыв: Ваши древесные солдаты получают сопротивление к огню и наносят дополнительно 1d6 урона огнем при атаках\nЗимний взрыв: Ваши древесные солдаты получают сопротивление к холоду и наносят дополнительно 1d6 урона холодом при атаках",
+    "zh_CN": "元素: 木\n类别: 通用\n等级: 8\n超载: 1\n你赋予周围的植物生命，使其与你并肩战斗。你召唤四个木魔像，持续到你下次恢复超载。如果你有春、夏、秋或冬的冲击波，你的魔像将获得独特的升级。如果你拥有起秋尘（Autumn Blast），你的魔像获得物理伤害抗性。如果你拥有拂春风（Autumn Blast），你的魔像获得飞行。如果你拥有通夏火（Summer Blast），你的魔像获得火焰抗性，并在所有攻击中额外造成1d6的火焰伤害。如果你拥有漫冬雪（Winter Blast），你的魔像获得寒冷抗性，并在所有攻击中额外造成1d6的寒冷伤害。"
   },
   {
     "Key": "Wood.Soldiers.Unit.Name",
     "ProcessTemplates": true,
-    "enGB": "Wood Soldier"
+    "enGB": "Wood Soldier",
+    "ruRU": "Древесный солдат",
+    "zh_CN": "竖木为兵"
   },
   {
     "Key": "Wood.Soldiers.Unit.Description",
     "ProcessTemplates": true,
-    "enGB": "Wooden Soldier — Summoned by a Phytokineticist"
+    "enGB": "Wooden Soldier — Summoned by a Phytokineticist",
+    "ruRU": "Древесный солдат - призван фитокинетиком",
+    "zh_CN": "Wooden Soldier — Summoned by a Phytokineticist"
   },
   {
     "Key": "Wood.Spore.Name",
     "ProcessTemplates": false,
-    "enGB": "Spore Infusion"
+    "enGB": "Spore Infusion",
+    "ruRU": "Вливание спор",
+    "zh_CN": "孢子注能"
   },
   {
     "Key": "Wood.Spore.Description",
     "ProcessTemplates": true,
-    "enGB": "Element: Wood\nType: substance infusion\nLevel: 5\nBurn: 2\n{g|Encyclopedia:Saving_Throw}Saving Throw{/g}: Fortitude negates\nAssociated Blasts: autumn, spring, summer, verdant, winter, wood\nCreatures that take damage from your blast are infected with spores. If the target fails its Fortitude save, it takes 1d6 points of damage per round for 10 rounds as plants and fungi grow out of its body. At the end of that time, the target is exposed to the pulsing puffs disease. This infusion is a disease effect\n\n\tPulsing Puffs: Blast—injury; save Fort DC 18; onset 1 minute; frequency 1/day; effect 1d6 Dex damage; cure 2 consecutive saves."
+    "enGB": "Element: Wood\nType: substance infusion\nLevel: 5\nBurn: 2\n{g|Encyclopedia:Saving_Throw}Saving Throw{/g}: Fortitude negates\nAssociated Blasts: autumn, spring, summer, verdant, winter, wood\nCreatures that take damage from your blast are infected with spores. If the target fails its Fortitude save, it takes 1d6 points of damage per round for 10 rounds as plants and fungi grow out of its body. At the end of that time, the target is exposed to the pulsing puffs disease. This infusion is a disease effect\n\n\tPulsing Puffs: Blast—injury; save Fort DC 18; onset 1 minute; frequency 1/day; effect 1d6 Dex damage; cure 2 consecutive saves.",
+    "ruRU": "Элемент: дерево\nТип: вливание эссенции\nКруг: 5\nВыгорание: 2\n{g|Encyclopedia:Saving_Throw}Спасбросок{/g}: Стойкости нейтрализует\nСвязанные заряды: осенний, весенний, летний, изумрудный, зимний, дерева\nСущества, получающие урон от ваших зарядов, инфицированы спорами. Если цель проваливает спасбросок стойкости, она получает 1d6 урона в раунд в течение 10 раундов, так как растения и грибы начинают расти из их тела. По окончанию времени действия цель подвержена болезни Пульсирующие пылевики. Это вливание - эффект болезни.\n\n\tПульсирующие пылевики: повреждение от заряда; спасбросок Стойкости сложность 18; начало через 1 минуту; частота 1/день; эффект 1d6 урона Ловкости; лечение 2 спасброска подряд.",
+    "zh_CN": "元素: 木\n类别: 性质注能\n等级: 5\n超载: 2\n{g|Encyclopedia:Saving_Throw}豁免{/g}: 强韧，通过则无效\n关联念袭类别: 起秋尘（Autumn），拂春风（Spring），通夏火（Summer），植物（Verdant），漫冬雪（Winter），木袭（Wood）\n任何在你的念袭中承受挥砍和穿刺伤害的生物会受到植物和孢子的感染。如果目标在强韧豁免中失败，它会由于植物和霉菌从目标的身体中生长出来，而每轮承受1d6伤害，持续10轮。在该时间结束时，目标会受到pulsing puffs的影响。"
   },
   {
     "Key": "Wood.Spore.Poison.Name",
     "ProcessTemplates": false,
-    "enGB": "Spores"
+    "enGB": "Spores",
+    "ruRU": "Споры",
+    "zh_CN": "孢子"
   },
   {
     "Key": "Wood.Spore.Poison.Description",
     "ProcessTemplates": true,
-    "enGB": "Taking 1d6 poison damage per round for 10 rounds."
+    "enGB": "Taking 1d6 poison damage per round for 10 rounds.",
+    "ruRU": "Получает 1d6 урона от яда в раунд в течение 10 раундов.",
+    "zh_CN": "1d6毒素伤害/轮，持续10轮"
   },
   {
     "Key": "Wood.Spore.Disease.Name",
     "ProcessTemplates": true,
-    "enGB": "Poison Puff"
+    "enGB": "Pulsing Puff",
+    "ruRU": "Пульсирующие пылевики",
+    "zh_CN": "Poison Puff"
   },
   {
     "Key": "Wood.Spore.Disease.Description",
     "ProcessTemplates": true,
-    "enGB": "Taking 1d6 Dex damage daily, Cure: 2 consecutive saves"
+    "enGB": "Taking 1d6 Dex damage daily, Cure: 2 consecutive saves",
+    "ruRU": "Получает 1d6 урона Ловкости каждый день, лечение: 2 спасброска подряд.",
+    "zh_CN": "Taking 1d6 Dex damage daily, Cure: 2 consecutive saves"
   },
   {
     "Key": "Wood.Toxic.Name",
     "ProcessTemplates": false,
-    "enGB": "Toxic Infusion"
+    "enGB": "Toxic Infusion",
+    "ruRU": "Ядовитое вливание",
+    "zh_CN": "萃毒注能"
   },
   {
     "Key": "Wood.Toxic.Description",
     "ProcessTemplates": true,
-    "enGB": "Element: Wood\nType: substance infusion\nLevel: 4\nBurn: 3\n{g|Encyclopedia:Saving_Throw}Saving Throw{/g}: Fortitude negates\nAssociated Blasts: autumn, spring, summer, verdant, winter, wood\nThe plants in your blast are mildly toxic. All creatures that take piercing or slashing damage from your blast are sickened for 1 round."
+    "enGB": "Element: Wood\nType: substance infusion\nLevel: 4\nBurn: 3\n{g|Encyclopedia:Saving_Throw}Saving Throw{/g}: Fortitude negates\nAssociated Blasts: autumn, spring, summer, verdant, winter, wood\nThe plants in your blast are mildly toxic. All creatures that take piercing or slashing damage from your blast are sickened for 1 round.",
+    "ruRU": "Элемент: дерево\nТип: вливание эссенции\nКруг: 4\nВыгорание: 3\n{g|Encyclopedia:Saving_Throw}Спасбросок{/g}: Стойкости нейтрализует\nСвязанные заряды: осенний, весенний, летний, изумрудный, зимний, дерева\nРастения в ваших зарядах умеренно токсичны. Всех существ, получивших колющий или режущий урон от ваших зарядов, тошнит в течение 1 раунда.",
+    "zh_CN": "元素: 木\n类别: 性质注能\n等级: 4\n超载: 3\n{g|Encyclopedia:Saving_Throw}豁免{/g}: 强韧，通过则无效\n关联念袭类别：拂春风，通夏火，起秋尘，漫冬雪，木袭\n你念袭中的植物带有轻微的毒性。所有从你的念袭中受到挥砍或穿刺伤害的生物都会恶心（sickened）1轮。"
   },
   {
     "Key": "Wood.Toxic.Greater.Name",
     "ProcessTemplates": false,
-    "enGB": "Toxif Infusion, Greater"
+    "enGB": "Toxic Infusion, Greater",
+    "ruRU": "Высшее ядовитое вливание",
+    "zh_CN": "高等萃毒注能"
   },
   {
     "Key": "Wood.Toxic.Greater.Description",
     "ProcessTemplates": true,
-    "enGB": "Element: Wood\nType: substance infusion\nLevel: 7\nBurn: 3\nPrerequisite(s): toxic infusion\n{g|Encyclopedia:Saving_Throw}Saving Throw{/g}: Fortitude negates\nAssociated Blasts: autumn, spring, summer, verdant, winter, wood\nYour plant toxin is more virulent. All creatures that take piercing or slashing damage from your blast are exposed to your poison.\n\n\tBlast— injury; save Fort; frequency 1/round for 6 rounds; effect 1d2 Con damage; cure 2 consecutive saves."
+    "enGB": "Element: Wood\nType: substance infusion\nLevel: 7\nBurn: 3\nPrerequisite(s): toxic infusion\n{g|Encyclopedia:Saving_Throw}Saving Throw{/g}: Fortitude negates\nAssociated Blasts: autumn, spring, summer, verdant, winter, wood\nYour plant toxin is more virulent. All creatures that take piercing or slashing damage from your blast are exposed to your poison.\n\n\tBlast— injury; save Fort; frequency 1/round for 6 rounds; effect 1d2 Con damage; cure 2 consecutive saves.",
+    "ruRU": "Элемент: дерево\nТип: вливание эссенции\nКруг: 7\nВыгорание: 3\nТребования: Ядовитое вливание\n{g|Encyclopedia:Saving_Throw}Спасбросок{/g}: Стойкости нейтрализует\nСвязанные заряды: осенний, весенний, летний, изумрудный, зимний, дерева\nЯд в ваших растениях становится более сильным. Все существа, получившие колющий или режущий урон от ваших зарядов, подвержены вашему яду.\n\n\tПовреждение от заряда; спасбросок Стойкости; частота 1/раунд на 6 раундов; эффект 1d2 урона Выносливости; лечение 2 спасброска подряд.",
+    "zh_CN": "元素: 木\n类别: 性质注能\n等级: 7\n超载: 3\n前置：萃毒注能\n{g|Encyclopedia:Saving_Throw}豁免{/g}: 强韧，通过则无效\n关联念袭类别: 关联念袭类别：拂春风，通夏火，起秋尘，漫冬雪，木袭\n你的植物带有更强的毒性。每当你使用这一注能的时候，所有从你的念袭中受到挥砍或穿刺伤害的生物都会暴露在毒性之下，造成1d2体质伤害。"
   }
 ]

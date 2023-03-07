@@ -639,8 +639,9 @@ namespace KineticistElementsExpanded.ElementWood
             var extended = CreateWoodBlastVariant_extended();
             var spindle = CreateWoodBlastVariant_spindle();
             var wall = CreateWoodBlastVariant_wall();
+            var deadly = CreateWoodBlastVariant_deadly();
             // Ability
-            CreateWoodBlastAbility(standard, blade, extended, spindle, wall);
+            CreateWoodBlastAbility(standard, blade, extended, spindle, wall, deadly);
             // Feature
             CreateWoodBlastFeature();
             // Progression
@@ -794,7 +795,54 @@ namespace KineticistElementsExpanded.ElementWood
 
             return ability;
         }
-        
+        private static BlueprintAbility CreateWoodBlastVariant_deadly()
+        {
+            UnityEngine.Sprite icon = Helper.StealIcon("061f5d7e659432b478668b70f6d4caae"); // DeadlyEarthInfusion
+
+            BlueprintBuffReference volcanic = Helper.ToRef<BlueprintBuffReference>("fe21bf21c3182f743a964de5bcd2033e");
+
+            var area_dice = Helper.CreateContextDiceValue(DiceType.D6,
+                new ContextValue { ValueType = ContextValueType.Rank, ValueRank = AbilityRankType.DamageDice },
+                new ContextValue { ValueType = ContextValueType.Shared, ValueShared = AbilitySharedValue.Damage});
+            var area_damage = Helper.CreateContextActionDealDamage(PhysicalDamageForm.Bludgeoning | PhysicalDamageForm.Piercing | PhysicalDamageForm.Slashing, area_dice,
+                half: true);
+            var action_list = Helper.CreateActionList(area_damage);
+
+            var area_effect = Helper.CreateBlueprintAbilityAreaEffect("DeadlyEarthWoodBlastArea",true, true, 
+                AreaEffectShape.Cylinder, new Feet { m_Value = 20 }, new PrefabLink { AssetId = "11f5fe5f8ba029b49b5b04c40830e115" },
+                volcanic, unitEnter: action_list, unitRound: action_list);
+            area_effect.AddComponents
+                (
+                Kineticist.Blast.RankConfigDice(twice: false, half: false),
+                Kineticist.Blast.RankConfigBonus(half_bonus: false)
+                );
+
+            var ability = Helper.CreateBlueprintAbility("DeadlyEarthWoodBlastAbility",
+                Tree.DeadlyEarth.Feature.Get().m_DisplayName,
+                Tree.DeadlyEarth.Feature.Get().m_Description,
+                icon, AbilityType.Special,
+                UnitCommand.CommandType.Standard, AbilityRange.Long, duration: null, savingThrow: null);
+            ability.SetComponents
+                (
+                new UniqueAreaEffect { m_Feature = AnyRef.ToAny(area_damage) },
+                Kineticist.Blast.RankConfigBonus(half_bonus: false),
+                Kineticist.Blast.DCForceDex(),
+                Kineticist.Blast.BurnCost(action_list, infusion: 4, blast: 0, talent: 0),
+                Kineticist.Blast.RequiredFeat(Tree.ExtendedRange.Feature),
+                Kineticist.Blast.Projectile(Resource.Projectile.Vinetrap00_Projectile_1, true, AbilityProjectileType.Simple, 0, 5),
+                Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnPrecastStart, Resource.Sfx.PreStart_Earth),
+                Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnStart, Resource.Sfx.Start_Earth),
+                new AbilityAoERadius { m_TargetType = TargetType.Any, m_Radius = new Feet { m_Value = 20 } }
+                ).TargetPoint(CastAnimationStyle.Kineticist);
+            ability.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Extend | Metamagic.Heighten;
+            ability.m_Parent = Tree.Wood.BaseAbility;
+
+            ((ContextActionDealDamage)action_list.Actions[0]).Value.BonusValue.ValueType = ContextValueType.Shared;
+            ((ContextActionDealDamage)action_list.Actions[0]).Value.BonusValue.ValueShared = AbilitySharedValue.Damage;
+
+            return ability;
+        }
+
         //impale DarkCodex
 
         #endregion
@@ -2694,8 +2742,8 @@ namespace KineticistElementsExpanded.ElementWood
             var trip = Helper.ToRef<BlueprintFeatureReference>("0f15c6f70d8fb2b49aa6cc24239cc5fa"); // ImprovedTrip
             var trip_greater = Helper.ToRef<BlueprintFeatureReference>("4cc71ae82bdd85b40b3cfe6697bb7949"); // SpellPenetration
 
-            var wild_0 = Helper.CreateBlueprintFeatureSelection("WildTalentBonusFeatWood", LocalizationTool.GetString("Wood.Skills.Name"),
-                LocalizationTool.GetString("Wood.Skills.Description"), null, FeatureGroup.KineticWildTalent, SelectionMode.Default);
+            var wild_0 = Helper.CreateBlueprintFeatureSelection("WildTalentBonusFeatWood", LocalizationTool.GetString("Wood.BonusWild.Name"),
+                LocalizationTool.GetString("Wood.BonusWild.Description"), null, FeatureGroup.KineticWildTalent, SelectionMode.Default);
             wild_0.SetComponents
                 (
                 Helper.CreatePrerequisiteFeature(AnyRef.ToAny(Tree.FocusWood.First), true),
@@ -2708,8 +2756,8 @@ namespace KineticistElementsExpanded.ElementWood
             wild_0.IgnorePrerequisites = true;
             Helper.AppendAndReplace(ref wild_0.m_AllFeatures, spell_pen, precise_shot, trip);
 
-            var wild_1 = Helper.CreateBlueprintFeatureSelection("WildTalentBonusFeatWood1", LocalizationTool.GetString("Wood.Skills.Name"),
-                LocalizationTool.GetString("Wood.Skills.Description"), null, FeatureGroup.KineticWildTalent, SelectionMode.Default);
+            var wild_1 = Helper.CreateBlueprintFeatureSelection("WildTalentBonusFeatWood1", LocalizationTool.GetString("Wood.BonusWild.Name"),
+                LocalizationTool.GetString("Wood.BonusWild.Description"), null, FeatureGroup.KineticWildTalent, SelectionMode.Default);
             wild_1.SetComponents
                 (
                 Helper.CreatePrerequisiteFeature(AnyRef.ToAny(Tree.FocusWood.First), true),
@@ -2722,8 +2770,8 @@ namespace KineticistElementsExpanded.ElementWood
             wild_1.IgnorePrerequisites = true;
             Helper.AppendAndReplace(ref wild_1.m_AllFeatures, spell_pen_greater, precise_shot, trip);
 
-            var wild_2 = Helper.CreateBlueprintFeatureSelection("WildTalentBonusFeatWood2", LocalizationTool.GetString("Wood.Skills.Name"),
-                LocalizationTool.GetString("Wood.Skills.Description"), null, FeatureGroup.KineticWildTalent, SelectionMode.Default);
+            var wild_2 = Helper.CreateBlueprintFeatureSelection("WildTalentBonusFeatWood2", LocalizationTool.GetString("Wood.BonusWild.Name"),
+                LocalizationTool.GetString("Wood.BonusWild.Description"), null, FeatureGroup.KineticWildTalent, SelectionMode.Default);
             wild_2.SetComponents
                 (
                 Helper.CreatePrerequisiteFeature(AnyRef.ToAny(Tree.FocusWood.First), true),
@@ -2736,8 +2784,8 @@ namespace KineticistElementsExpanded.ElementWood
             wild_2.IgnorePrerequisites = true;
             Helper.AppendAndReplace(ref wild_2.m_AllFeatures, spell_pen, precise_shot, trip_greater);
 
-            var wild_3 = Helper.CreateBlueprintFeatureSelection("WildTalentBonusFeatWood3", LocalizationTool.GetString("Wood.Skills.Name"),
-                LocalizationTool.GetString("Wood.Skills.Description"), null, FeatureGroup.KineticWildTalent, SelectionMode.Default);
+            var wild_3 = Helper.CreateBlueprintFeatureSelection("WildTalentBonusFeatWood3", LocalizationTool.GetString("Wood.BonusWild.Name"),
+                LocalizationTool.GetString("Wood.BonusWild.Description"), null, FeatureGroup.KineticWildTalent, SelectionMode.Default);
             wild_3.SetComponents
                 (
                 Helper.CreatePrerequisiteFeature(AnyRef.ToAny(Tree.FocusWood.First), true),

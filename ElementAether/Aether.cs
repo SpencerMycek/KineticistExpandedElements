@@ -381,6 +381,7 @@ namespace KineticistElementsExpanded.ElementAether
         private static void CreateTelekineticBlast()
         {
             // Variants
+            Main.Print("Variants");
             var standard = CreateTelekineticBlastVariant_base();
             var extended = CreateTelekineticBlastVariant_extended();
             var spindle = CreateTelekineticBlastVariant_spindle();
@@ -394,10 +395,13 @@ namespace KineticistElementsExpanded.ElementAether
             var foeThrow = CreateTelekineticBlastVariant_throw(); // Output not used due to UI reqs
             var many = CreateTelekineticBlastVariant_many();
             // Ability
+            Main.Print("Base");
             CreateTelekineticBlastAbility(standard, many, extended, spindle, wall, blade);
             // Feature
+            Main.Print("Feature");
             CreateTelekineticBlastFeature();
             // Progression
+            Main.Print("Progression");
             CreateTelekineticBlastProgression();
 
         }
@@ -677,8 +681,11 @@ namespace KineticistElementsExpanded.ElementAether
 
         private static void CreateCompositeBlasts()
         {
+            Main.Print("Force");
             CreateForceBlast();
+            Main.Print("Boost");
             CreateAethericBoost();
+            Main.Print("Boost-G");
             CreateAethericBoostGreater();
         }
 
