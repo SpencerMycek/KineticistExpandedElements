@@ -12,17 +12,17 @@
 	  <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 	  <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 	  <AssemblyName>KineticistElementsExpanded</AssemblyName>
-	  <WrathPath>C:\Program Files (x86)\Steam\steamapps\common\Pathfinder Second Adventure\</WrathPath>
+	  <!-- <WrathPath>C:\Program Files (x86)\Steam\steamapps\common\Pathfinder Second Adventure\</WrathPath> -->
 	  <WrathManaged>$(WrathPath)\Wrath_Data\Managed\</WrathManaged>
-	  <ModRepo>C:\Users\Spenc\source\repos\Kineticist Element - Aether\</ModRepo>
+	  <!-- <ModRepo>C:\Users\Spenc\source\repos\Kineticist Element - Aether\</ModRepo> -->
   </PropertyGroup>
 
 	<!-- NuGet Packages -->
 	<ItemGroup>
-		<PackageReference Include="AssemblyPublicizer" Version="1.0.1" ExcludeAssets="runtime" />
+		<PackageReference Include="AssemblyPublicizer" Version="1.0.2" ExcludeAssets="runtime" />
 		<PackageReference Include="ILRepack.MSBuild.Task" Version="2.0.13" />
-		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-		<PackageReference Include="WW-Blueprint-Core" Version="2.2.5" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
+		<PackageReference Include="WW-Blueprint-Core" Version="2.7.8" />
 	</ItemGroup>
 
 	<!-- Configuration -->
@@ -55,7 +55,7 @@
 		<Reference Include="Assembly-CSharp" HintPath="$(SolutionDir)\lib\Assembly-CSharp.dll" />
 		<Reference Include="Owlcat.Runtime.UI_public" HintPath="$(WrathManaged)\Owlcat.Runtime.UI_public.dll" />
 
-		<Reference Include="CodexLib" HintPath="$(ModRepo)\lib\CodexLib.dll" Private="False" />
+		<Reference Include="CodexLib" HintPath="$(WrathPath)\Mods\DarkCodex\CodexLib.dll" Private="False" />
 
 		<Reference Include="UnityModManager" HintPath="$(WrathManaged)\UnityModManager\UnityModManager.dll" />
 		<Reference Include="Assembly-CSharp-firstpass" HintPath="$(WrathManaged)\Assembly-CSharp-firstpass.dll" />
@@ -124,9 +124,9 @@
 			<Assembly Include="$(OutputPath)\KineticistElementsExpanded.dll" />
 			<ModConfig Include="$(OutputPath)\Info.json" />
 			<debug_symbols Include="$(OutputPath)\KineticistElementsExpanded.pdb" />
-			<media Include="$(ModRepo)\Media\Icons\*" />
-			<library Include="$(ModRepo)\lib\CodexLib.dll" />
-			<l8n Include="$(ModRepo)\Media\Localization\*" />
+			<media Include="$(SolutionDir)\Media\Icons\*" />
+			<library Include="$(WrathPath)\Mods\DarkCodex\CodexLib.dll" />
+			<l8n Include="$(SolutionDir)\Media\Localization\*" />
 		</ItemGroup>
 
 		<Copy SourceFiles="@(Assembly)" DestinationFolder="$(WrathPath)\Mods\KineticistElementsExpanded" />
