@@ -824,11 +824,11 @@ namespace KineticistElementsExpanded.ElementWood
                 UnitCommand.CommandType.Standard, AbilityRange.Long, duration: null, savingThrow: null);
             ability.SetComponents
                 (
-                new UniqueAreaEffect { m_Feature = AnyRef.ToAny(area_damage) },
+                new UniqueAreaEffect { m_Feature = AnyRef.ToAny(ability) },
                 Kineticist.Blast.RankConfigBonus(half_bonus: false),
                 Kineticist.Blast.DCForceDex(),
                 Kineticist.Blast.BurnCost(action_list, infusion: 4, blast: 0, talent: 0),
-                Kineticist.Blast.RequiredFeat(Tree.ExtendedRange.Feature),
+                Kineticist.Blast.RequiredFeat(Tree.DeadlyEarth.Feature),
                 Kineticist.Blast.Projectile(Resource.Projectile.Vinetrap00_Projectile_1, true, AbilityProjectileType.Simple, 0, 5),
                 Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnPrecastStart, Resource.Sfx.PreStart_Earth),
                 Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnStart, Resource.Sfx.Start_Earth),
