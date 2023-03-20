@@ -1,0 +1,8 @@
+<Project>
+	<PropertyGroup>
+		<Zip7>C:\Program Files\7-Zip\7z.exe</Zip7>
+		<WrathPath>C:\Program Files (x86)\Steam\steamapps\common\Pathfinder Second Adventure\</WrathPath>
+		<WrathManaged>$(WrathPath)\Wrath_Data\Managed\</WrathManaged>
+		<ModRepo>C:\Users\Spenc\source\repos\Kineticist Element - Aether\</ModRepo>
+	</PropertyGroup>
+</Project>

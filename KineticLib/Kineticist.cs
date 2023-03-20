@@ -353,7 +353,7 @@ namespace KineticistElementsExpanded.KineticLib
                 //KineticBlastEnergyBlade a15b2fb1d5dc4f247882a7148d50afb0
 
                 var projectile = Helper.CreateAbilityDeliverProjectile(
-                    projectile_guid.ToRef<BlueprintProjectileReference>(),
+                    projectile_guid,
                     type,
                     weapon.ToRef<BlueprintItemWeaponReference>(),
                     length.Feet(),
