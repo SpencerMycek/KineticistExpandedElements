@@ -11,6 +11,7 @@ Thanks to the entire OwlCat community discord and the modding community there, f
 
 Thank you to [Adsam112][3] for some custom icon images for the Void Element
 Thank you to [RevanStarForge][4] for some color variations of those images. And for creating a whole bunch of new images for Void, Wood, and Aether!
+Thank you Kerrovitarr (Discord) and [q892398745][5] for creating localizations in Russian and Chinese
 
 ## Description
 
@@ -98,6 +99,14 @@ If you notice any issues, please contact me or open up an issue on this reposito
 
 ## Recent Changes
 
+### v3.1.0
+- Fix Name and Description of Wood Wild Talent Bonus Feats (Was using the name and description of the wood class skills)
+- Fix Name of Positive Blast (Was using the name of Wood Blast)
+- Fix Singularity Infusion appear twice in the selection list
+
+- Added localization for Russian (Thank you Kerrovitarr (Discord))
+- Added localization for Chinese (Thank you [q892398745][5] )
+
 ### v3.0.2
 - Fix typo causing Aetheric Boost (and Greater) descriptions to be formatted incorrectly
 - Fix error causing multi-projectile attacks (Forest Siege and Many Throw) to fail and have no projectiles
@@ -167,3 +176,4 @@ Blades have a few issues, and whirlwind not working with modded blades is one of
 [2]: https://github.com/Truinto/DarkCodex
 [3]: https://github.com/Adsam112
 [4]: https://github.com/RevanStarforge
+[5]: https://github.com/q892398745

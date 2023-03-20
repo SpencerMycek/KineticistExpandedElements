@@ -48,7 +48,7 @@ namespace KineticistElementsExpanded.ElementVoid
 
         // Spell book for blasts, to "brew" them like metamagic with infusions
 
-        private static KineticistTree Tree = KineticistTree.Instance;
+        private static readonly KineticistTree Tree = KineticistTree.Instance;
 
         private static KineticistTree.Infusion NegativeAdmixture = new();
         private static KineticistTree.Infusion GraviticBoost = new();
@@ -1364,8 +1364,8 @@ namespace KineticistElementsExpanded.ElementVoid
                 Tree.Pulling.Feature,
                 Tree.Unnerving.Feature,
                 Tree.Vampiric.Feature,
-                Tree.Weighing.Feature,
-                Tree.Singularity.Feature
+                Tree.Weighing.Feature//,
+                //Tree.Singularity.Feature ;;;;; Removed because it was getting added twice somehow? Maybe DarkCodex?
                 );
         }
 
@@ -1796,7 +1796,7 @@ namespace KineticistElementsExpanded.ElementVoid
 
             Helper.AppendAndReplace(ref Kineticist.infusion_selection.m_AllFeatures, feature.ToRef());
 
-            Tree.Singularity.Feature = feature.ToRef();
+            //Tree.Singularity.Feature = feature.ToRef();
         }
 
         #endregion
