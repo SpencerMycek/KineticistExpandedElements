@@ -7,6 +7,7 @@ using KineticistElementsExpanded;
 using KineticistElementsExpanded.ElementAether;
 using KineticistElementsExpanded.ElementWood;
 using Void = KineticistElementsExpanded.ElementVoid.Void;
+using KineticistElementsExpanded.ElementGeneral;
 using Kingmaker;
 using System.Linq;
 using System.Diagnostics;
@@ -155,6 +156,7 @@ namespace KineticistElementsExpanded
             LoadSafe(Aether.Configure);
             LoadSafe(Void.Configure);
             LoadSafe(Wood.Configure);
+            LoadSafe(General.Configure);
 
             Main.Print("Finished loading Kineticist Elements Expanded");
 

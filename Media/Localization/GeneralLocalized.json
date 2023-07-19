@@ -4,13 +4,97 @@
     "ProcessTemplates": true,
     "enGB": "Element: universal\nType: form infusion\nLevel: 1\nBurn: 1\nAssociated Blasts: any\n{g|Encyclopedia:Saving_Throw}Saving Throw{/g}: none\nYou form a weapon using your kinetic abilities. You create a nonreach, light or {g|Encyclopedia:Light_Weapon}one-handed{/g} weapon in your hand formed of pure energy or elemental matter. The kinetic blade's shape is purely cosmetic and doesn't affect the {g|Encyclopedia:Damage}damage{/g} dice, {g|Encyclopedia:Critical}critical{/g} threat range, or critical multiplier of the kinetic blade, nor does it grant the kinetic blade any weapon special features.\nYou can use this form infusion once as part of an {g|Encyclopedia:Attack}attack{/g} {g|Encyclopedia:CA_Types}action{/g}, a charge action, or a full-attack action in order to make {g|Encyclopedia:MeleeAttack}melee attacks{/g} with your kinetic blade. Since it's part of another action (and isn't an action itself), using this wild talent doesn't provoke any additional {g|Encyclopedia:Attack_Of_Opportunity}attacks of opportunity{/g}. The kinetic blade deals your kinetic blast damage on each hit (applying any modifiers to your kinetic blast's damage as normal, but not your {g|Encyclopedia:Strength}Strength{/g} modifier). The blade disappears at the end of your turn. The weapon deals the same {g|Encyclopedia:Damage_Type}damage type{/g} that your kinetic blast deals, and it interacts with {g|Encyclopedia:Armor_Class}Armor Class{/g} and {g|Encyclopedia:Spell_Resistance}spell resistance{/g} as normal for a blast of its type. The kinetic blade doesn't add the damage {g|Encyclopedia:Bonus}bonus{/g} from elemental overflow.",
     "ruRU": "Элементы: универсальное\nТип: вливание формы\nКруг: 1\nВыгорание: 1\nСвязанные заряды: любые\n{g|Encyclopedia:Saving_Throw}Спасбросок{/g}: нет\nИспользуя свои способности кинетика, вы создаете в своей руке оружие. Это легкое или {g|Encyclopedia:Light_Weapon}одноручное{/g}, не длинное оружие из чистой энергии или элементальной материи. Внешний вид кинетического клинка никак не влияет на наносимый им {g|Encyclopedia:Damage}урон{/g}, {g|Encyclopedia:Critical}критический{/g} диапазон или критический множитель, а также не дает ему особых свойств оружия.\nВы можете применить это вливание как часть одиночной {g|Encyclopedia:Attack}атаки{/g}, атаки с разбега или полной атаки, чтобы {g|Encyclopedia:MeleeAttack}атаковать в ближнем бою{/g} кинетическим клинком. Поскольку применение этого дикого таланта — не самостоятельное {g|Encyclopedia:CA_Types}действие{/g}, а часть другого действия, оно не провоцирует {g|Encyclopedia:Attack_Of_Opportunity}внеочередных атак{/g}. Кинетический клинок при каждом попадании наносит урон кинетического заряда (к нему, как обычно, применяются все {g|Encyclopedia:Bonus}модификаторы{/g}, но не модификатор {g|Encyclopedia:Strength}Силы{/g}). В конце вашего хода клинок исчезает. Клинок наносит урон того же {g|Encyclopedia:Damage_Type}типа{/g}, что и кинетический заряд, и взаимодействует с {g|Encyclopedia:Armor_Class}защитой{/g} и {g|Encyclopedia:Spell_Resistance}устойчивостью к магии{/g} так же, как заряд своего типа. Кинетический клинок не добавляет к урону бонус от элементального переполнения.",
-    "zh_CN": "Element: universal\nType: form infusion\nLevel: 1\nBurn: 1\nAssociated Blasts: any\n{g|Encyclopedia:Saving_Throw}Saving Throw{/g}: none\nYou form a weapon using your kinetic abilities. You create a nonreach, light or {g|Encyclopedia:Light_Weapon}one-handed{/g} weapon in your hand formed of pure energy or elemental matter. The kinetic blade's shape is purely cosmetic and doesn't affect the {g|Encyclopedia:Damage}damage{/g} dice, {g|Encyclopedia:Critical}critical{/g} threat range, or critical multiplier of the kinetic blade, nor does it grant the kinetic blade any weapon special features.\nYou can use this form infusion once as part of an {g|Encyclopedia:Attack}attack{/g} {g|Encyclopedia:CA_Types}action{/g}, a charge action, or a full-attack action in order to make {g|Encyclopedia:MeleeAttack}melee attacks{/g} with your kinetic blade. Since it's part of another action (and isn't an action itself), using this wild talent doesn't provoke any additional {g|Encyclopedia:Attack_Of_Opportunity}attacks of opportunity{/g}. The kinetic blade deals your kinetic blast damage on each hit (applying any modifiers to your kinetic blast's damage as normal, but not your {g|Encyclopedia:Strength}Strength{/g} modifier). The blade disappears at the end of your turn. The weapon deals the same {g|Encyclopedia:Damage_Type}damage type{/g} that your kinetic blast deals, and it interacts with {g|Encyclopedia:Armor_Class}Armor Class{/g} and {g|Encyclopedia:Spell_Resistance}spell resistance{/g} as normal for a blast of its type. The kinetic blade doesn't add the damage {g|Encyclopedia:Bonus}bonus{/g} from elemental overflow."
+    "zhCN": "Element: universal\nType: form infusion\nLevel: 1\nBurn: 1\nAssociated Blasts: any\n{g|Encyclopedia:Saving_Throw}Saving Throw{/g}: none\nYou form a weapon using your kinetic abilities. You create a nonreach, light or {g|Encyclopedia:Light_Weapon}one-handed{/g} weapon in your hand formed of pure energy or elemental matter. The kinetic blade's shape is purely cosmetic and doesn't affect the {g|Encyclopedia:Damage}damage{/g} dice, {g|Encyclopedia:Critical}critical{/g} threat range, or critical multiplier of the kinetic blade, nor does it grant the kinetic blade any weapon special features.\nYou can use this form infusion once as part of an {g|Encyclopedia:Attack}attack{/g} {g|Encyclopedia:CA_Types}action{/g}, a charge action, or a full-attack action in order to make {g|Encyclopedia:MeleeAttack}melee attacks{/g} with your kinetic blade. Since it's part of another action (and isn't an action itself), using this wild talent doesn't provoke any additional {g|Encyclopedia:Attack_Of_Opportunity}attacks of opportunity{/g}. The kinetic blade deals your kinetic blast damage on each hit (applying any modifiers to your kinetic blast's damage as normal, but not your {g|Encyclopedia:Strength}Strength{/g} modifier). The blade disappears at the end of your turn. The weapon deals the same {g|Encyclopedia:Damage_Type}damage type{/g} that your kinetic blast deals, and it interacts with {g|Encyclopedia:Armor_Class}Armor Class{/g} and {g|Encyclopedia:Spell_Resistance}spell resistance{/g} as normal for a blast of its type. The kinetic blade doesn't add the damage {g|Encyclopedia:Bonus}bonus{/g} from elemental overflow."
   },
   {
     "Key": "SkilledKineticist",
     "ProcessTemplates": false,
     "enGB": "Skilled Kineticist",
     "ruRU": "Искусный кинетик",
-    "zh_CN": "Skilled Kineticist"
+    "zhCN": "Skilled Kineticist"
+  },
+  {
+    "Key": "EEA.Aether.7.Name",
+    "ProcessTemplates": false,
+    "enGB": "Aether Burnout",
+    "ruRU": "Aether Burnout",
+    "zhCN": "Aether Burnout"
+  },
+  {
+    "Key": "EEA.Aether.7.Description",
+    "ProcessTemplates": true,
+    "enGB": "If choosen element was aether, you gain +2 armor {g|Encyclopedia:Bonus}bonus{/g} to {g|Encyclopedia:Armor_Class}AC{/g}. Additionally, you gain Moderate Fortification effect.",
+    "ruRU": "Если выбранным элементом был эфир, вы получаете {g|Encyclopedia:Bonus}бонус{/g} брони +2 к {g|Encyclopedia:Armor_Class}защите{/g}. Кроме того вы получаете эффект средней укрепленности.",
+    "zhCN": "If choosen element was aether, you gain +2 armor {g|Encyclopedia:Bonus}bonus{/g} to {g|Encyclopedia:Armor_Class}AC{/g}. Additionally, you gain Moderate Fortification effect."
+  },
+  {
+    "Key": "EEA.Aether.13.Name",
+    "ProcessTemplates": false,
+    "enGB": "Aether Burnout, Greater",
+    "ruRU": "Aether Burnout, Greater",
+    "zhCN": "Aether Burnout, Greater"
+  },
+  {
+    "Key": "EEA.Aether.13.Description",
+    "ProcessTemplates": true,
+    "enGB": "If choosen element was aether, you gain +4 armor {g|Encyclopedia:Bonus}bonus{/g} to {g|Encyclopedia:Armor_Class}AC{/g}. Additionally, you become {g|Encyclopedia:Incorporeal_Touch_Attack}incorporeal{/g}.",
+    "ruRU": "Если выбранным элементом был эфир, вы получаете {g|Encyclopedia:Bonus}бонус{/g} брони +4 к {g|Encyclopedia:Armor_Class}защите{/g}. Кроме того вы становитесь {g|Encyclopedia:Incorporeal_Touch_Attack}бестелесным{/g}",
+    "zhCN": "If choosen element was aether, you gain +4 armor {g|Encyclopedia:Bonus}bonus{/g} to {g|Encyclopedia:Armor_Class}AC{/g}. Additionally, you become {g|Encyclopedia:Incorporeal_Touch_Attack}incorporeal{/g}."
+  },
+  {
+    "Key": "EEA.Void.7.Name",
+    "ProcessTemplates": false,
+    "enGB": "Void Burnout",
+    "ruRU": "Void Burnout",
+    "zhCN": "Void Burnout"
+  },
+  {
+    "Key": "EEA.Void.7.Description",
+    "ProcessTemplates": true,
+    "enGB": "If choosen element was void, you gain +2 {g|Encyclopedia:Bonus}bonus{/g} on {g|Encyclopedia:Saving_Throw}Saving Throws{/g} against all {g|Encyclopedia:Injury_Death}death{/g} {g|Encyclopedia:Spell}spells{/g}  and magical death effects as well as {g|Encyclopedia:Spell}spells{/g}  and effects with negative energy descriptor. Additionally, you gain subject {g|Encyclopedia:Concealment}concealment{/g} (20% miss chance) which isn't revealed by true seeing.  ",
+    "ruRU": "Если выбранным элементом была пустота, вы получаете {g|Encyclopedia:Bonus}бонус{/g} +2 к {g|Encyclopedia:Saving_Throw}спасброскам{/g} против {g|Encyclopedia:Spell}заклинаний{/g} и магических эффектов {g|Encyclopedia:Injury_Death}смерти{/g}  и {g|Encyclopedia:Spell}заклинаний{/g} и эффектов с дескриптором \"негативная энергия\". Кроме того вы получаете частичную {g|Encyclopedia:Concealment}маскировку{/g} (20% вероятность промаха по вам), которая не раскрывается истинным зрением.",
+    "zhCN": "If choosen element was void, you gain +2 {g|Encyclopedia:Bonus}bonus{/g} on {g|Encyclopedia:Saving_Throw}Saving Throws{/g} against all {g|Encyclopedia:Injury_Death}death{/g} {g|Encyclopedia:Spell}spells{/g}  and magical death effects as well as {g|Encyclopedia:Spell}spells{/g}  and effects with negative energy descriptor. Additionally, you gain subject {g|Encyclopedia:Concealment}concealment{/g} (20% miss chance) which isn't revealed by true seeing."
+  },
+  {
+    "Key": "EEA.Void.13.Name",
+    "ProcessTemplates": false,
+    "enGB": "Void Burnout, Greater",
+    "ruRU": "Void Burnout, Greater",
+    "zhCN": "Void Burnout, Greater"
+  },
+  {
+    "Key": "EEA.Void.13.Description",
+    "ProcessTemplates": true,
+    "enGB": "If choosen element was void, you gain +4 {g|Encyclopedia:Bonus}bonus{/g} on {g|Encyclopedia:Saving_Throw}Saving Throws{/g} against all {g|Encyclopedia:Injury_Death}death{/g} {g|Encyclopedia:Spell}spells{/g}  and magical death effects as well as {g|Encyclopedia:Spell}spells{/g}  and effects with negative energy descriptor. Additionally, you gain 50% miss chance as in total {g|Encyclopedia:Concealment}concealment{/g} which isn't revealed by true seeing.",
+    "ruRU": "Если выбранным элементом была пустота, вы получаете {g|Encyclopedia:Bonus}бонус{/g} +4 к {g|Encyclopedia:Saving_Throw}спасброскам{/g} против {g|Encyclopedia:Spell}заклинаний{/g} и магических эффектов {g|Encyclopedia:Injury_Death}смерти{/g}  и {g|Encyclopedia:Spell}заклинаний{/g} и эффектов с дескриптором \"негативная энергия\". Кроме того вы получаете полную {g|Encyclopedia:Concealment}маскировку{/g} (50% вероятность промаха по вам), которая не раскрывается истинным зрением.",
+    "zhCN": "If choosen element was void, you gain +4 {g|Encyclopedia:Bonus}bonus{/g} on {g|Encyclopedia:Saving_Throw}Saving Throws{/g} against all {g|Encyclopedia:Injury_Death}death{/g} {g|Encyclopedia:Spell}spells{/g}  and magical death effects as well as {g|Encyclopedia:Spell}spells{/g}  and effects with negative energy descriptor. Additionally, you gain 50% miss chance as in total {g|Encyclopedia:Concealment}concealment{/g} which isn't revealed by true seeing."
+  },
+  {
+    "Key": "EEA.Wood.7.Name",
+    "ProcessTemplates": false,
+    "enGB": "Wood Burnout",
+    "ruRU": "Wood Burnout",
+    "zhCN": "Wood Burnout"
+  },
+  {
+    "Key": "EEA.Wood.7.Description",
+    "ProcessTemplates": true,
+    "enGB": "If choosen element was wood, you gain +2 {g|Encyclopedia:Bonus}bonus{/g} on {g|Encyclopedia:Saving_Throw}Saving Throws{/g} against poison and disease effects. Additionally, you gain {g|Encyclopedia:Damage_Reduction}DR{/g} N/{g|Encyclopedia:Damage_Type}slashing{/g}, where N - half of Elemental Engine level.",
+    "ruRU": "Если выбранным элементом было дерево, вы получаете {g|Encyclopedia:Bonus}бонус{/g} +2 к {g|Encyclopedia:Saving_Throw}спасброскам{/g} против эффектов яда и болезней. Кроме того, вы получаете {g|Encyclopedia:Damage_Reduction}снижение урона{/g} N/{g|Encyclopedia:Damage_Type}режущее{/g}, где N - половина уровня Орудия стихий.",
+    "zhCN": "If choosen element was wood, you gain +2 {g|Encyclopedia:Bonus}bonus{/g} on {g|Encyclopedia:Saving_Throw}Saving Throws{/g} against poison and disease effects. Additionally, you gain {g|Encyclopedia:Damage_Reduction}DR{/g} N/{g|Encyclopedia:Damage_Type}slashing{/g}, where N - half of Elemental Engine level."
+  },
+  {
+    "Key": "EEA.Wood.13.Name",
+    "ProcessTemplates": false,
+    "enGB": "Wood Burnout, Greater",
+    "ruRU": "Wood Burnout, Greater",
+    "zhCN": "Wood Burnout, Greater"
+  },
+  {
+    "Key": "EEA.Wood.13.Description",
+    "ProcessTemplates": true,
+    "enGB": "If choosen element was wood, you gain +4 {g|Encyclopedia:Bonus}bonus{/g} on {g|Encyclopedia:Saving_Throw}Saving Throws{/g} against poison and disease effects. Additionally, you gain fast {g|Encyclopedia:Healing}healing{/g} N, where N - half of Elemental Engine level.",
+    "ruRU": "Если выбранным элементом было дерево, вы получаете{g|Encyclopedia:Bonus}бонус{/g} +4 к {g|Encyclopedia:Saving_Throw}спасброскам{/g} против эффектов яда и болезней. Кроме того, вы получаете быстрое {g|Encyclopedia:Healing}лечение{/g}, равное половине уровня Орудия стихий.",
+    "zhCN": "If choosen element was wood, you gain +4 {g|Encyclopedia:Bonus}bonus{/g} on {g|Encyclopedia:Saving_Throw}Saving Throws{/g} against poison and disease effects. Additionally, you gain fast {g|Encyclopedia:Healing}healing{/g} N, where N - half of Elemental Engine level."
   }
 ]

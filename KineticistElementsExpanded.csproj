@@ -14,7 +14,8 @@
 	  <AssemblyName>KineticistElementsExpanded</AssemblyName>
 	  <WrathPath>C:\Program Files (x86)\Steam\steamapps\common\Pathfinder Second Adventure\</WrathPath>
 	  <WrathManaged>$(WrathPath)\Wrath_Data\Managed\</WrathManaged>
-	  <ModRepo>C:\Users\Spenc\source\repos\Kineticist Element - Aether\</ModRepo>
+	  <ModRepo>C:\Users\Spenc\OneDrive\Documents\vs\repos\KineticistExpandedElements</ModRepo>
+	  <Codex>C:\Users\Spenc\OneDrive\Documents\vs\repos\DarkCodex\CodexLib\CodexLib.dll</Codex>
   </PropertyGroup>
 
 	<!-- NuGet Packages -->
@@ -86,6 +87,11 @@
 		<Reference Include="Assembly-CSharp" HintPath="$(SolutionDir)lib\Assembly-CSharp.dll" />
 	</ItemGroup>
 
+	<!-- Get Required Library -->
+	<Target Name="GetLib" BeforeTargets="Clean">
+		<Copy SourceFiles="$(Codex)" DestinationFiles="$(ModRepo)\lib\CodexLib.dll" />
+	</Target>
+	
 	<!-- Publicize -->
 	<Target Name="Publicize" AfterTargets="Clean">
 		<ItemGroup>

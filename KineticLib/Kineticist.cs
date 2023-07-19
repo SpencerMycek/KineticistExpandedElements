@@ -36,6 +36,7 @@ using Kingmaker.UnitLogic.Commands.Base;
 using Kingmaker.View.Animation;
 using BlueprintCore.Utils;
 using Kingmaker.UnitLogic.Mechanics.Conditions;
+using static UnityModManagerNet.UnityModManager;
 
 namespace KineticistElementsExpanded.KineticLib
 {
@@ -215,7 +216,6 @@ namespace KineticistElementsExpanded.KineticLib
         // Adds the given admixture to the composite buff
         public static void AddAdmixtureToBuff(KineticistTree Tree, KineticistTree.Infusion composite, KineticistTree.Element param1, bool basic, bool energy, bool phyisical)
         {
-
             var inner_checker = new ConditionsChecker
             {
                 Operation = Operation.Or,
@@ -455,7 +455,7 @@ namespace KineticistElementsExpanded.KineticLib
                 blade_burn_ability.SetComponents
                     (
                     new AbilityKineticist { Amount = 1, InfusionBurnCost = 1 },
-                    Helper.CreateAbilityEffectRunAction(SavingThrowType.Unknown, kinetic_blade_enable_buff.CreateContextActionApplyBuff(asChild: true)),
+                    Helper.CreateAbilityEffectRunAction(SavingThrowType.Unknown, kinetic_blade_enable_buff.CreateContextActionApplyBuff(duration: 0, asChild: true)),
                     new AbilityKineticBlade { }
                     );
 
@@ -510,7 +510,7 @@ namespace KineticistElementsExpanded.KineticLib
                 var weapon = Helper.CreateBlueprintItemWeapon(element+"KineticBladeWeapon", LocalizationTool.GetString(element+".Blade.Prefix"), LocalizationTool.GetString("Blade.Description"), null, isPhysical? Kineticist.ref_kinetic_blast_physical_blade_type: Kineticist.ref_kinetic_blast_energy_blade_type,
                     damageOverride: new DiceFormula { m_Rolls = 0, m_Dice = DiceType.Zero }, price: 10);
                 weapon.m_Enchantments = new BlueprintWeaponEnchantmentReference[1] { CreateBlueprintWeaponEnchantment(tree, element, prefix, prefabAssetId, isPhysical, isComposite) };
-                weapon.m_EquipmentEntity = AnyRef.ToAny("");
+                weapon.m_EquipmentEntity = new KingmakerEquipmentEntityReference();
                 weapon.m_EquipmentEntityAlternatives = new KingmakerEquipmentEntityReference[0] { };
                 weapon.m_VisualParameters.m_WeaponAnimationStyle = Kingmaker.View.Animation.WeaponAnimationStyle.SlashingOneHanded;
                 weapon.m_VisualParameters.m_SpecialAnimation = Kingmaker.Visual.Animation.Kingmaker.UnitAnimationSpecialAttackType.None;

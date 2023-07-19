@@ -4,356 +4,356 @@
     "ProcessTemplates": false,
     "enGB": "Aether",
     "ruRU": "Эфир",
-    "zh_CN": "以太"
+    "zhCN": "以太"
   },
   {
     "Key": "Aether.Focus.Description",
     "ProcessTemplates": false,
     "enGB": "Kineticists who focus on the element of aether—a rare substance formed when elemental energy affects the Ethereal Plane—are called telekineticists. Telekineticists use strands of aether to move objects with their minds.",
     "ruRU": "Кинетики, специализирующиеся на эфире - редкой материей, образующейся при контакте стихийных энергий с Эфирным планом, - называются телекинетиками. Телекинетики используют нити Эфира, чтобы двигать объекты силой мысли.",
-    "zh_CN": "专注于使用以太元素——元素能量影响灵界位面（Ethereal Plane）时形成的稀有物质——的操念使被称为心灵操念使（telekineticists）。她们使用一缕缕以太来随着自己的意志操控物体。"
+    "zhCN": "专注于使用以太元素——元素能量影响灵界位面（Ethereal Plane）时形成的稀有物质——的操念使被称为心灵操念使（telekineticists）。她们使用一缕缕以太来随着自己的意志操控物体。"
   },
   {
     "Key": "Aether.Skills.Name",
     "ProcessTemplates": false,
     "enGB": "Aether Class Skills",
     "ruRU": "Классовые навыки эфира",
-    "zh_CN": "以太本职技能"
+    "zhCN": "以太本职技能"
   },
   {
     "Key": "Aether.Skills.Description",
     "ProcessTemplates": true,
     "enGB": "An Telekineticist adds {g|Encyclopedia:Trickery}Trickery{/g} and {g|Encyclopedia:Knowledge_World}Knowledge (World){/g} to her list of class {g|Encyclopedia:Skills}skills{/g}.",
     "ruRU": "Телекинетик добавляет {g|Encyclopedia:Trickery}Плутовство{/g} и {g|Encyclopedia:Knowledge_World}Знание (мир){/g} к ее списку классовых {g|Encyclopedia:Skills}навыков{/g}.",
-    "zh_CN": "An Telekineticist adds {g|Encyclopedia:Trickery}Trickery{/g} and {g|Encyclopedia:Knowledge_World}Knowledge (World){/g} to her list of class {g|Encyclopedia:Skills}skills{/g}."
+    "zhCN": "An Telekineticist adds {g|Encyclopedia:Trickery}Trickery{/g} and {g|Encyclopedia:Knowledge_World}Knowledge (World){/g} to her list of class {g|Encyclopedia:Skills}skills{/g}."
   },
   {
     "Key": "Aether.Defense",
     "ProcessTemplates": false,
     "enGB": "Force Ward",
     "ruRU": "Силовое поле",
-    "zh_CN": "力场结界"
+    "zhCN": "力场结界"
   },
   {
     "Key": "Aether.Defense.Description",
     "ProcessTemplates": true,
     "enGB": "You constantly surround yourself with a ward of force. You gain a number of temporary hit points equal to your kineticist level.\n\nThese temporary hit points regenerate at a rate of 1 per minute. By accepting 1 point of burn as a standard action, you can increase the maximum number of temporary hit points provided by your force ward by half your kineticist level until the next time your burn is removed.\nIf you use this ability multiple times, the increases stack. For every two times you use this ability, the regeneration effect increases by 1.",
     "ruRU": "Вы постоянно окружаете себя силовым полем. Вы получаете временные очки здоровья, равные вашему уровню кинетика.\n\nЭти временные очки здоровья восстанавливаются по одному очку в минуту. Принимая 1 очко выгорания в качестве стандартного действия, Вы можете увеличить максимальное количество временных очков здоровья, предоставляемых Силовым полем, на половину своего уровня кинетика до момента, пока выгорание не будет снято.\nМногократное применение способности складывается. За каждые два применения этой способности эффект регенерации увеличивается на 1.",
-    "zh_CN": "你让一层力场结界常驻在身上。你获得临时生命值，数值等同于你的操念使等级。这些临时生命值会以每分钟1点的速度进行再生。通过以标准动作承受1点超载，你能够让力场结界提供的临时生命值上限得到提升，提升的量为你的操念使等级的一半，直至你所承受的超载得以移除为止。若你重复使用该能力，那么对此上限的提升会进行叠加。你以此方式承受2点超载时，力场结界的再生速率便会增加每分钟1点。"
+    "zhCN": "你让一层力场结界常驻在身上。你获得临时生命值，数值等同于你的操念使等级。这些临时生命值会以每分钟1点的速度进行再生。通过以标准动作承受1点超载，你能够让力场结界提供的临时生命值上限得到提升，提升的量为你的操念使等级的一半，直至你所承受的超载得以移除为止。若你重复使用该能力，那么对此上限的提升会进行叠加。你以此方式承受2点超载时，力场结界的再生速率便会增加每分钟1点。"
   },
   {
     "Key": "Aether.Telekinetic.Name",
     "ProcessTemplates": false,
     "enGB": "Telekinetic Blast",
     "ruRU": "Телекинетический заряд",
-    "zh_CN": "念动"
+    "zhCN": "念动"
   },
   {
     "Key": "Aether.Telekinetic.Description",
     "ProcessTemplates": true,
     "enGB": "Element: aether\nType: simple blast\nLevel: --\nBurn: 0\nBlast Type: physical\n{g|Encyclopedia:Damage}Damage{/g}: {g|Encyclopedia:Damage_Type}bludgeoning{/g}, piercing, and slashing\nYou throw a nearby unattended object enfolded in strands of aether at a single foe as a ranged attack",
     "ruRU": "Элемент: эфир\nТип: простой заряд\nКруг: --\nВыгорание: 0\nТип заряда: физический\n{g|Encyclopedia:Damage}урон{/g}: {g|Encyclopedia:Damage_Type}дробящий{/g}, колющий и режущий\nВы бросаете во врага ближайший бесхозный предмет, окутав его нитями эфира, в качестве дистанционной атаки.",
-    "zh_CN": "元素: 以太\n类别: 简易念袭\n等级: --\n超载: 0\n念袭性质: 物理\n{g|Encyclopedia:Damage}伤害类型{/g}: {g|Encyclopedia:Damage_Type}钝击{/g}, 穿刺或挥砍\n你投掷出一件附近（nearby）的无主物体，用它对单个敌人做出远程攻击。"
+    "zhCN": "元素: 以太\n类别: 简易念袭\n等级: --\n超载: 0\n念袭性质: 物理\n{g|Encyclopedia:Damage}伤害类型{/g}: {g|Encyclopedia:Damage_Type}钝击{/g}, 穿刺或挥砍\n你投掷出一件附近（nearby）的无主物体，用它对单个敌人做出远程攻击。"
   },
   {
     "Key": "Aether.Blade.Prefix",
     "ProcessTemplates": false,
     "enGB": "Telekinetic Blast",
     "ruRU": "Телекинетический заряд",
-    "zh_CN": "念动"
+    "zhCN": "念动"
   },
   {
     "Key": "Aether.Blade.Enchant",
     "ProcessTemplates": false,
     "enGB": "Telekinetic Blast — Kinetic Blade",
     "ruRU": "Телекинетический заряд - Кинетический клинок",
-    "zh_CN": "念动-念刃"
+    "zhCN": "念动-念刃"
   },
   {
     "Key": "Aether.Force.Name",
     "ProcessTemplates": false,
     "enGB": "Force Blast",
     "ruRU": "Силовой заряд",
-    "zh_CN": "力场弹"
+    "zhCN": "力场弹"
   },
   {
     "Key": "Aether.Force.Description",
     "ProcessTemplates": true,
     "enGB": "Element: aether\nType: composite blast\nlevel: —\nBurn: 2\nPrerequisites: primary element (aether), expanded element (aether)\nBlast Type: energy\n{g|Encyclopedia:Damage}Damage{/g}: force\nYou throw a burst of force at a foe",
     "ruRU": "Элемент: эфир\nТип: составной заряд\nКруг: —\nВыгорание: 2\nТребования: основной элемент (эфир), расширенный элемент (эфир)\nТип заряда: энергетический\n{g|Encyclopedia:Damage}урон{/g}: силовой\nВы бросаете во врага сгусток силы.",
-    "zh_CN": "元素: 以太\n类别: 复合念袭\n等级: —\n超载: 2\n前置：首要元素（以太），元素扩展（以太）\n念袭性质：能量\n{g|Encyclopedia:Damage}伤害类型{/g}: 力场\n你对一个抛射出力场进行轰击。"
+    "zhCN": "元素: 以太\n类别: 复合念袭\n等级: —\n超载: 2\n前置：首要元素（以太），元素扩展（以太）\n念袭性质：能量\n{g|Encyclopedia:Damage}伤害类型{/g}: 力场\n你对一个抛射出力场进行轰击。"
   },
   {
     "Key": "Force.Blade.Prefix",
     "ProcessTemplates": false,
     "enGB": "Force Blast",
     "ruRU": "Силовой заряд",
-    "zh_CN": "力场弹"
+    "zhCN": "力场弹"
   },
   {
     "Key": "Force.Blade.Enchant",
     "ProcessTemplates": false,
     "enGB": "Force Blast — Kinetic Blade",
     "ruRU": "Силовой заряд - Кинетический клинок",
-    "zh_CN": "力场弹-念刃"
+    "zhCN": "力场弹-念刃"
   },
   {
     "Key": "Aether.Admixture.Aether.Name",
     "ProcessTemplates": false,
     "enGB": "Aetheric Boost",
     "ruRU": "Эфирное усиление",
-    "zh_CN": "以太增压"
+    "zhCN": "以太增压"
   },
   {
     "Key": "Aether.Admixture.Aether.Description",
     "ProcessTemplates": false,
     "enGB": "Element: aether\nType: composite blast\nLevel: —\nBurn: 2\nPrerequisite(s): telekinetic blast, any other simple blast\nBlast Type: special\n{g|Encyclopedia:Damage}Damage{/g}: see text\nYou infuse a simple blast you know with aether, causing it to deal 1 additional point of damage of the same type for each of its damage dice; it otherwise acts as the simple blast.",
     "ruRU": "Элемент: эфир\nТип: составной заряд\nКруг: —\nВыгорание: 2\nТребования: телекинетический заряд, любой другой простой заряд\nТип заряда: особый\n{g|Encyclopedia:Damage}урон{/g}: смотри описание\nВы усиливаете известный вам простой заряд эфиром, увеличивая наносимый им урон того же типа на 1 за каждую кость урона; в остальном усиленный заряд считается простым зарядом.",
-    "zh_CN": "元素: 以太\n类别: 复合念袭\n等级: —\n超载: 2\n前置: 念动，任意简易念袭\n念袭性质: 特殊\n{g|Encyclopedia:Damage}伤害类型{/g}: 见后文\n你将以太灌注到自己所掌握的简易念袭中，使得这个简易念袭的每个伤害骰额外多造成1点相同类型的伤害；它在其他方面如同简易念袭一般生效。"
+    "zhCN": "元素: 以太\n类别: 复合念袭\n等级: —\n超载: 2\n前置: 念动，任意简易念袭\n念袭性质: 特殊\n{g|Encyclopedia:Damage}伤害类型{/g}: 见后文\n你将以太灌注到自己所掌握的简易念袭中，使得这个简易念袭的每个伤害骰额外多造成1点相同类型的伤害；它在其他方面如同简易念袭一般生效。"
   },
   {
     "Key": "Aether.Admixture.Aether.Greater.Name",
     "ProcessTemplates": false,
     "enGB": "Aetheric Boost, Greater",
     "ruRU": "Эфирное усиление, Высшее",
-    "zh_CN": "高等以太增压"
+    "zhCN": "高等以太增压"
   },
   {
     "Key": "Aether.Admixture.Aether.Greater.Description",
     "ProcessTemplates": false,
     "enGB": "Element: aether\nType: composite blast\nLevel: —\nBurn: 3\nPrerequisite(s): telekinetic blast, any other simple blast\nBlast Type: special\n{g|Encyclopedia:Damage}Damage{/g}: see text\nYou infuse a composite blast you know with aether, causing it to deal 1 additional point of damage of the same type for each of its damage dice.",
     "ruRU": "Элемент: эфир\nТип: составной заряд\nКруг: —\nВыгорание: 3\nТребования: телекинетический заряд, любой другой простой заряд\nТип заряда: особый\n{g|Encyclopedia:Damage}урон{/g}: смотри описание\nВы усиливаете известный вам составной заряд эфиром, увеличивая наносимый им урон того же типа на 1 за каждую кость урона.",
-    "zh_CN": "元素: 以太\n类别: 复合念袭\n等级: —\n超载: 3\n前置: 念动，任意简易念袭\n念袭性质: 特殊\n{g|Encyclopedia:Damage}伤害类型{/g}: 见后文\n你将以太灌注到自己所掌握的复合念袭中，使得这个简易念袭的每个伤害骰额外多造成1点相同类型的伤害。"
+    "zhCN": "元素: 以太\n类别: 复合念袭\n等级: —\n超载: 3\n前置: 念动，任意简易念袭\n念袭性质: 特殊\n{g|Encyclopedia:Damage}伤害类型{/g}: 见后文\n你将以太灌注到自己所掌握的复合念袭中，使得这个简易念袭的每个伤害骰额外多造成1点相同类型的伤害。"
   },
   {
     "Key": "Aether.ManyThrow.Name",
     "ProcessTemplates": false,
     "enGB": "Many Throw",
     "ruRU": "Множественный бросок",
-    "zh_CN": "多重念动"
+    "zhCN": "多重念动"
   },
   {
     "Key": "Aether.ManyThrow.Description",
     "ProcessTemplates": true,
     "enGB": "Element: aether\nType: form infusion\nLevel: 6\nBurn: 4\nPrerequisite(s): extended range\nAssociated Blasts: telekinesis\n{g|Encyclopedia:Saving_Throw}Saving Throw{/g}: None\nYou grab a large number of objects and throw them all at once.\n\nYou can use your telekinetic blast to make attack rolls against a number of targets equal to your kineticist level within 120 feet, but no two targets can be more than 30 feet apart.",
     "ruRU": "Элемент: эфир\nТип: вливание формы\nКруг: 6\nВыгорание: 4\nТребования: Увеличенная дистанция\nСвязанные зарялы: телекинетический заряд\n{g|Encyclopedia:Saving_Throw}Спасбросок{/g}: Нет\nВы хватаете несколько предметов и бросаете их одновременно.\n\nВы можете использовать свой телекинетический заряд для атаки нескольких целей, число которых равно вашему уровню кинетика, в пределах 120 футов. Но цели не должны быть дальше 30 футов друг от друга.",
-    "zh_CN": "元素: 以太\n类别: 塑形注能\n等级: 6\n超载: 4\n前置: 增距\n关联念袭类别: 念动\n{g|Encyclopedia:Saving_Throw}豁免{/g}: 无\n你操控大量物体并同时将它们投掷出去。你能够使用你的念动做出攻击检定对抗120尺内的复数目标，数量等同于你的操念使等级，但是任意两个目标之间的距离不得超过30尺。"
+    "zhCN": "元素: 以太\n类别: 塑形注能\n等级: 6\n超载: 4\n前置: 增距\n关联念袭类别: 念动\n{g|Encyclopedia:Saving_Throw}豁免{/g}: 无\n你操控大量物体并同时将它们投掷出去。你能够使用你的念动做出攻击检定对抗120尺内的复数目标，数量等同于你的操念使等级，但是任意两个目标之间的距离不得超过30尺。"
   },
   {
     "Key": "Aether.FoeThrow.Name",
     "ProcessTemplates": false,
     "enGB": "Foe Throw",
     "ruRU": "Бросок врага",
-    "zh_CN": "抛敌"
+    "zhCN": "抛敌"
   },
   {
     "Key": "Aether.FoeThrow.Description",
     "ProcessTemplates": true,
     "enGB": "Element: aether\nType: form infusion\nLevel: 3\nBurn: 2\nAssociated Blasts: telekinetic\n{g|Encyclopedia:Saving_Throw}Saving Throw{/g}: Fortitude negates; see text\nYour telekinetic blast can throw a Large or smaller creature instead of an unattended object; you can increase the burn cost by 1 to affect a creature of a larger size. If the creature you attempt to throw succeeds at a Fortitude save, it negates the blast entirely.\n\nOtherwise, if your blast hits, both the thrown creature and the target take the full amount of damage from your telekinetic blast, and the thrown creature falls prone in the last unoccupied space along its path. If your blast misses, the thrown creature can choose to occupy any space within 30 feet of the target, it doesn’t fall prone, and it takes half the normal amount of damage from your blast. The movement doesn’t provoke attacks of opportunity.",
     "ruRU": "Элемент: эфир\nТип: вливание формы\nКруг: 3\nВыгорание: 2\nСвязанные зарялы: телекинетический заряд\n{g|Encyclopedia:Saving_Throw}Спасбросок{/g}: Стойкость нейтрализует; смотри описание\nВаш телекинетический заряд можно использовать для броска существа крупного или меньшего размера; вы можете увеличить стоимость в выгорании на 1 для броска существа более крупного размера. Если существо проходит спасбросок стойкости, заряд не имеет эффекта.\n\nВ противном случае при попадании заряда бросаемое существо и цель получают полный урон вашего телекинетического заряда, и бросаемое существо сбито с ног в последней незанятой клетке на своем пути. В случае промаха зарядом, бросаемое существо может выбрать любую клетку в пределах 30 футов от цели, остается стоять на ногах и получает только половину урона заряда. Это движение не провоцирует внеочередных атак.",
-    "zh_CN": "元素: 以太\n类别: 塑形注能\n等级: 3\n超载: 2\n关联念袭类别: 念动\n{g|Encyclopedia:Saving_Throw}豁免{/g}: 强韧，通过则无效; 见后文\n你的念动能够投掷大型或更小的生物，以取代无主物体；你能够增加1点超载来影响具有更大体型的生物。若你尝试用来投掷的生物成功通过强韧豁免，那么它可以免受整个念袭的影响。否则当你的念袭命中时，被投掷的生物和目标均会承受来自念动的全额伤害，被投掷的生物还会俯卧在沿着投掷路径上最后一个可占据空间里。若你的念袭未命中，被投掷的生物能够选择占据目标周围30尺内的任意空间，它不会倒地，而且它仅会由你的念袭承受正常伤害的一半。投掷期间进行的移动不会引起藉机攻击。"
+    "zhCN": "元素: 以太\n类别: 塑形注能\n等级: 3\n超载: 2\n关联念袭类别: 念动\n{g|Encyclopedia:Saving_Throw}豁免{/g}: 强韧，通过则无效; 见后文\n你的念动能够投掷大型或更小的生物，以取代无主物体；你能够增加1点超载来影响具有更大体型的生物。若你尝试用来投掷的生物成功通过强韧豁免，那么它可以免受整个念袭的影响。否则当你的念袭命中时，被投掷的生物和目标均会承受来自念动的全额伤害，被投掷的生物还会俯卧在沿着投掷路径上最后一个可占据空间里。若你的念袭未命中，被投掷的生物能够选择占据目标周围30尺内的任意空间，它不会倒地，而且它仅会由你的念袭承受正常伤害的一半。投掷期间进行的移动不会引起藉机攻击。"
   },
   {
     "Key": "Aether.FoeThrow.Buff.Name",
     "ProcessTemplates": false,
     "enGB": "Lifted",
     "ruRU": "Поднят в воздух",
-    "zh_CN": "被举起"
+    "zhCN": "被举起"
   },
   {
     "Key": "Aether.FoeThrow.Buff.Description",
     "ProcessTemplates": false,
     "enGB": "This creature is lifted, and is about to be thrown.",
     "ruRU": "Существо поднятно в воздух и готово быть брошенным.",
-    "zh_CN": "这个生物被举起来并且马上就要被扔出去了。"
+    "zhCN": "这个生物被举起来并且马上就要被扔出去了。"
   },
   {
     "Key": "Aether.FoeThrow.Target.Name",
     "ProcessTemplates": false,
     "enGB": "Lift Target",
     "ruRU": "Поднять цель",
-    "zh_CN": "举起目标"
+    "zhCN": "举起目标"
   },
   {
     "Key": "Aether.FoeThrow.Target.Description",
     "ProcessTemplates": false,
     "enGB": "Choose a target to LIFT them. Preparing them to be thrown.\n\nNote: Lifting has no effect on the target, and lifting one creature put's down any other lifted creature.",
     "ruRU": "Выберите цель, чтобы ПОДНЯТЬ ее в воздух и подготовить к броску.\n\nПримечание: Поднятие не имеет иных эффектов на цель и поднятие существа опускает на землю любое другое поднятое существо.",
-    "zh_CN": "Choose a target to LIFT them. Preparing them to be thrown.\n\nNote: Lifting has no effect on the target, and lifting one creature put's down any other lifted creature."
+    "zhCN": "Choose a target to LIFT them. Preparing them to be thrown.\n\nNote: Lifting has no effect on the target, and lifting one creature put's down any other lifted creature."
   },
   {
     "Key": "Aether.FoeThrow.Action.Name",
     "ProcessTemplates": false,
     "enGB": "Throw Target",
     "ruRU": "Бросить цель",
-    "zh_CN": "投掷目标"
+    "zhCN": "投掷目标"
   },
   {
     "Key": "Aether.FoeThrow.Action.Description",
     "ProcessTemplates": false,
     "enGB": "Throw the lifted creature at the target enemy.",
     "ruRU": "Бросить поднятое существо в указанного врага",
-    "zh_CN": "Throw the lifted creature at the target enemy."
+    "zhCN": "Throw the lifted creature at the target enemy."
   },
   {
     "Key": "Aether.ForceHook.Name",
     "ProcessTemplates": false,
     "enGB": "Force Hook",
     "ruRU": "Силовой крюк",
-    "zh_CN": "力场钩"
+    "zhCN": "力场钩"
   },
   {
     "Key": "Aether.ForceHook.Description",
     "ProcessTemplates": true,
     "enGB": "Element: aether\nType: form infusion\nLevel: 3\nBurn: 2\nAssociated Blasts: force\n{g|Encyclopedia:Saving_Throw}Saving Throw{/g}: None\nYour force blast hooks onto its target and drags you adjacent to it.",
     "ruRU": "Элемент: эфир\nТип: вливание формы\nКруг: 3\nВыгорание: 2\nСвязанные зарялы: силовой заряд\n{g|Encyclopedia:Saving_Throw}Спасбросок{/g}: нет\nВаш силовой заряд цепляется за свою цель и притягивает вас к ней.",
-    "zh_CN": "元素: 以太\n类别: 塑形注能\n等级: 3\n超载: 2\n关联念袭类别: 力场弹\n{g|Encyclopedia:Saving_Throw}豁免{/g}: 无\n你的力场弹会勾住目标，并将你拽到向目标旁边。"
+    "zhCN": "元素: 以太\n类别: 塑形注能\n等级: 3\n超载: 2\n关联念袭类别: 力场弹\n{g|Encyclopedia:Saving_Throw}豁免{/g}: 无\n你的力场弹会勾住目标，并将你拽到向目标旁边。"
   },
   {
     "Key": "Aether.Disintegrating.Name",
     "ProcessTemplates": false,
     "enGB": "Disintegrating Infusion",
     "ruRU": "Дезинтегрирующие вливание",
-    "zh_CN": "分解注能"
+    "zhCN": "分解注能"
   },
   {
     "Key": "Aether.Disintegrating.Description",
     "ProcessTemplates": true,
     "enGB": "Element: aether\nType: substance infusion\nLevel: 6\nBurn: 4\nAssociated Blasts: force\n{g|Encyclopedia:Saving_Throw}Saving Throw{/g}: Fortitude\nYou can use force to rip your targets apart. Against creatures, your kinetic blast deals double its normal amount of damage, but targets receive a saving throw to reduce the damage to half the blast’s normal amount of damage (for a total of 1/4 of the blast’s increased damage). Any creature reduced to 0 or fewer hit points by the blast is disintegrated, as the spell disintegrate.",
     "ruRU": "Элемент: эфир\nТип: вливание эссенции\nКруг: 6\nВыгорание: 4\nСвязанные зарялы: силовой заряд\n{g|Encyclopedia:Saving_Throw}Спасбросок{/g}: Стойкость\nВы можете использовать силу, чтобы разорвать ваши цели на части. Ваш кинетический заряд наносит двойной урон, но цель может совершить спасбросок, чтобы уменьшить урон до половины урона заряда (до 1/4 от увеличенного урона заряда). Любое существо, чьи очки здоровья за счет заряда опустились до 0 или ниже, считаются дезинтегрированным, как от заклинания Дезинтеграция",
-    "zh_CN": "元素: 以太\n类别: 性质注能\n等级: 6\n超载: 4\n关联念袭类别： 力场弹\n{g|Encyclopedia:Saving_Throw}豁免{/g}: 强韧，通过则部分生效；见后文\n你能够使用力场弹轰杀目标。在对抗生物时，你的念袭造成两倍于正常伤害的数值，但是目标可以进行豁免来使伤害降低至正常数值的一半（对于增强后的念袭伤害总量来说为四分之一）。任何生命值被念袭降低至0点以下的生物会被完全分解，就如同解离术一般。"
+    "zhCN": "元素: 以太\n类别: 性质注能\n等级: 6\n超载: 4\n关联念袭类别： 力场弹\n{g|Encyclopedia:Saving_Throw}豁免{/g}: 强韧，通过则部分生效；见后文\n你能够使用力场弹轰杀目标。在对抗生物时，你的念袭造成两倍于正常伤害的数值，但是目标可以进行豁免来使伤害降低至正常数值的一半（对于增强后的念袭伤害总量来说为四分之一）。任何生命值被念袭降低至0点以下的生物会被完全分解，就如同解离术一般。"
   },
   {
     "Key": "Aether.TelekineticInvisibility.Name",
     "ProcessTemplates": false,
     "enGB": "Telekinetic Invisibility",
     "ruRU": "Телекинетическая невидимость",
-    "zh_CN": "念动遁形"
+    "zhCN": "念动遁形"
   },
   {
     "Key": "Aether.TelekineticInvisibility.Description",
     "ProcessTemplates": false,
     "enGB": "You weave strands of aether, bending light and dampening sound; This works as invisibility except that the aetheric bending is easier to notice than normal invisibility, so your bonus on Stealth checks is halved (+10 while moving and +20 while perfectly still).",
     "ruRU": "Вы сплетаете нити эфира, изгибая свет и приглушая звук. Телекинетическая невидимость работает как невидимость за исключением, что эфирное искривление легче заметить, нежели обычную невидимость. Таким образом ваш бонус Скрытности снижен вдвое (+10 при движении и +20 при неподвижности).",
-    "zh_CN": "你编织以太，弯曲光线，减弱声音;这相当于隐身，除了念动遁形比普通隐身更容易被发现，所以你的隐身检定加成减半(移动时+10，静止时+20)。"
+    "zhCN": "你编织以太，弯曲光线，减弱声音;这相当于隐身，除了念动遁形比普通隐身更容易被发现，所以你的隐身检定加成减半(移动时+10，静止时+20)。"
   },
   {
     "Key": "Aether.TelekineticFinesse.Name",
     "ProcessTemplates": false,
     "enGB": "Telekinetic Finesse",
     "ruRU": "Телекинетическое искусство",
-    "zh_CN": "念动戏法"
+    "zhCN": "念动戏法"
   },
   {
     "Key": "Aether.TelekineticFinesse.Description",
     "ProcessTemplates": true,
     "enGB": "A Telekineticist can use {g|Encyclopedia:Trickery}Trickery{/g} at a range of 30 feet.",
     "ruRU": "Телекинетик может использовать {g|Encyclopedia:Trickery}Плутовство{/g} на расстоянии до 30 футов.",
-    "zh_CN": "一名心灵操念使可以再30尺范围内远程使用 {g|Encyclopedia:Trickery}巧手{/g} 。"
+    "zhCN": "一名心灵操念使可以再30尺范围内远程使用 {g|Encyclopedia:Trickery}巧手{/g} 。"
   },
   {
     "Key": "Aether.Touchsite.Name",
     "ProcessTemplates": false,
     "enGB": "Touchsite, Reactive",
     "ruRU": "Эфирное чутье",
-    "zh_CN": "反射性感知域"
+    "zhCN": "反射性感知域"
   },
   {
     "Key": "Aether.Touchsite.Description",
     "ProcessTemplates": true,
     "enGB": "Your strands of aether surround you, making it virtually impossible for a violent motion to catch you off guard, so long as the motion originates within their range. The character can react to danger before her senses would normally allow her to do so. She cannot be caught {g|Encyclopedia:Flat_Footed}flat-footed{/g}, nor does she lose her {g|Encyclopedia:Dexterity}Dexterity{/g} {g|Encyclopedia:Bonus}bonus{/g} to {g|Encyclopedia:Armor_Class}AC{/g} if the {g|Encyclopedia:Attack}attacker{/g} is invisible. She still loses her Dexterity bonus to AC if immobilized. A character with this ability can still lose her Dexterity bonus to AC if an opponent successfully uses the feint {g|Encyclopedia:CA_Types}action{/g} against her.",
     "ruRU": "Ваши нити эфира окружают пространство вокруг вас, делая невозможным враждебному действию застать вас врасплох, пока это действие остается в пределах досягаемости нитей. Персонаж обретает способность реагировать на опасность быстрее мысли. Его нельзя {g|Encyclopedia:Flat_Footed}застать врасплох{/g}, и он не теряет {g|Encyclopedia:Bonus}бонус{/g} {g|Encyclopedia:Dexterity}Ловкости{/g} к {g|Encyclopedia:Armor_Class}защите{/g}, если его противник невидим. Он все же теряет бонус, если он обездвижен. Персонаж с этой способностью все равно теряет бонус Ловкости к броне, если противник успешно применяет {g|Encyclopedia:CA_Types}действие{/g} Финт против него.",
-    "zh_CN": "你的以太环绕着你，在它们的范围内，再突然的情况也很难让你措手不及，角色可以对即将到来的危险做出反应。即使攻击者不可见，角色也不会失去敏捷ac加值。如果角色被固定，他仍然会失去敏捷ac加值。如果对手使用佯攻并且成功，角色如常失去敏捷加值。"
+    "zhCN": "你的以太环绕着你，在它们的范围内，再突然的情况也很难让你措手不及，角色可以对即将到来的危险做出反应。即使攻击者不可见，角色也不会失去敏捷ac加值。如果角色被固定，他仍然会失去敏捷ac加值。如果对手使用佯攻并且成功，角色如常失去敏捷加值。"
   },
   {
     "Key": "Aether.SpellDeflection.Name",
     "ProcessTemplates": false,
     "enGB": "Spell Deflection",
     "ruRU": "Отражение заклинаний",
-    "zh_CN": "法术偏转"
+    "zhCN": "法术偏转"
   },
   {
     "Key": "Aether.SpellDeflection.Name.Extended",
     "ProcessTemplates": false,
     "enGB": "Spell Deflection, Extended",
     "ruRU": "Отражение заклинаний, Продленное",
-    "zh_CN": "长效法术偏转"
+    "zhCN": "长效法术偏转"
   },
   {
     "Key": "Aether.SpellDeflection.Description",
     "ProcessTemplates": false,
     "enGB": "You weave strands of aether around yourself in order to deflect magic. Until the beginning of your next turn, gain Spell Resistance equal to 10 + your kineticist level. You can accept 1 point of burn to increase the duration to 10 minutes per kineticist level you possess.",
     "ruRU": "Вы сплетаете нити эфира вокруг себя для отражения магии. Вы получаете Сопротивление заклинаниям равное 10 + ваш уровень кинетика до начала своего следующего хода. Вы можете принять 1 очко выгорания, чтобы увеличить длительность эффекта до 10 минут за уровень кинетика.",
-    "zh_CN": "你在自己周围编织以太以转移魔法。直到你的下一回合开始，获得等于10 +你的操念使等级的法术抗性。你可以接受1点超载，增加持续时间到10分钟每你拥有的操念使等级。"
+    "zhCN": "你在自己周围编织以太以转移魔法。直到你的下一回合开始，获得等于10 +你的操念使等级的法术抗性。你可以接受1点超载，增加持续时间到10分钟每你拥有的操念使等级。"
   },
   {
     "Key": "Aether.BonusWild.Name",
     "ProcessTemplates": false,
     "enGB": "Kineticist Bonus Feat — Aether",
     "ruRU": "Дополнительная черта кинетика — Эфир",
-    "zh_CN": "操念使奖励专长-以太"
+    "zhCN": "操念使奖励专长-以太"
   },
   {
     "Key": "Aether.BonusWild.Description",
     "ProcessTemplates": true,
     "enGB": "A character that selects this talent gains a bonus {g|Encyclopedia:Feat}feat{/g}. These feats must be taken from the following list: Spell Penetration, Greater Spell Penetration, Precise Shot, Trip, Greater Trip",
     "ruRU": "Выбирая этот прием, персонаж может взять дополнительную {g|Encyclopedia:Feat}черту{/g}. Эти черты он выбирает из следующего списка: Преодолевающая магия, Преодолевающая магия+, Меткий выстрел, Сбивание с ног, Сбивание с ног+",
-    "zh_CN": "A character that selects this talent gains a bonus {g|Encyclopedia:Feat}feat{/g}. These feats must be taken from the following list: Spell Penetration, Greater Spell Penetration, Precise Shot, Trip, Greater Trip"
+    "zhCN": "A character that selects this talent gains a bonus {g|Encyclopedia:Feat}feat{/g}. These feats must be taken from the following list: Spell Penetration, Greater Spell Penetration, Precise Shot, Trip, Greater Trip"
   },
   {
     "Key": "Aether.Maneuvers.Name",
     "ProcessTemplates": false,
     "enGB": "Telekinetic Maneuvers",
     "ruRU": "Телекинетические маневры",
-    "zh_CN": "念动战技"
+    "zhCN": "念动战技"
   },
   {
     "Key": "Aether.Maneuvers.Description",
     "ProcessTemplates": false,
     "enGB": "A Telekineticist can perform combat maneuvers (trip, disarm, bullrush, pull) at range using your main Kineticist stat. \nIf you possess the Telekinetic Finesse wild talent, add Dirty Trick to the list of combat maneuvers you can perform; using Dexterity instead of your main Kineticist stat.",
     "ruRU": "Телекинетик может совершать боевые маневры (Сбивание с ног, Разоружение, Таран, Притягивание) на расстоянии, используя свою основную характеристику кинетика.\nЕсли у вас есть Телекинетическое искусство, добавьте Грязный трюк к списку боевых маневров, которые вы можете совершить, используюя Ловкость вместо основной характеристики кинетика.",
-    "zh_CN": "你能够以心灵念力执行战技，但是你会使用操念使主要属性来判断战技加值。若你具有精密念动（telekinetic finesse）原力，则可以将阴招（dirty trick）和盗取（steal）战技加到你能够执行的战技列表中；当你执行这些战技时，使用敏捷调整值来判断战技加值。"
+    "zhCN": "你能够以心灵念力执行战技，但是你会使用操念使主要属性来判断战技加值。若你具有精密念动（telekinetic finesse）原力，则可以将阴招（dirty trick）和盗取（steal）战技加到你能够执行的战技列表中；当你执行这些战技时，使用敏捷调整值来判断战技加值。"
   },
   {
     "Key": "Aether.Maneuvers.Pull.Name",
     "ProcessTemplates": false,
     "enGB": "Pull",
     "ruRU": "Притягивание",
-    "zh_CN": "拖拽"
+    "zhCN": "拖拽"
   },
   {
     "Key": "Aether.Maneuvers.Pull.Description",
     "ProcessTemplates": true,
     "enGB": "A pull attempts to pull an opponent straight towards you without doing any harm. If your {g|Encyclopedia:Combat_Maneuvers}combat maneuver{/g} is successful, your target is pulled 5 feet. For every 5 by which your {g|Encyclopedia:Attack}attack{/g} exceeds your opponent's {g|Encyclopedia:CMD}CMD{/g}, you can pull the target an additional 5 feet.\nAn enemy being moved by a pull does not provoke an {g|Encyclopedia:Attack_Of_Opportunity}attack of opportunity{/g} because of the movement. You cannot pull a creature into a square that is occupied by a solid object or obstacle.",
     "ruRU": "Притягивание пытается подвинуть противника к вам без какого-либо вреда. Если ваш {g|Encyclopedia:Combat_Maneuvers}боевой маневр{/g} успешен, цель притянута на 5 футов. За каждые 5 пунктов {g|Encyclopedia:Attack}атаки{/g}, превышающих {g|Encyclopedia:CMD}ЗБМ{/g} противника, вы можете притянуть цель на дополнительные 5 футов.\nПритягиваемый противник не провоцируюет {g|Encyclopedia:Attack_Of_Opportunity}внеочередную атаку{/g} этим движением. Вы не можете притяянуть существо в клетку, занимаемую твердым объектом или препятствием.",
-    "zh_CN": "A pull attempts to pull an opponent straight towards you without doing any harm. If your {g|Encyclopedia:Combat_Maneuvers}combat maneuver{/g} is successful, your target is pulled 5 feet. For every 5 by which your {g|Encyclopedia:Attack}attack{/g} exceeds your opponent's {g|Encyclopedia:CMD}CMD{/g}, you can pull the target an additional 5 feet.\nAn enemy being moved by a pull does not provoke an {g|Encyclopedia:Attack_Of_Opportunity}attack of opportunity{/g} because of the movement. You cannot pull a creature into a square that is occupied by a solid object or obstacle."
+    "zhCN": "A pull attempts to pull an opponent straight towards you without doing any harm. If your {g|Encyclopedia:Combat_Maneuvers}combat maneuver{/g} is successful, your target is pulled 5 feet. For every 5 by which your {g|Encyclopedia:Attack}attack{/g} exceeds your opponent's {g|Encyclopedia:CMD}CMD{/g}, you can pull the target an additional 5 feet.\nAn enemy being moved by a pull does not provoke an {g|Encyclopedia:Attack_Of_Opportunity}attack of opportunity{/g} because of the movement. You cannot pull a creature into a square that is occupied by a solid object or obstacle."
   },
   {
     "Key": "Aether.SelfTelekinesis.Name",
     "ProcessTemplates": false,
     "enGB": "Self Telekinesis",
     "ruRU": "Самокинез",
-    "zh_CN": "念力御身"
+    "zhCN": "念力御身"
   },
   {
     "Key": "Aether.SelfTelekinesis.Description",
     "ProcessTemplates": true,
     "enGB": "You can use your telekinetic abilities to move yourself. As a move action you can cause yourself to hover over the ground, granting yourself a +3 dodge {g|Encyclopedia: Bonus}bonus{/g} to {g|Encyclopedia:Armor_Class}AC{/g} against {g|Encyclopedia:MeleeAttack}melee attacks{/g} and immunity to ground based effects, such as difficult terrain.",
     "ruRU": "Вы можете использовать свои телекинетические способности, чтобы левитировать над землей. Сопутствующим действием вы можете начать левитировать над землей, получая +3 {g|Encyclopedia: Bonus}бонус{/g} уклонения к {g|Encyclopedia:Armor_Class}броне{/g} против {g|Encyclopedia:MeleeAttack}атак ближнего боя{/g} и невосприимчивость к наземным эффектам, таким как труднопреодолимая местность.",
-    "zh_CN": "你可以使用念动能力搬运自己。这项原力在其他方面的功能就如同火焰喷进（flame jet）一般。"
+    "zhCN": "你可以使用念动能力搬运自己。这项原力在其他方面的功能就如同火焰喷进（flame jet）一般。"
   },
   {
     "Key": "Aether.SelfTelekinesis.Greater.Name",
     "ProcessTemplates": false,
     "enGB": "Self Telekinesis, Greater",
     "ruRU": "Высший самокинез",
-    "zh_CN": "高等念力御身"
+    "zhCN": "高等念力御身"
   },
   {
     "Key": "Aether.SelfTelekinesis.Greater.Description",
     "ProcessTemplates": true,
     "enGB": "You have greater control over you self telekinesis. You can hover over the ground without expending an action, granting yourself a +3 dodge {g|Encyclopedia: Bonus}bonus{/g} to {g|Encyclopedia:Armor_Class}AC{/g} against {g|Encyclopedia:MeleeAttack}melee attacks{/g} and immunity to ground based effects, such as difficult terrain.",
     "ruRU": "Вы обрели еще больший контроль над самокинезом. Вы можете левитировать без затраты действия, получая +3 {g|Encyclopedia: Bonus}бонус{/g} уклонения к {g|Encyclopedia:Armor_Class}броне{/g} против {g|Encyclopedia:MeleeAttack}атак ближнего боя{/g} и невосприимчивость к наземным эффектам, таким как труднопреодолимая местность.",
-    "zh_CN": "在使用念力操控自身这方面，你获得了更强的掌控力。这项原力在其他方面的功能就如同高等火焰喷进（flame jet，greater）一般。"
+    "zhCN": "在使用念力操控自身这方面，你获得了更强的掌控力。这项原力在其他方面的功能就如同高等火焰喷进（flame jet，greater）一般。"
   }
 ]

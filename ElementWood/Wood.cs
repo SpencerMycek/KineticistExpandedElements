@@ -61,6 +61,7 @@ namespace KineticistElementsExpanded.ElementWood
             CreateInfusions();
 
             CreateWoodBlastsSelection();
+
             CreateCompositeBlasts();
 
             Kineticist.AddElementsToInfusion(Tree.Spore, Tree.Wood, Tree.Composite_Verdant, Tree.Composite_Autumn, Tree.Composite_Spring, Tree.Composite_Summer, Tree.Composite_Winter);
@@ -85,7 +86,6 @@ namespace KineticistElementsExpanded.ElementWood
 
             Kineticist.AddAdmixtureToBuff(Tree, PositiveAdmixture, Tree.Positive, true, true, false);
             Kineticist.AddBladesToKineticWhirlwind(Tree.Wood, Tree.Positive, Tree.Composite_Verdant, Tree.Composite_Autumn, Tree.Composite_Spring, Tree.Composite_Summer, Tree.Composite_Winter);
-
 
             CreateWoodElementalFocus(wood_class_skills, flesh_of_wood_feature);
             CreateKineticKnightWoodFocus(wood_class_skills, flesh_of_wood_feature);
@@ -379,7 +379,7 @@ namespace KineticistElementsExpanded.ElementWood
                 AbilityRange.Personal).TargetSelf(CastAnimationStyle.Omni);
             ability.SetComponents
                 (
-                Helper.CreateAbilityEffectRunAction(actions: effect_buff.CreateContextActionApplyBuff(permanent: true)),
+                Helper.CreateAbilityEffectRunAction(actions: effect_buff.CreateContextActionApplyBuff(duration: 0, permanent: true)),
                 Helper.CreateAbilityResourceLogic(AnyRef.ToAny(resource), 1),
                 Helper.CreateAbilityAcceptBurnOnCast(1)
                 );
@@ -824,7 +824,9 @@ namespace KineticistElementsExpanded.ElementWood
                 UnitCommand.CommandType.Standard, AbilityRange.Long, duration: null, savingThrow: null);
             ability.SetComponents
                 (
-                new UniqueAreaEffect { m_Feature = AnyRef.ToAny(area_damage) },
+                // TODO: Creates an error message, AnyRef could not resolve type "ContextActionDealDamage"
+                // BP: DeadlyEarthEarthBlastAbility has a different way to do this, I think, shouldn't error that way, but probably works for now
+                new UniqueAreaEffect { m_Feature = AnyRef.ToAny(Tree.DeadlyEarth.Feature) },
                 Kineticist.Blast.RankConfigBonus(half_bonus: false),
                 Kineticist.Blast.DCForceDex(),
                 Kineticist.Blast.BurnCost(action_list, infusion: 4, blast: 0, talent: 0),
@@ -2102,7 +2104,7 @@ namespace KineticistElementsExpanded.ElementWood
                     Actions = Helper.CreateActionList(new ContextActionSavingThrow
                     {
                         Type = SavingThrowType.Fortitude,
-                        Actions = Helper.CreateActionList(new ContextActionConditionalSaved { Failed = Helper.CreateActionList(poison_buff.CreateContextActionApplyBuff(permanent: true), disease_buff.CreateContextActionApplyBuff(permanent: true)) })
+                        Actions = Helper.CreateActionList(new ContextActionConditionalSaved { Failed = Helper.CreateActionList(poison_buff.CreateContextActionApplyBuff(duration: 0, permanent: true), disease_buff.CreateContextActionApplyBuff(duration: 0, permanent: true)) })
                     }),
                     m_AbilityList = null,
                     SpellDescriptorsList = (SpellDescriptor)2632353982198054912
@@ -2219,7 +2221,7 @@ namespace KineticistElementsExpanded.ElementWood
                     Actions = Helper.CreateActionList(new ContextActionSavingThrow
                     {
                         Type = SavingThrowType.Fortitude,
-                        Actions = Helper.CreateActionList(new ContextActionConditionalSaved { Failed = Helper.CreateActionList(poison_buff.CreateContextActionApplyBuff(permanent: true)) })
+                        Actions = Helper.CreateActionList(new ContextActionConditionalSaved { Failed = Helper.CreateActionList(poison_buff.CreateContextActionApplyBuff(duration: 0, permanent: true)) })
                     }),
                     m_AbilityList = null,
                     SpellDescriptorsList = (SpellDescriptor)2632353982198054912
@@ -2431,7 +2433,7 @@ namespace KineticistElementsExpanded.ElementWood
                 AbilityRange.Personal, null, null).TargetSelf(CastAnimationStyle.Self);
             ability.SetComponents
                 (
-                Helper.CreateAbilityEffectRunAction(SavingThrowType.Unknown, buff.CreateContextActionApplyBuff(permanent: true, fromSpell: true)),
+                Helper.CreateAbilityEffectRunAction(SavingThrowType.Unknown, buff.CreateContextActionApplyBuff(duration: 0, permanent: true, fromSpell: true)),
                 new AbilitySpawnFx 
                     {
                     Time = AbilitySpawnFxTime.OnApplyEffect,
@@ -2572,7 +2574,7 @@ namespace KineticistElementsExpanded.ElementWood
                 AbilityRange.Personal).TargetSelf(CastAnimationStyle.Kineticist);
             ability_buff.SetComponents
                 (
-                Helper.CreateAbilityEffectRunAction(SavingThrowType.Unknown, buff.CreateContextActionApplyBuff(permanent: true)),
+                Helper.CreateAbilityEffectRunAction(SavingThrowType.Unknown, buff.CreateContextActionApplyBuff(duration: 0, permanent: true)),
                 Kineticist.Blast.BurnCost(null, infusion: 0, blast: 0, talent: 1)
                 );
 
@@ -2682,19 +2684,19 @@ namespace KineticistElementsExpanded.ElementWood
                     Helper.CreateConditional(
                         Helper.CreateContextConditionCasterHasFact(AnyRef.ToAny(Tree.Composite_Autumn.BlastFeature)),
                         ifFalse: null,
-                        ifTrue: buff_autumn.CreateContextActionApplyBuff(permanent: true)),
+                        ifTrue: buff_autumn.CreateContextActionApplyBuff(duration: 0, permanent: true)),
                     Helper.CreateConditional(
                         Helper.CreateContextConditionCasterHasFact(AnyRef.ToAny(Tree.Composite_Spring.BlastFeature)),
                         ifFalse: null,
-                        ifTrue: buff_spring.CreateContextActionApplyBuff(permanent: true)),
+                        ifTrue: buff_spring.CreateContextActionApplyBuff(duration: 0, permanent: true)),
                     Helper.CreateConditional(
                         Helper.CreateContextConditionCasterHasFact(AnyRef.ToAny(Tree.Composite_Summer.BlastFeature)),
                         ifFalse: null,
-                        ifTrue: buff_summer.CreateContextActionApplyBuff(permanent: true)),
+                        ifTrue: buff_summer.CreateContextActionApplyBuff(duration: 0, permanent: true)),
                     Helper.CreateConditional(
                         Helper.CreateContextConditionCasterHasFact(AnyRef.ToAny(Tree.Composite_Winter.BlastFeature)),
                         ifFalse: null,
-                        ifTrue: buff_winter.CreateContextActionApplyBuff(permanent: true))
+                        ifTrue: buff_winter.CreateContextActionApplyBuff(duration: 0, permanent: true))
                     )
             };
 
@@ -2708,7 +2710,7 @@ namespace KineticistElementsExpanded.ElementWood
                 AbilityRange.Close, null, null).TargetPoint(CastAnimationStyle.Kineticist);
             ability.SetComponents
                 (
-                Helper.CreateAbilityEffectRunAction(SavingThrowType.Unknown, summon, new ContextActionOnContextCaster { Actions = Helper.CreateActionList(buff.CreateContextActionApplyBuff(permanent: true)) }),
+                Helper.CreateAbilityEffectRunAction(SavingThrowType.Unknown, summon, new ContextActionOnContextCaster { Actions = Helper.CreateActionList(buff.CreateContextActionApplyBuff(duration: 0, permanent: true)) }),
                 Kineticist.Blast.BurnCost(null, infusion: 0, blast: 0, talent: 0)
                 );
 

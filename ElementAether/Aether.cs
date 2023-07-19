@@ -43,6 +43,7 @@ using System.Linq;
 
 namespace KineticistElementsExpanded.ElementAether
 {
+    // TODO: Figure out how the kinetic blast damage is determined, it was changed from level to a feature, now
     class Aether
     {
         private static KineticistTree Tree = KineticistTree.Instance;
@@ -354,7 +355,7 @@ namespace KineticistElementsExpanded.ElementAether
             ability.AvailableMetamagic = Metamagic.Heighten;
             ability.SetComponents
                 (
-                Helper.CreateAbilityEffectRunAction(actions: effect_buff.CreateContextActionApplyBuff(permanent: true)),
+                Helper.CreateAbilityEffectRunAction(actions: effect_buff.CreateContextActionApplyBuff(duration: 0, permanent: true)),
                 Helper.CreateAbilityAcceptBurnOnCast(1)
                 );
 
@@ -381,7 +382,6 @@ namespace KineticistElementsExpanded.ElementAether
         private static void CreateTelekineticBlast()
         {
             // Variants
-            Main.Print("Variants");
             var standard = CreateTelekineticBlastVariant_base();
             var extended = CreateTelekineticBlastVariant_extended();
             var spindle = CreateTelekineticBlastVariant_spindle();
@@ -395,13 +395,10 @@ namespace KineticistElementsExpanded.ElementAether
             var foeThrow = CreateTelekineticBlastVariant_throw(); // Output not used due to UI reqs
             var many = CreateTelekineticBlastVariant_many();
             // Ability
-            Main.Print("Base");
             CreateTelekineticBlastAbility(standard, many, extended, spindle, wall, blade);
             // Feature
-            Main.Print("Feature");
             CreateTelekineticBlastFeature();
             // Progression
-            Main.Print("Progression");
             CreateTelekineticBlastProgression();
 
         }
@@ -681,11 +678,8 @@ namespace KineticistElementsExpanded.ElementAether
 
         private static void CreateCompositeBlasts()
         {
-            Main.Print("Force");
             CreateForceBlast();
-            Main.Print("Boost");
             CreateAethericBoost();
-            Main.Print("Boost-G");
             CreateAethericBoostGreater();
         }
 
@@ -1097,7 +1091,7 @@ namespace KineticistElementsExpanded.ElementAether
 
             #region Disintegration
 
-            var apply_buff = disintegrate_buff.CreateContextActionApplyBuff(permanent: true);
+            var apply_buff = disintegrate_buff.CreateContextActionApplyBuff(duration: 0, permanent: true);
 
             var check_health_less_zero = new ContextConditionCompareTargetHP
             {
@@ -1907,7 +1901,7 @@ namespace KineticistElementsExpanded.ElementAether
             variant_prolonged.SetComponents
                 (
                 Helper.CreateAbilityEffectRunAction(SavingThrowType.Unknown, 
-                    buff.CreateContextActionApplyBuff(duration_value, false, true, false, false)),
+                    buff.CreateContextActionApplyBuff(duration: 100, toCaster: true)),
                 Helper.CreateAbilityAcceptBurnOnCast(1)
                 );
 

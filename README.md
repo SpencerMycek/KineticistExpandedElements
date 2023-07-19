@@ -74,8 +74,8 @@ Thank you!!
 | Void | Gravity Control | Wild Talent that allows the user to alter gravity on themselves (flight) | Done |
 | Wood | Element Choice | The main wood element, adds selections for base kineticist (and archetypes) and kinetic knight | Done |
 | Wood | Basic Selection | Negative and Gravity Blast - Including most vanilla infusions and kinetic blade | Done |
-| Wood | Deadly Earth | Vanilla Infusion for the Wood element | Not Done |
-| Wood | Impale | Dark Codex Infusion for Wood and Composites | Note Done |
+| Wood | Deadly Earth | Vanilla Infusion for the Wood element | Done |
+| Wood | Impale | Dark Codex Infusion for Wood and Composites | Not Done |
 | Wood | Composites | Verdant, Autumn, Spring, Summer, Winter | Done |
 | Wood | Positive Admixture | Composite Blast (Special) - Modifies any energy simple blast to be half positive energy | Done |
 | Wood | Flesh of Wood | Elemental Defense - Provides the kineticist
@@ -99,7 +99,15 @@ If you notice any issues, please contact me or open up an issue on this reposito
 
 ## Recent Changes
 
-### v3.1.0
+### v3.2.0 For v2.1.4w
+- Added support for the Elemental Engine class:
+- These are the bonuses gained from the Elemental Burnout feature for modded elements (Thank you Thank you Kerrovitarr (Discord), for the help determining these bonuses)
+	- Void: +2/4 to saves against negative and death effects; 20%/50% concealment that can't be countered with true sight
+	- Wood: +2/4 to saves against poison and disease effects; half of kineticist level as N/slashing / half of kineticist level as fast healing
+	- Aether: +2/4 to armor AC (acts like magic armor); 50% fortification/incorporeal
+- Fix chinese localization
+
+### v3.1.0 For v2.1.4w
 - Fix Name and Description of Wood Wild Talent Bonus Feats (Was using the name and description of the wood class skills)
 - Fix Name of Positive Blast (Was using the name of Wood Blast)
 - Fix Singularity Infusion appear twice in the selection list

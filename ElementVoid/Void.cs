@@ -267,7 +267,6 @@ namespace KineticistElementsExpanded.ElementVoid
         public static BlueprintFeature CreateEmptiness()
         {
             UnityEngine.Sprite icon = Helper.CreateSprite(Main.ModPath+"/Icons/emptiness.png");
-
             #region Resource
 
             var emptiness_resource = Helper.CreateBlueprintAbilityResource("EmptinessResource", min: 0, max: 20, baseValue: 20);
@@ -376,7 +375,7 @@ namespace KineticistElementsExpanded.ElementVoid
             emptiness_ability.AvailableMetamagic = Metamagic.Heighten;
             emptiness_ability.SetComponents
                 (
-                Helper.CreateAbilityEffectRunAction(actions: emptiness_effect_buff.CreateContextActionApplyBuff(permanent: true)),
+                Helper.CreateAbilityEffectRunAction(actions: emptiness_effect_buff.CreateContextActionApplyBuff(duration: 0, permanent: true)),
                 Helper.CreateAbilityResourceLogic(AnyRef.ToAny(emptiness_resource), 1),
                 Helper.CreateAbilityAcceptBurnOnCast(1)
                 );
@@ -1652,7 +1651,7 @@ namespace KineticistElementsExpanded.ElementVoid
 
             var onCaster = new ContextActionOnContextCaster
             {
-                Actions = Helper.CreateActionList(effect_buff.CreateContextActionApplyBuff(asChild: true, permanent: true))
+                Actions = Helper.CreateActionList(effect_buff.CreateContextActionApplyBuff(duration: 0, asChild: true, permanent: true))
             };
 
             var ability = Helper.CreateBlueprintActivatableAbility("VoidVampiricInfusionAbility", out var buff, LocalizationTool.GetString("Void.Vampiric.Name"),
@@ -1925,7 +1924,7 @@ namespace KineticistElementsExpanded.ElementVoid
             var summon_buff = ResourcesLibrary.TryGetBlueprint<BlueprintBuff>("50d51854cf6a3434d96a87d050e1d09a"); // SummonedCreatureSpawnMonsterIV-VI
             UnityEngine.Sprite icon = Helper.StealIcon("4b76d32feb089ad4499c3a1ce8e1ac27");
 
-            var summon_buff_apply = summon_buff.CreateContextActionApplyBuff(permanent: true, dispellable: false);
+            var summon_buff_apply = summon_buff.CreateContextActionApplyBuff(duration: 0, permanent: true, dispellable: false);
 
             var context_spawn = new ContextActionSpawnMonster
             {
@@ -2065,7 +2064,7 @@ namespace KineticistElementsExpanded.ElementVoid
                     AnyRef.ToAny(Tree.FocusVoid.Knight)),
                 Helper.CreatePrerequisiteClassLevel(Tree.Class, 8),
                 Helper.CreateAddFacts(ability.ToRef()),
-                Helper.CreateAddFactContextActions(new GameAction[] { buff.CreateContextActionApplyBuff(permanent: true) })
+                Helper.CreateAddFactContextActions(new GameAction[] { buff.CreateContextActionApplyBuff(duration: 0, permanent: true) })
                 );
 
             return feature.ToRef();
@@ -2093,7 +2092,8 @@ namespace KineticistElementsExpanded.ElementVoid
                 }
             };
 
-            var conditional = Helper.CreateContextActionConditionalSaved(failed: hold_monstor.CreateContextActionApplyBuff(duration));
+            // TODO: Figure out how to actuall give this a duration
+            var conditional = Helper.CreateContextActionConditionalSaved(failed: hold_monstor.CreateContextActionApplyBuff(duration: 0));
 
             var ability = Helper.CreateBlueprintAbility("UndeadGripAbility", LocalizationTool.GetString("Void.UndeadGrip.Name"),
                 LocalizationTool.GetString("Void.UndeadGrip.Description"), icon, AbilityType.Special, UnitCommand.CommandType.Standard,
