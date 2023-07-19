@@ -18,7 +18,7 @@ namespace KineticistElementsExpanded.ElementVoid
             @"Element: Void\nType: simple blast\nLevel: —\nBurn: 0\nBlast Type: physical\n{g|Encyclopedia:Damage}Damage{/g}: {g|Encyclopedia:Damage_Type}bludgeoning{/g}\nYou manipulate gravity to distort and buffet your foe’s body.";
 
         protected static readonly string NegativeBlastDescription =
-            @"Element: Void\nType: simple blast\nLevel: —\nBurn: 0\nBlast Type: physical\n{g|Encyclopedia:Damage}Damage{/g}: negative energy\nYou blast your foe with negative energy.";
+            @"Element: Void\nType: simple blast\nLevel: —\nBurn: 0\nBlast Type: energy\n{g|Encyclopedia:Damage}Damage{/g}: negative energy\nYou blast your foe with negative energy.";
 
         protected static readonly string EmptinessDescription = @"Element: Void\nType: defense\nLevel: —\nBurn: 0\n{g|Encyclopedia:Damage}Damage{/g}: negative energy\nYour body becomes an empty husk, fueled by an internal void. You gain negative energy resistance 2, a 5% chance to ignore critical hits and sneak attacks, and a +1 bonus on Will saves against emotion effects. By accepting 1 point of burn, you can increase the resistance to negative energy by 2, the chance to ignore critical hits and sneak attacks by 5%, and the bonus on Will saves against emotion effects by 1 until the next time your burn is removed";
 
