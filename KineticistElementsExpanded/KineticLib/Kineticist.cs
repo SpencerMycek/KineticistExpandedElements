@@ -1,9 +1,6 @@
 ﻿using JetBrains.Annotations;
 using KineticistElementsExpanded.Components;
 using CodexLib;
-using AnyRef = CodexLib.AnyRef;
-using Helper = CodexLib.Helper;
-using KineticistTree = CodexLib.KineticistTree;
 using Kingmaker.Blueprints;
 using Kingmaker.Blueprints.Classes;
 using Kingmaker.Blueprints.Classes.Selection;
@@ -37,6 +34,8 @@ using Kingmaker.View.Animation;
 using BlueprintCore.Utils;
 using Kingmaker.UnitLogic.Mechanics.Conditions;
 using static UnityModManagerNet.UnityModManager;
+using Kingmaker.Designers.EventConditionActionSystem.Conditions;
+using Kingmaker.Designers.EventConditionActionSystem.Evaluators;
 
 namespace KineticistElementsExpanded.KineticLib
 {
@@ -58,6 +57,32 @@ namespace KineticistElementsExpanded.KineticLib
         public static BlueprintWeaponTypeReference ref_kinetic_blast_energy_blade_type = Helper.ToRef<BlueprintWeaponTypeReference>("a15b2fb1d5dc4f247882a7148d50afb0"); // KineticBlastEnergyBlade
         public static BlueprintAbility blade_whirlwind = ResourcesLibrary.TryGetBlueprint<BlueprintAbility>("80f10dc9181a0f64f97a9f7ac9f47d65"); // BladeWhirlwindAbility
         public static BlueprintArchetypeReference ref_blood_kineticist = Helper.ToRef<BlueprintArchetypeReference>("365b50dba54efb74fa24c07e9b7a838c"); // BloodKineticistArchetype
+
+        public static void RegisterGatherPower(KineticistTree.Focus element, BlueprintBuffReference buff, BlueprintBuffReference buffEmpowered)
+        {
+            BlueprintBuff gatherI = ResourcesLibrary.TryGetBlueprint<BlueprintBuff>("e6b8b31e1f8c524458dc62e8a763cfb1"); // GatherPowerBuffI
+            BlueprintBuff gatherII = ResourcesLibrary.TryGetBlueprint<BlueprintBuff>("3a2bfdc8bf74c5c4aafb97591f6e4282"); // GatherPowerBuffII
+            BlueprintBuff gatherIII = ResourcesLibrary.TryGetBlueprint<BlueprintBuff>("82eb0c274eddd8849bb89a8e6dbc65f8"); // GatherPowerBuffIII
+
+            var condition_first = Helper.CreateContextConditionHasFact(element.First);
+            var condition_knight = Helper.CreateContextConditionHasFact(element.Knight);
+            var action_normal = Helper.CreateContextActionApplyBuff(buff, Helper.CreateContextDurationValue(0, DiceType.Zero, 2, DurationRate.Rounds), asChild: true);
+            var action_empowered = Helper.CreateContextActionApplyBuff(buffEmpowered, Helper.CreateContextDurationValue(0, DiceType.Zero, 2, DurationRate.Rounds), asChild: true);
+
+            var conditional = Helper.CreateConditional(new Condition[2] { condition_first, condition_knight }, new GameAction[1] { action_normal });
+            conditional.ConditionsChecker.Operation = Operation.Or;
+            var conditional_empowered = Helper.CreateConditional(new Condition[2] { condition_first, condition_knight }, new GameAction[1] { action_empowered });
+            conditional_empowered.ConditionsChecker.Operation = Operation.Or;
+
+            var gather_actions = gatherI.GetComponent<AddFactContextActions>().Activated.Actions;
+            gatherI.GetComponent<AddFactContextActions>().Activated.Actions = gather_actions.AddToArray(conditional);
+
+            gather_actions = gatherII.GetComponent<AddFactContextActions>().Activated.Actions;
+            gatherII.GetComponent<AddFactContextActions>().Activated.Actions = gather_actions.AddToArray(conditional_empowered);
+
+            gather_actions = gatherIII.GetComponent<AddFactContextActions>().Activated.Actions;
+            gatherIII.GetComponent<AddFactContextActions>().Activated.Actions = gather_actions.AddToArray(conditional_empowered);
+        }
 
         // This adds blasts from the provided elements to Burn, Metakinesis, KineticBladeInfusion
         public static void ElementsBlastSetup(params KineticistTree.Element[] elements)
@@ -127,7 +152,7 @@ namespace KineticistElementsExpanded.KineticLib
             var hasFact = blade_whirlwind.GetComponent<AbilityCasterHasFacts>();
             // TODO FIX with push to CodexLib
             //
-            //
+            // Needs the Blade Buff (addKineticistBlade part) to the Blade thingamagig
             //
             //Helper.AppendAndReplace(ref hasFact.m_Facts, elements.Select(s => AnyRef.Get(s.Blade.Buff).To<BlueprintUnitFactReference>()).ToList());
         }
@@ -214,7 +239,7 @@ namespace KineticistElementsExpanded.KineticLib
         }
 
         // Adds the given admixture to the composite buff
-        public static void AddAdmixtureToBuff(KineticistTree Tree, KineticistTree.Infusion composite, KineticistTree.Element param1, bool basic, bool energy, bool phyisical)
+        public static void AddAdmixtureToBuff(KineticistTree Tree, KineticistTree.Boost composite, KineticistTree.Element param1, bool basic, bool energy, bool phyisical)
         {
             var inner_checker = new ConditionsChecker
             {
@@ -227,7 +252,7 @@ namespace KineticistElementsExpanded.KineticLib
             {
                 ConditionsChecker = inner_checker,
                 IfFalse = null,
-                IfTrue = Helper.CreateActionList(Helper.CreateContextActionAddFeature(composite.Feature))
+                IfTrue = Helper.CreateActionList(Helper.CreateContextActionAddFeature(composite.BlastFeature))
             };
             var outer_conditional = Helper.CreateConditional(Helper.CreateContextConditionHasFact(AnyRef.ToRef<BlueprintUnitFactReference>(param1.BlastFeature)),
                 ifFalse: null, ifTrue: inner_conditional);
@@ -248,22 +273,64 @@ namespace KineticistElementsExpanded.KineticLib
             /// 4) set m_Parent to XBlastBase with Helper.AddToAbilityVariants
             /// Logic for dealing damage. Will make a composite blast, if both p and e are set. How much damage is dealt is defined in step 2.
             /// </summary>
-            public static AbilityEffectRunAction RunActionDealDamage(out ActionList actions, PhysicalDamageForm p = 0, DamageEnergyType e = (DamageEnergyType)255, SavingThrowType save = SavingThrowType.Unknown, bool isAOE = false, bool half = false)
+            public static AbilityEffectRunAction RunActionDealDamage(out ActionList actions, PhysicalDamageForm p = 0, DamageEnergyType e = (DamageEnergyType)255, SavingThrowType save = SavingThrowType.Unknown, bool isAOE = false, bool half = false, bool sword = false)
             {
-                ContextDiceValue dice = Helper.CreateContextDiceValue(DiceType.D6, AbilityRankType.DamageDice, AbilityRankType.DamageBonus);
+                // Any blast with physical has additional damage, shown here as the "Shared.Damage" context value
+                ContextDiceValue dice = Helper.CreateContextDiceValue(DiceType.D6, 
+                    diceCount: Helper.CreateContextValue(AbilityRankType.DamageDice), 
+                    bonus: (p != 0) ? Helper.CreateContextValue(AbilitySharedValue.Damage) : Helper.CreateContextValue(AbilityRankType.DamageBonus)); 
 
-                List<ContextAction> list = new(2);
+                List<GameAction> list = new(2);
 
                 bool isComposite = p != 0 && e != (DamageEnergyType)255;
 
                 if (p != 0)
-                    list.Add(Helper.CreateContextActionDealDamage(p, dice, isAOE, isAOE, false, half, isComposite, AbilitySharedValue.DurationSecond, writeShare: isComposite));
+                {
+                    var deal_damage = Helper.CreateContextActionDealDamage(p, dice, isAOE, isAOE, false, isComposite || half, false);
+                    deal_damage.UseWeaponDamageModifiers = true;
+                    deal_damage.MinHPAfterDamage = 0;
+                    list.Add(deal_damage);
+                }
                 if (e != (DamageEnergyType)255)
-                    list.Add(Helper.CreateContextActionDealDamage(e, dice, isAOE, isAOE, false, half, isComposite, AbilitySharedValue.DurationSecond, readShare: isComposite));
+                {
+                    var deal_damage = Helper.CreateContextActionDealDamage(e, dice, isAOE, isAOE, false, isComposite || half, false);
+                    deal_damage.UseWeaponDamageModifiers = true;
+                    deal_damage.MinHPAfterDamage = 0;
+                    list.Add(deal_damage);
+                }
 
-                var runaction = Helper.CreateAbilityEffectRunAction(save, list.ToArray());
-                actions = runaction.Actions;
-                return runaction;
+                var ifFalse = (e != (DamageEnergyType)255) ? Helper.CreateContextActionDealDamage(e, dice, isAOE, isAOE, false, true, false) : Helper.CreateContextActionDealDamage(p, dice, isAOE, isAOE, false, true, false);
+                ifFalse.UseWeaponDamageModifiers = true;
+                ifFalse.MinHPAfterDamage = 0;
+                IntEvaluator first_value = sword ? new TargetIndex() : new DeliverEffectLayer() ;
+                var conditional = Helper.CreateConditional(new IsEqual() { Not = false, FirstValue = first_value, SecondValue = new IntConstant() { Value = 0 } });
+                conditional.IfTrue = Helper.CreateActionList(list.ToArray());
+                actions = conditional.IfTrue;
+                return Helper.CreateAbilityEffectRunAction(save, conditional);
+            }
+
+            // Override RunActionDealDamage for Force Damage
+            public static AbilityEffectRunAction RunActionDealDamage(out ActionList actions, string _, SavingThrowType save = SavingThrowType.Unknown, bool isAOE = false, bool half = false, bool sword = false)
+            {
+                ContextDiceValue dice = Helper.CreateContextDiceValue(DiceType.D6,
+                    diceCount: Helper.CreateContextValue(AbilityRankType.DamageDice),
+                    bonus: Helper.CreateContextValue(AbilityRankType.DamageBonus));
+
+                List<GameAction> list = new(2);
+
+                var deal_damage = Helper.CreateContextActionDealForceDamage(dice, isAOE, isAOE, false, half, false);
+                deal_damage.UseWeaponDamageModifiers = true;
+                deal_damage.MinHPAfterDamage = 0;
+                list.Add(deal_damage);
+
+                var ifFalse = Helper.CreateContextActionDealForceDamage(dice, isAOE, isAOE, false, true, false);
+                ifFalse.UseWeaponDamageModifiers = true;
+                ifFalse.MinHPAfterDamage = 0;
+                IntEvaluator first_value = sword ? new TargetIndex() : new DeliverEffectLayer();
+                var conditional = Helper.CreateConditional(new IsEqual() { Not = false, FirstValue = first_value, SecondValue = new IntConstant() { Value = 0 } });
+                conditional.IfTrue = Helper.CreateActionList(list.ToArray());
+                actions = null;
+                return Helper.CreateAbilityEffectRunAction(save, conditional);
             }
 
             /// <summary>
@@ -280,7 +347,9 @@ namespace KineticistElementsExpanded.KineticLib
                     type: AbilityRankType.DamageDice,
                     progression: progression,
                     stepLevel: twice ? 2 : 0,
-                    feature: "93efbde2764b5504e98e6824cab3d27c".ToRef<BlueprintFeatureReference>()); //KineticBlastFeature
+                    feature: "93efbde2764b5504e98e6824cab3d27c".ToRef<BlueprintFeatureReference>(), //KineticBlastFeature
+                    max: 20,
+                    min: twice ? 0 : 1);
                 return rankdice;
             }
 
@@ -294,6 +363,8 @@ namespace KineticistElementsExpanded.KineticLib
                     progression: half_bonus ? ContextRankProgression.Div2 : ContextRankProgression.AsIs,
                     type: AbilityRankType.DamageBonus,
                     stat: StatType.Constitution,
+                    min: 0,
+                    max: 20,
                     customProperty: "f897845bbbc008d4f9c1c4a03e22357a".ToRef<BlueprintUnitPropertyReference>()); //KineticistMainStatProperty
                 return rankdice;
             }
@@ -344,6 +415,14 @@ namespace KineticistElementsExpanded.KineticLib
             }
 
             /// <summary>
+            /// Required feat for the caster.
+            /// </summary>
+            public static AbilityCasterHasFacts RequiredCasterFeat(BlueprintFeature fact)
+            {
+                return Helper.CreateAbilityCasterHasFacts(NeedsAll: false, fact.ToRef2());
+            }
+
+            /// <summary>
             /// Defines projectile.
             /// </summary>
             public static AbilityDeliverProjectile Projectile(string projectile_guid, bool isPhysical, AbilityProjectileType type, float length, float width)
@@ -360,6 +439,26 @@ namespace KineticistElementsExpanded.KineticLib
                     width.Feet());
                 projectile.Type = type;
                 return projectile;
+            }
+
+            /// <summary>
+            /// Defines projectile ricochet
+            /// </summary>
+            public static AbilityDeliverRicochet Ricochet(string projectile_guid)
+            {
+                var hasBuff = Helper.CreateContextConditionHasBuff(ResourcesLibrary.TryGetBlueprint<BlueprintBuff>("5f7d567ae4054cc291e42fc43ef5a046")); // DLC3_KineticRicochetBuff
+                hasBuff.Not = false;
+
+                var ricochet = new AbilityDeliverRicochet();
+                ricochet.m_Layer = 1;
+                ricochet.m_Projectile = projectile_guid.ToRef<BlueprintProjectileReference>();
+                ricochet.Radius = new Feet(10);
+                ricochet.m_BeforeCondition = Helper.CreateConditionsChecker(operation: Operation.And, hasBuff);
+                ricochet.TargetsCount = new ContextValue { 
+                    ValueType = ContextValueType.CasterCustomProperty, 
+                    m_CustomProperty = "4a18040254d040f78c298f10649eab71".ToRef<BlueprintUnitPropertyReference>() // DLC3_KineticRicochetProperty
+                };
+                return ricochet;
             }
 
             /// <summary>
@@ -391,7 +490,9 @@ namespace KineticistElementsExpanded.KineticLib
                 var sfx = new AbilitySpawnFx
                 {
                     Time = time,
-                    PrefabLink = new PrefabLink() { AssetId = sfx_guid }
+                    PrefabLink = new PrefabLink() { AssetId = sfx_guid },
+                    Anchor = AbilitySpawnFxAnchor.Caster,
+                    OrientationMode = AbilitySpawnFxOrientation.Copy
                 };
                 return sfx;
             }
@@ -411,7 +512,7 @@ namespace KineticistElementsExpanded.KineticLib
         
         public static class Blade
         {
-            public static BlueprintAbility CreateKineticBlade(KineticistTree tree, string element, string prefix, bool isComposite, string prefabAssetId, string projectileUID, UnityEngine.Sprite icon, UnityEngine.Sprite damage_icon, PhysicalDamageForm p = (PhysicalDamageForm)0, DamageEnergyType e = (DamageEnergyType)255, AbilityEffectRunAction damageTypeOverride = null)
+            public static BlueprintAbility CreateKineticBlade(KineticistTree tree, string element, string prefix, bool isComposite, string prefabAssetId, string projectileUID, UnityEngine.Sprite icon, UnityEngine.Sprite damage_icon, PhysicalDamageForm p = (PhysicalDamageForm)0, DamageEnergyType e = (DamageEnergyType)255, AbilityEffectRunAction damageTypeOverride = null, int blast_burn_cost = 0)
             {
                 var kinetic_blade_enable_buff = ResourcesLibrary.TryGetBlueprint<BlueprintBuff>("426a9c07-9ee7-ac34-aa8e-0054f2218074"); // KineticBladeEnableBuff
                 var kinetic_blade_hide_feature = ResourcesLibrary.TryGetBlueprint<BlueprintFeature>("4d39ccef-7b5b-2e94-58e8-599eae3c3be0"); // KineticBladeHideFeature
@@ -454,8 +555,8 @@ namespace KineticistElementsExpanded.KineticLib
                 blade_burn_ability.AvailableMetamagic = Metamagic.Extend | Metamagic.Heighten;
                 blade_burn_ability.SetComponents
                     (
-                    new AbilityKineticist { Amount = 1, InfusionBurnCost = 1 },
-                    Helper.CreateAbilityEffectRunAction(SavingThrowType.Unknown, kinetic_blade_enable_buff.CreateContextActionApplyBuff(duration: 0, asChild: true)),
+                    new AbilityKineticist { Amount = 1, InfusionBurnCost = 1, BlastBurnCost = blast_burn_cost },
+                    Helper.CreateAbilityEffectRunAction(SavingThrowType.Unknown, kinetic_blade_enable_buff.CreateContextActionApplyBuff(duration: 2, asChild: true)),
                     new AbilityKineticBlade { }
                     );
 
@@ -472,17 +573,18 @@ namespace KineticistElementsExpanded.KineticLib
                 blade_damage_ability.Hidden = true;
                 blade_damage_ability.SetComponents
                     (
-                    Helper.CreateAbilityShowIfCasterHasFact(kinetic_blade_hide_feature.ToRef2()),
-                    new AbilityDeliveredByWeapon { },
-                    overrideAction ? damageTypeOverride :
-                        Kineticist.Blast.RunActionDealDamage(out actions, p, e, isAOE: false, half: false),
+                    Kineticist.Blast.RequiredFeat(kinetic_blade_hide_feature),
+                    new AbilityDeliveredByWeapon(),
+                    (!overrideAction ? Kineticist.Blast.RunActionDealDamage(out actions, p, e, isAOE: false, half: false) : damageTypeOverride),
                     Kineticist.Blast.RankConfigDice(twice: isComposite && (p == (PhysicalDamageForm)0 || e == (DamageEnergyType)255), half: false),
                     Kineticist.Blast.RankConfigBonus(half_bonus: !isPhysical),
+                    Kineticist.Blast.CalculateSharedValue(),
                     Kineticist.Blast.DCForceDex(),
                     Kineticist.Blast.BurnCost(actions, infusion: 1),
                     Kineticist.Blast.Projectile(projectileUID, isPhysical, AbilityProjectileType.Simple, 0, 5),
                     Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnPrecastStart, Resource.Sfx.PreStart_Earth),
-                    Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnStart, Resource.Sfx.Start_Earth)
+                    Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnStart, Resource.Sfx.Start_Earth),
+                    Kineticist.Blast.Ricochet(projectileUID)
                     );
                 blade_damage_ability.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten;
 
@@ -530,11 +632,12 @@ namespace KineticistElementsExpanded.KineticLib
                     Modifier = 1.0,
                     Value = new ContextDiceValue
                     {
-                        DiceType = DiceType.One,
+                        DiceType = isComposite ? DiceType.One : isPhysical ? DiceType.Zero : DiceType.D6,
                         DiceCountValue = new ContextValue
                         {
-                            ValueType = ContextValueType.Simple,
+                            ValueType = isComposite ? ContextValueType.Rank : ContextValueType.Simple,
                             Value = 0,
+                            ValueRank = AbilityRankType.DamageDice
                         },
                         BonusValue = new ContextValue
                         {
@@ -562,11 +665,12 @@ namespace KineticistElementsExpanded.KineticLib
                     Modifier = 1.0,
                     Value = new ContextDiceValue
                     {
-                        DiceType = DiceType.Zero,
+                        DiceType = isPhysical ? DiceType.One :DiceType.Zero,
                         DiceCountValue = new ContextValue
                         {
-                            ValueType = ContextValueType.Rank,
-                            ValueRank = AbilityRankType.DamageDice
+                            ValueType = isPhysical ? ContextValueType.Shared : ContextValueType.Rank,
+                            ValueRank = AbilityRankType.DamageDice,
+                            ValueShared = AbilitySharedValue.Damage
                         },
                         BonusValue = new ContextValue
                         {
@@ -598,25 +702,30 @@ namespace KineticistElementsExpanded.KineticLib
             var unique = new UniqueAreaEffect { m_Feature = wall_infusion.ToRef2() };
             var prefab = new PrefabLink { AssetId = fx_id };
 
-            bool isComposite = p != (PhysicalDamageForm)0 && e != (DamageEnergyType)255;
+            bool isPhysical = p != (PhysicalDamageForm)0;
+            bool isEnergy = e != (DamageEnergyType)255;
+            bool isComposite = isPhysical && isEnergy;
 
-            Blast.RunActionDealDamage(out var actions, p: p, e: e);
-
-            if (p != (PhysicalDamageForm)0 )
-            {
-                ((ContextActionDealDamage)actions.Actions[0]).Value.BonusValue.ValueType = ContextValueType.Shared;
-                ((ContextActionDealDamage)actions.Actions[0]).Value.BonusValue.ValueShared = AbilitySharedValue.Damage;
-            }
+            Blast.RunActionDealDamage(out var actions, p: p, e: e, half: isPhysical);
 
             var area_effect = Helper.CreateBlueprintAbilityAreaEffect("Wall"+name+"BlastArea", true, true,
                 AreaEffectShape.Wall, new Feet { m_Value = 60 },
                 prefab, unitEnter: actions);
+            area_effect.m_AllowNonContextActions = false;
             area_effect.m_Tags = AreaEffectTags.DestroyableInCutscene;
-            area_effect.IgnoreSleepingUnits = false;
-            area_effect.AffectDead = false;
-            area_effect.AggroEnemies = true;
-            area_effect.AffectEnemies = true;
             area_effect.SpellResistance = !isComposite && e != (DamageEnergyType)255;
+            area_effect.AffectEnemies = true;
+            area_effect.AggroEnemies = true;
+            area_effect.AffectDead = false;
+            area_effect.IgnoreSleepingUnits = false;
+            area_effect.CanBeUsedInTacticalCombat = false;
+            area_effect.m_SizeInCells = 0;
+            area_effect.m_TickRoundAfterSpawn = false;
+
+
+            var based_on_class = Blast.DCForceDex();
+            based_on_class.UseKineticistMainStat = true;
+            based_on_class.StatType = StatType.Charisma;
 
             area_effect.AddComponents
                 (
@@ -624,7 +733,7 @@ namespace KineticistElementsExpanded.KineticLib
                 Blast.RankConfigDice(twice: twice, half: false),
                 Blast.RankConfigBonus(half_bonus: !isComposite && e != (DamageEnergyType)255),
                 Blast.CalculateSharedValue(),
-                Blast.DCForceDex()
+                based_on_class
                 );
 
             return AnyRef.ToAny(area_effect);

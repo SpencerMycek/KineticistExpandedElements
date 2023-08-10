@@ -1,9 +1,9 @@
-﻿using System;
+﻿global using CodexLib;
+global using HarmonyLib;
+using System;
 using UnityModManagerNet;
-using HarmonyLib;
 using Kingmaker.Blueprints.JsonSystem;
 using BlueprintCore.Utils;
-using KineticistElementsExpanded;
 using KineticistElementsExpanded.ElementAether;
 using KineticistElementsExpanded.ElementWood;
 using Void = KineticistElementsExpanded.ElementVoid.Void;
@@ -12,7 +12,7 @@ using Kingmaker;
 using System.Linq;
 using System.Diagnostics;
 using System.IO;
-using CodexLib;
+
 
 namespace KineticistElementsExpanded
 {

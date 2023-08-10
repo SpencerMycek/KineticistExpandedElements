@@ -1,0 +1,6 @@
+C:\Program Files (x86)\Steam\steamapps\common\Pathfinder Second Adventure\Mods\KineticistElementsExpanded\blueprints.txt
+C:\Program Files (x86)\Steam\steamapps\common\Pathfinder Second Adventure\Mods\KineticistElementsExpanded\CodexLib.dll
+C:\Program Files (x86)\Steam\steamapps\common\Pathfinder Second Adventure\Mods\KineticistElementsExpanded\KineticistElementsExpanded.dll
+C:\Program Files (x86)\Steam\steamapps\common\Pathfinder Second Adventure\Mods\KineticistElementsExpanded\Info.json
+C:\Program Files (x86)\Steam\steamapps\common\Pathfinder Second Adventure\Mods\KineticistElementsExpanded\l8n
+C:\Program Files (x86)\Steam\steamapps\common\Pathfinder Second Adventure\Mods\KineticistElementsExpanded\Icons

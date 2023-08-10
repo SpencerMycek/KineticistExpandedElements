@@ -97,7 +97,20 @@ Some mods might not integrate perfectly, but they should work together properly
 
 If you notice any issues, please contact me or open up an issue on this repository
 
-## Recent Changes
+## Changelog
+
+### v3.2.1 For v2.1.5r
+- Revamp of All the elements' blasts - Should work much closer to the base game's elements now
+- Revamp of All of the "Boosts" - These should work more consistently, and apply to the entire dice roll
+- Revamp how the boosts are added (w/o mods) - They are all now added correctly; If you don't have them after leveling up, reload the save (It's a vanilla issue)
+- Composite Blasts' burn costs fixed - I didn't realize something stacked when they shouldn't. The blast costs should now be correct
+- Kinetic Blade weapon damage display should now work exactly how the base game does it - Still means it's broken. But at least it's accurate
+- Disintegrating infusion now works for Force Blade - If you really, really wanna go for that. It's still super expensive for burn
+- Telekinetic Invisibility now works as a toggle; If it get's dispelled you have to turn it on and off again
+- Modded Elements now have FX for gather power!
+- Fix: Skilled Kineticist Bonuses for Void and Wood
+- Fix: Some buffs would show up in the UI when not wanted (usually as a white square)
+
 
 ### v3.2.0 For v2.1.4w
 - Added support for the Elemental Engine class:

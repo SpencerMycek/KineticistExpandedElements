@@ -1,0 +1,9 @@
+<Project>
+	<PropertyGroup>
+		<Zip7>C:\Program Files\7-Zip\7z.exe</Zip7>
+		<Codex>C:\Users\Spenc\OneDrive\Documents\vs\repos\DarkCodex\CodexLib\CodexLib.dll</Codex>
+		<WrathPath>C:\Program Files (x86)\Steam\steamapps\common\Pathfinder Second Adventure\</WrathPath>
+		<WrathManaged>$(WrathPath)\Wrath_Data\Managed\</WrathManaged>
+		<ModRepo>C:\Users\Spenc\OneDrive\Documents\vs\repos\KineticistExpandedElements</ModRepo>
+	</PropertyGroup>
+</Project>

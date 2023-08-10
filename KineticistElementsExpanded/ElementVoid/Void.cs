@@ -50,16 +50,16 @@ namespace KineticistElementsExpanded.ElementVoid
 
         private static readonly KineticistTree Tree = KineticistTree.Instance;
 
-        private static KineticistTree.Infusion NegativeAdmixture = new();
-        private static KineticistTree.Infusion GraviticBoost = new();
-        private static KineticistTree.Infusion GraviticBoostGreater = new();
-
         private static BlueprintAbility VoidHealerAbility = null;
         private static BlueprintFeature VoidHealer = null;
 
         public static void Configure()
         {
             var void_class_skills = CreateVoidClassSkills();
+
+            Kineticist.RegisterGatherPower(Tree.FocusVoid,
+                "8a59a1b6f3db18e4d831623718706a03".ToRef<BlueprintBuffReference>(),  // GatherPowerWaterBuff
+                "68c1e339205d6c14e902aeb4c7ee2d2c".ToRef<BlueprintBuffReference>()); // GatherPowerWaterBuffEmpowered
 
             CreateVoidInfusions();
 
@@ -83,7 +83,9 @@ namespace KineticistElementsExpanded.ElementVoid
 
             PushInfusions(Tree.Gravity, Tree.Composite_Void);
 
-            Kineticist.AddAdmixtureToBuff(Tree, GraviticBoostGreater, Tree.Gravity, false, false, true);
+            Kineticist.AddAdmixtureToBuff(Tree, Tree.Boost_NegativeAdmixture, Tree.Negative, true, true, false);
+            Kineticist.AddAdmixtureToBuff(Tree, Tree.Boost_Gravitic, Tree.Gravity, true, false, true);
+            Kineticist.AddAdmixtureToBuff(Tree, Tree.Boost_GraviticGreater, Tree.Gravity, false, false, true);
 
             Kineticist.AddBladesToKineticWhirlwind(Tree.Gravity, Tree.Negative, Tree.Composite_Void);
 
@@ -900,7 +902,7 @@ namespace KineticistElementsExpanded.ElementVoid
             CreateGraviticBoostGreater();
             CreateNegativeAdmixture();
 
-            AddMixturesToComposite();
+            //AddMixturesToComposite();
         }
 
         #region Void Blast
@@ -1113,7 +1115,7 @@ namespace KineticistElementsExpanded.ElementVoid
             ability.SetComponents
                 (
                 Helper.CreateAbilityShowIfCasterHasFact(AnyRef.ToAny(Tree.FocusFirst)),
-                Kineticist.Blast.BurnCost(null, 0, 2, 0)
+                Kineticist.Blast.BurnCost(null, 0, 0, 0)
                 );
             ability.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten;
 
@@ -1187,8 +1189,6 @@ namespace KineticistElementsExpanded.ElementVoid
                 Helper.CreateAddFacts(ability.ToRef())
                 );
 
-            GraviticBoost.Feature = feature.ToRef();
-            GraviticBoost.Buff = buff.ToRef();
 
             Kineticist.AddElementsToInfusion(feature, buff, Tree.GetAll(basic: true, onlyPhysical: true, archetype: true).ToList().ToArray());
         }
@@ -1233,9 +1233,6 @@ namespace KineticistElementsExpanded.ElementVoid
                 (
                 Helper.CreateAddFacts(ability.ToRef())
                 );
-
-            GraviticBoostGreater.Feature = feature.ToRef();
-            GraviticBoostGreater.Buff = buff.ToRef();
 
             Kineticist.AddElementsToInfusion(feature, buff, Tree.GetAll(composite: true, onlyPhysical: true, archetype: true).ToList().ToArray());
         }
@@ -1286,9 +1283,6 @@ namespace KineticistElementsExpanded.ElementVoid
                 Helper.CreateAddFacts(ability.ToRef())
                 );
 
-            NegativeAdmixture.Feature = feature.ToRef();
-            NegativeAdmixture.Buff = buff.ToRef();
-
             Kineticist.AddElementsToInfusion(feature, buff, Tree.GetAll(basic: true, onlyEnergy: true, archetype: true).ToList().ToArray());
         }
 
@@ -1307,7 +1301,7 @@ namespace KineticistElementsExpanded.ElementVoid
             {
                 ConditionsChecker = inner_gravity_checker,
                 IfFalse = null,
-                IfTrue = Helper.CreateActionList(Helper.CreateContextActionAddFeature(GraviticBoost.Feature))
+                IfTrue = Helper.CreateActionList(Helper.CreateContextActionAddFeature(Tree.Boost_Gravitic.BlastFeature))
             };
             var outer_gravity_conditional = Helper.CreateConditional(Helper.CreateContextConditionHasFact(AnyRef.ToAny(Tree.Gravity.BlastFeature)),
                 ifFalse: null, ifTrue: inner_gravity_conditional);
@@ -1323,7 +1317,7 @@ namespace KineticistElementsExpanded.ElementVoid
             {
                 ConditionsChecker = inner_negative_checker,
                 IfFalse = null,
-                IfTrue = Helper.CreateActionList(Helper.CreateContextActionAddFeature(NegativeAdmixture.Feature))
+                IfTrue = Helper.CreateActionList(Helper.CreateContextActionAddFeature(Tree.Boost_NegativeAdmixture.BlastFeature))
             };
             var outer_negative_conditional = Helper.CreateConditional(Helper.CreateContextConditionHasFact(AnyRef.ToAny(Tree.Negative.BlastFeature)),
                 ifFalse: null, ifTrue: inner_negative_conditional);
@@ -1824,19 +1818,21 @@ namespace KineticistElementsExpanded.ElementVoid
         {
             var buff = Helper.CreateBlueprintBuff("SkilledKineticistVoidBuff", LocalizationTool.GetString("SkilledKineticist"));
             buff.Flags(true, true);
-            buff.Stacking = StackingType.Replace;
             buff.SetComponents
                 (
                 Helper.CreateContextRankConfig(ContextRankBaseValueType.ClassLevel,
                     ContextRankProgression.Div2, max: 20, classes: new BlueprintCharacterClassReference[1] { Tree.Class }),
                 Helper.CreateAddContextStatBonus(new ContextValue { ValueType = ContextValueType.Rank, Value = 0, ValueRank = AbilityRankType.Default, ValueShared = AbilitySharedValue.Damage },
-                StatType.SkillKnowledgeWorld)
+                StatType.SkillKnowledgeWorld),
+                Helper.CreateAddContextStatBonus(new ContextValue { ValueType = ContextValueType.Rank, Value = 0, ValueRank = AbilityRankType.Default, ValueShared = AbilitySharedValue.Damage },
+                StatType.SkillMobility)
                 );
 
             var condition = Helper.CreateContextConditionHasFact(AnyRef.ToAny(Tree.FocusVoid.First));
             var conditional = Helper.CreateConditional(condition,
                 ifTrue: buff.CreateContextActionApplyBuff(0, DurationRate.Rounds, false, false, false, true, true));
 
+            buff.m_Flags |= BlueprintBuff.Flags.HiddenInUi | BlueprintBuff.Flags.StayOnDeath;
             var factContextAction = Kineticist.ref_skilled_kineticist.Get().GetComponent<AddFactContextActions>();
             Helper.AppendAndReplace(ref factContextAction.Activated.Actions, conditional);
         }

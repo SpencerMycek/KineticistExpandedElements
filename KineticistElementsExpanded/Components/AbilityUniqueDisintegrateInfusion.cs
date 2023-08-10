@@ -109,15 +109,23 @@ namespace KineticistElementsExpanded.Components
 
                 RuleSavingThrow fort_save = fortSaveRule(context, evt.Target);
                 context.TriggerRule(fort_save);
-                if(fort_save.IsPassed)
+                if (fort_save.IsPassed)
                 {
                     ruleDealDamage.HalfBecauseSavingThrow = true;
-                } else
-                {
-                    BaseDamage damage = ruleDealDamage.DamageBundle.First;
-                    damage.Dice.Modify(new DiceFormula(damage.Dice.BaseFormula.Rolls * 2, damage.Dice.BaseFormula.Dice), ModifierDescriptor.UntypedStackable);
                 }
-            } catch (Exception ex)
+                else
+                {
+                    foreach (BaseDamage item in ruleDealDamage.DamageBundle)
+                    {
+                        var rolls = item.Dice.ModifiedValue.Rolls;
+                        var dice = item.Dice.ModifiedValue.Dice;
+
+                        item.Dice.Modify(new DiceFormula(rolls * 2, dice), base.Fact);
+                    }
+                }
+
+            }
+            catch (Exception ex)
             {
                 Main.PrintException(ex);
             }
@@ -126,7 +134,7 @@ namespace KineticistElementsExpanded.Components
         public void ApplyDidTrigger(RulebookTargetEvent evt, [NotNull] MechanicsContext context)
         {
 
-            this.RunAction(evt.Target, context);             
+            this.RunAction(evt.Target, context);
         }
 
         #region Triggers
@@ -172,48 +180,6 @@ namespace KineticistElementsExpanded.Components
             return ruleSavingThrow;
         }
 
-        private BaseDamage baseDamage(MechanicsContext context, RuleAttackRoll ruleAttackRoll, UnitEntityData target)
-        {
-            DiceFormula dices = new DiceFormula(this.Value.DiceCountValue.Calculate(context), this.Value.DiceType);
-            int bolsteredBonus = MetamagicHelper.GetBolsteredDamageBonus(context, dices);
-            int bonus = this.Value.BonusValue.Calculate(context);
-            bool empower = context.HasMetamagic(Metamagic.Empower) || this.Empowered;
-            bool maximize = context.HasMetamagic(Metamagic.Maximize) || this.Maximized;
-            DamageCriticalModifierType? crit = (ruleAttackRoll.IsCriticalConfirmed) ? ((context != null) ? DamageCriticalModifierTypeExtension.FromInt(ruleAttackRoll.WeaponStats.CriticalMultiplier) : new DamageCriticalModifierType?(ruleAttackRoll.Weapon.Blueprint.CriticalModifier)) : null;
-
-            BaseDamage baseDamage = this.DamageTypeDesc.GetDamageDescriptor(dices, bonus + bolsteredBonus).CreateDamage();
-            baseDamage.EmpowerBonus = new ValueWithSource<float>(empower ? 1.5f : baseDamage.EmpowerBonus);
-            //if (maximize)
-            //    baseDamage.CalculationType = DamageCalculationType.Maximized;
-            baseDamage.CriticalModifier = ((crit != null) ? new int?(crit.GetValueOrDefault().IntValue()) : null);
-            baseDamage.SourceFact = ContextDataHelper.GetFact();
-            return baseDamage;
-        }
-
-        private void SetMetamagics(MechanicsContext context, UnitEntityData caster)
-        {
-            var empower = ResourcesLibrary.TryGetBlueprint<BlueprintBuff>("f5f3aa17dd579ff49879923fb7bc2adb"); // Empower
-            var maximize = ResourcesLibrary.TryGetBlueprint<BlueprintBuff>("870d7e67e97a68f439155bdf465ea191"); // Maximize
-            var empowerCheap = ResourcesLibrary.TryGetBlueprint<BlueprintBuff>("f8d0f7099e73c95499830ec0a93e2eeb"); // EmpowerCheaper
-            var maximizeCheap = ResourcesLibrary.TryGetBlueprint<BlueprintBuff>("b8f43f0040155c74abd1bc794dbec320"); // MaximizeCheaper
-
-            BuffCollection buffs = caster.Buffs;
-            if (buffs.GetBuff(empower) != null || buffs.GetBuff(empowerCheap) != null)
-            {
-                this.Empowered = true;
-            } else
-            {
-                this.Empowered = false;
-            }
-            if (buffs.GetBuff(maximize) != null || buffs.GetBuff(maximizeCheap) != null)
-            {
-                this.Maximized = true;
-            } else
-            {
-                this.Maximized = false;
-            }
-        }
-
         public ActionList Actions;
 
         public ContextDiceValue Value;
@@ -224,14 +190,5 @@ namespace KineticistElementsExpanded.Components
 
         private readonly HashSet<UnitEntityData> m_AffectedThisFrame = new HashSet<UnitEntityData>();
 
-        private DamageTypeDescription DamageTypeDesc = new DamageTypeDescription
-        {
-            Type = DamageType.Force,
-            Common = new DamageTypeDescription.CommomData(),
-            Physical = new DamageTypeDescription.PhysicalData()
-        };
-
-        private bool Empowered;
-        private bool Maximized;
     }
 }

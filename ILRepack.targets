@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Target Name="ILRepack" AfterTargets="Build" Condition="$(Configuration.Contains('Release')) and !Exists('$(ILRepackTargetsFile)')">
+    <ItemGroup>
+      <InputAssemblies Include="$(TargetDir)KineticistElementsExpanded.dll" />
+	  <InputAssemblies Include="$(TargetDir)BlueprintCore.dll" />
+	  <OutputAssembly Include="$(TargetDir)KineticistElementsExpanded.dll" />
+    </ItemGroup>
+
+    <ILRepack Union="true" LibraryPath="$(WrathManaged);$(WrathManaged)\UnityModManager" InputAssemblies="@(InputAssemblies)" OutputFile="@(OutputAssembly)" />
+  </Target>
+</Project>

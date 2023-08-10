@@ -40,6 +40,10 @@ using static Kingmaker.UnitLogic.Mechanics.Properties.BlueprintUnitProperty;
 using static Kingmaker.Visual.Animation.Kingmaker.Actions.UnitAnimationActionCastSpell;
 using BlueprintCore.Utils;
 using System.Linq;
+using Steamworks;
+using static Kingmaker.Blueprints.Classes.BlueprintProgression;
+using System.Collections.Generic;
+using Kingmaker.Designers.Mechanics.Buffs;
 
 namespace KineticistElementsExpanded.ElementAether
 {
@@ -48,12 +52,13 @@ namespace KineticistElementsExpanded.ElementAether
     {
         private static KineticistTree Tree = KineticistTree.Instance;
 
-        private static KineticistTree.Infusion AethericBoost = new();
-        private static KineticistTree.Infusion AethericBoostGreater = new();
-
         public static void Configure()
         {
             BlueprintFeatureBase aether_class_skills = CreateAetherClassSkills();
+
+            Kineticist.RegisterGatherPower(Tree.FocusAether, 
+                "633f147eb1567274e9ed4d4150d79d78".ToRef<BlueprintBuffReference>(),  // GatherPowerAirBuff
+                "0ddc64a1dc3bbf84c8d6aa33cf2b8607".ToRef<BlueprintBuffReference>()); // GatherPowerAirBuffEmpowered
 
             CreateInfusions();
 
@@ -73,8 +78,8 @@ namespace KineticistElementsExpanded.ElementAether
 
             BowlingPushInfusions(Tree.Telekinetic);
 
-            Kineticist.AddAdmixtureToBuff(Tree, AethericBoost, Tree.Telekinetic, basic: true, false, false);
-            Kineticist.AddAdmixtureToBuff(Tree, AethericBoostGreater, Tree.Telekinetic, basic: false, false, false);
+            Kineticist.AddAdmixtureToBuff(Tree, Tree.Boost_Aetheric, Tree.Telekinetic, basic: true, false, false);
+            Kineticist.AddAdmixtureToBuff(Tree, Tree.Boost_AethericGreater, Tree.Telekinetic, basic: false, false, false);
 
             Kineticist.AddBladesToKineticWhirlwind(Tree.Telekinetic, Tree.Composite_Force);
 
@@ -246,39 +251,21 @@ namespace KineticistElementsExpanded.ElementAether
             #region Effect Feature
 
             var effect_feature = Helper.CreateBlueprintFeature("ForceWardEffectFeature", icon: icon, group: FeatureGroup.None);
-            effect_feature.Ranks = 20;
             effect_feature.HideInUI = true;
-            effect_feature.HideInCharacterSheetAndLevelUp = true;
-            effect_feature.IsClassFeature = true;
-            effect_feature.SetComponents
-                (
-                Helper.CreateAddFacts(new BlueprintUnitFactReference[] { })
-                );
-
-            #endregion
-            #region Effect Buff
-
-            var effect_buff = Helper.CreateBlueprintBuff("ForceWardEffectBuff", icon: icon);
-            effect_buff.Flags(hidden: true, stayOnDeath: true);
-            effect_buff.m_Flags |= BlueprintBuff.Flags.RemoveOnRest;
-            effect_buff.Stacking = StackingType.Stack;
-            effect_buff.IsClassFeature = true;
-            effect_buff.SetComponents
-                (
-                Helper.CreateAddFacts(effect_feature.ToRef2())
-                );
-
-            #endregion
-            #region Buff
 
             var feature_value_getter = new FeatureRankPlusBonusGetter()
             {
                 Feature = effect_feature.ToRef(),
-                bonus = 4
+                bonus = 1
             };
             var classlvl_value_getter = new ClassLevelGetter()
             {
-                ClassRef = Tree.Class
+                ClassRef = Tree.Class,
+                Settings = new Kingmaker.UnitLogic.Mechanics.Properties.PropertySettings()
+                {
+                    m_Progression = Kingmaker.UnitLogic.Mechanics.Properties.PropertySettings.Progression.Div2,
+                    m_LimitType = Kingmaker.UnitLogic.Mechanics.Properties.PropertySettings.LimitType.None
+                }
             };
             var temp_hp_progression = Helper.CreateBlueprintUnitProperty("ForceWardHPProperty")
                 .SetComponents
@@ -292,7 +279,7 @@ namespace KineticistElementsExpanded.ElementAether
             var calculateShared = new ContextCalculateSharedValue
             {
                 ValueType = AbilitySharedValue.Damage,
-                Modifier = 0.5,
+                Modifier = 1.0,
                 Value = new ContextDiceValue
                 {
                     DiceType = DiceType.One,
@@ -319,32 +306,41 @@ namespace KineticistElementsExpanded.ElementAether
                 RemoveWhenHitPointsEnd = false,
                 Descriptor = ModifierDescriptor.UntypedStackable
             };
-            var regen = new RegenTempHpPerMinute(Tree.Class, effect_feature);
+            var regen = new RegenTempHpPerMinute(Tree.Class, effect_feature, feature_value_getter, classlvl_value_getter);
 
-
-
-            var buff = Helper.CreateBlueprintBuff("ForceWardBuff", icon: icon);
-            buff.Flags(hidden: true, stayOnDeath: true);
-            buff.Stacking = StackingType.Replace;
-            buff.IsClassFeature = true;
-            buff.SetComponents
+            effect_feature.Ranks = 20;
+            effect_feature.HideInUI = true;
+            effect_feature.HideInCharacterSheetAndLevelUp = true;
+            effect_feature.IsClassFeature = true;
+            effect_feature.SetComponents
                 (
                 temp_hp,
-                regen,
+                regen, 
                 calculateShared,
                 Helper.CreateRecalculateOnFactsChange(effect_feature.ToRef2())
                 );
 
-            // TEMP TODO REMOVE
-            var fw_buff_combat_refresh = Helper.CreateBlueprintBuff("ForceWardBuffCombatRefresh", "FW Buff Refresh", icon: icon);
-            fw_buff_combat_refresh.Flags(true, true, null, null)
-                .SetComponents
+            #endregion
+            #region Effect Buff
+
+            var effect_buff = Helper.CreateBlueprintBuff("ForceWardEffectBuff", icon: icon);
+            effect_buff.m_Flags |= BlueprintBuff.Flags.RemoveOnRest | BlueprintBuff.Flags.StayOnDeath | BlueprintBuff.Flags.HiddenInUi;
+            Main.Print($"{effect_buff.RemoveOnRest},{effect_buff.IsHiddenInUI}"); // TODO: Remove
+            effect_buff.Stacking = StackingType.Stack;
+            effect_buff.IsClassFeature = true;
+            effect_buff.SetComponents
                 (
                 Helper.CreateAddFacts(effect_feature.ToRef2())
                 );
-            fw_buff_combat_refresh.Stacking = StackingType.Prolong;
+
+            #endregion
+            #region Old
+
+            // For not breaking GUID references
+            var buff = Helper.CreateBlueprintBuff("ForceWardBuff", icon: icon);
+            var fw_buff_combat_refresh = Helper.CreateBlueprintBuff("ForceWardBuffCombatRefresh", "FW Buff Refresh", icon: icon);
             var fw_resource = Helper.CreateBlueprintAbilityResource("ForceWardResource", "Force Ward", LocalizationTool.GetString("Aether.Defense.Description"));
-            // TEMP TODO REMOVE
+            // For not breaking GUID references
 
             #endregion
             #region Ability
@@ -355,7 +351,7 @@ namespace KineticistElementsExpanded.ElementAether
             ability.AvailableMetamagic = Metamagic.Heighten;
             ability.SetComponents
                 (
-                Helper.CreateAbilityEffectRunAction(actions: effect_buff.CreateContextActionApplyBuff(duration: 0, permanent: true)),
+                Helper.CreateAbilityEffectRunAction(actions: effect_buff.CreateContextActionApplyBuff(duration: 0, permanent: true, asChild: true)),
                 Helper.CreateAbilityAcceptBurnOnCast(1)
                 );
 
@@ -366,7 +362,7 @@ namespace KineticistElementsExpanded.ElementAether
             feature.IsClassFeature = true;
             feature.SetComponents
                 (
-                Helper.CreateAddFacts(buff.ToRef2(), ability.ToRef2()),
+                Helper.CreateAddFacts(effect_feature.ToRef2(), ability.ToRef2()),
                 Helper.CreatePrerequisiteFeature(Tree.Telekinetic.BlastFeature, any: true),
                 Helper.CreatePrerequisiteFeature(Tree.Telekinetic.Blade.Feature, any: true)
                 );
@@ -410,26 +406,27 @@ namespace KineticistElementsExpanded.ElementAether
             var icon = Helper.CreateSprite(Main.ModPath+"/Icons/telekineticBlast.png");
 
             var ability = Helper.CreateBlueprintAbility("TelekineticBlastAbility", LocalizationTool.GetString("Aether.Telekinetic.Name"), LocalizationTool.GetString("Aether.Telekinetic.Description"), 
-                icon, AbilityType.Special, UnitCommand.CommandType.Standard, AbilityRange.Close);
+                icon, AbilityType.Special, UnitCommand.CommandType.Standard, AbilityRange.Close).TargetEnemy(animation: CastAnimationStyle.Kineticist);
+            ability.SpellResistance = false;
+            ability.IgnoreSpellResistanceForAlly = false;
             ability.SetComponents
                 (
                 Kineticist.Blast.RunActionDealDamage(out var actions,
-                p: PhysicalDamageForm.Bludgeoning | PhysicalDamageForm.Piercing | PhysicalDamageForm.Slashing,
-                isAOE: false, half: false),
-                Kineticist.Blast.RankConfigDice(twice: false),
-                Kineticist.Blast.CalculateSharedValue(), 
+                    p: PhysicalDamageForm.Bludgeoning | PhysicalDamageForm.Piercing | PhysicalDamageForm.Slashing,
+                    isAOE: false, half: false),
+                Kineticist.Blast.Projectile(Resource.Projectile.BatteringBlast00, isPhysical: true, AbilityProjectileType.Simple, 0, 5),
+                Kineticist.Blast.RankConfigDice(twice: false, half: false),
                 Kineticist.Blast.RankConfigBonus(half_bonus: false),
-                Kineticist.Blast.DCForceDex(),
+                Kineticist.Blast.CalculateSharedValue(), 
                 Kineticist.Blast.BurnCost(actions, infusion: 0, blast: 0, talent: 0),
-                Kineticist.Blast.Projectile(Resource.Projectile.BatteringBlast00, true, AbilityProjectileType.Simple, 0, 5),
                 Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnPrecastStart, Resource.Sfx.PreStart_Earth),
-                Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnStart, Resource.Sfx.Start_Earth)
-                ).TargetEnemy(CastAnimationStyle.Kineticist);
-            ability.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten;
-
-            // Bandaids
-            ((ContextActionDealDamage)actions.Actions[0]).UseWeaponDamageModifiers = true;
-            ((ContextActionDealDamage)actions.Actions[0]).Value.BonusValue.ValueType = ContextValueType.Shared;
+                Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnStart, Resource.Sfx.Start_Earth),
+                Kineticist.Blast.Ricochet(Resource.Projectile.BatteringBlast00)
+                );
+            ability.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten | Metamagic.Reach;
+            ability.m_TargetMapObjects = true;
+            ability.ShouldTurnToTarget = true;
+            ability.m_Parent = Tree.Telekinetic.BaseAbility;
 
             return ability;
         }
@@ -440,49 +437,57 @@ namespace KineticistElementsExpanded.ElementAether
             var ability = Helper.CreateBlueprintAbility("ExtendedRangeTelekineticBlastAbility",
                 Tree.ExtendedRange.Feature.Get().m_DisplayName,
                 Tree.ExtendedRange.Feature.Get().m_Description,
-                icon, AbilityType.Special, UnitCommand.CommandType.Standard, AbilityRange.Long);
+                icon, AbilityType.Special, UnitCommand.CommandType.Standard, AbilityRange.Long).TargetEnemy(animation: CastAnimationStyle.Kineticist);
             ability.SetComponents
                 (
+                Kineticist.Blast.RequiredCasterFeat(Tree.ExtendedRange.Feature),
+                Kineticist.Blast.RequiredFeat(Tree.ExtendedRange.Feature),
                 Kineticist.Blast.RunActionDealDamage(out var actions, 
                     p: PhysicalDamageForm.Bludgeoning | PhysicalDamageForm.Piercing | PhysicalDamageForm.Slashing, 
                     isAOE: false, half: false),
-                Kineticist.Blast.RankConfigDice(twice: false, half: false),
-                Kineticist.Blast.CalculateSharedValue(),
-                Kineticist.Blast.RankConfigBonus(half_bonus: false),
-                Kineticist.Blast.DCForceDex(),
-                Kineticist.Blast.BurnCost(actions, infusion: 1, blast: 0, talent: 0),
-                Kineticist.Blast.RequiredFeat(Kineticist.ref_infusion_extendedRange),
                 Kineticist.Blast.Projectile(Resource.Projectile.BatteringBlast00, true, AbilityProjectileType.Simple, 0, 5),
+                Kineticist.Blast.RankConfigDice(twice: false, half: false),
+                Kineticist.Blast.RankConfigBonus(half_bonus: false),
+                Kineticist.Blast.CalculateSharedValue(),
+                Kineticist.Blast.BurnCost(actions, infusion: 1, blast: 0, talent: 0),
                 Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnPrecastStart, Resource.Sfx.PreStart_Earth),
-                Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnStart, Resource.Sfx.Start_Earth)
-                ).TargetEnemy(CastAnimationStyle.Kineticist);
+                Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnStart, Resource.Sfx.Start_Earth),
+                Kineticist.Blast.Ricochet(Resource.Projectile.BatteringBlast00)
+                );
             ability.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten;
+            ability.m_TargetMapObjects = true;
+            ability.ShouldTurnToTarget = true;
             ability.m_Parent = Tree.Telekinetic.BaseAbility;
             
-            // Bandaid
-            ((ContextActionDealDamage)actions.Actions[0]).Value.BonusValue.ValueType = ContextValueType.Shared;
-
             return ability;
         }
         private static BlueprintAbility CreateTelekineticBlastVariant_spindle()
         {
             UnityEngine.Sprite icon = Helper.StealIcon("c4f4a62a325f7c14dbcace3ce34782b5"); // SpindleInfusion
 
+            var runaction = Kineticist.Blast.RunActionDealDamage(out var actions,
+                    p: PhysicalDamageForm.Bludgeoning | PhysicalDamageForm.Piercing | PhysicalDamageForm.Slashing,
+                    isAOE: false, half: false);
+            runaction.Actions = Helper.CreateActionList
+                (
+                Helper.CreateContextActionConditionalSaved(succeed: null, failed: actions.Actions)
+                );
+            runaction.SavingThrowType = SavingThrowType.Reflex;
+
             var ability = Helper.CreateBlueprintAbility("SpindleTelekineticBlastAbility",
                 Tree.Spindle.Feature.Get().m_DisplayName,
                 Tree.Spindle.Feature.Get().m_Description, 
-                icon, AbilityType.Special, UnitCommand.CommandType.Standard, AbilityRange.Close);
+                icon, AbilityType.Special, UnitCommand.CommandType.Standard, AbilityRange.Close).TargetEnemy(animation: CastAnimationStyle.Kineticist);
             ability.SetComponents
                 (
-                Kineticist.Blast.RunActionDealDamage(out var actions, 
-                    p: PhysicalDamageForm.Bludgeoning | PhysicalDamageForm.Piercing | PhysicalDamageForm.Slashing, 
-                    isAOE: false, half: false),
-                Kineticist.Blast.RankConfigDice(twice: false),
-                Kineticist.Blast.CalculateSharedValue(),
+                Kineticist.Blast.RequiredCasterFeat(Tree.Spindle.Feature),
+                Kineticist.Blast.RequiredFeat(Tree.Spindle.Feature),
+                runaction,
+                Kineticist.Blast.RankConfigDice(twice: false, half: false),
                 Kineticist.Blast.RankConfigBonus(half_bonus: false),
-                Kineticist.Blast.DCForceDex(),
+                Kineticist.Blast.CalculateSharedValue(),
                 Kineticist.Blast.BurnCost(actions, infusion: 2, blast: 0, talent: 0),
-                Kineticist.Blast.RequiredFeat(Kineticist.ref_infusion_spindle),
+                Kineticist.Blast.DCForceDex(),
                 Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnPrecastStart, Resource.Sfx.PreStart_Earth),
                 Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnStart, Resource.Sfx.Start_Earth),
                 new AbilityDeliverChain
@@ -499,14 +504,11 @@ namespace KineticistElementsExpanded.ElementAether
                     m_TargetType = TargetType.Enemy,
                     m_Condition = new ConditionsChecker { Conditions = null, Operation = Operation.And }
                 }
-                ).TargetEnemy(CastAnimationStyle.Kineticist);
-            ability.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten;
+                );
+            ability.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten | Metamagic.Reach;
+            ability.m_TargetMapObjects = false;
+            ability.ShouldTurnToTarget = true;
             ability.m_Parent = Tree.Telekinetic.BaseAbility;
-
-            ContextDiceValue dice = Helper.CreateContextDiceValue(DiceType.D6, Helper.CreateContextValue(AbilityRankType.DamageDice), Helper.CreateContextValue(AbilitySharedValue.Damage));
-            var action_damage = Helper.CreateContextActionDealDamage(PhysicalDamageForm.Bludgeoning | PhysicalDamageForm.Piercing | PhysicalDamageForm.Slashing, dice, sharedValue: AbilitySharedValue.DurationSecond);
-            var context_conditional_saved = Helper.CreateContextActionConditionalSaved(null, action_damage);
-            actions.Actions = new GameAction[] { context_conditional_saved };
 
             return ability;
         }
@@ -514,19 +516,24 @@ namespace KineticistElementsExpanded.ElementAether
         {
             UnityEngine.Sprite icon = Helper.StealIcon("c684335918896ce4ab13e96cec929796"); // WallInfusion
 
-            var action = new ContextActionSpawnAreaEffect
-            {
-                DurationValue = Helper.CreateContextDurationValue(
-                    new ContextValue
+            var duration = Helper.CreateContextDurationValue(
+                    diceCount: new ContextValue
                     {
                         ValueType = ContextValueType.Simple,
                         Value = 0
-                    }, DiceType.Zero,
-                    new ContextValue
+                    },
+                    DiceType.Zero,
+                    bonus: new ContextValue
                     {
                         ValueType = ContextValueType.Rank,
                         ValueRank = AbilityRankType.DamageBonus
-                    }, DurationRate.Rounds),
+                    },
+                    DurationRate.Rounds);
+            duration.m_IsExtendable = true;
+
+            var action = new ContextActionSpawnAreaEffect
+            {
+                DurationValue = duration,
                 m_AreaEffect = Kineticist.CreateWallAreaEffect("Telekinetic", "4ffc8d2162a215e44a1a728752b762eb", p: PhysicalDamageForm.Bludgeoning | PhysicalDamageForm.Piercing | PhysicalDamageForm.Slashing),
                 OnUnit = false
             };
@@ -534,18 +541,21 @@ namespace KineticistElementsExpanded.ElementAether
             var ability = Helper.CreateBlueprintAbility("WallTelekineticBlastAbility",
                 Tree.Wall.Feature.Get().m_DisplayName,
                 Tree.Wall.Feature.Get().m_Description,
-                icon, AbilityType.Special, UnitCommand.CommandType.Standard, AbilityRange.Close);
+                icon, AbilityType.Special, UnitCommand.CommandType.Standard, AbilityRange.Close).TargetPoint();
             ability.SetComponents
                 (
+                Kineticist.Blast.RequiredCasterFeat(Tree.Wall.Feature),
+                Kineticist.Blast.RequiredFeat(Tree.Wall.Feature),
                 Helper.CreateAbilityEffectRunAction(SavingThrowType.Unknown, action),
-                Kineticist.Blast.DCForceDex(),
+                Kineticist.Blast.RankConfigBonus(half_bonus: false),
                 Kineticist.Blast.BurnCost(null, infusion: 3, blast: 0),
-                Kineticist.Blast.RequiredFeat(Kineticist.ref_infusion_wall),
+                Kineticist.Blast.DCForceDex(),
                 Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnPrecastStart, Resource.Sfx.PreStart_Earth),
                 Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnStart, Resource.Sfx.Start_Earth)
-                ).TargetEnemy(CastAnimationStyle.Kineticist);
-            ability.CanTargetPoint = true;
-            ability.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten;
+                );
+            ability.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Extend | Metamagic.Heighten | Metamagic.Reach;
+            ability.m_TargetMapObjects = false;
+            ability.ShouldTurnToTarget = true;
             ability.m_Parent = Tree.Telekinetic.BaseAbility;
 
             return ability;
@@ -555,18 +565,18 @@ namespace KineticistElementsExpanded.ElementAether
             var icon = Helper.CreateSprite(Main.ModPath+"/Icons/manyThrow.png");
 
             var ability = Helper.CreateBlueprintAbility("ManyThrowTelekineticBlast", LocalizationTool.GetString("Aether.ManyThrow.Name"), LocalizationTool.GetString("Aether.ManyThrow.Description"), 
-                icon, AbilityType.Special, UnitCommand.CommandType.Standard, AbilityRange.Long);
+                icon, AbilityType.Special, UnitCommand.CommandType.Standard, AbilityRange.Long).TargetPoint(animation: CastAnimationStyle.Kineticist);
             ability.SetComponents
                 (
+                Kineticist.Blast.RequiredCasterFeat(Tree.ManyThrow.Feature),
+                Kineticist.Blast.RequiredFeat(Tree.ManyThrow.Feature),
                 Kineticist.Blast.RunActionDealDamage(out var actions,
                     p: PhysicalDamageForm.Bludgeoning | PhysicalDamageForm.Piercing | PhysicalDamageForm.Slashing,
                     isAOE: false, half: false),
                 Kineticist.Blast.RankConfigDice(twice: false, half: false),
-                Kineticist.Blast.CalculateSharedValue(),
                 Kineticist.Blast.RankConfigBonus(half_bonus: false),
-                Kineticist.Blast.DCForceDex(),
+                Kineticist.Blast.CalculateSharedValue(),
                 Kineticist.Blast.BurnCost(actions, infusion: 4, blast: 0, talent: 0),
-                Kineticist.Blast.RequiredFeat(Tree.ManyThrow.Feature),
                 Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnPrecastStart, Resource.Sfx.PreStart_Earth),
                 Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnStart, Resource.Sfx.Start_Earth),
                 new AbilityDeliverMultiAttack
@@ -587,7 +597,8 @@ namespace KineticistElementsExpanded.ElementAether
                     TargetsCount = Helper.CreateContextValue(AbilityRankType.ProjectilesCount)
                 },
                 Helper.CreateContextRankConfig(ContextRankBaseValueType.ClassLevel, ContextRankProgression.AsIs, type: AbilityRankType.ProjectilesCount,
-                    classes: new BlueprintCharacterClassReference[] { Tree.Class })
+                    classes: new BlueprintCharacterClassReference[] { Tree.Class }),
+                Kineticist.Blast.Ricochet(Resource.Projectile.MagicMissile00)
                 ).TargetPoint(CastAnimationStyle.Kineticist);
             ability.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten;
             ability.m_Parent = Tree.Telekinetic.BaseAbility;
@@ -629,13 +640,17 @@ namespace KineticistElementsExpanded.ElementAether
             var icon = Helper.CreateSprite(Main.ModPath+"/Icons/telekineticBlast.png");
 
             var ability = Helper.CreateBlueprintAbility("TelekineticBlastBase", LocalizationTool.GetString("Aether.Telekinetic.Name"), LocalizationTool.GetString("Aether.Telekinetic.Description"),
-                icon, AbilityType.Special, UnitCommand.CommandType.Standard, AbilityRange.Close);
+                icon, AbilityType.Special, UnitCommand.CommandType.Standard, AbilityRange.Close).TargetAny(animation: CastAnimationStyle.Omni);
             ability.SetComponents
                 (
-                Helper.CreateAbilityShowIfCasterHasFact(AnyRef.ToAny(Tree.FocusFirst)),
-                Kineticist.Blast.BurnCost(null, 0, 0, 0)
+                Helper.CreateAbilityShowIfCasterHasFact(Tree.FocusFirst),
+                Kineticist.Blast.BurnCost(null, infusion: 0, blast: 0, talent: 0)
                 );
-            ability.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten;
+            ability.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Extend | Metamagic.Heighten | Metamagic.Reach;
+            ability.SpellResistance = false;
+            ability.IgnoreSpellResistanceForAlly = false;
+            ability.EffectOnAlly = AbilityEffectOnUnit.None;
+            ability.EffectOnEnemy = AbilityEffectOnUnit.None;
 
             foreach (var v in variants)
             {
@@ -649,10 +664,14 @@ namespace KineticistElementsExpanded.ElementAether
                 LocalizationTool.GetString("Aether.Telekinetic.Description"), null, FeatureGroup.KineticBlast)
                 .SetComponents
                 (
-                Helper.CreateAddFeatureIfHasFact(AnyRef.ToAny(Tree.Telekinetic.BaseAbility))
+                Helper.CreateAddFeatureIfHasFact(Tree.Telekinetic.BaseAbility)
                 );
             feature.HideInUI = true;
+            feature.HideInCharacterSheetAndLevelUp = true;
             feature.IsClassFeature = true;
+            feature.Ranks = 20;
+
+            feature.IsPrerequisiteFor = new List<BlueprintFeatureReference>() { Tree.FocusAether.Defense };
         }
 
         private static void CreateTelekineticBlastProgression()
@@ -661,12 +680,15 @@ namespace KineticistElementsExpanded.ElementAether
                 LocalizationTool.GetString("Aether.Telekinetic.Description"), null, 0);
             progression.SetComponents
                 (
-                Helper.CreateAddFacts(Kineticist.ref_compositeBlastBuff),
+                Helper.CreateAddFacts(Tree.CompositeBuff), 
                 Helper.CreateAddFeatureIfHasFact(
                     AnyRef.ToAny(Tree.KineticBlade.Feature), 
-                    AnyRef.ToAny(Tree.Telekinetic.Blade.Feature)),
-                Helper.CreateAddFeatureIfHasFact(AnyRef.ToAny(Tree.Telekinetic.BlastFeature))
+                    AnyRef.ToAny(Tree.Telekinetic.Blade.Feature))
                 );
+            progression.IsClassFeature = true;
+            progression.m_AllowNonContextActions = true;
+
+            progression.m_Classes = new ClassWithLevel[] { new ClassWithLevel() { AdditionalLevel = 0, m_Class = Tree.Class } };
 
             var entry = Helper.CreateLevelEntry(1, Tree.Telekinetic.BlastFeature);
             Helper.AddEntries(progression, entry);
@@ -693,13 +715,13 @@ namespace KineticistElementsExpanded.ElementAether
             var spindle = CreateForceBlastVariant_spindle();
             var wall = CreateForceBlastVariant_wall();
             //var blade = CreateForceBlastVariant_blade();
-            var blade = Kineticist.Blade.CreateKineticBlade(Tree, 
+            var blade = Kineticist.Blade.CreateKineticBlade(Tree,
                 "Force", "Force", isComposite: true,
                 "fafefd27475150f499b5c7275a851f2f", Resource.Projectile.Disintegrate00,
                 Helper.CreateSprite(Main.ModPath + "/Icons/forceBlast.png"),
                 Helper.CreateSprite(Main.ModPath + "/Icons/forceBlast.png"),
                 e: DamageEnergyType.Fire,
-                damageTypeOverride: CreateForceBlastRunAction());
+                damageTypeOverride: Kineticist.Blast.RunActionDealDamage(out var _, "override", sword: true), blast_burn_cost: 2);
             var hook = CreateForceBlastVariant_hook();
             // Ability
             CreateForceBlastAbility(standard, hook, extended, spindle, wall, blade);
@@ -906,7 +928,7 @@ namespace KineticistElementsExpanded.ElementAether
             ability.SetComponents
                 (
                 Helper.CreateAbilityShowIfCasterHasFact(AnyRef.ToAny(Tree.FocusFirst)),
-                Kineticist.Blast.BurnCost(null, 0, 2, 0)
+                Kineticist.Blast.BurnCost(null, 0, 0, 0)
                 );
             ability.SpellResistance = true;
             ability.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten;
@@ -935,8 +957,6 @@ namespace KineticistElementsExpanded.ElementAether
 
         #endregion
 
-        // Aetheric Boost (Buff, maybe?)
-        //  Provide a buff/toggle with the same scaling as blast dice as bonus damage
         #region Aetheric Boost
 
         public static void CreateAethericBoost()
@@ -954,18 +974,12 @@ namespace KineticistElementsExpanded.ElementAether
                 (
                 new AbilityUniqueAethericBoost
                 {
-                    m_AbilityList = Tree.GetAll(basic: true, archetype: true).Select(s => s.BaseAbility).ToArray(),
-                    value = new ContextDiceValue
-                    {
-                        DiceType = DiceType.Zero,
-                        DiceCountValue = new ContextValue { ValueType = ContextValueType.Simple, Value = 0},
-                        BonusValue = new ContextValue {  ValueType = ContextValueType.Rank, ValueRank = AbilityRankType.DamageDice }
-                    }
+                    m_AbilityList = Tree.GetAll(basic: true, archetype: true).Select(s => s.BaseAbility).ToArray()
                 },
                 Kineticist.Blast.RankConfigDice(false, false),
                 new AddKineticistBurnModifier
                 {
-                    BurnType = KineticistBurnType.Blast,
+                    BurnType = KineticistBurnType.Infusion,
                     Value = 2
                 },
                 new RecalculateOnStatChange
@@ -988,8 +1002,6 @@ namespace KineticistElementsExpanded.ElementAether
                 Helper.CreateAddFacts(ability.ToRef())
                 );
 
-            AethericBoost.Feature = feature.ToRef();
-            AethericBoost.Buff = buff.ToRef();
 
             Kineticist.AddElementsToInfusion(feature, buff, Tree.GetAll(basic: true, onlyPhysical: true, archetype: true).ToList().ToArray());
         }
@@ -1008,18 +1020,12 @@ namespace KineticistElementsExpanded.ElementAether
                 (
                 new AbilityUniqueAethericBoost
                 {
-                    m_AbilityList = Tree.GetAll(composite: true, archetype: true).Select(s => s.BaseAbility).ToArray(),
-                    value = new ContextDiceValue
-                    {
-                        DiceType = DiceType.Zero,
-                        DiceCountValue = new ContextValue { ValueType = ContextValueType.Simple, Value = 0 },
-                        BonusValue = new ContextValue { ValueType = ContextValueType.Rank, ValueRank = AbilityRankType.DamageDice }
-                    }
+                    m_AbilityList = Tree.GetAll(composite: true, archetype: true).Select(s => s.BaseAbility).ToArray()
                 },
                 Kineticist.Blast.RankConfigDice(true, false),
                 new AddKineticistBurnModifier
                 {
-                    BurnType = KineticistBurnType.Blast,
+                    BurnType = KineticistBurnType.Infusion,
                     Value = 3
                 },
                 new RecalculateOnStatChange
@@ -1041,9 +1047,6 @@ namespace KineticistElementsExpanded.ElementAether
                 (
                 Helper.CreateAddFacts(ability.ToRef())
                 );
-
-            AethericBoost.Feature = feature.ToRef();
-            AethericBoost.Buff = buff.ToRef();
 
             Kineticist.AddElementsToInfusion(feature, buff, Tree.GetAll(composite: true, onlyPhysical: true, archetype: true).ToList().ToArray());
         }
@@ -1111,7 +1114,7 @@ namespace KineticistElementsExpanded.ElementAether
 
             #region Buff Components
 
-            var disintegrateNullifyDamage = new AbilityUniqueDisintegrateInfusion(Tree.Composite_Force.BaseAbility)
+            var disintegrateNullifyDamage = new AbilityUniqueDisintegrateInfusion(Tree.Composite_Force.BaseAbility, Tree.Composite_Force.Blade.Damage)
             {
                 Actions = new ActionList {  Actions = new GameAction[] { disintegrate_conditional } },
                 Value = value
@@ -1120,7 +1123,8 @@ namespace KineticistElementsExpanded.ElementAether
             var burn_modifier = new AddKineticistBurnModifier
             {
                 BurnType = KineticistBurnType.Infusion,
-                Value = 4
+                Value = 4,
+                m_AppliableTo = new BlueprintAbilityReference[] {Tree.Composite_Force.Blade.Burn}
             };
             var calc_abilityParams = new ContextCalculateAbilityParamsBasedOnClass
             {
@@ -1236,9 +1240,11 @@ namespace KineticistElementsExpanded.ElementAether
 
             var ability = Helper.CreateBlueprintAbility("FoeThrowInfusionThrowAbility", LocalizationTool.GetString("Aether.FoeThrow.Action.Name"),
                 LocalizationTool.GetString("Aether.FoeThrow.Action.Description"), icon, AbilityType.SpellLike, UnitCommand.CommandType.Standard,
-                AbilityRange.Close, null, null);
+                AbilityRange.Close, null, null).TargetEnemy(animation: CastAnimationStyle.Kineticist);
             ability.SetComponents
                 (
+                Kineticist.Blast.RequiredCasterFeat(requirement),
+                Kineticist.Blast.RequiredFeat(requirement),
                 new AbilityCustomFoeThrowUnique
                 {
                     m_Projectile = Resource.Projectile.BatteringBlast00.ToRef<BlueprintProjectileReference>(),
@@ -1250,15 +1256,14 @@ namespace KineticistElementsExpanded.ElementAether
                     Value = Helper.CreateContextDiceValue(DiceType.D6, Helper.CreateContextValue(AbilityRankType.DamageDice), Helper.CreateContextValue(AbilitySharedValue.Damage))
                 },
                 Kineticist.Blast.RankConfigDice(twice: false, half: false),
-                Kineticist.Blast.CalculateSharedValue(),
                 Kineticist.Blast.RankConfigBonus(half_bonus: false),
+                Kineticist.Blast.CalculateSharedValue(),
                 Kineticist.Blast.DCForceDex(),
                 Kineticist.Blast.BurnCost(null, infusion: 2, blast: 0),
-                Kineticist.Blast.RequiredFeat(requirement),
                 Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnPrecastStart, Resource.Sfx.PreStart_Earth),
                 Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnStart, Resource.Sfx.Start_Earth),
                 Helper.CreateAbilityEffectRunAction(SavingThrowType.Unknown, new ContextActionRemoveBuffAll { m_Buff = foeThrowBuff })
-                ).TargetEnemy(CastAnimationStyle.Kineticist);
+                );
 
             return ability;
         }
@@ -1308,6 +1313,7 @@ namespace KineticistElementsExpanded.ElementAether
             var conditional = Helper.CreateConditional(condition,
                 ifTrue: buff.CreateContextActionApplyBuff(0, DurationRate.Rounds, false, false, false, true, true));
 
+            buff.m_Flags |= BlueprintBuff.Flags.HiddenInUi | BlueprintBuff.Flags.StayOnDeath;
             var factContextAction = skilled_kineticist_buff.GetComponent<AddFactContextActions>();
             Helper.AppendAndReplace(ref factContextAction.Activated.Actions, conditional);
         }
@@ -1328,22 +1334,18 @@ namespace KineticistElementsExpanded.ElementAether
 
         private static BlueprintFeatureReference CreateTelekineticInvisibility()
         {
-            var invis_buff_icon = Helper.StealIcon("525f980c-b29b-c224-0b93-e953974cb325"); // Invisibility Effect Buff Icon
-            var invis_buff = ResourcesLibrary.TryGetBlueprint<BlueprintBuff>("525f980c-b29b-c224-0b93-e953974cb325"); // Invisibility Effect Buff
+            var invis_buff_icon = Helper.StealIcon("525f980cb29bc2240b93e953974cb325"); // Invisibility Effect Buff Icon
+            var invis_buff = ResourcesLibrary.TryGetBlueprint<BlueprintBuff>("525f980cb29bc2240b93e953974cb325"); // Invisibility Effect Buff
 
-            var ti_ability = Helper.CreateBlueprintAbility("TelekineticInvisibiltyAbility", LocalizationTool.GetString("Aether.TelekineticInvisibility.Name"),
-                LocalizationTool.GetString("Aether.TelekineticInvisibility.Description"), invis_buff_icon, AbilityType.Special, UnitCommand.CommandType.Standard,
-                AbilityRange.Personal);
-            ti_ability.TargetSelf();
-            ti_ability.SetComponents
+            var ti_ability = Helper.CreateBlueprintActivatableAbility("TelekineticInvisibiltyAbility", out var buff, LocalizationTool.GetString("Aether.TelekineticInvisibility.Name"),
+                LocalizationTool.GetString("Aether.TelekineticInvisibility.Description"), invis_buff_icon, UnitCommand.CommandType.Standard, Kingmaker.UnitLogic.ActivatableAbilities.AbilityActivationType.Immediately);
+            
+            buff.SetComponents
                 (
-                Helper.CreateAbilityEffectRunAction
-                    (
-                    SavingThrowType.Unknown,
-                    invis_buff.CreateContextActionApplyBuff(1, DurationRate.Hours, false, false, false, true)
-                    ),
-                Helper.CreateAbilityAcceptBurnOnCast(0)
+                Helper.CreateAddFactContextActions(new GameAction[] { Helper.CreateContextActionApplyBuff(invis_buff, 1, DurationRate.Rounds, true, true, asChild: true, permanent: true) })
                 );
+
+            
 
             var ti_feat = Helper.CreateBlueprintFeature("TelekineticInvisibilityFeature", LocalizationTool.GetString("Aether.TelekineticInvisibility.Name"),
                 LocalizationTool.GetString("Aether.TelekineticInvisibility.Description"), invis_buff_icon, FeatureGroup.KineticWildTalent);
@@ -1352,7 +1354,7 @@ namespace KineticistElementsExpanded.ElementAether
                 Helper.CreatePrerequisiteFeaturesFromList(true,
                     AnyRef.ToAny(Tree.Telekinetic.BlastFeature)),
                 Helper.CreatePrerequisiteClassLevel(Tree.Class, 6),
-                Helper.CreateAddFacts(ti_ability.ToRef2())
+                Helper.CreateAddFacts(ti_ability.ToAny())
                 );
 
             return ti_feat.ToRef();

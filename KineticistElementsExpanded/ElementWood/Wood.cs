@@ -52,11 +52,15 @@ namespace KineticistElementsExpanded.ElementWood
         
         public static KineticistTree Tree = KineticistTree.Instance;
 
-        public static KineticistTree.Infusion PositiveAdmixture = new();
-
         public static void Configure()  
         {
             BlueprintFeatureBase wood_class_skills = CreateWoodClassSkills();
+
+            Kineticist.RegisterGatherPower(Tree.FocusWood,
+                "28a39fc406a974748bd70ce3908efe61".ToRef<BlueprintBuffReference>(),  // GatherPowerEarthBuff
+                "82e8e3115e95d064685acc3c75053174".ToRef<BlueprintBuffReference>()); // GatherPowerEarthBuffEmpowered
+
+            new PromoteSpellDices();
 
             CreateInfusions();
 
@@ -84,7 +88,7 @@ namespace KineticistElementsExpanded.ElementWood
             Kineticist.AddCompositeToBuff(Tree, Tree.Composite_Summer, Tree.Wood, Tree.Fire);
             Kineticist.AddCompositeToBuff(Tree, Tree.Composite_Winter, Tree.Wood, Tree.Cold);
 
-            Kineticist.AddAdmixtureToBuff(Tree, PositiveAdmixture, Tree.Positive, true, true, false);
+            Kineticist.AddAdmixtureToBuff(Tree, Tree.Boost_PositiveAdmixture, Tree.Positive, true, true, false);
             Kineticist.AddBladesToKineticWhirlwind(Tree.Wood, Tree.Positive, Tree.Composite_Verdant, Tree.Composite_Autumn, Tree.Composite_Spring, Tree.Composite_Summer, Tree.Composite_Winter);
 
             CreateWoodElementalFocus(wood_class_skills, flesh_of_wood_feature);
@@ -1094,7 +1098,7 @@ namespace KineticistElementsExpanded.ElementWood
             ability.SetComponents
                 (
                 Helper.CreateAbilityShowIfCasterHasFact(AnyRef.ToAny(Tree.FocusFirst)),
-                Kineticist.Blast.BurnCost(null, 0, 2, 0)
+                Kineticist.Blast.BurnCost(null, 0, 0, 0)
                 );
             ability.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten;
 
@@ -1306,7 +1310,7 @@ namespace KineticistElementsExpanded.ElementWood
             ability.SetComponents
                 (
                 Helper.CreateAbilityShowIfCasterHasFact(AnyRef.ToAny(Tree.FocusFirst)),
-                Kineticist.Blast.BurnCost(null, 0, 2, 0)
+                Kineticist.Blast.BurnCost(null, 0, 0, 0)
                 );
             ability.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten;
 
@@ -1516,7 +1520,7 @@ namespace KineticistElementsExpanded.ElementWood
             ability.SetComponents
                 (
                 Helper.CreateAbilityShowIfCasterHasFact(AnyRef.ToAny(Tree.FocusFirst)),
-                Kineticist.Blast.BurnCost(null, 0, 2, 0)
+                Kineticist.Blast.BurnCost(null, 0, 0, 0)
                 );
             ability.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten;
 
@@ -1729,7 +1733,7 @@ namespace KineticistElementsExpanded.ElementWood
             ability.SetComponents
                 (
                 Helper.CreateAbilityShowIfCasterHasFact(AnyRef.ToAny(Tree.FocusFirst)),
-                Kineticist.Blast.BurnCost(null, 0, 2, 0)
+                Kineticist.Blast.BurnCost(null, 0, 0, 0)
                 );
             ability.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten;
 
@@ -1941,7 +1945,7 @@ namespace KineticistElementsExpanded.ElementWood
             ability.SetComponents
                 (
                 Helper.CreateAbilityShowIfCasterHasFact(AnyRef.ToAny(Tree.FocusFirst)),
-                Kineticist.Blast.BurnCost(null, 0, 2, 0)
+                Kineticist.Blast.BurnCost(null, 0, 0, 0)
                 );
             ability.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten;
 
@@ -2011,9 +2015,6 @@ namespace KineticistElementsExpanded.ElementWood
                 (
                 Helper.CreateAddFacts(AnyRef.ToAny(ability))
                 );
-
-            PositiveAdmixture.Feature = feature.ToRef();
-            PositiveAdmixture.Buff = buff.ToRef();
 
             Kineticist.AddElementsToInfusion(feature, buff, Tree.GetAll(basic: true, onlyEnergy: true).ToList().ToArray());
         }
@@ -2282,20 +2283,22 @@ namespace KineticistElementsExpanded.ElementWood
         private static void AddToSkilledKineticist()
         {
             var buff = Helper.CreateBlueprintBuff("SkilledKineticistWoodBuff", LocalizationTool.GetString("SkilledKineticist"));
-            buff.Flags(true, true);
-            buff.Stacking = StackingType.Replace;
+            buff.Flags(hidden: true, stayOnDeath: true);
             buff.SetComponents
                 (
                 Helper.CreateContextRankConfig(ContextRankBaseValueType.ClassLevel,
                     ContextRankProgression.Div2, max: 20, classes: new BlueprintCharacterClassReference[1] { Tree.Class }),
                 Helper.CreateAddContextStatBonus(new ContextValue { ValueType = ContextValueType.Rank, Value = 0, ValueRank = AbilityRankType.Default, ValueShared = AbilitySharedValue.Damage },
-                StatType.SkillLoreNature)
+                StatType.SkillLoreNature),
+                Helper.CreateAddContextStatBonus(new ContextValue { ValueType = ContextValueType.Rank, Value = 0, ValueRank = AbilityRankType.Default, ValueShared = AbilitySharedValue.Damage },
+                StatType.SkillKnowledgeWorld)
                 );
 
             var condition = Helper.CreateContextConditionHasFact(AnyRef.ToAny(Tree.FocusWood.First));
             var conditional = Helper.CreateConditional(condition,
                 ifTrue: buff.CreateContextActionApplyBuff(0, DurationRate.Rounds, false, false, false, true, true));
 
+            buff.m_Flags |= BlueprintBuff.Flags.HiddenInUi | BlueprintBuff.Flags.StayOnDeath;
             var factContextAction = Kineticist.ref_skilled_kineticist.Get().GetComponent<AddFactContextActions>();
             Helper.AppendAndReplace(ref factContextAction.Activated.Actions, conditional);
         }
@@ -2466,8 +2469,7 @@ namespace KineticistElementsExpanded.ElementWood
         {
             var buff = Helper.CreateBlueprintBuff("HerbalAntivenomBuff", LocalizationTool.GetString("Wood.Herbal.Name"),
                 LocalizationTool.GetString("Wood.Herbal.Description"));
-            buff.Flags(hidden: true, stayOnDeath: true);
-            buff.m_Flags |= BlueprintBuff.Flags.RemoveOnRest;
+            buff.m_Flags |= BlueprintBuff.Flags.RemoveOnRest | BlueprintBuff.Flags.StayOnDeath | BlueprintBuff.Flags.HiddenInUi;
             buff.SetComponents
                 (
                 new SavingThrowBonusAgainstDescriptor
