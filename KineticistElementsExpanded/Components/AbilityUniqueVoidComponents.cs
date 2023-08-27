@@ -33,6 +33,7 @@ using Kingmaker.Enums;
 using Kingmaker.UnitLogic.Mechanics.Components;
 using Kingmaker.UnitLogic.FactLogic;
 using Owlcat.Runtime.Core.Utils;
+using Kingmaker.Designers.Mechanics.Facts;
 
 namespace KineticistElementsExpanded.Components
 {
@@ -46,6 +47,81 @@ namespace KineticistElementsExpanded.Components
             this.AddBonus = false;
         }
 
+        /*
+         // Not Needed, keeping for reference
+        [HarmonyPatch(typeof(PromoteSpellDices), nameof(PromoteSpellDices.OnEventAboutToTrigger))]
+        class DragonBoostPatch
+        {
+            public static ReferenceArrayProxy<BlueprintAbility, BlueprintAbilityReference> AbilityList
+            {
+                get
+                {
+                    return m_AbilityList;
+                }
+            }
+
+            static void Postfix(RuleCalculateDamage evt, PromoteSpellDices __instance)
+            {
+                if (__instance.Owner.Descriptor.Buffs.GetBuff(boost) == null && __instance.Owner.Descriptor.Buffs.GetBuff(boost_greater) == null)
+                {
+                    return;
+                }
+
+                MechanicsContext context = evt.Reason.Context;
+                AbilityExecutionContext abilityExecutionContext;
+                if ((abilityExecutionContext = (context as AbilityExecutionContext)) != null) {
+                    AbilityData ability = abilityExecutionContext.Ability;
+                    if (AbilityList.Contains(ability.Blueprint))
+                    {
+                        IEnumerable<BlueprintAbility> source = AbilityList;
+                        AbilityData convertedFrom = ability.ConvertedFrom;
+                        if (!source.Contains((convertedFrom != null) ? convertedFrom.Blueprint : null))
+                        {
+                            return;
+                        }
+                    }
+                } else
+                {
+                    AbilityData ability2 = evt.Reason.Ability;
+                    BlueprintAbility blueprintAbility;
+                    if ((blueprintAbility = ((ability2 != null) ? ability2.Blueprint : null)) == null)
+                    {
+                        MechanicsContext parentContext = context.ParentContext;
+                        blueprintAbility = (((parentContext != null) ? parentContext.AssociatedBlueprint : null) as BlueprintAbility);
+                    }
+                    BlueprintAbility blueprintAbility2 = blueprintAbility;
+                    if (blueprintAbility2 == null)
+                    {
+                        return;
+                    }
+                    if (!AbilityList.Contains(blueprintAbility2) && !AbilityList.Contains(blueprintAbility2.Parent))
+                    {
+                        return;
+                    }
+                }
+                
+                foreach (BaseDamage item in evt.DamageBundle)
+                {
+                    var dice = item.Dice.ModifiedValue.Dice;
+                    var rolls = item.Dice.ModifiedValue.Rolls;
+                    if (conversion_map.Keys.Contains(dice))
+                    {
+                        item.Dice.Modify(new DiceFormula(rolls, conversion_map[dice]), __instance.Fact);
+                    }
+                }
+            }
+            static Dictionary<DiceType, DiceType> conversion_map = new Dictionary<DiceType, DiceType>()
+        {
+            { DiceType.D6, DiceType.D8 },
+            { DiceType.D8, DiceType.D10 },
+            { DiceType.D10, DiceType.D12 },
+        };
+            static BlueprintBuff boost = ResourcesLibrary.TryGetBlueprint<BlueprintBuff>(KineticistTree.Instance.Boost_Gravitic.BoostActivatable.Get().m_Buff.Guid);
+            static BlueprintBuff boost_greater = ResourcesLibrary.TryGetBlueprint<BlueprintBuff>(KineticistTree.Instance.Boost_GraviticGreater.BoostActivatable.Get().m_Buff.Guid);
+
+            static BlueprintAbilityReference[] m_AbilityList = Array.ConvertAll(KineticistTree.Instance.GetAll(basic: true, composite: true, onlyPhysical: true).ToArray(), x => x.BaseAbility);
+        }
+        */
     }
 
     public class AbilityUniqueAethericBoost : AbilityUniqueBoost

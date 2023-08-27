@@ -99,6 +99,12 @@ If you notice any issues, please contact me or open up an issue on this reposito
 
 ## Changelog
 
+### v3.2.2 For
+- Gravitic Boost can now stack with the Golden Dragon dice boosts
+- Foe Throw infusion reworked slightly: Better unit movement and targetting (Does not require a "lifted" target to throw, but those will be prioritized)
+- Foe Throw Infusion UI Change: the "Throwing Ability" is now correctly grouped with other telekinetic blast variants, while the "lifting" ability is on it's own
+- Many Throw radius reduced to the correct size (was 30ft radius, is now 15ft)
+
 ### v3.2.1 For v2.1.5r
 - Revamp of All the elements' blasts - Should work much closer to the base game's elements now
 - Revamp of All of the "Boosts" - These should work more consistently, and apply to the entire dice roll

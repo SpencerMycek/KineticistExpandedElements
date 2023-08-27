@@ -47,7 +47,6 @@ using Kingmaker.Designers.Mechanics.Buffs;
 
 namespace KineticistElementsExpanded.ElementAether
 {
-    // TODO: Figure out how the kinetic blast damage is determined, it was changed from level to a feature, now
     class Aether
     {
         private static KineticistTree Tree = KineticistTree.Instance;
@@ -391,7 +390,7 @@ namespace KineticistElementsExpanded.ElementAether
             var foeThrow = CreateTelekineticBlastVariant_throw(); // Output not used due to UI reqs
             var many = CreateTelekineticBlastVariant_many();
             // Ability
-            CreateTelekineticBlastAbility(standard, many, extended, spindle, wall, blade);
+            CreateTelekineticBlastAbility(standard, many, foeThrow, extended, spindle, wall, blade);
             // Feature
             CreateTelekineticBlastFeature();
             // Progression
@@ -593,7 +592,7 @@ namespace KineticistElementsExpanded.ElementAether
                         },
                     TargetType = TargetType.Enemy,
                     DelayBetweenChain = 0f,
-                    radius = new Feet { m_Value = 30 },
+                    radius = new Feet { m_Value = 15 },
                     TargetsCount = Helper.CreateContextValue(AbilityRankType.ProjectilesCount)
                 },
                 Helper.CreateContextRankConfig(ContextRankBaseValueType.ClassLevel, ContextRankProgression.AsIs, type: AbilityRankType.ProjectilesCount,
@@ -615,6 +614,7 @@ namespace KineticistElementsExpanded.ElementAether
             var ft_targetAbility = CreateFoeThrowTargetAbility(foeThrowBuff, Tree.FoeThrow.Feature);
             var ft_throwAbility = CreateFoeThrowThrowAbility(foeThrowBuff, Tree.FoeThrow.Feature);
 
+            /*
             var ability = Helper.CreateBlueprintAbility("FoeThrowTelekineticBlast", LocalizationTool.GetString("Aether.FoeThrow.Name"), LocalizationTool.GetString("Aether.FoeThrow.Description"), 
                 icon, AbilityType.Special, UnitCommand.CommandType.Standard, AbilityRange.Close);
             ability.SetComponents
@@ -629,8 +629,9 @@ namespace KineticistElementsExpanded.ElementAether
             Helper.AddToAbilityVariants(ability, ft_throwAbility);
 
             Tree.FoeThrow.Feature.Get().AddComponents(Helper.CreateAddFacts(ability.ToRef2()));
-
-            return ability;
+            */
+            Tree.FoeThrow.Feature.Get().AddComponents(Helper.CreateAddFacts(ft_targetAbility));
+            return ft_throwAbility;
         }
 
         #endregion
@@ -1228,7 +1229,7 @@ namespace KineticistElementsExpanded.ElementAether
             ability.SetComponents
                 (
                 Kineticist.Blast.RequiredFeat(requirement),
-                Helper.CreateAbilityEffectRunAction(SavingThrowType.Unknown, new ContextActionRemoveBuffAll() { m_Buff = foeThrowBuff }, foeThrowBuff.CreateContextActionApplyBuff(1, DurationRate.Rounds))
+                Helper.CreateAbilityEffectRunAction(SavingThrowType.Unknown, foeThrowBuff.CreateContextActionApplyBuff(1, DurationRate.Rounds))
                 ).TargetEnemy(CastAnimationStyle.Kineticist);
                 
             return ability;
@@ -1239,12 +1240,15 @@ namespace KineticistElementsExpanded.ElementAether
             var icon = Helper.CreateSprite(Main.ModPath+"/Icons/foeThrow.png");
 
             var ability = Helper.CreateBlueprintAbility("FoeThrowInfusionThrowAbility", LocalizationTool.GetString("Aether.FoeThrow.Action.Name"),
-                LocalizationTool.GetString("Aether.FoeThrow.Action.Description"), icon, AbilityType.SpellLike, UnitCommand.CommandType.Standard,
+                LocalizationTool.GetString("Aether.FoeThrow.Action.Description"), icon, AbilityType.Special, UnitCommand.CommandType.Standard,
                 AbilityRange.Close, null, null).TargetEnemy(animation: CastAnimationStyle.Kineticist);
             ability.SetComponents
                 (
                 Kineticist.Blast.RequiredCasterFeat(requirement),
                 Kineticist.Blast.RequiredFeat(requirement),
+                Kineticist.Blast.RunActionDealDamage(out var actions,
+                    p: PhysicalDamageForm.Bludgeoning | PhysicalDamageForm.Piercing | PhysicalDamageForm.Slashing,
+                    isAOE: false, half: false),
                 new AbilityCustomFoeThrowUnique
                 {
                     m_Projectile = Resource.Projectile.BatteringBlast00.ToRef<BlueprintProjectileReference>(),
@@ -1253,17 +1257,19 @@ namespace KineticistElementsExpanded.ElementAether
                     AppearFx = new PrefabLink { AssetId = "4fa8c88064e270a4594f534c2a65198d" },
                     AppearDuration = 0f,
                     m_Buff = foeThrowBuff,
-                    Value = Helper.CreateContextDiceValue(DiceType.D6, Helper.CreateContextValue(AbilityRankType.DamageDice), Helper.CreateContextValue(AbilitySharedValue.Damage))
+                    //Value = Helper.CreateContextDiceValue(DiceType.D6, Helper.CreateContextValue(AbilityRankType.DamageDice), Helper.CreateContextValue(AbilitySharedValue.Damage))
                 },
                 Kineticist.Blast.RankConfigDice(twice: false, half: false),
                 Kineticist.Blast.RankConfigBonus(half_bonus: false),
                 Kineticist.Blast.CalculateSharedValue(),
                 Kineticist.Blast.DCForceDex(),
-                Kineticist.Blast.BurnCost(null, infusion: 2, blast: 0),
+                Kineticist.Blast.BurnCost(actions, infusion: 2, blast: 0),
                 Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnPrecastStart, Resource.Sfx.PreStart_Earth),
                 Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnStart, Resource.Sfx.Start_Earth),
                 Helper.CreateAbilityEffectRunAction(SavingThrowType.Unknown, new ContextActionRemoveBuffAll { m_Buff = foeThrowBuff })
                 );
+            ability.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten;
+            ability.m_Parent = Tree.Telekinetic.BaseAbility;
 
             return ability;
         }
