@@ -34,6 +34,7 @@ using Kingmaker.UnitLogic.Mechanics.Components;
 using Kingmaker.UnitLogic.FactLogic;
 using Owlcat.Runtime.Core.Utils;
 using Kingmaker.Designers.Mechanics.Facts;
+using Kingmaker.UnitLogic.Class.Kineticist;
 
 namespace KineticistElementsExpanded.Components
 {
@@ -269,7 +270,7 @@ namespace KineticistElementsExpanded.Components
         }
     }
 
-    public class AbilityUniqueAdmixture : UnitFactComponentDelegate, IRulebookHandler<RuleCalculateDamage>, IInitiatorRulebookHandler<RuleCalculateDamage>, IInitiatorRulebookSubscriber, ISubscriber
+    public class AbilityUniqueAdmixture : UnitFactComponentDelegate, IRulebookHandler<RulePrepareDamage>, IInitiatorRulebookHandler<RulePrepareDamage>, IInitiatorRulebookSubscriber, ISubscriber
     {
 
         public AbilityUniqueAdmixture(params BlueprintAbilityReference[] list)
@@ -285,7 +286,7 @@ namespace KineticistElementsExpanded.Components
             }
         }
 
-        public void ApplyAboutToTrigger(RuleCalculateDamage evt, [NotNull] MechanicsContext context)
+        public void ApplyAboutToTrigger(RulePrepareDamage evt, [NotNull] MechanicsContext context)
         {
             try
             {
@@ -325,38 +326,37 @@ namespace KineticistElementsExpanded.Components
                     }
                 }
 
-                List<BaseDamage> list = TempList.Get<BaseDamage>();
-                foreach (BaseDamage item in evt.DamageBundle)
+                var baseDamage = new DamageDescription
                 {
-                    var rolls = item.Dice.ModifiedValue.Rolls;
-                    var dice = item.Dice.ModifiedValue.Dice;
+                    TypeDescription = Type,
+                    Dice = new DiceFormula(Value.DiceCountValue.Calculate(base.Context), Value.DiceType),
+                    Bonus = Value.BonusValue.Calculate(base.Context),
+                    SourceFact = base.Fact
+                }.CreateDamage();
+                baseDamage.CriticalModifier = evt.DamageBundle.First?.CriticalModifier;
 
-                    item.Dice.Modify(new DiceFormula(rolls / 2, dice), base.Fact);
-                    var new_damage = item.Clone();
-                    list.Add(item);
-                    list.Add(ChangeType(item));
-
-                }
+                evt.Add(baseDamage);
 
             }
             catch (Exception ex)
             {
-                Helper.PrintNotification($"[AddForceBlastNullifyDamage] Exception: {ex.Message}");
+                Helper.PrintNotification($"[AbilityUniqueAdmixture] Exception: {ex.Message}");
+                Main.Print($"[AbilityUniqueAdmixture] Exception: {ex.Message}");
             }
         }
 
-        public void ApplyDidTrigger(RuleCalculateDamage evt, [NotNull] MechanicsContext context)
+        public void ApplyDidTrigger(RulePrepareDamage evt, [NotNull] MechanicsContext context)
         {
         }
 
         #region Triggers
 
-        public void OnEventAboutToTrigger(RuleCalculateDamage evt)
+        public void OnEventAboutToTrigger(RulePrepareDamage evt)
         {
             this.ApplyAboutToTrigger(evt, base.Context);
         }
 
-        public void OnEventDidTrigger(RuleCalculateDamage evt)
+        public void OnEventDidTrigger(RulePrepareDamage evt)
         {
             this.ApplyDidTrigger(evt, base.Context);
         }
@@ -392,5 +392,6 @@ namespace KineticistElementsExpanded.Components
 
         public BlueprintAbilityReference[] m_AbilityList;
         public DamageTypeDescription Type;
+        public ContextDiceValue Value;
     }
 }

@@ -943,14 +943,15 @@ namespace KineticistElementsExpanded.ElementVoid
             ability.SetComponents
                 (
                 Kineticist.Blast.RunActionDealDamage(out var actions, p: PhysicalDamageForm.Bludgeoning, e: DamageEnergyType.NegativeEnergy, isAOE: false, half: false),
-                Kineticist.Blast.RankConfigDice(twice: false),
-                Kineticist.Blast.CalculateSharedValue(),
+                Kineticist.Blast.Projectile(Resource.Projectile.NegativeCommonProjectile00, true, AbilityProjectileType.Simple, 0, 5),
+                Kineticist.Blast.RankConfigDice(twice: true),
                 Kineticist.Blast.RankConfigBonus(half_bonus: false),
                 Kineticist.Blast.DCForceDex(),
+                Kineticist.Blast.CalculateSharedValue(),
                 Kineticist.Blast.BurnCost(actions, infusion: 0, blast: 2),
-                Kineticist.Blast.Projectile(Resource.Projectile.NegativeCommonProjectile00, true, AbilityProjectileType.Simple, 0, 5),
                 Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnPrecastStart, Resource.Sfx.PreStart_Earth),
-                Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnStart, Resource.Sfx.Start_Earth)
+                Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnStart, Resource.Sfx.Start_Earth),
+                Kineticist.Blast.Ricochet(Resource.Projectile.NegativeCommonProjectile00)
                 ).TargetEnemy(CastAnimationStyle.Kineticist);
             ability.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten;
 
@@ -971,7 +972,7 @@ namespace KineticistElementsExpanded.ElementVoid
             ability.SetComponents
                 (
                 Kineticist.Blast.RunActionDealDamage(out var actions, p: PhysicalDamageForm.Bludgeoning, e: DamageEnergyType.NegativeEnergy, isAOE: false, half: false),
-                Kineticist.Blast.RankConfigDice(twice: false),
+                Kineticist.Blast.RankConfigDice(twice: true),
                 Kineticist.Blast.CalculateSharedValue(),
                 Kineticist.Blast.RankConfigBonus(half_bonus: false),
                 Kineticist.Blast.DCForceDex(),
@@ -979,7 +980,8 @@ namespace KineticistElementsExpanded.ElementVoid
                 Kineticist.Blast.RequiredFeat(Tree.ExtendedRange.Feature),
                 Kineticist.Blast.Projectile(Resource.Projectile.NegativeCommonProjectile00, true, AbilityProjectileType.Simple, 0, 5),
                 Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnPrecastStart, Resource.Sfx.PreStart_Earth),
-                Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnStart, Resource.Sfx.Start_Earth)
+                Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnStart, Resource.Sfx.Start_Earth),
+                Kineticist.Blast.Ricochet(Resource.Projectile.NegativeCommonProjectile00)
                 ).TargetEnemy(CastAnimationStyle.Kineticist);
             ability.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten;
             ability.m_Parent = Tree.Composite_Void.BaseAbility;
@@ -1001,7 +1003,7 @@ namespace KineticistElementsExpanded.ElementVoid
             ability.SetComponents
                 (
                 Kineticist.Blast.RunActionDealDamage(out var actions, p: PhysicalDamageForm.Bludgeoning, e: DamageEnergyType.NegativeEnergy, isAOE: false, half: false),
-                Kineticist.Blast.RankConfigDice(twice: false),
+                Kineticist.Blast.RankConfigDice(twice: true),
                 Kineticist.Blast.CalculateSharedValue(),
                 Kineticist.Blast.RankConfigBonus(half_bonus: false),
                 Kineticist.Blast.DCForceDex(),
@@ -1252,16 +1254,21 @@ namespace KineticistElementsExpanded.ElementVoid
 
             buff.Flags(stayOnDeath: true);
             buff.Stacking = StackingType.Replace;
+            var element_list = Tree.GetAll(basic: true, onlyEnergy: true, archetype: true).Where(e => e != Tree.Negative);
+            var blast_list = element_list.Select(s => s.BaseAbility).ToList();
             buff.SetComponents
                 (
                 new AbilityUniqueNegativeAdmixture
                 {
-                    m_AbilityList = Tree.GetAll(basic: true, onlyEnergy: true, archetype: true).Select(s=> s.BaseAbility).ToArray()
+                    m_AbilityList = blast_list.ToArray(),
+                    Value = Helper.CreateContextDiceValue(DiceType.D6, 
+                        diceCount: Helper.CreateContextValue(AbilityRankType.DamageDice), 
+                        bonus: Helper.CreateContextValue(AbilityRankType.DamageBonus))
                 },
                 new AddKineticistBurnModifier
                 {
-                    BurnType = KineticistBurnType.Infusion,
-                    Value = 1
+                    BurnType = KineticistBurnType.Blast,
+                    Value = 2
                 },
                 new RecalculateOnStatChange
                 {
@@ -1273,7 +1280,9 @@ namespace KineticistElementsExpanded.ElementVoid
                     UseKineticistMainStat = true,
                     StatType = StatType.Charisma,
                     m_CharacterClass = Tree.Class
-                }
+                },
+                Kineticist.Blast.RankConfigDice(twice: false, half: false),
+                Kineticist.Blast.RankConfigBonus(half_bonus: true)
                 );
 
             var feature = Helper.CreateBlueprintFeature("NegativeAdmixtureFeature", LocalizationTool.GetString("Void.Admixture.Negative.Name"),
@@ -1283,7 +1292,7 @@ namespace KineticistElementsExpanded.ElementVoid
                 Helper.CreateAddFacts(ability.ToRef())
                 );
 
-            Kineticist.AddElementsToInfusion(feature, buff, Tree.GetAll(basic: true, onlyEnergy: true, archetype: true).ToList().ToArray());
+            Kineticist.AddElementsToInfusion(feature, buff, element_list.ToArray());
         }
 
         #endregion

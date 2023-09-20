@@ -305,6 +305,14 @@ namespace KineticistElementsExpanded.KineticLib
                 IntEvaluator first_value = sword ? new TargetIndex() : new DeliverEffectLayer() ;
                 var conditional = Helper.CreateConditional(new IsEqual() { Not = false, FirstValue = first_value, SecondValue = new IntConstant() { Value = 0 } });
                 conditional.IfTrue = Helper.CreateActionList(list.ToArray());
+                List<GameAction> falseList = new(2);
+                foreach (ContextActionDealDamage deal_damage in list)
+                {
+                    ContextActionDealDamage tmp = deal_damage.Clone();
+                    tmp.Half = true;
+                    falseList.Add(tmp);
+                }
+                conditional.IfFalse = Helper.CreateActionList(falseList.ToArray());
                 actions = conditional.IfTrue;
                 return Helper.CreateAbilityEffectRunAction(save, conditional);
             }

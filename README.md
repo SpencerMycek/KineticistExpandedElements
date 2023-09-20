@@ -99,6 +99,11 @@ If you notice any issues, please contact me or open up an issue on this reposito
 
 ## Changelog
 
+### v3.2.3 For
+- Admixtures and boosts burn modifiers now count as blast, instead of infusion.
+- Positive and Negative Admixture now deal full composite damage (half-admixture have other)
+- Split damage Composites now deal full damage (were incorrectly dealing half the damage they should have been dealing)
+
 ### v3.2.2 For
 - Gravitic Boost can now stack with the Golden Dragon dice boosts
 - Foe Throw infusion reworked slightly: Better unit movement and targetting (Does not require a "lifted" target to throw, but those will be prioritized)

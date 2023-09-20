@@ -956,7 +956,7 @@ namespace KineticistElementsExpanded.ElementWood
                 (
                 Kineticist.Blast.RunActionDealDamage(out var actions, p: PhysicalDamageForm.Bludgeoning | PhysicalDamageForm.Piercing | PhysicalDamageForm.Slashing, e: DamageEnergyType.PositiveEnergy,
                 isAOE: false, half: false),
-                Kineticist.Blast.RankConfigDice(twice: false, half: false),
+                Kineticist.Blast.RankConfigDice(twice: true, half: false),
                 Kineticist.Blast.CalculateSharedValue(),
                 Kineticist.Blast.RankConfigBonus(half_bonus: false),
                 Kineticist.Blast.DCForceDex(),
@@ -984,7 +984,7 @@ namespace KineticistElementsExpanded.ElementWood
             ability.SetComponents
                 (
                 Kineticist.Blast.RunActionDealDamage(out var actions, p: PhysicalDamageForm.Bludgeoning | PhysicalDamageForm.Piercing | PhysicalDamageForm.Slashing, e: DamageEnergyType.PositiveEnergy, isAOE: false, half: false),
-                Kineticist.Blast.RankConfigDice(twice: false, half: false),
+                Kineticist.Blast.RankConfigDice(twice: true, half: false),
                 Kineticist.Blast.CalculateSharedValue(),
                 Kineticist.Blast.RankConfigBonus(half_bonus: false),
                 Kineticist.Blast.DCForceDex(),
@@ -1013,7 +1013,7 @@ namespace KineticistElementsExpanded.ElementWood
             ability.SetComponents
                 (
                 Kineticist.Blast.RunActionDealDamage(out var actions, p: PhysicalDamageForm.Bludgeoning | PhysicalDamageForm.Piercing | PhysicalDamageForm.Slashing, e: DamageEnergyType.PositiveEnergy, isAOE: false, half: false),
-                Kineticist.Blast.RankConfigDice(twice: false),
+                Kineticist.Blast.RankConfigDice(twice: true),
                 Kineticist.Blast.CalculateSharedValue(),
                 Kineticist.Blast.RankConfigBonus(half_bonus: false),
                 Kineticist.Blast.DCForceDex(),
@@ -1586,7 +1586,7 @@ namespace KineticistElementsExpanded.ElementWood
                 (
                 Kineticist.Blast.RunActionDealDamage(out var actions, p: PhysicalDamageForm.Bludgeoning | PhysicalDamageForm.Piercing | PhysicalDamageForm.Slashing, e: DamageEnergyType.Fire,
                 isAOE: false, half: false),
-                Kineticist.Blast.RankConfigDice(twice: false, half: false),
+                Kineticist.Blast.RankConfigDice(twice: true, half: false),
                 Kineticist.Blast.CalculateSharedValue(),
                 Kineticist.Blast.RankConfigBonus(half_bonus: false),
                 Kineticist.Blast.DCForceDex(),
@@ -1614,7 +1614,7 @@ namespace KineticistElementsExpanded.ElementWood
             ability.SetComponents
                 (
                 Kineticist.Blast.RunActionDealDamage(out var actions, p: PhysicalDamageForm.Bludgeoning | PhysicalDamageForm.Piercing | PhysicalDamageForm.Slashing, e: DamageEnergyType.Fire, isAOE: false, half: false),
-                Kineticist.Blast.RankConfigDice(twice: false, half: false),
+                Kineticist.Blast.RankConfigDice(twice: true, half: false),
                 Kineticist.Blast.CalculateSharedValue(),
                 Kineticist.Blast.RankConfigBonus(half_bonus: false),
                 Kineticist.Blast.DCForceDex(),
@@ -1643,7 +1643,7 @@ namespace KineticistElementsExpanded.ElementWood
             ability.SetComponents
                 (
                 Kineticist.Blast.RunActionDealDamage(out var actions, p: PhysicalDamageForm.Bludgeoning | PhysicalDamageForm.Piercing | PhysicalDamageForm.Slashing, e: DamageEnergyType.Fire, isAOE: false, half: false),
-                Kineticist.Blast.RankConfigDice(twice: false),
+                Kineticist.Blast.RankConfigDice(twice: true),
                 Kineticist.Blast.CalculateSharedValue(),
                 Kineticist.Blast.RankConfigBonus(half_bonus: false),
                 Kineticist.Blast.DCForceDex(),
@@ -1799,7 +1799,7 @@ namespace KineticistElementsExpanded.ElementWood
                 (
                 Kineticist.Blast.RunActionDealDamage(out var actions, p: PhysicalDamageForm.Bludgeoning | PhysicalDamageForm.Piercing | PhysicalDamageForm.Slashing, e: DamageEnergyType.Cold,
                 isAOE: false, half: false),
-                Kineticist.Blast.RankConfigDice(twice: false, half: false),
+                Kineticist.Blast.RankConfigDice(twice: true, half: false),
                 Kineticist.Blast.CalculateSharedValue(),
                 Kineticist.Blast.RankConfigBonus(half_bonus: false),
                 Kineticist.Blast.DCForceDex(),
@@ -1827,7 +1827,7 @@ namespace KineticistElementsExpanded.ElementWood
             ability.SetComponents
                 (
                 Kineticist.Blast.RunActionDealDamage(out var actions, p: PhysicalDamageForm.Bludgeoning | PhysicalDamageForm.Piercing | PhysicalDamageForm.Slashing, e: DamageEnergyType.Cold, isAOE: false, half: false),
-                Kineticist.Blast.RankConfigDice(twice: false, half: false),
+                Kineticist.Blast.RankConfigDice(twice: true, half: false),
                 Kineticist.Blast.CalculateSharedValue(),
                 Kineticist.Blast.RankConfigBonus(half_bonus: false),
                 Kineticist.Blast.DCForceDex(),
@@ -1856,7 +1856,7 @@ namespace KineticistElementsExpanded.ElementWood
             ability.SetComponents
                 (
                 Kineticist.Blast.RunActionDealDamage(out var actions, p: PhysicalDamageForm.Bludgeoning | PhysicalDamageForm.Piercing | PhysicalDamageForm.Slashing, e: DamageEnergyType.Cold, isAOE: false, half: false),
-                Kineticist.Blast.RankConfigDice(twice: false),
+                Kineticist.Blast.RankConfigDice(twice: true),
                 Kineticist.Blast.CalculateSharedValue(),
                 Kineticist.Blast.RankConfigBonus(half_bonus: false),
                 Kineticist.Blast.DCForceDex(),
@@ -1985,15 +1985,20 @@ namespace KineticistElementsExpanded.ElementWood
 
             buff.Flags(stayOnDeath: true);
             buff.Stacking = StackingType.Replace;
+            var element_list = Tree.GetAll(basic: true, onlyEnergy: true, archetype: true).Where(e => e != Tree.Positive);
+            var blast_list = element_list.Select(s => s.BaseAbility).ToList();
             buff.SetComponents
                 (
                 new AbilityUniquePositiveAdmixture
                 {
-                    m_AbilityList = Tree.GetAll(basic: true, onlyEnergy: true, archetype: true).Select(s => s.BaseAbility).ToArray()
+                    m_AbilityList = blast_list.ToArray(),
+                    Value = Helper.CreateContextDiceValue(DiceType.D6,
+                        diceCount: Helper.CreateContextValue(AbilityRankType.DamageDice),
+                        bonus: Helper.CreateContextValue(AbilityRankType.DamageBonus))
                 },
                 new AddKineticistBurnModifier
                 {
-                    BurnType = KineticistBurnType.Infusion,
+                    BurnType = KineticistBurnType.Blast,
                     Value = 2
                 },
                 new RecalculateOnStatChange
@@ -2006,7 +2011,9 @@ namespace KineticistElementsExpanded.ElementWood
                     UseKineticistMainStat = true,
                     StatType = StatType.Charisma,
                     m_CharacterClass = Tree.Class
-                }
+                },
+                Kineticist.Blast.RankConfigDice(twice: false, half: false),
+                Kineticist.Blast.RankConfigBonus(half_bonus: true)
                 );
 
             var feature = Helper.CreateBlueprintFeature("PositiveAdmixtureFeature", LocalizationTool.GetString("Wood.Admixture.Positive.Name"),
@@ -2016,7 +2023,7 @@ namespace KineticistElementsExpanded.ElementWood
                 Helper.CreateAddFacts(AnyRef.ToAny(ability))
                 );
 
-            Kineticist.AddElementsToInfusion(feature, buff, Tree.GetAll(basic: true, onlyEnergy: true).ToList().ToArray());
+            Kineticist.AddElementsToInfusion(feature, buff, element_list.ToArray());
         }
 
 

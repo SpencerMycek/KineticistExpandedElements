@@ -980,7 +980,7 @@ namespace KineticistElementsExpanded.ElementAether
                 Kineticist.Blast.RankConfigDice(false, false),
                 new AddKineticistBurnModifier
                 {
-                    BurnType = KineticistBurnType.Infusion,
+                    BurnType = KineticistBurnType.Blast,
                     Value = 2
                 },
                 new RecalculateOnStatChange
@@ -1026,7 +1026,7 @@ namespace KineticistElementsExpanded.ElementAether
                 Kineticist.Blast.RankConfigDice(true, false),
                 new AddKineticistBurnModifier
                 {
-                    BurnType = KineticistBurnType.Infusion,
+                    BurnType = KineticistBurnType.Blast,
                     Value = 3
                 },
                 new RecalculateOnStatChange
