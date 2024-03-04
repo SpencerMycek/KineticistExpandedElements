@@ -99,6 +99,9 @@ If you notice any issues, please contact me or open up an issue on this reposito
 
 ## Changelog
 
+### v3.2.4 v2.2.4p
+- Rebuilt for the current came version
+
 ### v3.2.3 For
 - Admixtures and boosts burn modifiers now count as blast, instead of infusion.
 - Positive and Negative Admixture now deal full composite damage (half-admixture have other)

@@ -943,7 +943,7 @@ namespace KineticistElementsExpanded.ElementVoid
             ability.SetComponents
                 (
                 Kineticist.Blast.RunActionDealDamage(out var actions, p: PhysicalDamageForm.Bludgeoning, e: DamageEnergyType.NegativeEnergy, isAOE: false, half: false),
-                Kineticist.Blast.Projectile(Resource.Projectile.NegativeCommonProjectile00, true, AbilityProjectileType.Simple, 0, 5),
+                Kineticist.Blast.Projectile(Resource.Projectile.Enervation00, true, AbilityProjectileType.Simple, 0, 5),
                 Kineticist.Blast.RankConfigDice(twice: true),
                 Kineticist.Blast.RankConfigBonus(half_bonus: false),
                 Kineticist.Blast.DCForceDex(),
@@ -951,7 +951,7 @@ namespace KineticistElementsExpanded.ElementVoid
                 Kineticist.Blast.BurnCost(actions, infusion: 0, blast: 2),
                 Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnPrecastStart, Resource.Sfx.PreStart_Earth),
                 Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnStart, Resource.Sfx.Start_Earth),
-                Kineticist.Blast.Ricochet(Resource.Projectile.NegativeCommonProjectile00)
+                Kineticist.Blast.Ricochet(Resource.Projectile.Enervation00)
                 ).TargetEnemy(CastAnimationStyle.Kineticist);
             ability.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten;
 
@@ -978,10 +978,10 @@ namespace KineticistElementsExpanded.ElementVoid
                 Kineticist.Blast.DCForceDex(),
                 Kineticist.Blast.BurnCost(actions, infusion: 1, blast: 2),
                 Kineticist.Blast.RequiredFeat(Tree.ExtendedRange.Feature),
-                Kineticist.Blast.Projectile(Resource.Projectile.NegativeCommonProjectile00, true, AbilityProjectileType.Simple, 0, 5),
+                Kineticist.Blast.Projectile(Resource.Projectile.Enervation00, true, AbilityProjectileType.Simple, 0, 5),
                 Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnPrecastStart, Resource.Sfx.PreStart_Earth),
                 Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnStart, Resource.Sfx.Start_Earth),
-                Kineticist.Blast.Ricochet(Resource.Projectile.NegativeCommonProjectile00)
+                Kineticist.Blast.Ricochet(Resource.Projectile.Enervation00)
                 ).TargetEnemy(CastAnimationStyle.Kineticist);
             ability.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten;
             ability.m_Parent = Tree.Composite_Void.BaseAbility;
@@ -1013,8 +1013,8 @@ namespace KineticistElementsExpanded.ElementVoid
                 Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnStart, Resource.Sfx.Start_Earth),
                 new AbilityDeliverChain
                 {
-                    m_ProjectileFirst = Resource.Projectile.NegativeCommonProjectile00.ToRef<BlueprintProjectileReference>(),
-                    m_Projectile = Resource.Projectile.NegativeCommonProjectile00.ToRef<BlueprintProjectileReference>(),
+                    m_ProjectileFirst = Resource.Projectile.Enervation00.ToRef<BlueprintProjectileReference>(),
+                    m_Projectile = Resource.Projectile.Enervation00.ToRef<BlueprintProjectileReference>(),
                     TargetsCount = new ContextValue
                     {
                         ValueType = ContextValueType.Simple,
