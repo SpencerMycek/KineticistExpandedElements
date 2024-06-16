@@ -106,7 +106,7 @@ If you notice any issues, please contact me or open up an issue on this reposito
 - Vampiric Infusion now works and does not cause the game to be laggy
 - Removed an issue where Greater Toxic Infusion was not available as an infusion, and there were multiple versions of the Singularity Infusion
 - Foe Throw is broken again
-- KineticSharpshooter report has not yet been added. I am waiting for an update to DarkCodex for some required changes
+- KineticSharpshooter support has not yet been added. I am waiting for an update to DarkCodex for some required changes
 
 ### v3.2.4 For v2.2.4p
 - Rebuilt for the current came version
