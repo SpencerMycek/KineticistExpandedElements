@@ -93,8 +93,8 @@
   {
     "Key": "Void.Negative.Description",
     "ProcessTemplates": true,
-    "enGB": "Element: Void\nType: simple blast\nLevel: —\nBurn: 0\nBlast Type: physical\n{g|Encyclopedia:Damage}Damage{/g}: negative energy\nYou blast your foe with negative energy.",
-    "ruRU": "Элемент: Пустота\nТип: простой заряд\nКруг: —\nВыгорание: 0\nТип заряда: физический\n{g|Encyclopedia:Damage}Урон{/g}: негативная энергия\nВы наносите урон врагу сгустком негативной энергии.",
+    "enGB": "Element: Void\nType: simple blast\nLevel: —\nBurn: 0\nBlast Type: energy\n{g|Encyclopedia:Damage}Damage{/g}: negative energy\nYou blast your foe with negative energy.",
+    "ruRU": "Элемент: Пустота\nТип: простой заряд\nКруг: —\nВыгорание: 0\nТип заряда: энергетический\n{g|Encyclopedia:Damage}Урон{/g}: негативная энергия\nВы наносите урон врагу сгустком негативной энергии.",
     "zhCN": "元素: 虚空\n类别: 简易念袭\n等级: —\n超载: 0\n念袭性质: 能量\n{g|Encyclopedia:Damage}伤害类型{/g}: 负能量\n你可以用负能量攻击你的敌人。"
   },
   {

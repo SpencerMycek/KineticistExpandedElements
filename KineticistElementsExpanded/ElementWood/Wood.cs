@@ -830,11 +830,11 @@ namespace KineticistElementsExpanded.ElementWood
                 (
                 // TODO: Creates an error message, AnyRef could not resolve type "ContextActionDealDamage"
                 // BP: DeadlyEarthEarthBlastAbility has a different way to do this, I think, shouldn't error that way, but probably works for now
-                new UniqueAreaEffect { m_Feature = AnyRef.ToAny(Tree.DeadlyEarth.Feature) },
+                new UniqueAreaEffect { m_Feature = AnyRef.ToAny(ability) },
                 Kineticist.Blast.RankConfigBonus(half_bonus: false),
                 Kineticist.Blast.DCForceDex(),
                 Kineticist.Blast.BurnCost(action_list, infusion: 4, blast: 0, talent: 0),
-                Kineticist.Blast.RequiredFeat(Tree.ExtendedRange.Feature),
+                Kineticist.Blast.RequiredFeat(Tree.DeadlyEarth.Feature),
                 Kineticist.Blast.Projectile(Resource.Projectile.Vinetrap00_Projectile_1, true, AbilityProjectileType.Simple, 0, 5),
                 Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnPrecastStart, Resource.Sfx.PreStart_Earth),
                 Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnStart, Resource.Sfx.Start_Earth),
@@ -929,7 +929,7 @@ namespace KineticistElementsExpanded.ElementWood
                 Helper.CreateSprite(Main.ModPath + "/Icons/verdantBlast.png"),
                 Helper.CreateSprite(Main.ModPath + "/Icons/verdantBlast.png"),
                 p: PhysicalDamageForm.Bludgeoning | PhysicalDamageForm.Piercing | PhysicalDamageForm.Slashing,
-                e: DamageEnergyType.PositiveEnergy);
+                e: DamageEnergyType.PositiveEnergy, blast_burn_cost: 2);
             var extended = CreateVerdantBlastVariant_extended();
             var spindle = CreateVerdantBlastVariant_spindle();
             var wall = CreateVerdantBlastVariant_wall();
@@ -1138,7 +1138,7 @@ namespace KineticistElementsExpanded.ElementWood
                 "30f3331e77343eb4f8f0bc51a0fcf454", Resource.Projectile.Kinetic_EarthBlast00_Projectile,
                 Helper.CreateSprite(Main.ModPath + "/Icons/verdantBlast.png"),
                 Helper.CreateSprite(Main.ModPath + "/Icons/verdantBlast.png"),
-                p: PhysicalDamageForm.Bludgeoning | PhysicalDamageForm.Piercing | PhysicalDamageForm.Slashing);
+                p: PhysicalDamageForm.Bludgeoning | PhysicalDamageForm.Piercing | PhysicalDamageForm.Slashing, blast_burn_cost: 2);
             var extended = CreateAutumnBlastVariant_extended();
             var spindle = CreateAutumnBlastVariant_spindle();
             var wall = CreateAutumnBlastVariant_wall();
@@ -1348,7 +1348,7 @@ namespace KineticistElementsExpanded.ElementWood
                 "30f3331e77343eb4f8f0bc51a0fcf454", Resource.Projectile.WindProjectile00,
                 Helper.CreateSprite(Main.ModPath + "/Icons/verdantBlast.png"),
                 Helper.CreateSprite(Main.ModPath + "/Icons/verdantBlast.png"),
-                p: PhysicalDamageForm.Bludgeoning | PhysicalDamageForm.Piercing | PhysicalDamageForm.Slashing);
+                p: PhysicalDamageForm.Bludgeoning | PhysicalDamageForm.Piercing | PhysicalDamageForm.Slashing, blast_burn_cost: 2);
             var extended = CreateSpringBlastVariant_extended();
             var spindle = CreateSpringBlastVariant_spindle();
             var wall = CreateSpringBlastVariant_wall();
@@ -1559,7 +1559,7 @@ namespace KineticistElementsExpanded.ElementWood
                 Helper.CreateSprite(Main.ModPath + "/Icons/verdantBlast.png"),
                 Helper.CreateSprite(Main.ModPath + "/Icons/verdantBlast.png"),
                 p: PhysicalDamageForm.Bludgeoning | PhysicalDamageForm.Piercing | PhysicalDamageForm.Slashing,
-                e: DamageEnergyType.Fire);
+                e: DamageEnergyType.Fire, blast_burn_cost: 2);
             // Ability
             var extended = CreateSummerBlastVariant_extended();
             var spindle = CreateSummerBlastVariant_spindle();
@@ -1772,7 +1772,7 @@ namespace KineticistElementsExpanded.ElementWood
                 Helper.CreateSprite(Main.ModPath + "/Icons/verdantBlast.png"),
                 Helper.CreateSprite(Main.ModPath + "/Icons/verdantBlast.png"),
                 p: PhysicalDamageForm.Bludgeoning | PhysicalDamageForm.Piercing | PhysicalDamageForm.Slashing,
-                e: DamageEnergyType.Cold);
+                e: DamageEnergyType.Cold, blast_burn_cost: 2);
 
             var extended = CreateWinterBlastVariant_extended();
             var spindle = CreateWinterBlastVariant_spindle();

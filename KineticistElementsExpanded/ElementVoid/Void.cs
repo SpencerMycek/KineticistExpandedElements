@@ -920,7 +920,7 @@ namespace KineticistElementsExpanded.ElementVoid
                 "30f3331e77343eb4f8f0bc51a0fcf454", Resource.Projectile.Kinetic_EarthBlast00_Projectile,
                 Helper.CreateSprite(Main.ModPath + "/Icons/VoidBlast.png"),
                 Helper.CreateSprite(Main.ModPath + "/Icons/VoidBlast.png"),
-                p: PhysicalDamageForm.Bludgeoning, e: DamageEnergyType.NegativeEnergy);
+                p: PhysicalDamageForm.Bludgeoning, e: DamageEnergyType.NegativeEnergy, blast_burn_cost: 2);
             var singularity = CreateVoidBlastVariant_singularity();
             // Ability
             CreateVoidBlastAbility(standard, extended, spindle, wall, blade, singularity);
@@ -1214,7 +1214,7 @@ namespace KineticistElementsExpanded.ElementVoid
                 new AddKineticistBurnModifier
                 {
                     BurnType = KineticistBurnType.Blast,
-                    Value = 3
+                    Value = 1
                 },
                 new RecalculateOnStatChange
                 {
@@ -1627,40 +1627,51 @@ namespace KineticistElementsExpanded.ElementVoid
 
         private static void CreateVampiricInfusion()
         {
+            Main.Print("Before Vampiric");
             UnityEngine.Sprite icon = Helper.StealIcon("30c81aff8e5293d418759d10f193f347"); // VampiricInfusionAbility
+            var healer_feat = AnyRef.ToAny(Helper.GetGuid("VoidHealerFeature")); // VoidHealerFeature
+            var healer_ability = AnyRef.ToAny(Helper.GetGuid("VoidHealerAbility")); //VoidHealerAbility
+
+            Main.Print("1");
 
             var effect_buff = Helper.CreateBlueprintBuff("VoidVampiricInfusionEffectBuff", LocalizationTool.GetString("Void.Vampiric.Buff.Name"),
                 LocalizationTool.GetString("Void.Vampiric.Buff.Description"), icon, null);
             effect_buff.m_Flags |= BlueprintBuff.Flags.RemoveOnRest;
-            effect_buff.SetComponents
+            _ = effect_buff.SetComponents
                 (
                 new AddKineticistBurnModifier
                 {
                     Value = -1,
                     BurnType = KineticistBurnType.WildTalent,
-                    m_AppliableTo = new BlueprintAbilityReference[1] { VoidHealerAbility.ToRef() },
-                    RemoveBuffOnAcceptBurn = true
+                    m_AppliableTo = [healer_ability],
+                    RemoveBuffOnAcceptBurn = false
                 },
                 new AddAbilityUseTrigger
                 {
-                    Action = Helper.CreateActionList(new ContextActionRemoveSelf {}),
+                    Action = Helper.CreateActionList(new ContextActionRemoveSelf { }),
                     AfterCast = true,
                     ForOneSpell = true,
-                    m_Ability = VoidHealerAbility.ToRef(),
+                    m_Ability = healer_ability,
                     Type = AbilityType.Spell,
                     Range = AbilityRange.Touch
                 }
                 );
+
+            Main.Print("2");
 
             var onCaster = new ContextActionOnContextCaster
             {
                 Actions = Helper.CreateActionList(effect_buff.CreateContextActionApplyBuff(duration: 0, asChild: true, permanent: true))
             };
 
+            Main.Print("3");
+
             var ability = Helper.CreateBlueprintActivatableAbility("VoidVampiricInfusionAbility", out var buff, LocalizationTool.GetString("Void.Vampiric.Name"),
                 LocalizationTool.GetString("Void.Vampiric.Description"), icon, UnitCommand.CommandType.Free, Kingmaker.UnitLogic.ActivatableAbilities.AbilityActivationType.WithUnitCommand,
                 Kingmaker.UnitLogic.ActivatableAbilities.ActivatableAbilityGroup.SubstanceInfusion, true, true);
             ability.m_ActivateWithUnitCommand = UnitCommand.CommandType.Free;
+
+            Main.Print("4");
 
             buff.Flags(stayOnDeath: true);
             buff.Stacking = StackingType.Replace;
@@ -1671,7 +1682,7 @@ namespace KineticistElementsExpanded.ElementVoid
                     CheckSpellParent = true,
                     TriggerOnDirectDamage = true,
                     Actions = Helper.CreateActionList(onCaster),
-                    m_AbilityList = null,
+                    m_AbilityList = [Tree.Composite_Void.BaseAbility, Tree.Negative.BaseAbility],
                     SpellDescriptorsList = (SpellDescriptor)2632353982198054912
                 },
                 new AddKineticistBurnModifier
@@ -1692,19 +1703,22 @@ namespace KineticistElementsExpanded.ElementVoid
                 }
                 );
 
-            var healer = AnyRef.ToAny(Helper.GetGuid("VoidHealerFeature"));
+            Main.Print("5");
 
             var feature = Helper.CreateBlueprintFeature("VoidVampiricInfusionFeature", LocalizationTool.GetString("Void.Vampiric.Name"),
                 LocalizationTool.GetString("Void.Vampiric.Description"), icon, FeatureGroup.KineticBlastInfusion);
             feature.SetComponents
                 (
                 Helper.CreatePrerequisiteClassLevel(Tree.Class, 10),
-                Helper.CreatePrerequisiteFeature(healer),
-                Helper.CreateAddFacts(AnyRef.ToAny(ability))
+                Helper.CreatePrerequisiteFeature(healer_feat),
+                Helper.CreateAddFacts(ability)
                 );
+
+            Main.Print("6");
 
             Tree.Vampiric.Feature = feature.ToRef();
             Tree.Vampiric.Buff = buff.ToRef();
+            Main.Print("After Vampiric");
         }
 
         private static void CreateWeighingInfusion()

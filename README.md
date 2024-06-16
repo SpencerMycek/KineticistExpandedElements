@@ -99,7 +99,16 @@ If you notice any issues, please contact me or open up an issue on this reposito
 
 ## Changelog
 
-### v3.2.4 v2.2.4p
+### v3.3.0 For v2.3.1e
+- Bunch of misc changes
+- All modded element kinetic blades should use the correct burn cost now
+- Greater Gravitic Boost now costs an additional 1 point of burn (down from an additional 3): [See Mark Seifter confirm this Here][6] 
+- Vampiric Infusion now works and does not cause the game to be laggy
+- Removed an issue where Greater Toxic Infusion was not available as an infusion, and there were multiple versions of the Singularity Infusion
+- Foe Throw is broken again
+- KineticSharpshooter report has not yet been added. I am waiting for an update to DarkCodex for some required changes
+
+### v3.2.4 For v2.2.4p
 - Rebuilt for the current came version
 
 ### v3.2.3 For
@@ -187,28 +196,9 @@ If you notice any issues, please contact me or open up an issue on this reposito
 - Buffed Wood Soldiers (They're supposed to have the "Advanced Template")
 - Noticed an issue with Skilled Kineticist and Kinetic Knights
 
-## Known Issues
-
-### Maybe some Wood Issues
-I did have a problem loading my Wood testing save, so reach out if there are any issues loading your Wood Kineticists out there
-
-### Disintigration Infusion
-This is a very strange infusion, both doubling damage, and halving it. For whatever reason, it does not work with the Spindle infusion, still working on that
-
-### Admixtures
-These work pretty well in all cases, I have only seen a single issue: When using either of the energy admixtures, and you crit, the damage modified by the admixture will not deal double damage, but the original damage type will.
-When using DarkCodex, admixtures are not added. I believe this is due to DarkCodex, and it is in Truinto's to-do backlog to make sure they are added
-
-### Wood Soldiers
-It is possible, if you use the ability after one or two dies, to have up to 7 wood soldiers, still trying to figure out how to limit the amount of summons
-Using the ability at 4 or more Soldiers causes you to take burn, but does not summon soldiers (Max 4, but the ability shouldnt go off)
-
-### Whirlwind and Blades
-Blades have a few issues, and whirlwind not working with modded blades is one of them. Reach out if you find more please
-
-
 [1]: https://github.com/Truinto
 [2]: https://github.com/Truinto/DarkCodex
 [3]: https://github.com/Adsam112
 [4]: https://github.com/RevanStarforge
 [5]: https://github.com/q892398745
+[6]: https://paizo.com/threads/rzs2tk0l?How-much-burn-does-an-Gravitic-Boost
