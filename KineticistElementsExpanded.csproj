@@ -89,6 +89,7 @@
 		<Publicise InputAssemblies="@(PubliciseAssemblyCSharp)" OutputPath="$(SolutionDir)lib/" PubliciseCompilerGenerated="true" />
 		<Publicise InputAssemblies="@(PubliciseUniRx)" OutputPath="$(SolutionDir)lib/" PubliciseCompilerGenerated="true" />
 		<Publicise InputAssemblies="@(PubliciseRuntimeUI)" OutputPath="$(SolutionDir)lib/" PubliciseCompilerGenerated="true" />
+		<Exec WorkingDirectory="$(SolutionDir)\" Command="update_codexlib.bat" />
 	</Target>
 
 	<!-- DLL Merging -->

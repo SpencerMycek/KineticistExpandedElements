@@ -98,6 +98,12 @@ Some mods might not integrate perfectly, but they should work together properly
 If you notice any issues, please contact me or open up an issue on this repository
 
 ## Changelog
+### v3.3.2 for v2.5.0y
+- Updated for game version
+- Kinetic Sharpshooter does not work. Having some issues on my end
+
+### v3.3.1 for v2.3.2c
+- Updated things so stuff should work without DarkCodex
 
 ### v3.3.0 For v2.3.1e
 - Bunch of misc changes

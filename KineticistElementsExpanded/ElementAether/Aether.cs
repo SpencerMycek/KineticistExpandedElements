@@ -1,5 +1,4 @@
-﻿using CodexLib;
-using KineticistElementsExpanded.Components;
+﻿using KineticistElementsExpanded.Components;
 using KineticistElementsExpanded.Components.Properties;
 using KineticistElementsExpanded.KineticLib;
 using AnyRef = CodexLib.AnyRef;
@@ -9,8 +8,6 @@ using Kingmaker.Blueprints.Classes;
 using Kingmaker.Blueprints.Classes.Prerequisites;
 using Kingmaker.Blueprints.Classes.Selection;
 using Kingmaker.Blueprints.Classes.Spells;
-using Kingmaker.Blueprints.Items.Ecnchantments;
-using Kingmaker.Blueprints.Items.Weapons;
 using Kingmaker.Designers.EventConditionActionSystem.Evaluators;
 using Kingmaker.Designers.Mechanics.Facts;
 using Kingmaker.ElementsSystem;
@@ -389,8 +386,9 @@ namespace KineticistElementsExpanded.ElementAether
                 p: PhysicalDamageForm.Bludgeoning | PhysicalDamageForm.Piercing | PhysicalDamageForm.Slashing);
             var foeThrow = CreateTelekineticBlastVariant_throw(); // Output not used due to UI reqs
             var many = CreateTelekineticBlastVariant_many();
+            //var exploding = CreateTelekineticBlastVariant_exploding();
             // Ability
-            CreateTelekineticBlastAbility(standard, many, foeThrow, extended, spindle, wall, blade);
+            CreateTelekineticBlastAbility(standard, /*exploding,*/ many, foeThrow, extended, spindle, wall, blade);
             // Feature
             CreateTelekineticBlastFeature();
             // Progression
@@ -633,6 +631,40 @@ namespace KineticistElementsExpanded.ElementAether
             Tree.FoeThrow.Feature.Get().AddComponents(Helper.CreateAddFacts(ft_targetAbility));
             return ft_throwAbility;
         }
+        
+        /*
+        private static BlueprintAbility CreateTelekineticBlastVariant_exploding()
+        {
+            UnityEngine.Sprite icon = Helper.StealIcon("7c8ded7015114e4086b3dbdd16388b29"); // ExplodingArrowsInfusion
+
+            var ability = Helper.CreateBlueprintAbility("ExplodingArrowsTelekineticBlastAbility",
+                Tree.ExtendedRange.Feature.Get().m_DisplayName,
+                Tree.ExtendedRange.Feature.Get().m_Description,
+                icon, AbilityType.Special, UnitCommand.CommandType.Standard, AbilityRange.Long).TargetEnemy(animation: CastAnimationStyle.Kineticist);
+            ability.SetComponents
+                (
+                Kineticist.Blast.RequiredCasterFeat(Tree.ExplodingArrows.Feature),
+                Kineticist.Blast.RequiredFeat(Tree.ExplodingArrows.Feature),
+                Kineticist.Blast.RunActionDealDamage(out var actions,
+                    p: PhysicalDamageForm.Bludgeoning | PhysicalDamageForm.Piercing | PhysicalDamageForm.Slashing,
+                    isAOE: false, half: false),
+                Kineticist.Blast.Projectile(Resource.Projectile.BatteringBlast00, true, AbilityProjectileType.Simple, 0, 5),
+                Kineticist.Blast.RankConfigDice(twice: false, half: false),
+                Kineticist.Blast.RankConfigBonus(half_bonus: false),
+                Kineticist.Blast.CalculateSharedValue(),
+                Kineticist.Blast.BurnCost(actions, infusion: 1, blast: 0, talent: 0),
+                Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnPrecastStart, Resource.Sfx.PreStart_Earth),
+                Kineticist.Blast.Sfx(AbilitySpawnFxTime.OnStart, Resource.Sfx.Start_Earth),
+                Kineticist.Blast.Ricochet(Resource.Projectile.BatteringBlast00)
+                );
+            ability.AvailableMetamagic = Metamagic.Empower | Metamagic.Maximize | Metamagic.Quicken | Metamagic.Heighten;
+            ability.m_TargetMapObjects = true;
+            ability.ShouldTurnToTarget = true;
+            ability.m_Parent = Tree.Telekinetic.BaseAbility;
+
+            return ability;
+        }
+        */
 
         #endregion
 
